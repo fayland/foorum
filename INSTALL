@@ -1,0 +1,13 @@
+
+Steps:
+
+    * mysql -uroot -p
+      mysql>CREATE DATABASE foorum;
+      mysql>CREATE DATABASE theschwartz;
+      mysql>exit;
+    * mysql -uroot -p foorum < bin/db/foorum.sql
+    * mysql -uroot -p theschwartz < bin/db/theschwartz.sql
+    * cp foorum.yml foorum_local.yml
+    * vi foorum_local.yml and change the 'dsn_pwd' config etc.
+    * perl Makefile.PL; make; make test;
+    * perl bin/foorum_server.pl

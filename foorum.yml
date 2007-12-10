@@ -1,0 +1,130 @@
+---
+name: 'Foorum (Be Together)'
+dsn: dbi:mysql:foorum
+dsn_user: root
+dsn_pwd: 'secret'
+theschwartz_dsn: dbi:mysql:theschwartz
+
+View::TT:
+  POST_CHOMP: 1
+  PRE_CHOMP:  1
+  EVAL_PERL: 1
+  CONTEXT: ''
+  DELIMITER: ';'
+
+View::JSON:
+  expose_stash: json_data
+
+cache:
+  servers:
+    - '127.0.0.1:11211'
+  compress_threshold: 10_000
+  debug: 0
+
+page_cache:
+  expires: 300
+  set_http_headers: 1
+  debug: 1
+  auto_check_user: 1
+
+authentication:
+  default_realm: 'members'
+  password_hash_type: "SHA-1"
+  realms:
+    members:
+      credential:
+        class: 'Password'
+        password_field: 'password'
+        password_type: "hashed"
+        password_hash_type: "SHA-1"
+      store:
+        class: 'FromSub::Hash'
+        model_class: "UserAuth"
+    
+session:
+  dbic_class: "DBIC::Session"
+  expires: 604800
+  cookie_expires: 0
+  verify_address: 0
+  param: sid
+
+setup_components:
+  search_extra:
+    - ::Plugin
+
+static:
+  dirs:
+   - js
+   - css
+   - upload
+   - images
+  ignore_extensions:
+   - cgi
+   - pl
+  debug: 0
+
+captcha:
+  session_name: captcha_string
+  new:
+    width: 80
+    height: 30
+    lines: 1
+    gd_font: giant
+  create:
+    - normal
+    - rect
+  particle:
+    - 100
+  out:
+    force: jpeg
+
+upload:
+  max_size: 300
+  valid_types:
+    - jpg
+    - jpeg
+    - gif
+    - doc
+    - rar
+    - txt
+    - png
+    - zip
+    - swf
+    - htm
+    - html
+
+logger:
+  path: 1
+  path_load_time_more_than: 2
+
+site:
+  maintain: 0
+
+topic:
+  most_deletion_per_day: 5
+
+register:
+  closed: 0
+  activation: 1
+
+default_lang: en
+
+per_page:
+  forum: 20
+  topic: 10
+  message: 8
+
+dir:
+  js: /static/js
+  images: /static/images
+  static: /static
+  upload: /upload
+
+# For Foorum pm using
+mail:
+  on: 1
+  from_email: 'fayland@gmail.com'
+  daily_report_email: 'fayland@gmail.com'
+
+extra:
+  urchin_account: UA-65008-1
