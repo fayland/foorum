@@ -1,0 +1,31 @@
+A:visited { text-decoration: none; }
+A:active { text-decoration: none; }
+A:hover { text-decoration: underline; }
+A:link { text-decoration: none; }
+IMG { border:0px; }
+BODY { 
+    font-family: arial,sans-serif;
+    font-size: 9pt;
+    margin: 0;
+}
+TD, DIV, form, OPTION, P, TH { font-family: arial,sans-serif; font-size: 9pt }
+INPUT, textarea, select { border-width: 1px; padding: 1px; font-size: 9pt; border-color: #cccccc; }
+
+/* bar header */
+#gbar { float:left; height:22px; padding-top: 4px; margin-left: 11px; }
+#gbar .gbarp { font-size:13px; padding-right:1em }
+#guser { font-size:13px; padding-bottom:7px !important; padding-top:4px; padding-right:11px; }
+
+#footer {
+    clear:both;
+    text-align:center;
+}
+
+.lightbox {
+    color:black;
+    margin: 6px 12px 6px 12px;
+}
+.lightbox A:visited { color:gray; }
+.lightbox A:active { color:black;}
+.lightbox A:hover { color:black; }
+.lightbox A:link { color:black; }

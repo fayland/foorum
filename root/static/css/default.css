@@ -1,0 +1,84 @@
+.highlight { color:#990000 }
+.semilight { color:#000066; }
+.tblr { border:1px solid #000000 }
+.blr { border:1px solid #000000;border-top:0px }
+.tlr { border:1px solid #000000;border-bottom:0px }
+
+.one TABLE { border:1px solid #000000;border-left: 0px;border-bottom: 0px;width:97%;border-collapse: collapse; }
+.one TD, .multi TD { border:1px solid #000000;border-right: 0px;border-top: 0px;padding: 6px; }
+.multi TABLE { border:1px solid #000000;border-left: 0px;border-bottom: 0px;border-top: 0px;width:97%;border-collapse: collapse; }
+.multi TD TABLE { border: 0px;width:100%; }
+.multi TD TABLE TD { border: 0px;text-align:left;padding:2px }
+
+.none TABLE { border:0px; width:97%; }
+.none TD { border: 0px; padding: 6px; }
+
+.tablewidth { width: 97%; }
+.tablewidth TABLE { width: 99% }
+
+.online,.online TABLE,.online TD { border: 0px;padding:0px }
+hr { background:#000000;height:1 }
+body { color: #333333; background-color: #FFFFF4; }
+A:visited { color: #333333 }
+A:active { color: #333333 }
+A:hover { color: #333333 }
+A:link { color: #333333 }
+
+#timer {
+    text-align: center;
+    clear: both;
+    color: #FFFFF4;
+}
+
+/* simple/message.html */
+.message {
+    position:absolute;
+    left:15%;top:25%;
+    padding:20px;
+    line-height:140%;
+    width:70%;
+    height:auto;
+    background:#FEF4D1;
+}
+.yellowboard {
+    margin:5% 15% 5% 15%;
+    padding:0px 20px 10px 20px;
+    line-height:140%;
+    font-size: 120%;
+    width:auto;
+    height:auto;
+    background:#FEF4D1;
+    border:1px solid #000000;
+}
+
+.title { background:#F5DEB3; color:#333333;font-weight: bold }
+
+/* forum */
+.forum1 {
+    background: #FEF4D1;
+    color: #333333;
+}
+.forum2 {
+    background: #FFFBEC;
+    color: #333333;
+}
+.misc1 {
+    background: #FEF4D1;
+    color: #333333;
+}
+.misc2 {
+    background: #FFFBEC;
+    color: #333333;
+}
+
+/* topic */
+.plumbline { width: 1px; height: 100%; background:#F5DEB3 }
+.horizontal { width: 100%; height: 1px; border-top:1px solid #F5DEB3; margin: 4px; }
+
+/* header bar */
+.barline { border-top:1px solid #F5DEB3; font-size:0; height:1px; position:absolute; right:0; top:26px; width:110% }
+
+.tabs {
+    padding-left: 2em;
+    padding-right: 2em;
+}
