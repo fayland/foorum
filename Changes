@@ -2,6 +2,7 @@ This file documents the revision history for Foorum.
 
 0.1.0 
     - move trunk to http://foorum.googlecode.com/svn/trunk/
+    - use jQuery to deal with browser time zone
 
 0.08  Sun Dec 9 16:30:30 2007
     - I18N encoding fix
