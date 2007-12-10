@@ -1,0 +1,26 @@
+[% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
+
+[% url_base = '/forumadmin/' _ forum.forum_id %]
+
+<div id='edit_profile_tabs' class='tabs'>
+    <ul class="ui-tabs-nav">
+        <li><a href='[% forum.forum_url %]'><span>Forum</span></a></li>
+        <li[% IF c.req.path.match('basic') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/basic'><span>[% c.loc('Basic Setting') %]</span></a></li>
+        <li[% IF c.req.path.match('style') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/style'><span>[% c.loc('Style Setting') %]</span></a></li>
+        [% TRY %]
+        [% css_file = c.config.home _ '/style/custom/forum' _ forum.forum_id _ '.yml' %]
+        [% USE File( css_file ) %]
+        <li[% IF c.req.path.match('del_style') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/del_style'><span>[% c.loc('Delete Style') %]</span></a></li>
+        [% CATCH File %]
+        [% END %]
+        [% IF forum.policy == 'private' %]
+        <li><a href='[% forum.forum_url %]/members'><span>[% c.loc('Members Settings') %]</span></a></li>
+        [% END %]
+        <li[% IF c.req.path.match('announcement') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/announcement'><span>[% c.loc('Announcement Setting') %]</span></a></li>
+    </ul>
+    <div class="ui-tabs-container">
+
+[% content %]
+
+    </div>
+</div>

@@ -1,0 +1,40 @@
+[% USE date %]
+
+[% title = 'Online' %]
+
+<div class='one'>
+<table align='center'>
+	<tr class="title" align='center'>
+	<td width='100'>[% c.loc("User") %]</td>
+	<td>[% c.loc('Path') %]</td>
+	<td width='120'>[% c.loc('Visit Time') %]</td>
+	<td width='120'>[% c.loc('Active Time') %]</td>
+	[% IF roles.is_admin %]<td>IP</td>[% END %]
+	</tr>
+[% FOREACH r IN results %]
+	<tr align='center'>
+	<td class='forum1'>
+	    [% IF r.user %]
+	    <a href='/u/[% r.user.username %]'>[% r.user.nickname %]</a>
+	    [% ELSE %]
+	     Guest
+	    [% END %]
+	</td>
+	<td class='forum2'>
+		<a href='/[% r.refer %]'>/[% r.refer %]</a>
+	</td>
+	<td class='forum1'>
+	    [% date.format(r.visit_time, '%Y-%m-%d %H:%M:%S') %]
+	</td>
+	<td class='forum2'>
+	    [% date.format(r.active_time, '%Y-%m-%d %H:%M:%S') %]
+	</td>
+	[% IF roles.is_admin %]
+	<td class='forum1'>
+	    [% r.IP %]
+	</td>
+	[% END %]
+	</tr>
+[% END %]
+</table>
+</div>

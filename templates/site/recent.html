@@ -1,0 +1,79 @@
+[% IF recent_type == 'elite' %]
+[% title = c.loc('Recent Elite Topics') %]
+[% ELSE %]
+[% title = c.loc('Recent Topics') %]
+[% END %]
+
+[% IF recent_type != 'my' %]
+[% RSS_URL = url_prefix _ '/rss' %]
+[% END %]
+
+[% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
+
+<div id='recent_tabs' class='tabs'>
+    <ul class="ui-tabs-nav">
+        <li[% IF recent_type == 'site' %] class="ui-tabs-selected"[% END %]><a href='/site/recent'><span>[% c.loc('Recent Topics') %]</span></a></li>
+        <li[% IF recent_type == 'elite' %] class="ui-tabs-selected"[% END %]><a href='/site/recent/elite'><span>[% c.loc('Recent Elite Topics') %]</span></a></li>
+        <li[% IF recent_type == 'my' %] class="ui-tabs-selected"[% END %]><a href='/my/topics'><span>[% c.loc('My Recent Topics') %]</span></a></li>
+        [% IF c.user_exists %]
+        <li><a href='/my/starred'><span>[% c.loc('My Starred Items') %]</span></a></li>
+        [% END %]
+    </ul>
+    <div class="ui-tabs-container">
+<div class='one'>
+<table height='28' align='center'>
+	<tr class="title" align='center'>
+	<td width='200'>[% c.loc('Forum') %]</td>
+	<td width='42'>[% c.loc("Status") %]</td>
+	<td width='*'>[% c.loc("Subject") %]</td>
+	[% IF recent_type != 'my' %]
+	<td width='80'>[% c.loc("Author") %]</td>
+	[% END %]
+	<td width='40'>[% c.loc("Reply") %]</td>
+	<td width='40'>[% c.loc("Hit") %]</td>
+	<td width='200'>[% c.loc("Last Update") %]</td>
+	</tr>
+</table>
+[% FOREACH t IN topics %]
+<div class='multi'>
+<table align='center'>
+	<tr align='center'>
+	<td class='forum2' width='200'><a href='/forum/[% t.forum.forum_code %]'>[% t.forum.name %]</a></td>
+	<td class='forum1' width='42'>[% IF t.sticky %]<img src='[% c.config.dir.images %]/site/top.gif' />[% ELSIF t.closed %]<img src='[% c.config.dir.images %]/site/locked.gif' />[% END %]</td>
+	<td class='forum2' valign='top' width='*'>
+		<table>
+			<tr>
+			<td align="left">
+			    [% IF t.elite %]
+			    <span class='highlight'>[Elite]</a> 
+			    [% END %]
+			    <a href='/forum/[% t.forum.forum_code %]/[% t.topic_id %]'><span class='semilight'>[% t.title %]</span></a>
+			</td>
+			</tr>
+    	</table>
+	</td>
+	[% IF recent_type != 'my' %]
+	<td class='forum1' width='80'><a href='/u/[% t.author.username %]'>[% t.author.nickname %]</a></td>
+	[% END %]
+	<td class='forum2' width='40'><span class='highlight'>[% t.total_replies  	 %]</span></td>
+	<td class='forum2' width='40'><span class='highlight'>[% t.hit %]</span></td>
+	<td class='forum1' width='200' align='left'><a href='/u/[% t.last_updator.username %]'>[% t.last_updator.nickname %]</a> | [% t.last_update_date %]</td>
+	</tr>
+</table>
+</div>
+[% END %]
+
+[% IF recent_type != 'my' %]
+<link rel="alternate" type="application/rss+xml" title="[% title %]" href="[% url_prefix %]/rss" />
+[% END %]
+
+<div class='none'>
+<table align='center'>
+    <tr>
+        <td>[% INCLUDE 'sub/pager.html' %]</td>
+    </tr>
+</table>
+</div>
+
+    </div>
+</div>

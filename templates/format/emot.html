@@ -1,0 +1,19 @@
+<script>
+function emot(smilietext) {
+    var input_text = document.getElementById('text');
+	smilietext=' :'+smilietext+': ';
+	if (input_text.createTextRange && input_text.caretPos) {
+		var caretPos = input_text.caretPos;
+		caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? smilietext + ' ' : smilietext;
+		input_text.focus();
+	} else {
+		input_text.value += smilietext;
+		input_text.focus();
+	}
+}
+</script>
+
+[% FOREACH em IN ['wink', 'sad', 'biggrin', 'cheesy', 'confused', 'cool', 'angry', 'sads', 'smile', 'smiled', 'unhappy', 'dozingoff', 'blink', 'blush', 'crazy', 'cry', 'bigsmile', 'inlove', 'notify', 'shifty', 'sick', 'sleeping', 'sneaky2', 'tounge', 'unsure', 'wacko', 'why', 'wow', 'mad', 'Oo'] %]
+<img src="[% c.config.dir.images %]/bbcode/emot/[% em %].gif" onclick="javascript:emot('[% em %]');" style="cursor:hand;padding:1px;">
+[% IF loop.count % 6 == 0 %]<br />[% END %]
+[% END %]

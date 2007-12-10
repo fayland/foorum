@@ -1,0 +1,81 @@
+[% USE Math %]
+
+[% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
+
+<div id='edit_profile_tabs' class='tabs'>
+    <ul class="ui-tabs-nav">
+        <li><a href='[% forum.forum_url %]'><span>Topics</span></a></li>
+        <li><a href='[% forum.forum_url %]/polls'><span>Polls</span></a></li>
+        <li><a href='[% forum.forum_url %]/topic/new'><span>New Topic</span></a></li>
+        <li><a href='[% forum.forum_url %]/poll/new'><span>New Poll</span></a></li>
+        <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
+        <li class="ui-tabs-selected"><a href='javascript:void(0)'><span>[% poll.title %]([% poll.hit %])</span></a></li>
+    </ul>
+    <div class="ui-tabs-container">
+
+<div class='one'>
+<table align='center'>
+<tr class='title'>
+<td colspan='2'>[% poll.title %] By [% poll.author.nickname %]</td></tr>
+<tr class='forum1'>
+    <td valign='top' width='157'>[% INCLUDE include/user_profile.html user = poll.author %]</td>
+    <td>
+
+[% IF can_vote %]
+<form name='vote' id='vote'>
+<input type='hidden' name='poll_id' value='[% poll.poll_id %]' />
+[% END %]
+<div class='none'>
+<table border='0' cellpadding='0' cellspacing='0'>
+[%# bar color, from 1 .. 10 %]
+[% bar_color = 1 %]
+[% FOREACH option IN poll.options %]
+<tr><td>
+[% IF can_vote %]
+[% IF poll.multi == 1 %]
+[% input_type = 'checkbox' %]
+[% ELSE %]
+[% input_type = 'radio' %]
+[% END %]
+<input type='[% input_type %]' name='option_id' value='[% option.option_id %]' /> 
+[% END %]
+[% option.text %]</td><td>
+    [% IF poll.vote_no %]
+[% bar_width = ( option.vote_no / poll.vote_no ) * 160 %]
+[% bar_width = Math.int(bar_width) %]
+<img src='[% c.config.dir.images %]/poll/bar[% bar_color %].gif' width="[% bar_width %]" height='10' /> ([% option.vote_no %]/[% poll.vote_no %])
+    [% END %]
+</td></tr>
+
+[% bar_color = bar_color + 1;IF bar_color > 10; bar_color = 1; END;%]
+[% END %]
+</table>
+</div>
+[% IF can_vote %]
+<input type='button' value='Vote' onclick='javascript:HAVEAVOTE()' />
+</form>
+[% END %]
+</td>
+</tr>
+</table>
+</div>
+[% INCLUDE comment/show.html %]
+<br />
+[% INCLUDE comment/post.html %]
+[% IF can_vote %]
+[% c.load_once("jquery/form.js") %]
+<script>
+
+function HAVEAVOTE() {
+    $('#vote').ajaxSubmit( {
+        url : '/ajax/poll/vote',
+        type: 'get',
+        success: function(responseText) { alert(responseText); }
+    } );
+}
+
+</script>
+[% END %]
+
+    </div>
+</div>

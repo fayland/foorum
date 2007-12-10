@@ -1,0 +1,67 @@
+[% STOP_FROM_SPAM = 'You need login first' %]
+
+<div class='one'>
+<table align='center'>
+	<tbody>
+	<tr class='title'><td colspan='2'>User profile</td></tr>
+	<tr class='misc1'><td width='20%' align='right'>[% c.loc('Username') %]</td><td>[% user.username %]</td></tr>
+	<tr class='misc2'><td align='right'>[% c.loc('Nickname') %]</td><td>[% user.nickname %]</td></tr>
+	[% IF user.profile_photo %]
+    <tr class='misc1'><td align='right'>Profile Photo:</td><td>[% INCLUDE include/user_profile_photo.html %]</td></tr>
+	[% END %]
+	<tr class='misc1'><td align='right'>[% c.loc('Gender') %]</td><td>
+	    [% SWITCH user.gender; CASE 'M';'Male';CASE 'F';'Female';CASE;'Secret';END; %]
+	    [% IF user.gender != 'NA' %] &nbsp;<img src='[% c.config.dir.images %]/site/gender_[% user.gender %].gif' width='20' height='14' align='absmiddle' />[% END %]
+	</td></tr>
+	[% IF user.details.birthday %]
+	<tr class='misc2'><td align='right'>[% c.loc('Birthday') %]</td><td>[% user.details.birthday %]</td></tr>
+	[% END %]
+	<tr class='misc1'><td align='right'>[% c.loc("Threads:") %]</td><td>[% user.threads %]</td></tr>
+	<tr class='misc2'><td align='right'>[% c.loc("Replies:") %]</td><td>[% user.replies %]</td></tr>
+	<tr class='misc2'><td align='right'>[% c.loc("Register on:") %]</label></td><td>[% user.register_on %]</td></tr>
+	<tr class='misc1'><td align='right'>Last Logon On:</td><td>[% user.last_login_on %]</td></tr>
+	[% IF user.last_post %]
+	<tr class='misc2'><td align='right'>Last Post Topic:</td><td><a href='/forum/[% user.last_post.forum_id %]/[% user.last_post.topic_id %]'>[% user.last_post.title %]</a></td></tr>
+	[% END %]
+	[% IF user.details.homepage %]
+	<tr class='misc2'><td align='right'>[% c.loc('Homepage') %]</td><td><a href='[% user.details.homepage %]' target='_blank'>[% user.details.homepage %]</a></td></tr>
+	[% END %]
+	
+	[% IF user.country %]
+	<tr class='title'><td colspan='2'>[% c.loc('Location Information') %]</td></tr>
+	<tr class='misc1'><td align='right'>[% c.loc('Country') %]</td><td>[% c.user.country | code2country(lang) %]</td></tr>
+	[% END %]
+
+	<tr class='title'><td colspan='2'>[% c.loc('Contact Information') %]</td></tr>
+	<tr class='misc1'><td align='right'>[% c.loc("Email") %]</td><td>
+	    <img src='[% c.config.dir.images %]/myprofile/mail.png' width='20' height='20' align='absmiddle' /> [% user.email | email_obfuscate %] <a href='/help/email'><img src='[% c.config.dir.images %]/site/help.gif' width='16' height='16' align='absmiddle' /></a>
+	</td></tr>	
+	[% IF user.details.qq OR user.details.msn OR user.details.gtalk OR user.details.skype OR user.details.yahoo %]
+	<tr class='misc2'><td align='right'>QQ:</td><td>
+	    <a target='_blank' href='tencent://message/?uin=[% user.details.qq %]&Site=Foorum&Menu=yes'><img border="0" src="http://wpa.qq.com/pa?p=1:[% user.details.qq %]:4" align='absmiddle' /> [% user.details.qq %]</a>
+	</td></tr>
+	<tr class='misc1'><td align='right'>MSN:</td><td>
+	    [% UNLESS c.user_exists;STOP_FROM_SPAM;ELSE %]
+	    <a href="http://members.msn.com/[% user.details.msn %]" target='_blank'><img src='[% c.config.dir.images %]/myprofile/msn.png' width='20' height='20' align='absmiddle' /> [% user.details.msn %]</a>
+	    [% END %]
+	</td></tr>
+	<tr class='misc2'><td align='right'>Gtalk:</td><td>
+	    [% UNLESS c.user_exists;STOP_FROM_SPAM;ELSE %]
+	    <img src='[% c.config.dir.images %]/myprofile/gtalk.png' width='20' height='20' align='absmiddle' /> [% user.details.gtalk %]
+	    [% END %]
+	</td></tr>
+	<tr class='misc1'><td align='right'>Yahoo! ID:</td><td>
+	    <a href='http://messenger.yahoo.com/edit/send/?.target=[% user.details.yahoo %]&.src=pg' target='_blank'><img src='[% c.config.dir.images %]/myprofile/yahoo.png' width='20' height='20' align='absmiddle' /> [% user.details.yahoo %]</a>
+	</td></tr>
+	<tr class='misc2'><td align='right'>Skype:</td><td>
+	    <img src='[% c.config.dir.images %]/myprofile/skype.png' width='20' height='20' align='absmiddle' /> [% user.details.skype %]
+	</td></tr>
+	[% END %]
+	
+	</tbody>
+</table>
+</div>
+
+[% INCLUDE comment/show_with_head.html %]
+<br />
+[% INCLUDE comment/post.html %]

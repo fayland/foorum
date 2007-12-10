@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+[% USE date %]
+
+[% c.load_once("jquery.js") %]
+[% c.load_once("utils.js") %]
+[% IF c.user_exists %]
+    [% c.load_once("site/message.js") %]
+[% END %]
+[% c.load_once("common.css") %]
+[% IF forum.forum_id %]
+    [% TRY %]
+    [% css_file = c.config.home _ '/root/static/css/custom/forum' _ forum.forum_id _ '.css' %]
+    [% USE File( css_file ) %]
+    [% c.load_once("custom/forum" _ forum.forum_id _ ".css") %]
+    [% CATCH File %]
+    [% c.load_once("default.css") %]
+    [% END %]
+[% ELSE %]
+[% c.load_once("default.css") %]
+[% END %]
+<title> 
+    [% IF title %]
+    [% title _ ' : ' _ c.config.name %]
+    [% ELSE %]
+    [% c.config.name %]
+    [% END %]
+</title>
+<link rel="shortcut icon" href="[% c.config.dir.static %]/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+
+[% UNLESS simple_wrapper %]
+
+<div class='barline'></div>
+<div id="gbar">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gbarp" nowrap="nowrap">
+<b><a href='/forum'>[% c.config.name %]</a></b>
+</td>
+[% IF forum %]
+<td class="gbarp" nowrap="nowrap">-></td>
+<td class="gbarp" nowrap="nowrap">
+<b><a href='[% forum.forum_url %]'>[% forum.name %]</a></b>
+</td>
+[% END %]
+[% IF topic %]
+<td class="gbarp" nowrap="nowrap">-></td>
+<td class="gbarp" nowrap="nowrap">
+<b>[% topic.title %]</b>
+</td>
+[% END %]
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="guser" width="100%" align="right">
+<nowrap>
+    [% IF c.user_exists %]
+    [% c.load_once("jquery/blockUI.js") %]
+    <script>
+        function my_panel() {
+            $.blockUI("<div class='lightbox'><h3>[% c.loc('My Panel') %]</h3><ul>" + 
+                "<li><a href='/message'>[% c.loc('Message') %]</a></li>" + 
+                "<li><a href='/my/topics'>[% c.loc('My Recent Topics') %]</a></li>" + 
+                "<li><a href='/my/starred'><img src='http://mail.google.com/mail/images/star_on_2.gif' /> My Starred Items</a></li>" + 
+                "<li><a href='/profile/edit'>[% c.loc('Edit Profile') %]</a></li>" + 
+                "</ul><div style='text-align:right'><a href='javascript:$.unblockUI()'>[% c.loc('Close') %]</a></div></div>");
+        }
+    </script>
+    <span id='new_message'></span> 
+       <a href='javascript:my_panel();'>[% c.loc('My Panel') %]</a> 
+     | <a href='/logout'>[% c.loc("Log out") %]</a> 
+    [% ELSE %]
+    <a href='/register'>[% c.loc("Register") %]</a>  | <a href='/login'>[% c.loc("Log in") %]</a> | <a href='/profile/forget_password'>[% c.loc("Forget password?") %]</a>
+    [% END %]
+    [% UNLESS forum %]
+     | <a href='/site/recent'>[% c.loc("Recent Topics") %]</a>
+     | <a href='/site/popular'>[% c.loc("Popular") %]</a>
+    [% END %]
+    [% IF roles.site.admin OR roles.site.moderator %]
+    | <a href='/admin'>[% c.loc('Site Admin') %]</a>
+    [% END %]
+</nowrap>
+</div>
+<div style="clear: both;">
+</div>
+<p></p>
+[% END %]
+
+[% content %]
+
+[% UNLESS simple_wrapper %]
+
+[% IF whos_view_this_page %] 
+[% INCLUDE site/whos_view_this_page.html %]
+[% END %]
+
+<div id='footer'>
+    <p>
+    <div>Languages: <a href='[% c.req.uri_with( { lang => 'en' } ) %]'>English</a> | <a href='[% c.req.uri_with( { lang => 'cn' } ) %]'>简体中文</a></div>
+    [% UNLESS forum %]<a href='/info/about_us'>[% c.loc("About Us") %]</a> | <a href='/info/contact_us'>[% c.loc("Contact Us") %]</a> | <a href='/help'>[% c.loc("Help Center") %]</a><br />[% END %]
+    Copyright &copy; [% date.format(date.now, format =>'%Y') %] All Rights Reserved. Powered by <a href='/info/powered_by'>Foorum [% c.config.VERSION %].</a>
+    [% IF RSS_URL %]
+    <a href='[% RSS_URL %]'><img src='[% c.config.dir.images %]/site/feed-icon-16x16.gif' width='16' height='16' align='absmiddle' /></a> 
+    <link rel="alternate" type="application/rss+xml" title="[% title %]" href="[% RSS_URL %]" />
+    [% END %]
+    </p>
+</div>
+<div id='timer'><p>This page takes [% elapsed_time %] to load. </p></div>
+[% END %]
+
+[% IF c.config.extra.urchin_account %]
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "[% c.config.extra.urchin_account %]";
+urchinTracker();
+</script>
+[% END %]
+
+    [% IF c.config.debug_mode %]
+      <div class="featurebox">
+        <h3>Query Log Report</h3>
+        [% SET total = c.model('DBIC').querylog.time_elapsed | format('%0.6f') %]
+        <div>Total SQL Time: [% total | format('%0.6f') %] seconds</div>
+        [% SET qcount = c.model('DBIC').querylog.count %]
+        <div>Total Queries: [% qcount %]</div>
+        [% IF qcount %]
+        <div>Avg Statement Time: [% (c.model('DBIC').querylog.time_elapsed / qcount) | format('%0.6f') %] seconds.</div>
+        <div>
+         <table class="table1">
+          <thead>
+           <tr>
+            <th colspan="3">5 Slowest Queries</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr>
+            <th>Time</th>
+            <th>%</th>
+            <th>SQL</th>
+           </tr>
+           [% SET i = 0 %]
+           [% FOREACH q = c.model('DBIC').querylog_analyzer.get_sorted_queries %]
+           <tr class="[% IF loop.count % 2 %]odd[% END %]">
+            <th class="sub">[% q.time_elapsed | format('%0.6f') %]
+            <td>[% ((q.time_elapsed / total ) * 100 ) | format('%i') %]%</td>
+            <td>[% q.sql %] : ([% q.params.join(', ') %])</td>
+           </th></tr>
+           [% IF i == 5 %]
+            [% LAST %]
+           [% END %]
+           [% SET i = i + 1 %]
+           [% END %]
+          </tbody>
+         </table>
+        </div>
+        [% END %]
+      </div>
+    [% END %]
+
+</body>
+</html>

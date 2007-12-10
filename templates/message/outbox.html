@@ -1,0 +1,22 @@
+[% WRAPPER 'message/bar.html' %]
+
+<div class='one'> 
+<table align='center'>
+<tr align='center' class="title">
+    <td width='100'>[% c.loc('To') %]</td>
+    <td align='left'>[% c.loc('Subject') %]</td>
+    <td width='120'>[% c.loc('Date') %]</td>
+    <td width='60'>[% c.loc('Action') %]</td>
+</tr>
+[% FOREACH message IN messages %]
+<tr align='center' class="[% IF loop.count % 2 %]misc1[% ELSE %]misc2[% END %]">
+    <td><a href='/u/[% message.recipient.username %]'>[% message.recipient.nickname %]</a></td>
+    <td align='left'><a href='/message/[% message.message_id %]'>[% message.title %]</a></td>
+    <td>[% message.post_on %]</td>
+    <td><a href='/message/[% message.message_id %]/delete'>[% c.loc('Delete') %]</a></td>
+</tr>
+[% END %]
+</table>
+</div>
+
+[% END %]

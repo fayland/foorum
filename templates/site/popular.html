@@ -1,0 +1,38 @@
+[% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
+
+<div id='edit_profile_tabs' class='tabs'>
+    <ul class="ui-tabs-nav">
+        <li[% IF type == 'today' %] class="ui-tabs-selected"[% END %]><a href='/site/popular/today'><span>Today</span></a></li>
+        <li[% IF type == 'yesterday' %] class="ui-tabs-selected"[% END %]><a href='/site/popular/yesterday'><span>Yesterday</span></a></li>
+        <li[% IF type == 'weekly' %] class="ui-tabs-selected"[% END %]><a href='/site/popular/weekly'><span>Weekly</span></a></li>
+        <li[% IF type == 'monthly' %] class="ui-tabs-selected"[% END %]><a href='/site/popular/monthly'><span>Monthly</span></a></li>
+        <li[% IF type == 'all' %] class="ui-tabs-selected"[% END %]><a href='/site/popular/all'><span>All</span></a></li>
+    </ul>
+    <div class="ui-tabs-container">
+
+<div class='one'>
+<table align='center'>
+<tr align='center' class='title'><td width='20'>Today Hits</td><td width='20'>Yesterday Hits</td><td width='20'>Weekly Hits</td><td width='20'>Monthly Hits</td><td width='20'>All Hits</td><td align='left'>[% c.loc("Subject") %]</td><td width='120'>[% c.loc("Author") %]</td><td width='120'>[% c.loc("Last Update") %]</td></tr>
+[% FOREACH item IN objects %]
+<tr align='center' class='misc[% IF loop.count mod 2 %]1[% ELSE %]2[% END %]'>
+
+<td>[% item.hit_rs.hit_today %]</td>
+<td>[% item.hit_rs.hit_yesterday %]</td>
+<td>[% item.hit_rs.hit_weekly %]</td>
+<td>[% item.hit_rs.hit_monthly %]</td>
+<td>[% item.hit_rs.hit_all %]</td>
+
+[% INCLUDE include/object_tds.html object = item.object %]
+
+</tr>
+[% END %]
+</table>
+
+<br />
+<table align='center'>
+<tr><td class='misc1'>[% INCLUDE sub/pager.html %]</td></tr>
+</table>
+</div>
+
+    </div>
+</div>

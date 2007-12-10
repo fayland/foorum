@@ -1,0 +1,74 @@
+[% USE date %]
+[% USE String.Compare %]
+
+<div class='one'>
+<table height='28' align='center'>
+	<tr class="title" align='center'>
+	<td width='42'>[% c.loc("Status") %]</td>
+	<td width='*'>[% c.loc("Forum Name") %]</td>
+	<td width='80'>[% c.loc("Moderators") %]</td>
+	<td width='60'>[% c.loc("Threads") %]</td>
+	<td width='60'>[% c.loc("Replies") %]</td>
+	<td width='190'>[% c.loc("Last Update") %]</td>
+	</tr>
+</table>
+[% mytime = date.now - 86000 %]
+[% mydatestring = date.format(mytime, '%Y-%m-%d %H:%M:%S') %]
+[% FOREACH f IN forums %]
+[% IF String.Compare.new(f.last_post.last_update_date) > mydatestring %]
+[% status = 'on' %]
+[% ELSE %]
+[% status = 'off' %]
+[% END %]
+<div class='multi'>
+<table align='center'>
+	<tr align='center'>
+	<td class='forum1' width='42'>
+	    [% IF f.policy == 'private' %]
+	    <img src='[% c.config.dir.images %]/board/locked.gif' />
+	    [% ELSE %]
+	    <img src='[% c.config.dir.images %]/board/[% status %].gif' />
+	    [% END %]
+	</td>
+	<td class='forum2' valign='top' width='*'>
+		<table>
+			<tr>
+			<td align="left"><a href='/forum/[% f.forum_code %]'><span class='semilight'>[% f.name %]</span></a></td>
+			</tr>
+			<tr>
+			<td align="left">[% f.description %]</td>
+			</tr>
+		</table>
+	</td>
+	<td class='forum1' width='80'>
+	    <a href='/u/[% roles.${f.forum_id}.admin.username %]'>[% roles.${f.forum_id}.admin.nickname %]</a>
+	    [% FOREACH moderator IN roles.${f.forum_id}.moderator %]
+	    <br /><a href='/u/[% moderator.username %]'>[% moderator.nickname %]</a>
+	    [% END %]
+	</td>
+	<td class='forum2' width='60'>
+	    [% IF status == 'on' %]
+	    <span class='highlight'><b>[% f.total_topics %]</b></span>
+	    [% ELSE %]
+	    [% f.total_topics %]
+	    [% END %]
+	</td>
+	<td class='forum2' width='60'>
+	    [% IF status == 'on' %]
+	    <span class='highlight'><b>[% f.total_replies %]</b></span>
+	    [% ELSE %]
+	    [% f.total_replies %]
+	    [% END %]
+	</td>
+    <td class='forum1' width='190' align='left'>
+        [% IF f.policy == 'private' %]
+        Private
+        [% ELSE %]
+        <a href='/forum/[% f.forum_code _ '/' _ f.last_post.topic_id %]'>[% f.last_post.title | truncate(20) %]</a><br /><a href='/u/[% f.last_post.updator.username %]'>[% f.last_post.updator.nickname %]</a><br />[% f.last_post.last_update_date %]
+        [% END %]
+    </td>
+	</tr>
+</table>
+</div>
+[% END %]
+<br />

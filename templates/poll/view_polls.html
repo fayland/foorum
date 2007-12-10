@@ -1,0 +1,62 @@
+[% USE date %]
+
+[% title = forum.name %]
+
+[% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
+
+<div id='edit_profile_tabs' class='tabs'>
+    <ul class="ui-tabs-nav">
+        <li><a href='[% forum.forum_url %]'><span>Topics</span></a></li>
+        <li class="ui-tabs-selected"><a href='[% forum.forum_url %]/polls'><span>Polls</span></a></li>
+        <li><a href='[% forum.forum_url %]/topic/new'><span>New Topic</span></a></li>
+        <li><a href='[% forum.forum_url %]/poll/new'><span>New Poll</span></a></li>
+        <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
+        [% IF c.user_exists AND roles.is_admin %]
+        <li><a href='/forumadmin/[% forum.forum_id %]'><span>[% c.loc('Forum Admin') %]</span></a></li>
+        [% END %]
+    </ul>
+    <div class="ui-tabs-container">
+
+<div class='none'>
+<table align='center'>
+<tr><td align='right' valign='bottom'>
+Admin: <a href='/u/[% forum_roles.${forum.forum_id}.admin.username %]'>[% forum_roles.${forum.forum_id}.admin.nickname %]</a>
+[% FOREACH moderator IN forum_roles.${forum.forum_id}.moderator %]
+[% IF loop.first %], [% END %]<a href='/u/[% moderator.username %]'>[% moderator.nickname %]</a>[% UNLESS loop.last %], [% END %]
+[% END %]
+<td></tr>
+</table>
+</div>
+
+<div class='one'>
+<table align='center'>
+	<tr class='title' align='center'>
+	<td width='42'>Status</td>
+	<td align='left'>Subject</td>
+	<td width='100'>Author</td>
+	<td width='40'>Poll</td>
+	<td width='120'>Start Time</td>
+	<td width='120'>Close Time</td>
+	</tr>
+[% FOREACH poll IN polls %]
+<tr align='center'>
+	<td class='forum1'>[% IF poll.duration < date.now %]Locked[% END %]</td>
+	<td align='left' class='forum2'><a href='[% forum.forum_url %]/poll/[% poll.poll_id %]'>[% poll.title %]</a></td>
+	<td class='forum1'><a href='/u/[% poll.author.username %]'>[% poll.author.nickname %]</a></td>
+	<td class='forum2'>[% poll.vote_no %]</td>
+	<td class='forum1'>[% date.format(poll.time, '%Y-%m-%d %H:%M:%S') %]</td>
+	<td class='forum2'>[% date.format(poll.duration, '%Y-%m-%d %H:%M:%S') %]</td>
+</tr>
+[% END %]
+</table>
+</div>
+<br />
+
+<div class='none'>
+<table align='center'>
+    <tr><td>[% INCLUDE 'sub/pager.html' url_prefix = '/forum/' _ forum.forum_code _ '/polls' %]</td></tr>
+</table>
+</div>
+
+    </div>
+</div>

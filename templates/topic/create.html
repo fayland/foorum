@@ -1,0 +1,48 @@
+[% USE FillInForm %]
+
+[% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
+
+<div id='edit_profile_tabs' class='tabs'>
+    <ul class="ui-tabs-nav">
+        <li><a href='[% forum.forum_url %]'><span>Topics</span></a></li>
+        <li><a href='[% forum.forum_url %]/polls'><span>Polls</span></a></li>
+        <li class="ui-tabs-selected"><a href='[% forum.forum_url %]/topic/new'><span>New Topic</span></a></li>
+        <li><a href='[% forum.forum_url %]/poll/new'><span>New Poll</span></a></li>
+        <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
+    </ul>
+    <div class="ui-tabs-container">
+
+[% FILTER fillinform fdat => c.req.params %]
+
+<div class='one'>
+<form method="post" enctype="multipart/form-data">
+<table align='center' border='1' cellpadding='6'>
+  <tr class='title'><td colspan='2'>Create a new topic</td></tr>
+  <tr class='forum1'><td align='right'>[% c.loc('Title') %]</td><td><input type='text' size='60' maxlength='80' name='title' />
+  [% IF c.form.error('title') %]title should be 1-80 chars.[% END %]
+  </td></tr>
+  <tr class='forum2'>
+    <td align='center' valign='middle'>
+    [% INCLUDE format/emot.html %]
+    </td><td>
+
+    [% WRAPPER 'format/bbcode.html' %]
+
+	<textarea name="text" id='text' style='width: 90%' rows="15"></textarea>
+	[% IF c.form.error('text') %]text is required.[% END %]
+
+	[% END %]
+
+  </td></tr>
+  <tr class='forum1'><td align='right'>[% c.loc('Upload Attachment') %]</td><td>
+    [% INCLUDE upload/input.html %]
+  </td></tr>
+  <tr class='forum2'><td></td><td><input type='submit' /></td></tr>
+</table>
+</form>
+</div>
+
+[% END %]
+
+    </div>
+</div>

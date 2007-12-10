@@ -1,0 +1,22 @@
+[% WRAPPER 'forumadmin/bar.html' %]
+
+<div class='one'>
+<form method='post'>
+<table align='center'>
+    <tr class='forum2'>
+        <td align='right'>[% c.loc('Title') %]</td><td><input type='text' name='title' size='40' value='[% announce.title %]' /></td>
+        <td rowspan='2'>
+            test
+        </td>
+    </tr>
+    <tr class='forum1'>
+        <td align='right'>[% c.loc('Content') %]</td><td>
+            <textarea cols='60' rows='18' wrap="virtual" name="text">[% announce.text %]</textarea>
+        </td>
+    </tr>
+    <tr class='forum2'><td colspan='3'><input type='submit' value="I'm sure, Let's Go!" /></td></tr>
+</table>
+</form>
+</div>
+
+[% END %]

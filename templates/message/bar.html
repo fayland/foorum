@@ -1,0 +1,13 @@
+[% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
+<div id='edit_profile_tabs' class='tabs'>
+    <ul class="ui-tabs-nav">
+        <li[% IF c.req.path.match('compose') %] class="ui-tabs-selected"[% END %]><a href='/message/compose'><span>[% c.loc('Compose New Message') %]</span></a></li>
+        <li[% IF c.req.path.match('inbox') OR c.req.path.match('message/?$') %] class="ui-tabs-selected"[% END %]><a href='/message/inbox'><span>[% c.loc('Inbox') %]</span></a></li>
+        <li[% IF c.req.path.match('outbox') %] class="ui-tabs-selected"[% END %]><a href='/message/outbox'><span>[% c.loc('Outbox') %]</span></a></li>
+    </ul>
+    <div class="ui-tabs-container">
+
+[% content %]
+
+    </div>
+</div>

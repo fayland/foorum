@@ -1,0 +1,46 @@
+[% url_base = '/admin' %]
+
+[% c.load_once("jquery.ui/ui.tabs.js") %]
+[% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
+
+<div id='admin_tabs' class='tabs'>
+    <ul>
+        <li><a href='#menu'><span>Menu</span></a></li>
+        <li><a href='#forum'><span>Forum</span></a></li>
+        <li><a href='#user'><span>User</span></a></li>
+        <li><a href='#ban'><span>Ban</span></a></li>
+        <li><a href='#tools'><span>Tools</span></a></li>
+        <li><a href='#log'><span>Log</span></a></li>
+    </ul>
+    <div id='menu'>
+        <a href='[% url_base %]'>Site Map</a>
+    </div>
+    <div id='forum'>
+        <a href='[% url_base %]/forum'>Forum Lists</a> | <a href='[% url_base %]/forum/create'>Create a Forum</a> | <a href='[% url_base %]/forum/merge_forums'>Merge Forums</a>
+    </div>
+    <div id='user'>
+        <a href='[% url_base %]/user'>User Lists</a> | <a href='[% url_base %]/user/edit'>Edit User</a>
+    </div>
+    <div id='ban'>
+        <a href='[% url_base %]/banip'>Ban IP</a>
+    </div>
+    <div id='tools'>
+        <a href='/admin/tools/flush_cache'>Flush Cache</a> | <a href='/admin/tools/cache_stat'>Cache Stats</a>
+    </div>
+    <div id='log'>
+        <a href='/admin/log/error_log'>Error Log</a> | <a href='/admin/log/path_log'>Path Log</a>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $('#admin_tabs ul').tabs([% IF c.req.path.match('forum') %]2[% ELSIF c.req.path.match('user') %]3[% ELSIF c.req.path.match('ban') %]4[% ELSIF c.req.path.match('tools') %]5[% ELSIF c.req.path.match('log') %]6[% END %]);
+    });
+</script>
+
+<p><br /></p>
+
+<table align='center' class='tablewidth'>
+<tr><td valign='top' width='*'>
+[% content %]
+</td></tr></table>

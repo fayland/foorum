@@ -1,0 +1,28 @@
+[% USE date %]
+[% IF recent_type == 'elite' %]
+[% title = c.loc('Recent Elite Topics') %]
+[% ELSE %]
+[% title = c.loc('Recent Topics') %]
+[% END %]
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+<title>[% title %]</title>
+<link>[% c.req.base _ url_prefix %]</link>
+<description>[% title %]</description>
+<pubDate>[% date.format(date.now, '%Y-%m-%dT%H:%M:%S+00:00') %]</pubDate>
+<lastBuildDate>[% date.format(date.now, '%Y-%m-%dT%H:%M:%S+00:00') %]</lastBuildDate>
+<generator>Foorum RSS Generator</generator>
+[% FOREACH t IN topics %]
+<item>
+<title>[% t.title %]</title>
+<link>[% c.req.base _ 'forum/' _ t.forum_id _ '/' _ t.topic_id %]</link>
+<description><![CDATA[
+[% t.text %]
+]]></description>
+<guid isPermaLink="true">[% forum.forum_url _ '/' _ t.topic_id %]</guid>
+<pubDate>[% t.last_update_date.replace('\s+', 'T') %]</pubDate>
+</item>
+[% END %]
+</channel>
+</rss>

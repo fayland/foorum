@@ -1,0 +1,19 @@
+
+[% IF pager %]
+Page [% pager.current_page %] of [% pager.last_page %]
+[% IF pager.last_page > 1%] - 
+    [% IF pager.previous_page %]
+        <a href="[% url_prefix %]/page=[% pager.previous_page %]/[% url_postfix %]">&lt; Previous</a> 
+    [% END %]
+    [% FOREACH page = [ 1 .. pager.last_page ] %]
+        [% IF page == pager.current_page %]
+        <strong>[% page %]</strong>
+	    [% ELSE %]
+	    <a href='[% url_prefix %]/page=[% page %]/[% url_postfix %]'>[% page %]</a>
+	    [% END %]
+    [% END %]
+    [% IF pager.next_page %]
+    <a href="[% url_prefix %]/page=[% pager.next_page %]/[% url_postfix %]">Next &gt;</a> 
+    [% END %]
+[% END %]
+[% END %]
