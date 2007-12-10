@@ -14,7 +14,7 @@
     <td>[% IF unread.${message.message_id} %]<img src='[% c.config.dir.images %]/site/new.gif' />[% ELSE %]&nbsp;[% END %]</td>
     <td><a href='/u/[% message.sender.username %]'>[% message.sender.nickname %]</a></td>
     <td align='left'><a href='/message/[% message.message_id %]'>[% message.title %]</a></td>
-    <td>[% message.post_on %]</td>
+    <td><span class='date'>[% message.post_on %]</span></td>
     <td><a href='/message/[% message.message_id %]/delete'>[% c.loc('Delete') %]</a></td>
 </tr>
 [% END %]

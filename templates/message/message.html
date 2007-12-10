@@ -7,7 +7,7 @@
 <td>
     [% c.loc('From') %]: <a href='/u/[% message.sender.username %]'>[% message.sender.nickname %]</a><br />
     [% c.loc('To') %]:   <a href='/u/[% message.recipient.username %]'>[% message.recipient.nickname %]</a><br />
-    [% c.loc('Post on') %]&nbsp;[% message.post_on %]
+    [% c.loc('Post on') %]&nbsp;<span class='date'>[% message.post_on %]</span>
 </td>
 <td>
     <strong>[% message.title %]</strong><br />

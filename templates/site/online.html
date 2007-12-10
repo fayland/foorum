@@ -24,10 +24,10 @@
 		<a href='/[% r.refer %]'>/[% r.refer %]</a>
 	</td>
 	<td class='forum1'>
-	    [% date.format(r.visit_time, '%Y-%m-%d %H:%M:%S') %]
+	    <span class='date'>[% date.format(r.visit_time, '%Y-%m-%d %H:%M:%S') %]</span>
 	</td>
 	<td class='forum2'>
-	    [% date.format(r.active_time, '%Y-%m-%d %H:%M:%S') %]
+	    <span class='date'>[% date.format(r.active_time, '%Y-%m-%d %H:%M:%S') %]</span>
 	</td>
 	[% IF roles.is_admin %]
 	<td class='forum1'>

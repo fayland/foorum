@@ -31,7 +31,7 @@
        <a href='/comment/[% comment.comment_id %]/edit'><img src='[% c.config.dir.images %]/edit.gif' width='16' height='15' align='absmiddle'> Edit</a>
        <a href='/comment/[% comment.comment_id %]/delete'><img src='[% c.config.dir.images %]/del.gif' width='16' height='15' align='absmiddle'> Delete</a>
        [% END %]
-       <img src='[% c.config.dir.images %]/posttime.gif' width='16' height='15' align='absmiddle'> [% comment.post_on %]
+       <img src='[% c.config.dir.images %]/posttime.gif' width='16' height='15' align='absmiddle'> <span class='date'>[% comment.post_on %]</span>
     </td>
 </tr>
 </table>
