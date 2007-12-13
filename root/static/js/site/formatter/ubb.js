@@ -51,11 +51,11 @@ function showcolor(color) {
 
 function showsize(size) {
     if (helpstat) {
-        alert("文字大小标记\r\n\r\n设置文字大小.\r\n\r\n可变范围 1 - 6.\r\n\r\n 1 为最小 6 为最大.\r\n\r\n用法: [size="+size+"]这是 "+size+" 文字[/size]");
+        alert(hpshowsizehelppre+size+hpshowsizehelpmid+size+hpshowsizehelppost);
     } else if (basic) {
         AddText("[size=" + size + "][/size]");
     } else {
-        txt = prompt("Size: " + size, hpText);
+        txt = prompt(hpSize + size, hpText);
         if (txt != null) {
             AddText("[size=" + size + "]" + txt + "[/size]");
         }
