@@ -39,7 +39,7 @@ while ($dns_password = <>) {
 }
 
 eval {
-    DBI->connect("DBI:mysql:database=foorum;host=$dns_host;port=3306", $dns_user, $dns_password, { RaiseError => 1, PrintError => 1 }) or die $DBI::errstr;
+    DBI->connect("dbi:mysql:database=foorum;host=$dns_host;port=3306", $dns_user, $dns_password, { RaiseError => 1, PrintError => 1 }) or die $DBI::errstr;
 };
 if ($@) {
     print "\nError:\n", $@, "\nPlease try it again\n\n";
@@ -51,10 +51,10 @@ if (-e "$path/foorum_local.yml") {
     $yaml = LoadFile("$path/foorum_local.yml");
 }
 
-$yaml->{dsn} = "DBI:mysql:database=foorum;host=$dns_host;port=3306";
+$yaml->{dsn} = "dbi:mysql:database=foorum;host=$dns_host;port=3306";
 $yaml->{dsn_user} = $dns_user;
 $yaml->{dsn_pwd}  = $dns_password;
-$yaml->{theschwartz_dsn} = "DBI:mysql:database=theschwartz;host=$dns_host;port=3306";
+$yaml->{theschwartz_dsn} = "dbi:mysql:database=theschwartz;host=$dns_host;port=3306";
 
 print "\n\nSaving ....\n";
 DumpFile("$path/foorum_local.yml", $yaml);
