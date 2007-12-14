@@ -16,10 +16,13 @@ View::JSON:
   expose_stash: json_data
 
 cache:
-  servers:
-    - '127.0.0.1:11211'
-  compress_threshold: 10_000
-  debug: 0
+  backends:
+    memcached:
+      class: 'Cache::Memcached'
+      servers:
+        - '127.0.0.1:11211'
+      compress_threshold: 10_000
+      debug: 0
 
 page_cache:
   expires: 300
@@ -47,10 +50,6 @@ session:
   cookie_expires: 0
   verify_address: 0
   param: sid
-
-setup_components:
-  search_extra:
-    - ::Plugin
 
 static:
   dirs:

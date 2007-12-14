@@ -6,7 +6,7 @@ use warnings;
 use Catalyst qw/
     ConfigLoader
     Static::Simple
-    Cache::Memcached
+    Cache
     Authentication
     Session::DynamicExpiry
     Session
@@ -72,7 +72,7 @@ use L<Template>; for UI.
 
 =item built-in cache
 
-use L<Cache::Memcached>;
+use L<Cache::Memcached> or use L<Cache::FileCache> or others;
 
 =item reliable job queue
 

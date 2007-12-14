@@ -34,7 +34,7 @@ sub get_comments_by_object {
 
         while ( my $rec = $it->next ) {
             my $upload = ( $rec->upload ) ? $rec->upload : undef;
-            $rec = $rec->{_column_data};    # for memcached using
+            $rec = $rec->{_column_data};    # for cache using
             $rec->{upload} = $upload->{_column_data} if ($upload);
 
             # filter format by Foorum::Filter

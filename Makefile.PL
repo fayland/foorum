@@ -10,13 +10,12 @@ requires 'Digest';
 requires 'Switch';
 requires 'DateTime';
 requires 'File::Path';
-requires 'Cache::Memcached';
 requires 'Catalyst::View::TT';
 requires 'Catalyst::View::JSON';
 requires 'Catalyst::Model::DBIC::Schema';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Plugin::ConfigLoader';
-requires 'Catalyst::Plugin::Cache::Memcached';
+requires 'Catalyst::Plugin::Cache';
 requires 'Catalyst::Plugin::PageCache';
 requires 'Set::Object';
 requires 'Catalyst::Plugin::Authentication';
@@ -60,6 +59,6 @@ recommends 'Catalyst::Model::DBIC::Schema::QueryLog';
 
 catalyst;
 
-install_script glob('script/*.pl');
+#install_script glob('script/*.pl');
 auto_install;
 WriteAll;
