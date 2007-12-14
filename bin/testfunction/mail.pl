@@ -44,6 +44,8 @@ my $html_body = Dumper(\$config);
     }
 
 	my $email = $top->stringify;
-    $mailer->send($email);
+    $mailer->send($email) or die $!;
+
+print "Test Email Sent! check $to\n";
 
 1;
