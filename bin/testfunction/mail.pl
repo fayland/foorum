@@ -6,6 +6,7 @@ use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
 use YAML qw/LoadFile/;
 use Email::Send;
+use MIME::Entity;
 use Data::Dumper;
 my $config = LoadFile("$Bin/../../conf/mail.yml");
 
