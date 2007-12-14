@@ -29,6 +29,7 @@ requires 'Catalyst::Plugin::Session::Store::DBIC';
 requires 'Catalyst::Plugin::Session::DynamicExpiry';
 requires 'Catalyst::Plugin::FormValidator::Simple';
 requires 'Catalyst::Plugin::Captcha';
+requires 'I18N::LangTags'; # for I18N::LangTags::Detect
 requires 'Catalyst::Plugin::I18N';
 requires 'Template::Plugin::FillInForm';
 requires 'Template::Plugin::Date';
