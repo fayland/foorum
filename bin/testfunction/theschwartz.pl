@@ -9,9 +9,9 @@ use Data::Dumper;
 my $config = config();
 use DBI;
 
-print "Connect to " . $config->{theschwartz_dsn} . "with user: " . $config->{dsn_user} . "\n";
+print "Connect to " . $config->{theschwartz_dsn} . " with user: " . $config->{dsn_user} . "\n";
 
-my $dbh = DBI->connect($config->{theschwartz_dsn}, $config->{dns_user}, $config->{dsn_pwd}) or die $DBI::errstr;
+my $dbh = DBI->connect($config->{theschwartz_dsn}, $config->{dsn_user}, $config->{dsn_pwd}) or die $DBI::errstr;
 
 my $theschwartz =  TheSchwartz->new(
         databases => [ {
