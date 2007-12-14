@@ -44,6 +44,8 @@ sub schema {
     return $schema;
 }
 
+=pod
+
 sub cache {
     
     return $cache if ($cache);
@@ -52,13 +54,15 @@ sub cache {
     my %params = %{ $config->{cache}{backend} };
     my $class = delete $params{class};
 
-    eval { use $class; };
+    eval("use $class;");
     unless ($@) {
         $cache = $class->new( \%params );
     }
 
     return $cache;
 }
+
+=cut
 
 sub theschwartz {
     
