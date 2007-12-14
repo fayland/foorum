@@ -10,6 +10,12 @@ use MIME::Entity;
 use Data::Dumper;
 my $config = LoadFile("$Bin/../../conf/mail.yml");
 
+if ($config->{mailer} eq 'Sendmail') {
+    if (-e '/usr/sbin/sendmail') {
+        $Email::Send::Sendmail::SENDMAIL = '/usr/sbin/sendmail';
+    }
+}
+
 my $mailer = Email::Send->new( $config );
 
 my $from = 'fayland@gmail.com';
