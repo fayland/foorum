@@ -19,6 +19,6 @@ my $theschwartz =  TheSchwartz->new(
         verbose => 1,
     );
 
-$client->insert("Foorum::TheSchwartz::Worker::SendScheduledEmail");
+$theschwartz->insert("Foorum::TheSchwartz::Worker::SendScheduledEmail");
 
 1;
