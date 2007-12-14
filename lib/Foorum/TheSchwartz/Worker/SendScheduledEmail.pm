@@ -40,6 +40,12 @@ use File::Spec;
 my (undef, $path) = File::Spec->splitpath(__FILE__);
 my $config = LoadFile("$path/../../../../conf/mail.yml");
 
+if ($config->{mailer} eq 'Sendmail') {
+    if (-e '/usr/sbin/sendmail') {
+        $Email::Send::Sendmail::SENDMAIL = '/usr/sbin/sendmail';
+    }
+}
+
 my $mailer = Email::Send->new( $config );
 
 sub send_email {
