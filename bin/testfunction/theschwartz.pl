@@ -7,8 +7,11 @@ use lib "$Bin/../../lib";
 use Foorum::ExternalUtils qw/config/;
 use Data::Dumper;
 my $config = config();
+use DBI;
 
 print "Connect to " . $config->{theschwartz_dsn} . "with user: " . $config->{dsn_user} . "\n";
+
+my $dbh = DBI->connect($config->{theschwartz_dsn}, $config->{dns_user}, $config->{dns_pass}) or die $DBI::errstr;
 
 my $theschwartz =  TheSchwartz->new(
         databases => [ {

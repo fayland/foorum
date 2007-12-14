@@ -20,9 +20,6 @@ sub auto : Private {
     # in case (begin : Private) is overrided
     $c->stash->{start_t0} = [gettimeofday] unless ( $c->stash->{start_t0} );
 
-    # temp use, only for Model/Plugin.pm temporarily
-    $c->config->{user_auth} = \$c;
-
     # internationalization
     $c->stash->{lang} = $c->req->cookie('lang')->value
         if ( $c->req->cookie('lang') );
