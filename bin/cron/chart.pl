@@ -41,6 +41,6 @@ my $var = {
 
 my $filename = sprintf("%04d%02d%02d", $year, $month, $day);
 
-$tt2->process('stats/chart.html', $var, "$Bin/../../root/stats/$filename.html");
+$tt2->process('stats/chart.html', $var, "$Bin/../../root/static/stats/$filename.html");
 
 1;

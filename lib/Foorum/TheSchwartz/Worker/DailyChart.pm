@@ -44,7 +44,7 @@ sub work {
     use File::Spec;
     my (undef, $path) = File::Spec->splitpath(__FILE__);
     
-    $tt2->process('stats/chart.html', $var, "$path/../../../../root/stats/$filename.html");
+    $tt2->process('stats/chart.html', $var, "$path/../../../../root/static/stats/$filename.html");
 
     $job->completed();
 }
