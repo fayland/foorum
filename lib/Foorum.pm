@@ -6,14 +6,14 @@ use warnings;
 use Catalyst qw/
     ConfigLoader
     Static::Simple
-    Cache
     Authentication
+    Cache
     Session::DynamicExpiry
     Session
     Session::Store::DBIC
     Session::State::Cookie
     I18N
-    PageCacheWithI18N
+    PageCache
     FormValidator::Simple
     Captcha
     FoorumUtils
