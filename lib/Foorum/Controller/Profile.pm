@@ -186,7 +186,7 @@ sub forget_password : Local {
 
     my $user = $c->model('User')->get( $c, { username => $username } );
     return $c->stash->{ERROR_NOT_SUCH_USER} = 1 unless ($user);
-    return $c->stash->{ERROR_NOT_MATCH} = 1 if ( $user->email ne $email );
+    return $c->stash->{ERROR_NOT_MATCH} = 1 if ( $user->{email} ne $email );
 
     # create a random password
     my $random_password = &generate_random_word(8);
