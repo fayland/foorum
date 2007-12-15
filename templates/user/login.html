@@ -2,6 +2,8 @@
 [% c.load_once("jquery.ui/ui.tabs.js") %]
 [% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
 
+<form method='post'>
+<input type='hidden' name='referer' value='[% c.req.param('referer') %]' />
 <div id='login_tabs' class='tabs'>
     <ul>
         <li><a href='#username'><span>Login By Username</span></a></li>
@@ -12,8 +14,6 @@
     <div class='one'>
     <table align='center'>
     	<tbody>
-    	<form method='post'>
-    	<input type='hidden' name='referer' value='[% c.req.param('referer') %]' />
     	[% IF error %]
     	<tr class='misc2'><td colspan='2'><span style='color:red'>
     	[% SWITCH error %]
@@ -35,7 +35,6 @@
         [% END %]
     	<tr class='misc2'><td> </td><td><input type='checkbox' name='remember_me' id='remember_me' value='1' /> <label for='remember_me'>Remember me?</label></td></tr>
     	<tr class='misc2'><td> </td><td><input type='submit' /></td></tr>
-    	</form>
     	</tbody>
     </table>
     </div>
@@ -46,8 +45,6 @@
     <div class='one'>
     <table align='center'>
     	<tbody>
-    	<form method='post'>
-    	<input type='hidden' name='referer' value='[% c.req.param('referer') %]' />
     	[% IF error %]
     	<tr class='misc2'><td colspan='2'><span style='color:red'>
     	[% SWITCH error %]
@@ -63,22 +60,22 @@
     	</span></td></tr>
     	[% END %]
     	<tr class='misc1'><td width='20%' align='right'><label for="email">[% c.loc('Email') %]</label></td><td><input type='text' name='email' value='[% c.req.param('email') %]' size='12' /></td></tr>
-    	<tr class='misc1'><td align='right'><label for="password">[% c.loc('Password') %]</label></td><td><input type='password' name='password' size='12' /> <a href='/profile/forget_password'>[% c.loc('Forget password?') %]</a></td></tr>
+    	<tr class='misc1'><td align='right'><label for="email_password">[% c.loc('Password') %]</label></td><td><input type='password' name='email_password' id="email_password" size='12' /> <a href='/profile/forget_password'>[% c.loc('Forget password?') %]</a></td></tr>
     	[% IF failure_login_times > 2 %]
         <tr class='misc2'><td align='right'>[% c.loc('Captcha') %]</td><td><input type='text' name='captcha' size='12' /><img src='/captcha' /></td></tr>
         [% END %]
     	<tr class='misc2'><td> </td><td><input type='checkbox' name='remember_me' id='remember_me' value='1' /> <label for='remember_me'>Remember me?</label></td></tr>
     	<tr class='misc2'><td> </td><td><input type='submit' /></td></tr>
-    	</form>
     	</tbody>
     </table>
     </div>
      
     </div>
 </div>
+</form>
 
 <script>
-    $(function() {
+    $().ready(function() {
         $('#login_tabs ul').tabs([% IF c.req.param('email') %]2[% END %]);
     });
 </script>

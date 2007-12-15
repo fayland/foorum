@@ -20,6 +20,7 @@ sub login : Global {
     my $username = $c->req->param('username');
     $username =~ s/\W+//isg;
     my $email    = $c->req->param('email');
+    my $password = $c->req->param('password');
     if (not $username and $email) {
         my $user = $c->model('User')->get($c, { email => $email } );
         if ($user) {
@@ -27,6 +28,7 @@ sub login : Global {
         } else {
             return $c->stash->{error} = 'ERROR_AUTH_FAILED';
         }
+        $password = $c->req->param('email_password');
     }
 
     # check if we need captcha
@@ -34,7 +36,7 @@ sub login : Global {
     my $mem_key             = "captcha|login|username=$username";
     my $failure_login_times = $c->cache->get($mem_key);
 
-    if ( $username and my $password = $c->req->param('password') ) {
+    if ( $username and $password ) {
 
         my $can_login  = 0;
         my $captcha_ok = ( $failure_login_times > 2
