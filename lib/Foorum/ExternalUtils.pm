@@ -51,7 +51,7 @@ sub cache {
     return $cache if ($cache);
     $config = config() unless ($config);
     
-    my %params = %{ $config->{cache}{backend} };
+    my %params = %{ $config->{cache}{backend}{default} };
     my $class = delete $params{class};
 
     eval("use $class;");
