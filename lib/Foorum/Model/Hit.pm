@@ -37,7 +37,12 @@ sub register {
     }
     
     # update field randomly.
-    if (int(rand(1000)) % 10 == 1) {
+    my $frequence = 30;
+    $frequence = 20 if ($return_hit < 500);
+    $frequence = 10 if ($return_hit < 300);
+    $frequence = 5  if ($return_hit < 100);
+    $frequence = 3  if ($return_hit < 10);
+    if (int(rand(1000)) % $frequence == 1) {
         update_hit_object($self, $c, $object_type, $object_id, $return_hit);
     }
     
