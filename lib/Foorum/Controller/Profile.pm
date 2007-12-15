@@ -169,7 +169,14 @@ sub change_password : Local {
     $c->model('User')
         ->update( $c, $c->user, { password => $new_computed, } );
 
-    $c->res->body('ok');
+    $c->detach(
+        '/print_message',
+        [   {   msg => 'OK',
+                url => '/profile/edit',
+                stay_in_page => 1,
+            }
+        ]
+    );
 }
 
 sub forget_password : Local {
