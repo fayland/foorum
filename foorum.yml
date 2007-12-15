@@ -17,7 +17,7 @@ View::JSON:
 
 cache:
   backends:
-    memcached:
+    default:
       class: 'Cache::Memcached'
       servers:
         - '127.0.0.1:11211'
