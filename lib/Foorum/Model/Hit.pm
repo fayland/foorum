@@ -36,8 +36,8 @@ sub register {
         } );
     }
     
-    # update filed randomly.
-    if (int(rand(1000)) % 30 == 1) {
+    # update field randomly.
+    if (int(rand(1000)) % 10 == 1) {
         update_hit_object($self, $c, $object_type, $object_id, $return_hit);
     }
     
