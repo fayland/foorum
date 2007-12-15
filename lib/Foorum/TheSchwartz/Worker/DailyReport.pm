@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::DailyReport;
 
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
-use Foorum::ExternalUtils qw/schema config theschwartz/;
+use Foorum::ExternalUtils qw/schema config/;
 use Foorum::Log qw/error_log/;
 
 sub work {
@@ -52,8 +52,6 @@ sub work {
             processed  => 'N',
         }
     );
-    my $client = theschwartz();
-    $client->insert('Foorum::TheSchwartz::Worker::SendScheduledEmail');
 
     $job->completed();
 }
