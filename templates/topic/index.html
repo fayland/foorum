@@ -77,9 +77,9 @@
        <a href='[% url_prefix %]/[% comment.comment_id %]/edit'><img src='[% c.config.dir.images %]/edit.gif' width='16' height='15' align='absmiddle'> [% c.loc('Edit') %]</a>
        [%# END %]
        [%# IF roles.is_moderator %]
-       [% IF loop.count != 1 %]
+       [%# IF loop.count != 1 %]
        <a href='[% url_prefix %]/[% comment.comment_id %]/delete'><img src='[% c.config.dir.images %]/del.gif' width='16' height='15' align='absmiddle'> [% c.loc('Delete') %]</a>
-       [% END %]
+       [%# END %]
        [% END %]
        <img src='[% c.config.dir.images %]/posttime.gif' width='16' height='15' align='absmiddle'> <span class='date'>[% comment.post_on %]</span>
     </td>
