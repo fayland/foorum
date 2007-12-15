@@ -28,16 +28,21 @@ GetOptions("debug=i"  => \$debug,    # debug
            "daemon=i" => \$daemon,   # daemon
            "worker=s" => \$worker);  # manually inser a $worker
 
+sub dispatcher { 
+    return 1;
+}
+
 if ($worker) {
     run_worker($worker);
 } elsif ($daemon) {
 
     use Schedule::Cron;
-    my $cron =  new Schedule::Cron(sub { return 1; });
-    $cron->add_entry("*/5 * * * *", \&run_worker('Hit')); # run every 5 minutes
-    $cron->add_entry("10 3 * * *",  \&run_worker('RemoveOldDataFromDB')); # run everyday
-    $cron->add_entry("0 0 * * *",   \&run_worker('DailyReport'));
-    $cron->add_entry("0 0 * * *",   \&run_worker('DailyChart'));
+    my $cron =  new Schedule::Cron(\&dispatcher);
+    $cron->add_entry("*/5 * * * *", \&run_worker, 'Hit'); # run every 5 minutes
+    $cron->add_entry("10 3 * * *",  \&run_worker, 'RemoveOldDataFromDB'); # run everyday
+    $cron->add_entry("0 0 * * *",   \&run_worker, 'DailyReport');
+    $cron->add_entry("0 0 * * *",   \&run_worker, 'DailyChart');
+    $cron->add_entry("0 * * * *",   \&run_worker, 'SendScheduledEmail');
     $cron->run();
 } else {
     print <<USAGE;
