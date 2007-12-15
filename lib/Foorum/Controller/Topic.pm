@@ -304,7 +304,7 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
     }
 
     my $cache_key = "comment|object_type=topic|object_id=$topic_id";
-    $c->cache->delete($cache_key);
+    $c->cache->remove($cache_key);
 
     $c->forward(
         '/print_message',

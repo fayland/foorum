@@ -1,63 +1,99 @@
 [% USE FillInForm %]
 
-<script>
+[% c.load_once("jquery/validate.js") %]
+[% IF lang != 'en' %]
+[% c.load_once("jquery/validate/messages_${lang}.js") %]
+[% END %]
+[% c.load_once("form.css") %]
 
-function validate_username () {
-    var username = $('#username').val();
-    if (username.length < 6 || username.length > 20) {
-        $('#error_username').css( { color: 'red' } );
-        $('#error_username').html('username should be 6-20 chars.');
-        return false;
-    }
-    
-    $.get('/ajax/validate_username', { 'username': username }, function(data) {
-        if (data == 'OK') {
-            $('#error_username').css( { color: 'green' } );
-            $('#error_username').html('OK');
-        } else {
-            var error;
-            switch (data) {
-                case 'HAS_BLANK' :
-                    error = "don't put blank in your username.";
-                    break;
-                case 'HAS_SPECAIL_CHAR' :
-                    error = "only A-Z, a-z, 0-9, -, _ is allowed.";
-                    break;
-                case 'HAS_RESERVED' :
-                    error = "this username is reserved.";
-                    break;
-                case 'DBIC_UNIQUE'  :
-                    error = "This username is used by another one.";
-                    break;
-                default : 
-                    error = "Unkown";
-            }
-            $('#error_username').css( { color: 'red' } );
-            $('#error_username').html(error);
-        }
+<script type="text/javascript">
+
+$().ready(function() {
+	// validate the RegisterForm form when it is submitted
+	$("#RegisterForm").validate( {
+	    rules: {
+            username: {
+                required: true,
+				rangeLength: [6, 20]
+			},
+			nickname: {
+			    required: true
+			},
+	        password: {
+				required: true,
+				rangeLength: [6, 20]
+			},
+			confirm_password: {
+				required: true,
+				rangeLength: [6, 20]
+				//equalTo: "#password"
+			},
+			email: {
+				required: true,
+				email: true
+			},
+			agreement : 'required'
+	    },
+	    messages: {
+			confirm_password: {
+				equalTo: "Please enter the same password as above"
+			},
+			agreement: "Check it before process"
+		}
     } );
-}
+    
+    $('#username').blur( function() {
+        var username = $('#username').val();
+        if (username.length < 6 || username.length > 20) {
+            $('#error_username').html('username should be 6-20 chars.');
+            return false;
+        }
+        
+        $.get('/ajax/validate_username', { 'username': username }, function(data) {
+            if (data == 'OK') {
+                $('#error_username').css( { color: 'green' } );
+                $('#error_username').html('OK');
+            } else {
+                var error;
+                switch (data) {
+                    case 'HAS_BLANK' :
+                        error = "don't put blank in your username.";
+                        break;
+                    case 'HAS_SPECAIL_CHAR' :
+                        error = "only A-Z, a-z, 0-9, -, _ is allowed.";
+                        break;
+                    case 'HAS_RESERVED' :
+                        error = "this username is reserved.";
+                        break;
+                    case 'DBIC_UNIQUE'  :
+                        error = "This username is used by another one.";
+                        break;
+                    default : 
+                        error = "Unkown";
+                }
+                $('#error_username').html(error);
+            }
+        } );
+    } );
+} );
 
 </script>
 
+<style type="text/css">
+#RegisterForm { margin-left: 15%; margin-right: 15%; }
+</style>
+
 [% FILTER fillinform fdat => c.req.params %]
-<div id='register' class='one'>
-<table align='center'>
-	<tbody>
-	<form method='post'>
-	<tr class='title'><td colspan='2'>Register Agreement</td></tr>
-	<tr class='misc2'><td colspan='2'>
-	    <div style='width:100%; height: 150px; background: #FFF; overflow-y: auto'>
-		<ul>Read it carefully, be sure you are willing to accept all:
-		<li>1
-		<li>2
-		<li>3
-		</ul>
-	    </div>
-	</td></tr>
-	<tr class='misc1'><td width='20%' align='right'>Username:</td><td><input type='text' name='username' id='username' size='12' onblur="javascript:validate_username()" />
-	<span id='error_username' style='font-weight:bold;'>
+<form class="valid" method='post' id="RegisterForm">
+<fieldset>
+    <legend>Register</legend>
+	<p>
+	    <label for="username">[% c.loc('Username') %]</label>
+	    <input type='text' name='username' id='username' />
+	
+	<label class="error" id='error_username'>
 	[% IF c.form.error('username') %]
+	
 	    [% IF c.form.error('username', 'HAS_BLANK') %]
 	    don't put blank in your username.
 	    [% ELSIF c.form.error('username', 'HAS_SPECAIL_CHAR') %]
@@ -70,24 +106,50 @@ function validate_username () {
 	    username should be 6-20 chars.
 	    [% END %]
 	[% END %]
-	only A-Z, a-z, 0-9, -, _ is allowed.
-	</span>
-	</td></tr>
-    <tr class='misc2'><td align='right'>Nickname:</td><td><input type='text' name='nickname' size='12' /></td></tr>
-	<tr class='misc1'><td align='right'>Password:</td><td><input type='password' name='password' size='12' /> [% IF c.form.error('password') %]password should be 6-20 [% END %]</td></tr>
-	<tr class='misc2'><td align='right'>Confirm password:</td><td><input type='password' name='confirm_password' size='12' /> [% IF c.form.error('passwords') %]Confirm password is not the same as password[% END %]</td></tr>
-	<tr class='misc1'><td align='right'>[% c.loc("Email") %]</td><td><input type='text' name='email' size='24' />
+	</label>
+	
+	</p>
+	
+	<p>
+        <label id="nickname">[% c.loc('Nickname') %]</label>
+        <input type='text' name='nickname' id='nickname' />
+    </p>
+    
+    <p>
+	    <label id="password">[% c.loc('Password') %]</label>
+	    <input type='password' id='password' name='password' />
+	    [% IF c.form.error('password') %]<label class="error">password should be 6-20</label>[% END %]
+	</p>
+	
+	<p>
+	    <label id="confirm_password">[% c.loc('Confirm Password') %]</label>
+	    <input type='password' name='confirm_password' id="confirm_password" />
+	    [% IF c.form.error('passwords') %]<label class="error">Confirm password is not the same as password</label>[% END %]
+	</p>
+	
+	<p>
+	    <label id="email">[% c.loc("Email") %]</label>
+	    <input type='text' name='email' id="email" />
 	[% IF c.form.error('email') %]
+	<label class="error">
 	    [% IF c.form.error('email', 'DBIC_UNIQUE') %]
 	    This email is used by another one.
 	    [% ELSE %]
 	    you should spec a correct email.
 	    [% END %]
+	</label>
 	[% END %]
-	</td></tr>
-	<tr class='misc2'><td></td><td><input type='submit' /></td></tr>
-	</form>
-	</tbody>
-</table>
-</div>
+	</p>
+	
+	<p>
+	    <input type="checkbox" class="checkbox" name="agreement" id="agreement" />
+	    <label for="agreement" class="other">I have read and agree to the <a href="/info/tos">Terms of Service</a> and <a href="/info/privacy">Privacy Statement</a>.</span></label>
+	</p>
+	
+	<iframe src="/info/tos?format=raw" scrolling="auto" frameborder='0' marginheight="0" marginwidth="0" width='400' height='100' id="rule_iframe" style="border: solid #7F9DB9 1px; margin-left: 10px;" ></iframe>
+	
+	<p><input class="submit" type='submit' /></p>
+	
+</fieldset>
+</form>
 [% END %]

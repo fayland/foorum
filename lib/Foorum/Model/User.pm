@@ -130,7 +130,7 @@ sub delete_cache_by_user {
         'user|' . Object::Signature::signature( { email => $user->{email} } );
 
     foreach my $ckey (@ckeys) {
-        $c->cache->delete($ckey);
+        $c->cache->remove($ckey);
         $c->stash->{"__user_caches|$ckey"} = undef;
     }
 

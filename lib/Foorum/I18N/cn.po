@@ -107,6 +107,12 @@ msgstr "关于我们"
 msgid "Contact Us"
 msgstr "联系我们"
 
+msgid "Terms of Service"
+msgstr "服务条款"
+
+msgid "Privacy Statement"
+msgstr "隐私策略"
+
 msgid "Help Center"
 msgstr "帮助中心"
 
@@ -142,6 +148,12 @@ msgid "The requested URL is not found on this server."
 msgstr "您访问的地址不存在"
 
 # forum/topic action
+msgid "New Topic"
+msgstr "新帖子"
+
+msgid "New Poll"
+msgstr "新投票"
+
 msgid "Lock"
 msgstr "锁定"
 
@@ -220,6 +232,9 @@ msgstr "主页"
 
 msgid "Password"
 msgstr "密码"
+
+msgid "Confirm Password"
+msgstr "密码确认"
 
 msgid "Captcha"
 msgstr "验证码"

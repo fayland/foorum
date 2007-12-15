@@ -1,0 +1,17 @@
+Dear [% username %],
+
+您的激活代码是 [% activation_code %]
+
+[% IF new_email %]
+请访问如下地址来确认您的电子邮件。
+[% ELSE %]
+请访问如下地址来激活您的帐号。
+[% END %]
+
+[% base %]register/activation/[% username %]/[% activation_code %]
+
+
+Thanks.
+
+Best Regards,
+Yours, [% c.config.name %]

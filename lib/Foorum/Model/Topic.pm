@@ -33,7 +33,7 @@ sub update {
     
     $c->model('DBIC')->resultset('Topic')->search( { topic_id => $topic_id } )->update($update);
     
-    $c->cache->delete("topic|topic_id=$topic_id");
+    $c->cache->remove("topic|topic_id=$topic_id");
 }
 
 sub remove {
@@ -41,7 +41,7 @@ sub remove {
 
     # delete topic
     $c->model('DBIC::Topic')->search( { topic_id => $topic_id } )->delete;
-    $c->cache->delete("topic|topic_id=$topic_id");
+    $c->cache->remove("topic|topic_id=$topic_id");
 
     # delete comments with upload
     my $total_replies = -1;    # since one comment is topic indeed.

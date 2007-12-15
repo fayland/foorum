@@ -194,7 +194,7 @@ sub clear_cached_policy {
     }
 
     if ( $info->{forum_id} ) {
-        $c->cache->delete("policy|user_role|forum_id=$info->{forum_id}");
+        $c->cache->remove("policy|user_role|forum_id=$info->{forum_id}");
     }
 
 }

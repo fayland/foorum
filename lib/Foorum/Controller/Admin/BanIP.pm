@@ -42,7 +42,7 @@ sub remove : Local {
         ->search( { ip_id => $ip_id, } )->delete;
 
     my $cache_key = 'global|banned_ip';
-    $c->cache->delete($cache_key);
+    $c->cache->reomove($cache_key);
 
     $c->res->redirect('/admin/banip');
 }
@@ -66,7 +66,7 @@ sub add : Local {
     }
 
     my $cache_key = 'global|banned_ip';
-    $c->cache->delete($cache_key);
+    $c->cache->remove($cache_key);
 
     return $c->res->redirect('/admin/banip');
 }

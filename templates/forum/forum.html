@@ -16,8 +16,8 @@
     <ul class="ui-tabs-nav">
         <li class="ui-tabs-selected"><a href='[% forum.forum_url %]'><span>Topics</span></a></li>
         <li><a href='[% forum.forum_url %]/polls'><span>Polls ([% poll_count %])</span></a></li>
-        <li><a href='[% forum.forum_url %]/topic/new'><span>New Topic</span></a></li>
-        <li><a href='[% forum.forum_url %]/poll/new'><span>New Poll</span></a></li>
+        <li><a href='[% forum.forum_url %]/topic/new'><span>[% c.loc("New Topic") %]</span></a></li>
+        <li><a href='[% forum.forum_url %]/poll/new'><span>[% c.loc("New Poll") %]</span></a></li>
         <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
         [% IF c.user_exists AND roles.is_admin %]
         <li><a href='/forumadmin/[% forum.forum_id %]'><span>[% c.loc('Forum Admin') %]</span></a></li>

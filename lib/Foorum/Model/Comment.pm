@@ -142,7 +142,7 @@ sub create {
     );
 
     my $cache_key = "comment|object_type=$object_type|object_id=$object_id";
-    $c->cache->delete($cache_key);
+    $c->cache->remove($cache_key);
 
     return $comment;
 }
@@ -160,7 +160,7 @@ sub remove {
     my $object_type = $comment->object_type;
     my $object_id   = $comment->object_id;
     my $cache_key   = "comment|object_type=$object_type|object_id=$object_id";
-    $c->cache->delete($cache_key);
+    $c->cache->remove($cache_key);
 }
 
 =pod

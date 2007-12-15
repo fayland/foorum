@@ -21,11 +21,11 @@ sub __serve_static_info {
 
     $c->stash->{template}                  = "$type/index.html";
     $c->stash->{additional_template_paths} = [
-        $c->path_to( 'templates', $c->stash->{lang} ),
-        $c->path_to( 'templates', 'en' )
+        $c->path_to( 'templates', 'lang', $c->stash->{lang} ),
+        $c->path_to( 'templates', 'lang', 'en' )
     ];
 
-    if ( $c->req->param('ajax') ) {
+    if ( $c->req->param('format') eq 'raw' ) {
         $c->stash->{simple_wrapper} = 1;
     }
 
@@ -33,11 +33,11 @@ sub __serve_static_info {
     # since too many text needs translation.
     if ($type_id) {
         $type_id =~ s/\W+//isg;
-        if (-e $c->path_to( 'templates', $c->stash->{lang}, $type,
+        if (-e $c->path_to( 'templates', 'lang', $c->stash->{lang}, $type,
                 "$type_id.html" )
             or ( $c->stash->{lang} ne 'en'
                 and
-                -e $c->path_to( 'templates', 'en', $type, "$type_id.html" ) )
+                -e $c->path_to( 'templates', 'lang', 'en', $type, "$type_id.html" ) )
             )
         {
             $c->stash->{template} = "$type/$type_id.html";

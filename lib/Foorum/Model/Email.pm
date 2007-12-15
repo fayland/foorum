@@ -31,7 +31,7 @@ sub send_activation {
 
     my $email_body = $c->view('TT')->render(
         $c,
-        $c->stash->{lang} . '/email/activation.html',
+        'lang/' . $c->stash->{lang} . '/email/activation.html',
         {   no_wrapper      => 1,
             username        => $user->username,
             activation_code => $activation_code,
@@ -58,7 +58,7 @@ sub send_forget_password {
 
     my $email_body = $c->view('TT')->render(
         $c,
-        $c->stash->{lang} . '/email/forget_password.html',
+        'lang/' . $c->stash->{lang} . '/email/forget_password.html',
         {   no_wrapper => 1,
             username   => $username,
             password   => $password,

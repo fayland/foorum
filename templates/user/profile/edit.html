@@ -16,6 +16,7 @@
 END; %]
 
 [% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
+[% c.load_once("jquery/validate.js") %]
 
 <div id='edit_profile_tabs' class='tabs'>
     <ul class="ui-tabs-nav">
@@ -29,9 +30,9 @@ END; %]
 
 [% FILTER fillinform fdat => data || c.req.params %]
 <div class='one'>
+<form method='post'>
 <table align='center'>
 	<tbody>
-	<form method='post'>
     <tr class='misc1'><td align='right'>[% c.loc('Nickname') %]</td><td><input type='text' name='nickname' size='24' />
 	[% IF c.form.error('nickname') %]
 	the length of nickname should be more than 4 and less than 20
@@ -56,7 +57,7 @@ END; %]
 	[% END %]
 	Format: 1984/2/6
 	</td></tr>
-	<tr class='misc1'><td align='right'>[% c.loc('Homepage') %]</td><td><input type='text' name='homepage' size='24' />
+	<tr class='misc1'><td align='right'>[% c.loc('Homepage') %]</td><td><input type='text' name='homepage' size='24' class="{url:true}" />
 	[% IF c.form.error('homepage') %]
 	Please type a valid homepage URL.
 	[% END %]
@@ -97,9 +98,9 @@ END; %]
 	[% END %]
 	</td></tr>
 	<tr class='misc2'><td></td><td><input type='submit' /></td></tr>
-	</form>
 	</tbody>
 </table>
+</form>
 </div>
 [% END %]
 

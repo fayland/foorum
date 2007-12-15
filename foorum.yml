@@ -1,5 +1,5 @@
 ---
-name: 'Foorum (Be Together)'
+name: 'Foorum'
 dsn: dbi:mysql:foorum
 dsn_user: root
 dsn_pwd: 'secret'
@@ -18,11 +18,9 @@ View::JSON:
 cache:
   backends:
     default:
-      class: 'Cache::Memcached'
-      servers:
-        - '127.0.0.1:11211'
-      compress_threshold: 10_000
-      debug: 0
+      class: 'Cache::FileCache'
+      namespace: 'Foorum'
+      default_expires_in: 600
 
 page_cache:
   expires: 300

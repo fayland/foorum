@@ -75,6 +75,7 @@ sub login : Global {
             if ( length( $c->user->lang ) == 2 ) {
                 $c->res->cookies->{lang} = { value => $c->user->lang };
                 $c->stash->{lang} = $c->user->lang;
+                $c->languages( [ $c->stash->{lang} ] );
             }
 
             # redirect

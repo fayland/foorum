@@ -69,7 +69,7 @@ sub update {
     
     $c->model('DBIC')->resultset('Forum')->search( { forum_id => $forum_id } )->update($update);
     
-    $c->cache->delete("forum|forum_id=$forum_id");
+    $c->cache->remove("forum|forum_id=$forum_id");
     
     if ($update->{forum_code}) {
         my $mem_key = 'global|forum_code_to_id';
@@ -174,7 +174,7 @@ sub merge_forums {
 
     # FIXME!!!
     # need delete all topic_id cache object
-    # $c->cache->delete("topic|topic_id=$topic_id");
+    # $c->cache->remove("topic|topic_id=$topic_id");
 
     # polls
     $c->model('DBIC::Poll')->search( { forum_id => $from_id, } )

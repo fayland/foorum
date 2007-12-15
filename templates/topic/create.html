@@ -6,8 +6,8 @@
     <ul class="ui-tabs-nav">
         <li><a href='[% forum.forum_url %]'><span>Topics</span></a></li>
         <li><a href='[% forum.forum_url %]/polls'><span>Polls</span></a></li>
-        <li class="ui-tabs-selected"><a href='[% forum.forum_url %]/topic/new'><span>New Topic</span></a></li>
-        <li><a href='[% forum.forum_url %]/poll/new'><span>New Poll</span></a></li>
+        <li class="ui-tabs-selected"><a href='[% forum.forum_url %]/topic/new'><span>[% c.loc("New Topic") %]</span></a></li>
+        <li><a href='[% forum.forum_url %]/poll/new'><span>[% c.loc("New Poll") %]</span></a></li>
         <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
     </ul>
     <div class="ui-tabs-container">
@@ -17,7 +17,7 @@
 <div class='one'>
 <form method="post" enctype="multipart/form-data">
 <table align='center' border='1' cellpadding='6'>
-  <tr class='title'><td colspan='2'>Create a new topic</td></tr>
+  <tr class='title'><td colspan='2'>[% c.loc("New Topic") %]</td></tr>
   <tr class='forum1'><td align='right'>[% c.loc('Title') %]</td><td><input type='text' size='60' maxlength='80' name='title' />
   [% IF c.form.error('title') %]title should be 1-80 chars.[% END %]
   </td></tr>

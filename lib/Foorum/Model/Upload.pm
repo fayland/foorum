@@ -73,7 +73,7 @@ sub remove_by_upload {
     $c->model('DBIC::Upload')->search( { upload_id => $upload->{upload_id} } )
         ->delete;
 
-    $c->cache->delete( 'upload|upload_id=' . $upload->{upload_id} );
+    $c->cache->remove( 'upload|upload_id=' . $upload->{upload_id} );
 }
 
 sub add_file {

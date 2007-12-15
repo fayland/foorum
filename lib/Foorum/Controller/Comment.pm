@@ -171,7 +171,7 @@ sub edit : LocalRegex('^(\d+)/edit$') {
     my $path = $c->model('Object')->get_url_from_object( $c, $info );
 
     my $cache_key = "comment|object_type=$object_type|object_id=$object_id";
-    $c->cache->delete($cache_key);
+    $c->cache->remove($cache_key);
 
     $c->forward(
         '/print_message',

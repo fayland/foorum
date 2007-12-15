@@ -1,4 +1,5 @@
 [% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
+[% c.load_once("jquery/validate.js") %]
 
 <div id='edit_profile_tabs' class='tabs'>
     <ul class="ui-tabs-nav">
@@ -11,9 +12,9 @@
     <div class="ui-tabs-container">
 
 <div class='one'>
+<form method='post'>
 <table align='center'>
 	<tbody>
-	<form method='post'>
 	<tr class='misc1'><td width='20%' align='right'>Username:</td><td>[% c.user.username %]
 	</td></tr>
 	<tr class='misc2'><td align='right'>Password:</td><td><input type='password' name='password' size='12' />
@@ -21,7 +22,7 @@
 	    Please type your password correctly.
 	[% END %]
 	</td></tr>
-    <tr class='misc2'><td align='right'>[% c.loc("Email") %]</td><td><input type='text' name='email' size='24' />
+    <tr class='misc2'><td align='right'>[% c.loc("Email") %]</td><td><input type='text' name='email' size='24' class="{required:true,email:true}" />
 	[% IF c.form.error('email') %]
 	    [% IF c.form.error('email', 'DBIC_UNIQUE') %]
 	    This email is used by another one.
@@ -33,9 +34,9 @@
 	[% END %]
 	</td></tr>
 	<tr class='misc2'><td></td><td><input type='submit' /></td></tr>
-	</form>
 	</tbody>
 </table>
+</form>
 </div>
 
     </div>
