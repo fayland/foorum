@@ -91,10 +91,10 @@ sub create {
     # get the subject from $plain_body or $html_body
     # the format is ########Title Subject#########
     my $subject;
-    if ($plain_body and $plain_body =~ s/\#{6,}(.*?)\#{6,}\n+//isg) {
+    if ($plain_body and $plain_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg) {
         $subject = $1;
     }
-    if ($html_body and $html_body =~ s/\#{6,}(.*?)\#{6,}\n+//isg) {
+    if ($html_body and $html_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg) {
         $subject = $1;
     }
     $subject ||= 'Notification From ' . $c->config->{name};
