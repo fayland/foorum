@@ -203,8 +203,10 @@ sub forget_password : Local {
     my $computed = $d->digest;
 
     # send email
-    $c->model('Email')
-        ->send_forget_password( $c, $email, $username, $random_password );
+    $c->model('Email')->create($c, { template => 'forget_password', to => $email, stash => {
+        username => $username,
+        password => $random_password
+    } } );
     $c->model('User')->update( $c, $user, { password => $computed } );
     $c->detach(
         '/print_message',

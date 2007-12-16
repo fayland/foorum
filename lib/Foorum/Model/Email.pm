@@ -53,32 +53,73 @@ sub send_activation {
     $client->insert('Foorum::TheSchwartz::Worker::SendScheduledEmail');
 }
 
-sub send_forget_password {
-    my ( $self, $c, $email, $username, $password ) = @_;
-
-    my $email_body = $c->view('TT')->render(
-        $c,
-        'lang/' . $c->stash->{lang} . '/email/forget_password.html',
-        {   no_wrapper => 1,
-            username   => $username,
-            password   => $password,
+sub create {
+    my ($self, $c, $opts) = @_;
+    
+    # find the template for TT use
+    my $template_prefix;
+    my $template_name = $opts->{template};
+    my $file_prefix = $c->path_to( 'templates', 'lang', $c->stash->{lang}, 'email', $template_name )->stringify;
+    if (-e $file_prefix . '.txt' or -e $file_prefix . '.html') {
+        $template_prefix = 'lang/' . $c->stash->{lang} . '/email/' . $template_name;
+    } elsif ($c->stash->{lang} ne 'en') {
+        # try to use lang=en for default
+        $file_prefix = $c->path_to( 'templates', 'lang', 'en', 'email', $template_name )->stringify;
+        if (-e $file_prefix . '.txt' or -e $file_prefix . '.html') {
+            $template_prefix = 'lang/en/email/' . $template_name;
         }
-    );
-
+    }
+    unless ($template_prefix) {
+        $c->model('Log')->log_error($c, 'error', "Template not found in Email.pm notification with params: $template_name");
+        return 0;
+    }
+    
+    # prepare the tt2
+    my ($plain_body, $html_body);
+    my $stash = $opts->{stash} || {};
+    $stash->{c} = $c; # add $c to tt2
+    $stash->{base} = $c->req->base;
+    $stash->{no_wrapper} = 1;
+    
+    # prepare TXT format
+    if (-e $file_prefix . '.txt') {
+        $plain_body = $c->view('TT')->render( $c, $template_prefix . '.txt', $stash);
+    }
+    if (-e $file_prefix . '.html') {
+        $html_body = $c->view('TT')->render( $c, $template_prefix . '.html', $stash);
+    }
+    # get the subject from $plain_body or $html_body
+    # the format is ########Title Subject#########
+    my $subject;
+    if ($plain_body and $plain_body =~ /\#{6,}(.*?)\#{6,}\n+/isg) {
+        $subject = $1;
+        $plain_body =~ s/\#{6,}(.*?)\#{6,}\n+//isg;
+    }
+    if ($html_body and $html_body =~ /\#{6,}(.*?)\#{6,}\n+/isg) {
+        $subject = $1;
+        $html_body =~ s/\#{6,}(.*?)\#{6,}\n+//isg;
+    }
+    $subject ||= 'Notification From ' . $c->config->{name};
+    
+    my $to = $opts->{to};
+    my $from = $opts->{from} || $c->config->{mail}->{from_email};
+    my $email_type = $opts->{email_type} || $opts->{template};
     $c->model('DBIC')->resultset('ScheduledEmail')->create(
-        {   email_type => 'forget_password',
-            from_email => $c->config->{mail}->{from_email},
-            to_email   => $email,
-            subject    => 'Your Password For '
-                . $username . ' In '
-                . $c->config->{name},
-            plain_body => $email_body,
+        {   email_type => $email_type,
+            from_email => $from,
+            to_email   => $to,
+            subject    => $subject,
+            plain_body => $plain_body,
+            html_body  => $html_body,
             time       => \'NOW()',
             processed  => 'N',
         }
     );
+    
     my $client = theschwartz();
     $client->insert('Foorum::TheSchwartz::Worker::SendScheduledEmail');
+    
+    return 1;
 }
 
 =pod

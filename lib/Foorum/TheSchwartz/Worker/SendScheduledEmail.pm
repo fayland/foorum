@@ -60,12 +60,14 @@ sub send_email {
         'Subject'  => $subject,
     );
 
-    $top->attach(
-		Encoding => '7bit',
-        Type 	 => 'text/plain',
-        Charset  => 'utf-8',
-        Data	 => $plain_body,
-	);
+    if ($plain_body) {
+        $top->attach(
+    		Encoding => '7bit',
+            Type 	 => 'text/plain',
+            Charset  => 'utf-8',
+            Data	 => $plain_body,
+    	);
+    }
     
     if ($html_body) {
     	$top->attach(
