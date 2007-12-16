@@ -11,7 +11,12 @@ __PACKAGE__->add_columns(
   "hit_id",
   { data_type => "INT", default_value => undef, is_nullable => 0, size => 11 },
   "object_type",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 12 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 12,
+  },
   "object_id",
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
   "hit_new",
@@ -32,8 +37,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("hit_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-11-27 13:27:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:G47MO/VLE41cs1OTf+hsKQ
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-16 16:59:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7bNhOzEZVzmkEx5WdcAeiQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

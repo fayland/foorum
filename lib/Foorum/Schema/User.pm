@@ -11,7 +11,12 @@ __PACKAGE__->add_columns(
   "user_id",
   { data_type => "INT", default_value => undef, is_nullable => 0, size => 11 },
   "username",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 32 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 32,
+  },
   "password",
   {
     data_type => "VARCHAR",
@@ -20,17 +25,32 @@ __PACKAGE__->add_columns(
     size => 32,
   },
   "nickname",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 100 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 100,
+  },
   "gender",
   { data_type => "ENUM", default_value => "NA", is_nullable => 0, size => 2 },
   "email",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 255 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 255,
+  },
   "register_on",
   { data_type => "DATE", default_value => undef, is_nullable => 1, size => 10 },
   "register_time",
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
   "register_ip",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 32 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 32,
+  },
   "last_login_on",
   {
     data_type => "DATETIME",
@@ -74,8 +94,8 @@ __PACKAGE__->add_unique_constraint("email", ["email"]);
 __PACKAGE__->add_unique_constraint("username", ["username"]);
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-11-27 13:27:32
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fOmS+vGl9eMNGm185Tb1PA
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-16 16:59:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:IFkWHwjebdZZLMQoEcqHUw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

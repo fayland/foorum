@@ -43,22 +43,6 @@ sub register {
     return $return_hit;
 }
 
-sub update_hit_object {
-    my ($self, $c, $object_type, $object_id, $hit) = @_;
-    
-    if ($object_type eq 'topic') {
-        $c->model('Topic')->update( $c, $object_id, {
-            hit => $hit,
-        } );
-    } elsif ($object_type eq 'poll') {
-        $c->model('DBIC')->resultset('Poll')->search( {
-            poll_id => $object_id,
-        } )->update( {
-            hit => $hit,
-        } );
-    }
-}
-
 =pod
 
 =head2 AUTHOR

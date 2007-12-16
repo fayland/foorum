@@ -13,20 +13,25 @@ __PACKAGE__->add_columns(
   "level",
   { data_type => "ENUM", default_value => "debug", is_nullable => 0, size => 5 },
   "text",
-  { data_type => "TEXT", default_value => "", is_nullable => 0, size => 65535 },
+  {
+    data_type => "TEXT",
+    default_value => undef,
+    is_nullable => 0,
+    size => 65535,
+  },
   "time",
   {
     data_type => "TIMESTAMP",
     default_value => "CURRENT_TIMESTAMP",
-    is_nullable => 1,
+    is_nullable => 0,
     size => 14,
   },
 );
 __PACKAGE__->set_primary_key("error_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-11-27 13:27:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:13wvuL6VX1F/9bPn+GK//g
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-16 16:59:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6OTf+yl2Ci4gRYNx9DmjUA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

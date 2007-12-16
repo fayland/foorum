@@ -30,7 +30,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "TIMESTAMP",
     default_value => "CURRENT_TIMESTAMP",
-    is_nullable => 1,
+    is_nullable => 0,
     size => 14,
   },
   "text",
@@ -45,8 +45,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-11-27 13:27:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MHo0YZ+FGEMC21qgOIP7pA
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-16 16:59:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hzmNqa5aBb6WzML9Td24nQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

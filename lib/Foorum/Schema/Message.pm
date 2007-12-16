@@ -15,11 +15,26 @@ __PACKAGE__->add_columns(
   "to_id",
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
   "title",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 255 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 255,
+  },
   "text",
-  { data_type => "TEXT", default_value => "", is_nullable => 0, size => 65535 },
+  {
+    data_type => "TEXT",
+    default_value => undef,
+    is_nullable => 0,
+    size => 65535,
+  },
   "post_on",
-  { data_type => "DATETIME", default_value => "", is_nullable => 0, size => 19 },
+  {
+    data_type => "DATETIME",
+    default_value => undef,
+    is_nullable => 0,
+    size => 19,
+  },
   "post_ip",
   { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 32 },
   "from_status",
@@ -30,8 +45,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("message_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-11-27 13:27:32
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FVjX1LDj50ZvxpwoAlF7ig
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-16 16:59:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:tBpS1v6FbXXuAcIdyCAIdA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -13,7 +13,12 @@ __PACKAGE__->add_columns(
   "reply_to",
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
   "text",
-  { data_type => "TEXT", default_value => "", is_nullable => 0, size => 65535 },
+  {
+    data_type => "TEXT",
+    default_value => undef,
+    is_nullable => 0,
+    size => 65535,
+  },
   "post_on",
   {
     data_type => "DATETIME",
@@ -38,7 +43,12 @@ __PACKAGE__->add_columns(
     size => 16,
   },
   "object_type",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 30 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 30,
+  },
   "object_id",
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
   "author_id",
@@ -53,8 +63,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("comment_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-11-27 13:27:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6D2rOUYwma7PssP9pQz2qg
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-16 16:59:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vEf4kS+AcaJoIYHFvKyLQw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

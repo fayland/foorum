@@ -11,13 +11,33 @@ __PACKAGE__->add_columns(
   "forum_id",
   { data_type => "INT", default_value => undef, is_nullable => 0, size => 11 },
   "forum_code",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 25 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 25,
+  },
   "name",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 100 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 100,
+  },
   "description",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 255 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 255,
+  },
   "forum_type",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 16 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 16,
+  },
   "policy",
   { data_type => "ENUM", default_value => "public", is_nullable => 0, size => 9 },
   "total_members",
@@ -40,8 +60,8 @@ __PACKAGE__->set_primary_key("forum_id");
 __PACKAGE__->add_unique_constraint("forum_code", ["forum_code"]);
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-11-27 13:27:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:RgqW9otWUUDMUPt21oFCrA
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-16 16:59:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mOMvk689q90fArgZjPPPfA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

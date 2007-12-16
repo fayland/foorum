@@ -9,7 +9,12 @@ __PACKAGE__->load_components("Core");
 __PACKAGE__->table("filter_word");
 __PACKAGE__->add_columns(
   "word",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 64 },
+  {
+    data_type => "VARCHAR",
+    default_value => undef,
+    is_nullable => 0,
+    size => 64,
+  },
   "type",
   {
     data_type => "ENUM",
@@ -21,8 +26,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("word", "type");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-11-27 13:27:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ybAoji0jSslUTalybdRbUw
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-16 16:59:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2zhhZ0qO+IY6/G2WspPSxQ
 
 
 
