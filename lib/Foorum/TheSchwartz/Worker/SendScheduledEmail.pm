@@ -59,6 +59,8 @@ sub send_email {
         'To'       => $to,
         'Subject'  => $subject,
     );
+    
+    return unless ($plain_body or $html_body);
 
     if ($plain_body) {
         $top->attach(
