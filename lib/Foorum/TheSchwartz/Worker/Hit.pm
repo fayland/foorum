@@ -1,5 +1,7 @@
 package Foorum::TheSchwartz::Worker::Hit;
 
+use strict;
+use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Data::Dump qw/dump/;
@@ -14,8 +16,8 @@ sub work {
     
     my $schema = schema();
 
+    # for /site/popular
     my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime();
-
     my @update_cols;
     if ($hour == 1 and $min < 5) { # the first hour of today
         push @update_cols, ( hit_yesterday => \'hit_today', hit_today => \'hit_new' );
@@ -40,7 +42,39 @@ sub work {
         hit_new => 0
     } );
     
-    error_log($schema, 'info', 'update_hit - '  . dump(\@update_cols) . ' @ ' . localtime());
+    # update the real data in table
+    my $rs = $schema->resultset('Hit')->search( {
+        last_update_time => { '>', 0 }
+    } );
+    my $last_update_time = 0;
+    my $updated_count = 0;
+    while (my $r = $rs->next) {
+        # update into real table
+        if ($r->object_type eq 'topic') {
+            $schema->resultset('Topic')->search( {
+                topic_id => $r->object_id
+            } )->update( {
+                hit => $r->hit_all,
+            } );
+        } elsif ($r->object_type eq 'poll') {
+            $schema->resultset('Poll')->search( {
+                poll_id => $r->object_id,
+            } )->update( {
+                hit => $r->hit_all,
+            } );
+        }
+        $last_update_time = $r->last_update_time if ($r->last_update_time > $last_update_time);
+        $updated_count++;
+    }
+    # set flag as updated
+    $schema->resultset('Hit')->search( {
+        -and => [
+            last_update_time => { '<=', $last_update_time },
+            last_update_time => { '>', 0 }
+        ]
+    } )->update( { last_update_time => 0 } );
+    
+    error_log($schema, 'info', "update_hit ($updated_count) - "  . dump(\@update_cols) . ' @ ' . localtime());
     
     $job->completed();
 }

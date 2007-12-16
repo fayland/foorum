@@ -8,6 +8,10 @@ use Data::Dumper;
 sub register {
     my ($self, $c, $object_type, $object_id, $object_hit) = @_;
     
+    # we update table 'hit' then use Foorum::TheSchwartz::Worker::Hit to update
+    # the real table every 5 minutes
+    # the status field is time(), after update in real, that will be 0
+    
     my $hit = $c->model('DBIC')->resultset('Hit')->search( {
         object_type => $object_type,
         object_id   => $object_id,
@@ -35,17 +39,7 @@ sub register {
             last_update_time => time(),
         } );
     }
-    
-    # update field randomly.
-    my $frequence = 30;
-    $frequence = 20 if ($return_hit < 500);
-    $frequence = 10 if ($return_hit < 300);
-    $frequence = 5  if ($return_hit < 100);
-    $frequence = 3  if ($return_hit < 10);
-    if (int(rand(1000)) % $frequence == 1) {
-        update_hit_object($self, $c, $object_type, $object_id, $return_hit);
-    }
-    
+
     return $return_hit;
 }
 
