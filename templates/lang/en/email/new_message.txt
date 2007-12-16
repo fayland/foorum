@@ -3,12 +3,9 @@ Dear [% rept.nickname %],
 
 [% from.nickname %] sends you a message. Please click below to have a check!
 
-
 [% base %]message/[% message.message_id %]
 
-
-[% message.title %] @ [% message.post_on %]
-
+[% message.title %]
 
 Thanks.
 
