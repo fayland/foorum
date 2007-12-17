@@ -56,7 +56,7 @@ sub run_worker {
 sub debug {
     my ($msg) = @_;
     
-    print "$msg \@" . localtime() . "\n" if ($debug);
+    print "$msg \@ " . localtime() . "\n" if ($debug);
 }
 
 1;

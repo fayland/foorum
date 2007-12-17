@@ -24,6 +24,21 @@ use Foorum::TheSchwartz::Worker::DailyReport;
 use Foorum::TheSchwartz::Worker::DailyChart;
 
 my $client = theschwartz();
+
+my $verbose = sub {
+    my $msg = shift;
+    $msg =~ s/\s+$//;
+    if ($msg eq 'TheSchwartz::work_once found no jobs') {
+        # do nothing
+    } elsif ($msg eq 'job completed') {
+        # add localtime()
+        print STDERR 'job completed @ ' . localtime() . "\n";
+    } else {
+        print STDERR "$msg\n";
+    }
+};
+$client->set_verbose($verbose);
+
 $client->can_do('Foorum::TheSchwartz::Worker::Hit');
 $client->can_do('Foorum::TheSchwartz::Worker::RemoveOldDataFromDB');
 $client->can_do('Foorum::TheSchwartz::Worker::ResizeProfilePhoto');
