@@ -108,7 +108,7 @@ sub edit : Local {
         $c,
         $c->user,
         {   nickname => $c->req->param('nickname') || $c->user->username,
-            gender   => $c->req->param('gender')   || '',
+            gender   => $c->req->param('gender')   || 'NA',
             lang => $c->req->param('lang') || $c->config->{default_lang},
             country => $c->req->param('country') || '',
         }
