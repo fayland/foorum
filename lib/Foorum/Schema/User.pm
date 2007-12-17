@@ -40,8 +40,6 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => 255,
   },
-  "register_on",
-  { data_type => "DATE", default_value => undef, is_nullable => 1, size => 10 },
   "register_time",
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
   "register_ip",
@@ -94,8 +92,8 @@ __PACKAGE__->add_unique_constraint("email", ["email"]);
 __PACKAGE__->add_unique_constraint("username", ["username"]);
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-16 16:59:03
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:IFkWHwjebdZZLMQoEcqHUw
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-17 14:14:00
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:nWOWe+pzcV89335R99dUbQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
