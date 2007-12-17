@@ -198,7 +198,7 @@ sub members : LocalRegex('^(\w+)/members(/(\w+))?$') {
             { user_id => { 'IN', \@all_user_ids }, },
             {   columns => [
                     'user_id', 'username', 'nickname', 'gender',
-                    'register_on'
+                    'register_time'
                 ],
             }
         )->all;

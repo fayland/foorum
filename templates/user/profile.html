@@ -1,3 +1,4 @@
+[% USE date %]
 [% STOP_FROM_SPAM = 'You need login first' %]
 
 <div class='one'>
@@ -18,7 +19,7 @@
 	[% END %]
 	<tr class='misc1'><td align='right'>[% c.loc("Threads:") %]</td><td>[% user.threads %]</td></tr>
 	<tr class='misc2'><td align='right'>[% c.loc("Replies:") %]</td><td>[% user.replies %]</td></tr>
-	<tr class='misc2'><td align='right'>[% c.loc("Register on:") %]</label></td><td>[% user.register_on %]</td></tr>
+	<tr class='misc2'><td align='right'>[% c.loc("Register on:") %]</label></td><td>[% date.format(user.register_time, format =>'%Y-%m-%d') %]</td></tr>
 	<tr class='misc1'><td align='right'>Last Logon On:</td><td>[% user.last_login_on %]</td></tr>
 	[% IF user.last_post %]
 	<tr class='misc2'><td align='right'>Last Post Topic:</td><td><a href='/forum/[% user.last_post.forum_id %]/[% user.last_post.topic_id %]'>[% user.last_post.title %]</a></td></tr>

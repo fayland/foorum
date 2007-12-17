@@ -1,3 +1,4 @@
+[% USE date %]
 [% title = 'Members Of ' _ forum.name %]
 
 [% IF c.user_exists AND roles.is_admin %]
@@ -32,7 +33,7 @@
 	<td class='forum2'><a href='/u/[% members.${user.user_id}.username %]'>[% members.${user.user_id}.nickname %]</a></td>
 	<td class='forum1'>[% user.role | ucfirst %]</td>
 	<td class='forum2'>[% SWITCH members.${user.user_id}.gender;CASE 'F';'Female';CASE 'M';'Male';CASE;'Secret';END; %]</td>
-	<td class='forum1'>[% members.${user.user_id}.register_on %]</td>
+	<td class='forum1'>[% date.format(members.${user.user_id}.register_time, format =>'%Y-%m-%d') %]</td>
 	[% IF roles.is_moderator %]
 	<td class='forum2'>
 	[% IF user.role == 'admin' OR user.role == 'moderator' %]
