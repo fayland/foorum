@@ -1,5 +1,4 @@
 [% USE date %]
-[% STOP_FROM_SPAM = 'You need login first' %]
 
 <div class='one'>
 <table align='center'>
@@ -38,25 +37,31 @@
 	    <img src='[% c.config.dir.images %]/myprofile/mail.png' width='20' height='20' align='absmiddle' /> [% user.email | email_obfuscate %] <a href='/help/email'><img src='[% c.config.dir.images %]/site/help.gif' width='16' height='16' align='absmiddle' /></a>
 	</td></tr>	
 	[% IF user.details.qq OR user.details.msn OR user.details.gtalk OR user.details.skype OR user.details.yahoo %]
+	[% IF user.details.qq %]
 	<tr class='misc2'><td align='right'>QQ:</td><td>
 	    <a target='_blank' href='tencent://message/?uin=[% user.details.qq %]&Site=Foorum&Menu=yes'><img border="0" src="http://wpa.qq.com/pa?p=1:[% user.details.qq %]:4" align='absmiddle' /> [% user.details.qq %]</a>
 	</td></tr>
+	[% END %]
+	[% IF user.details.msn %]
 	<tr class='misc1'><td align='right'>MSN:</td><td>
-	    [% UNLESS c.user_exists;STOP_FROM_SPAM;ELSE %]
 	    <img src='[% c.config.dir.images %]/myprofile/msn.png' width='20' height='20' align='absmiddle' /> [% user.details.msn | email_obfuscate %]
-	    [% END %]
 	</td></tr>
+	[% END %]
+	[% IF user.details.gtalk %]
 	<tr class='misc2'><td align='right'>Gtalk:</td><td>
-	    [% UNLESS c.user_exists;STOP_FROM_SPAM;ELSE %]
 	    <img src='[% c.config.dir.images %]/myprofile/gtalk.png' width='20' height='20' align='absmiddle' /> [% user.details.gtalk %]
-	    [% END %]
 	</td></tr>
+	[% END %]
+	[% IF user.details.yahoo %]
 	<tr class='misc1'><td align='right'>Yahoo! ID:</td><td>
 	    <a href='http://messenger.yahoo.com/edit/send/?.target=[% user.details.yahoo %]&.src=pg' target='_blank'><img src='[% c.config.dir.images %]/myprofile/yahoo.png' width='20' height='20' align='absmiddle' /> [% user.details.yahoo %]</a>
 	</td></tr>
+	[% END %]
+	[% IF user.details.skype %]
 	<tr class='misc2'><td align='right'>Skype:</td><td>
 	    <img src='[% c.config.dir.images %]/myprofile/skype.png' width='20' height='20' align='absmiddle' /> [% user.details.skype %]
 	</td></tr>
+	[% END %]
 	[% END %]
 	
 	</tbody>
