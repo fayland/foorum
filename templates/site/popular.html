@@ -7,6 +7,9 @@
         <li[% IF type == 'weekly' %] class="ui-tabs-selected"[% END %]><a href='/site/popular/weekly'><span>Weekly</span></a></li>
         <li[% IF type == 'monthly' %] class="ui-tabs-selected"[% END %]><a href='/site/popular/monthly'><span>Monthly</span></a></li>
         <li[% IF type == 'all' %] class="ui-tabs-selected"[% END %]><a href='/site/popular/all'><span>All</span></a></li>
+        
+        <li><a href='/site/recent'><span>[% c.loc("Recent Topics") %]</span></a></li>
+        <li><a href='/site/user'><span>[% c.loc("Recent Members") %]</span></a></li>
     </ul>
     <div class="ui-tabs-container">
 

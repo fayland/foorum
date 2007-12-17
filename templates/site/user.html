@@ -3,19 +3,26 @@
 
 <div id='edit_profile_tabs' class='tabs'>
     <ul class="ui-tabs-nav">
-        <li><a href='/site/popular'><span>Popular</span></a></li>
-        <li><a href='/site/recent'><span>Recent Topics</span></a></li>
-        <li class="ui-tabs-selected"><a href='/site/user'><span>Recent Users</span></a></li>
+        <li><a href='/site/recent'><span>[% c.loc("Recent Topics") %]</span></a></li>
+        <li><a href='/site/popular'><span>[% c.loc("Popular") %]</span></a></li>
+        <li class="ui-tabs-selected"><a href='/site/user'><span>[% c.loc("Recent Members") %]</span></a></li>
     </ul>
     <div class="ui-tabs-container">
 
 <div class='one'>
 <table align='center'>
-<tr align='center' class='title'><td>[% c.loc("Nickname") %]</td><td>[% c.loc("Register on") %]</td></tr>
+<tr align='center' class='title'>
+    <td>[% c.loc("Nickname") %]</td>
+    <td>[% c.loc("Gender") %]</td>
+    <td>[% c.loc("Status") %]</td>
+    <td>[% c.loc("Register on") %]</td>
+</tr>
 [% FOREACH user IN users %]
 <tr align='center' class='misc[% IF loop.count mod 2 %]1[% ELSE %]2[% END %]'>
 
 <td><a href="/u/[% user.username %]">[% user.nickname%]</a></td>
+<td>[% IF user.gender != 'NA' %]<img src='[% c.config.dir.images %]/site/gender_[% user.gender %].gif' width='20' height='14' align='absmiddle' /></span>[% ELSE %]N/A[% END %]</td>
+<td>[% user.status | ucfirst %]</td>
 <td>[% date.format(user.register_time, format =>'%Y-%m-%d %I:%M') %]</td>
 
 </tr>
