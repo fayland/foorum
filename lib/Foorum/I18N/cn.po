@@ -208,8 +208,8 @@ msgstr "发新帖数："
 msgid "Replies:"
 msgstr "回复帖数："
 
-msgid "Register on:"
-msgstr "注册时间："
+msgid "Register on"
+msgstr "注册时间"
 
 # login/profile
 msgid "Username"

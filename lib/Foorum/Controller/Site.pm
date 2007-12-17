@@ -94,6 +94,27 @@ sub online : Local {
     );
 }
 
+sub user : Local {
+    my ($self, $c) = @_;
+    
+    $c->cache_page('300');
+    
+    my $page = get_page_from_url($c->req->path);
+    my $rs = $c->model('DBIC')->resultset('User')->search( undef, {
+        order_by => 'register_time DESC',
+        columns => ['user_id', 'username', 'nickname', 'register_time'],
+        page => $page,
+        rows => 20,
+    } );
+    
+    $c->stash( {
+        users => [ $rs->all ],
+        pager => $rs->pager,
+        url_prefix => '/site/user',
+        template => 'site/user.html',
+    } );
+}
+
 =pod
 
 =head2 AUTHOR

@@ -1,0 +1,32 @@
+[% USE date %]
+[% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
+
+<div id='edit_profile_tabs' class='tabs'>
+    <ul class="ui-tabs-nav">
+        <li><a href='/site/popular'><span>Popular</span></a></li>
+        <li><a href='/site/recent'><span>Recent Topics</span></a></li>
+        <li class="ui-tabs-selected"><a href='/site/user'><span>Recent Users</span></a></li>
+    </ul>
+    <div class="ui-tabs-container">
+
+<div class='one'>
+<table align='center'>
+<tr align='center' class='title'><td>>[% c.loc("Nickname") %]</td><td>>[% c.loc("Register on") %]</td></tr>
+[% FOREACH user IN users %]
+<tr align='center' class='misc[% IF loop.count mod 2 %]1[% ELSE %]2[% END %]'>
+
+<td><a href="/u/[% user.username %]">[% user.nickname%]</a></td>
+<td>[% date.format(user.register_time, format =>'%Y-%m-%d %I:%M') %]</td>
+
+</tr>
+[% END %]
+</table>
+
+<br />
+<table align='center'>
+<tr><td class='misc1'>[% INCLUDE sub/pager.html %]</td></tr>
+</table>
+</div>
+
+    </div>
+</div>
