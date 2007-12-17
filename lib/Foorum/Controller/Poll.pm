@@ -41,6 +41,7 @@ sub create : Regex('^forum/(\w+)/poll/new$') {
             time      => $now,
             duration  => $duration,
             title     => $title,
+            hit       => 0,
         }
     );
     my $poll_id = $poll->poll_id;
