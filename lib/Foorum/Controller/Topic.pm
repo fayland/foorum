@@ -94,6 +94,7 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
             author_id        => $c->user->user_id,
             last_updator_id  => $c->user->user_id,
             last_update_date => \"NOW()",
+            hit              => 0,
         }
     );
     $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
