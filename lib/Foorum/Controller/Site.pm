@@ -94,7 +94,7 @@ sub online : Local {
     );
 }
 
-sub user : Local {
+sub members : Local {
     my ($self, $c) = @_;
     
     $c->cache_page('300');
