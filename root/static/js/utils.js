@@ -39,10 +39,12 @@ $(function() {
         var iY = f.indexOf('yyyy');
         if (iY > -1) {
             d.setFullYear(Number(s.substr(iY, 4)));
+        } else {
+            return false; // skip if not the correct format
         }
         var iM = f.indexOf('mm');
         if (iM > -1) {
-            d.setMonth(Number(s.substr(f.indexOf('mm'), 2)) - 1);
+            d.setMonth(Number(s.substr(iM, 2)) - 1);
         }
         d.setDate(Number(s.substr(f.indexOf('dd'), 2)));    
         d.setHours(Number(s.substr(f.indexOf('hh'), 2)));
