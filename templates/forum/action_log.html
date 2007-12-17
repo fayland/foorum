@@ -26,7 +26,7 @@
 	<td class='forum1'>[% log.action | ucfirst %]</td>
 	<td class='forum2' align='left'>
 	    [% IF log.object_type == 'topic' AND log.action != 'delete' %]
-	    <a href='[% forum.forum_url %]/topic/[% log.object_id %]'>[% log.text %]</a>
+	    <a href='[% forum.forum_url %]/[% log.object_id %]'>[% log.text %]</a>
 	    [% ELSE %]
 	    [% log.text %]
 	    [% END %]
