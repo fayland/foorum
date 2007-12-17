@@ -18,29 +18,39 @@ sub work {
 
     # for /site/popular
     my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime();
-    my @update_cols;
+    #my @update_cols;
+    my $sql = 'UPDATE hit SET ';
     if ($hour == 1 and $min < 5) { # the first hour of today
-        push @update_cols, ( hit_yesterday => \'hit_today', hit_today => \'hit_new' );
+        #push @update_cols, ( hit_yesterday => \'hit_today', hit_today => \'hit_new' );
+        $sql .= 'hit_yesterday = hit_today, hit_today = hit_new, ';
     } else {
-        push @update_cols, ( hit_today => \'hit_today + hit_new' ); #'
+        #push @update_cols, ( hit_today => \'hit_today + hit_new' ); #'
+        $sql .= 'hit_today = hit_today + hit_new, ';
     }
     if ($wday == 1 and ($hour == 1 and $min < 5)) { # Monday
-        push @update_cols, ( hit_weekly => \'hit_new' ); #'
+        #push @update_cols, ( hit_weekly => \'hit_new' ); #'
+        $sql .= 'hit_weekly = hit_new, ';
     } else {
-        push @update_cols, ( hit_weekly => \'hit_weekly + hit_new' ); #'
+        #push @update_cols, ( hit_weekly => \'hit_weekly + hit_new' ); #'
+        $sql .= 'hit_weekly = hit_weekly + hit_new, ';
     }
     if ($mday == 1 and ($hour == 1 and $min < 5)) { # The first day of the month
-        push @update_cols, ( hit_monthly => \'hit_new' ); #'
+        #push @update_cols, ( hit_monthly => \'hit_new' ); #'
+        $sql .= 'hit_monthly = hit_new, ';
     } else {
-        push @update_cols, ( hit_monthly => \'hit_monthly + hit_new' ); #'
+        #push @update_cols, ( hit_monthly => \'hit_monthly + hit_new' ); #'
+        $sql .= 'hit_monthly = hit_monthly + hit_new, ';
     }
         
-    $schema->resultset('Hit')->search()->update( {
-        @update_cols,
-    } );
-    $schema->resultset('Hit')->search()->update( {
-        hit_new => 0
-    } );
+    #$schema->resultset('Hit')->search()->update( {
+    #    @update_cols,
+    #} );
+    #$schema->resultset('Hit')->search()->update( {
+    #    hit_new => 0
+    #} );
+    $sql .= 'hit_new = 0';
+    my $dbh = $schema->storage->dbh;
+    $dbh->do($sql);
     
     # update the real data in table
     my $rs = $schema->resultset('Hit')->search( {
@@ -74,7 +84,8 @@ sub work {
         ]
     } )->update( { last_update_time => 0 } );
     
-    error_log($schema, 'info', "update_hit ($updated_count) - "  . dump(\@update_cols) . ' @ ' . localtime());
+    #error_log($schema, 'info', "update_hit ($updated_count) - "  . dump(\@update_cols) . ' @ ' . localtime());
+    error_log($schema, 'info', "update_hit ($updated_count) - $sql \@ " . localtime());
     
     $job->completed();
 }
