@@ -4,10 +4,11 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
-use Data::Dumper;
 
 sub default : Private {
     my ($self, $c, undef, undef, $type) = @_;
+    
+    $c->cache_page('300');
     
     unless ($type and grep { $type eq $_ } ('weekly', 'monthly', 'yesterday','all')) {
         $type = 'today'; # default
