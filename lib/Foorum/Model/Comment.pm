@@ -133,7 +133,7 @@ sub create {
             title       => $title,
             text        => $c->req->param('text') || '',
             formatter   => 'ubb',
-            post_on     => \'NOW()',
+            post_on     => \'NOW()',      #'
             post_ip     => $c->req->address,
             reply_to    => $reply_to,
             forum_id    => $forum_id,
@@ -143,6 +143,17 @@ sub create {
 
     my $cache_key = "comment|object_type=$object_type|object_id=$object_id";
     $c->cache->remove($cache_key);
+    
+    # Email Sent
+    if ($object_type eq 'user_profile') {
+        my $rept = $c->model('User')->get($c, { user_id => $object_id } );
+        # Send Notification Email
+        $c->model('Email')->create($c, { template => 'new_comment', to => $rept->{email}, stash => {
+            rept => $rept,
+            from => $c->user,
+            comment => $comment,
+        } } );
+    }
 
     return $comment;
 }
