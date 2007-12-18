@@ -71,9 +71,14 @@ sub topic : Private {
 }
 
 sub user : Private {
-    my ($self, $c, $username) = @_;
+    my ($self, $c, $user_sig) = @_;
     
-    my $user = $c->model('User')->get($c, { username => $username } );
+    my $user;
+    if ($user_sig =~ /^\d+$/) { # that's user_id
+        $user = $c->model('User')->get($c, { user_id => $user_sig } );
+    } else {
+        $user = $c->model('User')->get($c, { username => $user_sig } );
+    }
     
     $c->detach( '/print_error', ['ERROR_USER_NON_EXSIT'] ) unless ($user);
     
