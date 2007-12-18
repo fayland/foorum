@@ -34,6 +34,22 @@ sub filter_format {
         $text =~ s/>/&gt;/gs;
         $text =~ s/</&lt;/gs;
         my %tags = %Text::WikiFormat::tags;
+        
+        # replace link sub
+        my $linksub = sub {
+            my ($link, $opts)        = @_;
+	        $opts                  ||= {};
+
+            my $ori_text = $link;
+	        ($link, my $title)       = Text::WikiFormat::find_link_title( $link, $opts );
+	        ($link, my $is_relative) = Text::WikiFormat::escape_link( $link, $opts );
+            unless ($is_relative) {
+	            return qq|<a href="$link">$title</a>|;
+	        } else {
+	            return $ori_text;
+	        }
+	    };
+        $tags{link} = $linksub;
         my %opts = ( extended => 1, absolute_links => 1 );
         $text = Text::WikiFormat::format($text, \%tags, \%opts);
     } else {

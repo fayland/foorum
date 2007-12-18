@@ -16,8 +16,9 @@ use Foorum::Formatter qw/filter_format/;
 my $text = <<TEXT;
 = my interesting text =
 
-ANormalLink
-[let the Sun shine|AnExtendedLink]
+ANormalText
+[SunDown|let the Sun down]
+[http://www.fayland.org/|let the Sun shine]
 
 == my interesting lists ==
 
