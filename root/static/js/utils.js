@@ -39,8 +39,6 @@ $(function() {
         var iY = f.indexOf('yyyy');
         if (iY > -1) {
             d.setFullYear(Number(s.substr(iY, 4)));
-        } else {
-            return false; // skip if not the correct format
         }
         var iM = f.indexOf('mm');
         if (iM > -1) {
@@ -53,6 +51,10 @@ $(function() {
         
         var timezoneOffset = -(new Date().getTimezoneOffset());
         d.setMinutes(d.getMinutes() + timezoneOffset);
+        
+        if (isNaN(d.getFullYear())) {
+            return false;
+        }
 
         var t = f
             .split('yyyy').join(d.getFullYear())
