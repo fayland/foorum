@@ -89,6 +89,9 @@ upload:
     - swf
     - htm
     - html
+    - gz
+    - tar
+    - tar.gz
 
 logger:
   path: 1
