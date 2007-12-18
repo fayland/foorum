@@ -9,16 +9,17 @@ use vars qw/@EXPORT_OK $VERSION/;
     /;
 $VERSION = '0.01'; # version
 
-use vars qw/$has_text_textile $has_ubb_code $has_text_wiki $has_uri_find/;
+use vars qw/$has_text_textile $has_ubb_code $has_text_wiki $has_pod_simple $has_uri_find/;
 $has_text_textile = eval "use Text::Textile; 1;";
 $has_ubb_code     = eval "use Foorum::Formatter::BBCode; 1;";
 $has_text_wiki    = eval "use Text::WikiFormat; 1;";
+$has_pod_simple   = eval "use Pod::Simple::Text; 1;";
 $has_uri_find     = eval "use URI::Find; 1;";
 
 sub filter_format {
     my ( $text, $params ) = @_;
 
-    my $format = $params->{format};
+    my $format = $params->{format} || 'plain';
     if ( $format eq 'textile' and $has_text_textile ) {
         my $formatter = Text::Textile->new();
         $formatter->charset('utf-8');
@@ -30,6 +31,13 @@ sub filter_format {
             }
         );
         $text = $formatter->parse($text);
+    } elsif ( $format eq 'pod' and $has_pod_simple) {
+#        my $pod_format = Pod::Simple::Text->new;
+#        my $output;
+#        $pod_format->output_string( \$output );
+#        $text = "=pod\n\n$text" unless $text =~ /\n=[a-z]+\s/;
+#        $pod_format->parse_string_document($text);
+#        $text = $output;
     } elsif ( $format eq 'wiki' and $has_text_wiki) {
         $text =~ s/&/&amp;/gs;
         $text =~ s/>/&gt;/gs;
