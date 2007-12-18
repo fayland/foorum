@@ -64,7 +64,7 @@ sub get_multi {
 
     my %return_users;
     foreach my $v (@$val) {
-        if ( exists $users->{ $val_map_key{$v} } ) {
+        if ( $users->{ $val_map_key{$v} } ) {
             $return_users{$v} = $users->{ $val_map_key{$v} };
         } else {
             $return_users{$v} = get_user_from_db( $self, $c, { $key => $v } );

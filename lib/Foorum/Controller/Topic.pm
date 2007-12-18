@@ -83,14 +83,15 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
         }
     }
 
-    # we prefer [% | html %] now because of my bad memory in TT html
     my $title = $c->req->param('title');
-    $title = encodeHTML($title);
+    my $formatter = $c->req->param('formatter');
+    my $text  = $c->req->param('text');
 
     # create record
+    my $topic_title = encodeHTML($title);
     my $topic = $c->model('DBIC')->resultset('Topic')->create(
         {   forum_id         => $forum_id,
-            title            => $title,
+            title            => $topic_title,
             author_id        => $c->user->user_id,
             last_updator_id  => $c->user->user_id,
             last_update_date => \"NOW()",
@@ -108,6 +109,9 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
             object_id   => $topic->topic_id,
             forum_id    => $forum_id,
             upload_id   => $upload_id,
+            title       => $title,
+            text        => $text,
+            formatter   => $formatter,
         }
     );
 
@@ -178,7 +182,12 @@ sub reply : Regex('^forum/(\w+)/(\d+)(/(\d+))?/reply$') {
         }
     }
 
-    $comment_id = $topic_id unless ($comment_id);
+    $comment_id = 0 unless ($comment_id);
+    
+    my $title = $c->req->param('title');
+    my $formatter = $c->req->param('formatter');
+    my $text  = $c->req->param('text');
+    
     my $comment = $c->model('Comment')->create(
         $c,
         {   object_type => 'topic',
@@ -186,6 +195,9 @@ sub reply : Regex('^forum/(\w+)/(\d+)(/(\d+))?/reply$') {
             forum_id    => $forum_id,
             upload_id   => $upload_id,
             reply_to    => $comment_id,
+            title       => $title,
+            text        => $text,
+            formatter   => $formatter,
         }
     );
 
@@ -287,11 +299,14 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
 
     my $title = $c->req->param('title');
     $title = encodeHTML($title);
+    my $text  = $c->req->param('text');
+    my $formatter = $c->req->param('formatter');
+    
     $comment->update(
         {   title     => $title,
-            text      => $c->req->param('text'),
-            formatter => 'ubb',
-            update_on => \'NOW()',
+            text      => $text,
+            formatter => $formatter,
+            update_on => \'NOW()',         #'
             post_ip   => $c->req->address,
             upload_id => $upload_id,
         }

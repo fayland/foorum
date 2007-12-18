@@ -1,10 +1,13 @@
 [% USE FillInForm %]
 
+[% c.load_once("site/new_post.js") %]
+
 [% UNLESS c.req.method == 'POST';
     comment_title = comment.title | decodeHTML;
     filldata = {
         title => comment_title,
         text  => comment.text,
+        formatter => comment.formatter,
     };
 END; %]
 
@@ -16,21 +19,32 @@ END; %]
   <tr class='title'><td colspan='2'>Eidt a Comment</td></tr>
   <tr class='forum1'><td align='right'>[% c.loc('Title') %]</td><td><input type='text' size='60' maxlength='80' name='title' />
   [% IF c.form.error('title') %]title should be 1-80 chars.[% END %]
-</td></tr>
-  <tr class='forum2'>
+  </td></tr>
+  <tr class='forum2'><td align="right">[% c.loc("Formatter") %]</td>
+    <td><input type='radio' name='formatter' value='ubb' checked='yes' onclick="javascript:switch_formatter()" />UBB &nbsp; <input type='radio' name='formatter' value='textile' onclick="javascript:switch_formatter()" />Textile &nbsp; <input type='radio' name='formatter' value='plain' onclick="javascript:switch_formatter()" />Plain &nbsp; </td>
+  </tr>
+  <tr class='forum1'>
     <td align='center' valign='middle'>
+    
+    <div class='ubb'>
     [% INCLUDE format/emot.html %]
+    </div>
+    
     </td><td>
 
+    <div class='ubb'>
     [% WRAPPER 'format/bbcode.html' %]
+    </div>
 
 	<textarea name="text" id='text' style='width: 90%' rows="15"></textarea>
 	[% IF c.form.error('text') %]text is required.[% END %]
 
+	<div class='ubb'>
 	[% END %]
+    </div>
 
   </td></tr>
-  <tr class='forum1'><td align='right'>[% c.loc('Upload Attachment') %]</td><td>
+  <tr class='forum2'><td align='right'>[% c.loc('Upload Attachment') %]</td><td>
   [% IF upload %]
   [% USE Math %]
 
@@ -47,7 +61,7 @@ END; %]
   [% END %]
   [% INCLUDE upload/input.html %]
   </td></tr>
-  <tr class='forum2'><td></td><td><input type='submit' /></td></tr>
+  <tr class='forum1'><td></td><td><input type='submit' /></td></tr>
 </table>
 </form>
 </div>

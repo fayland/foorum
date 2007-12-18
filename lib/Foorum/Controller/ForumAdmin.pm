@@ -260,6 +260,7 @@ sub announcement : Chained('forum_for_admin') Args(0) {
 
     my $title = $c->req->param('title');
     my $text  = $c->req->param('text');
+    my $formatter = $c->req->param('formatter');
 
     # if no text is typed, delete the record.
     # or else, save it.
@@ -271,6 +272,7 @@ sub announcement : Chained('forum_for_admin') Args(0) {
                     update_on => \"NOW()",
                     author_id => $c->user->user_id,
                     title     => $title,
+                    formatter   => $formatter,
                 }
             );
         } else {
@@ -279,6 +281,9 @@ sub announcement : Chained('forum_for_admin') Args(0) {
                 {   object_type => 'announcement',
                     object_id   => $forum_id,
                     forum_id    => $forum_id,
+                    title       => $title,
+                    text        => $text,
+                    formatter   => $formatter,
                 }
             );
         }

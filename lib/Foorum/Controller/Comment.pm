@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Data::Dumper;
+use Foorum::Utils qw/encodeHTML/;
 
 sub post : Local {
     my ( $self, $c ) = @_;
@@ -33,6 +34,10 @@ sub post : Local {
             $c->detach( '/print_error', [ $c->stash->{upload_error} ] );
         }
     }
+    
+    my $title = $c->req->param('title');
+    my $formatter = $c->req->param('formatter');
+    my $text  = $c->req->param('text');
 
     # create record
     $c->model('Comment')->create(
@@ -41,6 +46,9 @@ sub post : Local {
             object_id   => $object_id,
             forum_id    => $forum_id,
             upload_id   => $upload_id,
+            title       => $title,
+            text        => $text,
+            formatter   => $formatter,
         }
     );
 
@@ -74,6 +82,10 @@ sub reply : LocalRegex('^(\d+)/reply$') {
         }
     }
 
+    my $title = $c->req->param('title');
+    my $formatter = $c->req->param('formatter');
+    my $text  = $c->req->param('text');
+
     my ( $object_id, $object_type, $forum_id )
         = ( $comment->object_id, $comment->object_type, $comment->forum_id );
     my $info = {
@@ -81,6 +93,9 @@ sub reply : LocalRegex('^(\d+)/reply$') {
         object_id   => $object_id,
         forum_id    => $forum_id,
         upload_id   => $upload_id,
+        title       => $title,
+        text        => $text,
+        formatter   => $formatter,
     };
 
     # create record
@@ -150,11 +165,17 @@ sub edit : LocalRegex('^(\d+)/edit$') {
             }
         }
     }
+    
+    my $title = $c->req->param('title');
+    my $text  = $c->req->param('text');
+    my $formatter = $c->req->param('formatter');
+    
+    $title = encodeHTML($title);
 
     $comment->update(
-        {   title     => $c->req->param('title'),
-            text      => $c->req->param('text'),
-            formatter => 'ubb',
+        {   title     => $title,
+            text      => $text,
+            formatter => $formatter,
             update_on => \'NOW()',
             post_ip   => $c->req->address,
             upload_id => $upload_id,

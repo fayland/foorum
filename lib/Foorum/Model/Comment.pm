@@ -6,6 +6,7 @@ use base 'Catalyst::Model';
 use Foorum::Utils qw/get_page_from_url encodeHTML/;
 use Foorum::Formatter qw/filter_format/;
 use Data::Page;
+use List::MoreUtils qw/uniq/;
 use Data::Dumper;
 
 sub get_comments_by_object {
@@ -60,13 +61,12 @@ sub get_comments_by_object {
 
     @comments = splice( @comments, ( $page - 1 ) * $rows, $rows );
 
-    my @all_user_ids; my %unique_user_ids;
+    my @all_user_ids;
     foreach (@comments) {
-        next if ($unique_user_ids{$_->{author_id}});
         push @all_user_ids, $_->{author_id};
-        $unique_user_ids{$_->{author_id}} = 1;
     }
     if (scalar @all_user_ids) {
+        @all_user_ids = uniq @all_user_ids;
         my $authors = $c->model('User')->get_multi($c, 'user_id', \@all_user_ids);
         foreach (@comments) {
             $_->{author} = $authors->{$_->{author_id}};
@@ -121,9 +121,11 @@ sub create {
     my $object_id   = $info->{object_id};
     my $forum_id    = $info->{forum_id} || 0;
     my $reply_to    = $info->{reply_to} || 0;
+    my $formatter   = $info->{formatter} || 'ubb';
+    my $title       = $info->{title} || $c->req->param('title');
+    my $text        = $info->{text}  || $c->req->param('text') || '';
 
-    # we prefer [% | html %] now because of my bad memory in TT html
-    my $title = $c->req->param('title');
+    # we don't use [% | html %] now because of my bad memory in TT html
     $title = encodeHTML($title);
 
     my $comment = $c->model('DBIC')->resultset('Comment')->create(
@@ -131,8 +133,8 @@ sub create {
             object_id   => $object_id,
             author_id   => $c->user->user_id,
             title       => $title,
-            text        => $c->req->param('text') || '',
-            formatter   => 'ubb',
+            text        => $text,
+            formatter   => $formatter,
             post_on     => \'NOW()',      #'
             post_ip     => $c->req->address,
             reply_to    => $reply_to,
