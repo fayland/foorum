@@ -124,11 +124,14 @@
 [% END %]
 
 [% IF c.config.extra.urchin_account %]
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write("\<script src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'>\<\/script>" );
 </script>
 <script type="text/javascript">
-_uacct = "[% c.config.extra.urchin_account %]";
-urchinTracker();
+var pageTracker = _gat._getTracker("[% c.config.extra.urchin_account %]");
+pageTracker._initData();
+pageTracker._trackPageview();
 </script>
 [% END %]
 
