@@ -9,10 +9,11 @@ use vars qw/@EXPORT_OK $VERSION/;
     /;
 $VERSION = '0.01'; # version
 
-use vars qw/$has_text_textile $has_ubb_code $has_text_wiki/;
+use vars qw/$has_text_textile $has_ubb_code $has_text_wiki $has_uri_find/;
 $has_text_textile = eval "use Text::Textile; 1;";
 $has_ubb_code     = eval "use Foorum::Formatter::BBCode; 1;";
 $has_text_wiki    = eval "use Text::WikiFormat; 1;";
+$has_uri_find     = eval "use URI::Find; 1;";
 
 sub filter_format {
     my ( $text, $params ) = @_;
@@ -56,7 +57,18 @@ sub filter_format {
         $text =~ s/&/&amp;/gs;   # no_html
         $text =~ s|<|&lt;|gs;
         $text =~ s|>|&gt;|gs;
+        #$text =~ s/'/&apos;/g; #'
+        #$text =~ s/"/&quot;/g; #"
         $text =~ s|\n|<br />\n|gs;    # linebreaks
+        
+        if ($has_uri_find) {
+            # find URIs
+            my $finder = URI::Find->new( sub {
+                    my($uri, $orig_uri) = @_;
+                    return qq|<a href="$uri">$orig_uri</a>|;
+            } );
+            $finder->find(\$text);
+        }
     }
 
     return $text;
