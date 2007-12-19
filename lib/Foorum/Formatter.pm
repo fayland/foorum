@@ -53,7 +53,7 @@ sub filter_format {
 	        ($link, my $title)       = Text::GooglewikiFormat::find_link_title( $link, $opts );
 	        ($link, my $is_relative) = Text::GooglewikiFormat::escape_link( $link, $opts );
             unless ($is_relative) {
-	            return qq|<a href="$link">$title</a>|;
+	            return qq|<a href="$link" rel="nofollow">$title</a>|;
 	        } else {
 	            return $ori_text;
 	        }
@@ -72,7 +72,7 @@ sub filter_format {
             # find URIs
             my $finder = URI::Find->new( sub {
                     my($uri, $orig_uri) = @_;
-                    return qq|<a href="$uri">$orig_uri</a>|;
+                    return qq|<a href="$uri" rel="nofollow">$orig_uri</a>|;
             } );
             $finder->find(\$text);
         }

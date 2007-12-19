@@ -44,7 +44,7 @@ $(function() {
         if (iM > -1) {
             d.setMonth(Number(s.substr(iM, 2)) - 1);
         }
-        d.setDate(Number(s.substr(f.indexOf('dd'), 2)));    
+        d.setDate(Number(s.substr(f.indexOf('dd'), 2)));
         d.setHours(Number(s.substr(f.indexOf('hh'), 2)));
         d.setMinutes(Number(s.substr(f.indexOf('ii'), 2)));
         d.setSeconds(Number(s.substr(f.indexOf('ss'), 2)));

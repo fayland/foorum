@@ -24,13 +24,40 @@
   [% IF c.form.error('title') %]title should be 1-80 chars.[% END %]
   </td></tr>
   <tr class='forum2'><td align="right">[% c.loc("Formatter") %]</td>
-    <td><input type='radio' name='formatter' value='ubb' checked='yes' onclick="javascript:switch_formatter()" />UBB &nbsp; <input type='radio' name='formatter' value='textile' onclick="javascript:switch_formatter()" />Textile &nbsp; <input type='radio' name='formatter' value='plain' onclick="javascript:switch_formatter()" />Plain &nbsp; </td>
+    <td><input type='radio' name='formatter' value='ubb' checked='yes' onclick="javascript:switch_formatter()" />UBB &nbsp; <input type='radio' name='formatter' value='textile' onclick="javascript:switch_formatter()" />Textile &nbsp; <input type='radio' name='formatter' value='wiki' onclick="javascript:switch_formatter()" />Wiki &nbsp; <input type='radio' name='formatter' value='plain' onclick="javascript:switch_formatter()" />Plain &nbsp; </td>
   </tr>
   <tr class='forum1'>
     <td align='center' valign='middle'>
     
     <div class='ubb'>
     [% INCLUDE format/emot.html %]
+    </div>
+    <div class='wiki' style='display:none'>
+<strong>Wiki Markup Help</strong><br />
+show hide<br />
+=Heading1=<br />
+==Heading2==<br />
+===Heading3===<br />
+<br />
+*bold*<br />
+_italic_<br />
+~~strike~~<br />
+^superscript^<br />
+,,subscript,,<br />
+`inline code`<br />
+<br />
+Indent lists 2 spaces:<br />
+  * bullet item<br />
+  # numbered list<br />
+<br />
+{{{<br />
+verbatim code block<br />
+}}}<br />
+<br />
+[http://domain/page label]<br />
+http://domain/page<br />
+<br />
+|| table || cells ||
     </div>
     
     </td><td>
