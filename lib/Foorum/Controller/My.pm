@@ -39,12 +39,7 @@ sub starred : Local {
             }
         );
         next unless ($object);
-        push @starred_items,
-            {
-            object_type => $rec->object_type,
-            object_id   => $rec->object_id,
-            object      => $object
-            };
+        push @starred_items, $object;
     }
 
     $c->stash(

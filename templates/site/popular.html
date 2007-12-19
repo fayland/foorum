@@ -25,7 +25,7 @@
 <td>[% item.hit_rs.hit_monthly %]</td>
 <td>[% item.hit_rs.hit_all %]</td>
 
-[% INCLUDE include/object_tds.html object = item.object %]
+[% INCLUDE include/object_tds.html object = item %]
 
 </tr>
 [% END %]
@@ -39,3 +39,5 @@
 
     </div>
 </div>
+
+[% RSS_URL = '/site/popular/'_ type _ '/rss' %]

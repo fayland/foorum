@@ -13,6 +13,7 @@
 <pubDate>[% date.format(date.now, '%Y-%m-%dT%H:%M:%S+00:00') %]</pubDate>
 <lastBuildDate>[% date.format(date.now, '%Y-%m-%dT%H:%M:%S+00:00') %]</lastBuildDate>
 <generator>Foorum RSS Generator</generator>
+
 [% FOREACH t IN topics %]
 <item>
 <title>[% t.title %]</title>
@@ -24,5 +25,6 @@
 <pubDate>[% t.last_update_date.replace('\s+', 'T') %]</pubDate>
 </item>
 [% END %]
+
 </channel>
 </rss>

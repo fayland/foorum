@@ -10,7 +10,6 @@ use NEXT;
 use HTML::Email::Obfuscate;
 use Foorum::Utils qw/decodeHTML/;
 use Locale::Country::Multilingual;
-use Encode qw/decode/;
 use vars qw/$lcm $Email/;
 
 my $tmpdir = File::Spec->tmpdir();
@@ -36,8 +35,8 @@ sub code2country {
     $lcm->set_lang($lang);
     return sub {
         my $code = shift;
-        return decode( 'utf8', $lcm->code2country($code) );
-        }
+        return $lcm->code2country($code);
+    }
 }
 
 sub render {

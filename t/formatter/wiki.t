@@ -4,9 +4,9 @@ use Test::More;
 
 BEGIN {
 
-    eval { require Text::WikiFormat }
+    eval { require Text::GooglewikiFormat }
         or plan skip_all =>
-        "Text::WikiFormat is required for this test";
+        "Text::GooglewikiFormat is required for this test";
     
     plan tests => 3;
 }
@@ -22,18 +22,18 @@ ANormalText
 
 == my interesting lists ==
 
-    * unordered one
-    * unordered two
+  * unordered one
+  * unordered two
 
-    1. ordered one
-    2. ordered two
-        a. nested one
-        b. nested two
+  # ordered one
+  # ordered two
 
-    code one
-    code two
+{{{
+code one
+code two
+}}}
 
-The first line of a '''normal''' paragraph.
+The first line of a *normal* paragraph.
 The second line of a normal paragraph.  Whee.
 such as http://www.cpan.org/
 TEXT
@@ -42,6 +42,6 @@ my $html = filter_format($text, { format => 'wiki' } );
 
 like($html, qr/ol/,   '*,* OK');
 like($html, qr/ul/,   '1,2 OK');
-like($html, qr/\<a href=/, 'extended => 1, absolute_links => 1 OK');
+like($html, qr/\<a href=/, 'absolute_links OK');
 
 #diag($html);

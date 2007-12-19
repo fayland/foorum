@@ -64,6 +64,7 @@ sub get_object_by_type_id {
             return unless ($object);
             return {
                 object_type => 'topic',
+                object_id   => $object_id,
                 title  => $object->{title},
                 author => $c->model('User')->get($c, { user_id => $object->{author_id} } ),
                 url    => '/forum/' . $object->{forum_id} . "/$object_id",
@@ -79,6 +80,7 @@ sub get_object_by_type_id {
             return unless ($object_id);
             return {
                 object_type => 'poll',
+                object_id   => $object_id,
                 title  => $object->title,
                 author => $c->model('User')->get($c, { user_id => $object->author_id } ),
                 url    => '/forum/' . $object->forum_id . "/poll/$object_id",

@@ -43,7 +43,7 @@ requires 'Net::CIDR::Lite';
 
 # cron
 requires 'TheSchwartz';
-recommends 'Schedule::Cron';
+requires 'Schedule::Cron';
 recommends 'Proc::PID::File';
 
 # mail
@@ -53,6 +53,8 @@ recommends 'Email::Send::SMTP::TLS';
 # formatter
 recommends 'HTML::BBCode' => '2.00';
 recommends 'Text::Textile';
+requires   'URI::Find';
+requires   'Text::GooglewikiFormat';
 
 # db debug
 recommends 'Catalyst::Model::DBIC::Schema::QueryLog';
