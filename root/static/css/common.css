@@ -28,17 +28,21 @@ input, textarea, select { border-width: 1px; padding: 1px; font-size: 9pt; borde
 
 .pager {
     margin:2px;
-	padding:0;
-	font-size:12px;
+    padding:0;
+    font-size:12px;
 }
 .pager a {
-	display: inline;
-	margin:0 3px;
-	width:20px;
-	height:18px;
-	border:1px solid #BFDD97;
-	text-align:center;
-	text-decoration:none;
-	color:#434F33;
+    display: inline;
+    margin:0 3px;
+    width:20px;
+    height:18px;
+    border:1px solid #BFDD97;
+    text-align:center;
+    text-decoration:none;
+    color:#434F33;
     padding:2px;
+}
+.pager a:hover {
+    background:#DCFFAE;
+    font-weight:bold;
 }
