@@ -1,5 +1,5 @@
-
 [% IF pager %]
+<div class='pager'>
 Page [% pager.current_page %] of [% pager.last_page %]
 [% IF pager.last_page > 1%] - 
     [% IF pager.previous_page %]
@@ -16,4 +16,5 @@ Page [% pager.current_page %] of [% pager.last_page %]
     <a href="[% url_prefix %]/page=[% pager.next_page %]/[% url_postfix %]">Next &gt;</a> 
     [% END %]
 [% END %]
+</div>
 [% END %]

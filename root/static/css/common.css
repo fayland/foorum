@@ -1,11 +1,11 @@
-IMG { border:0px; }
-BODY { 
+img { border:0px; }
+body { 
     font-family: arial,sans-serif;
     font-size: 9pt;
     margin: 0;
 }
-TD, DIV, form, OPTION, P, TH { font-family: arial,sans-serif; font-size: 9pt }
-INPUT, textarea, select { border-width: 1px; padding: 1px; font-size: 9pt; border-color: #cccccc; }
+td, div, form, option, p, th { font-family: arial,sans-serif; font-size: 9pt }
+input, textarea, select { border-width: 1px; padding: 1px; font-size: 9pt; border-color: #cccccc; }
 
 /* bar header */
 #gbar { float:left; height:22px; padding-top: 4px; margin-left: 11px; }
@@ -25,3 +25,21 @@ INPUT, textarea, select { border-width: 1px; padding: 1px; font-size: 9pt; borde
 .lightbox A:active { color:black;}
 .lightbox A:hover { color:black; }
 .lightbox A:link { color:black; }
+
+.pager {
+    margin:2px;
+	padding:0;
+	font-size:12px;
+}
+.pager a {
+	display: inline;
+	clear: none;
+	margin:0 3px;
+	width:20px;
+	height:18px;
+	border:1px solid #BFDD97;
+	text-align:center;
+	text-decoration:none;
+	color:#434F33;
+    padding:2px;
+}

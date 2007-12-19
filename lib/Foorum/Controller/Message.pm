@@ -93,13 +93,14 @@ sub inbox : Local {
         {   columns  => [ 'message_id', 'title', 'post_on', ],
             prefetch => ['sender'],
             order_by => 'post_on DESC',
-            rows => $c->config->{per_page}->{message},
+            rows => 2,
             page => $page_no,
         }
     );
     my @messages = $it->all;
     $c->stash->{messages} = \@messages;
     $c->stash->{pager}    = $it->pager;
+    $c->stash->{url_prefix} = '/message/inbox';
 
     my @all_message_ids;
     push @all_message_ids, $_->message_id foreach (@messages);
@@ -128,6 +129,7 @@ sub outbox : Local {
     my @messages = $it->all;
     $c->stash->{messages} = \@messages;
     $c->stash->{pager}    = $it->pager;
+    $c->stash->{url_prefix} = '/message/outbox';
 
     $c->stash->{template} = 'message/outbox.html';
 }
