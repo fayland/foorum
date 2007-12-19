@@ -36,7 +36,7 @@ sub default : Private {
     }
     
     my $url_prefix = $c->req->path;
-    $url_prefix =~ s/\/page=\d+((\/)|$)/$2/isg;
+    $url_prefix =~ s/\/page=\d+(\/|$)/$1/isg;
     
     
     if ($rss) {

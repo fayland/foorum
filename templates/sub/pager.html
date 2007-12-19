@@ -2,6 +2,18 @@
 <div class='pager'>
 Page [% pager.current_page %] of [% pager.last_page %]
 [% IF pager.last_page > 1%] - 
+
+    [% UNLESS url_prefix;
+        path_query = c.req.uri.path_query;
+        IF (matches = path_query.match('^(.*?)/page=(\w+)(/|$)(.*?)$'));
+            url_prefix = matches.0; url_postfix = matches.3;
+        ELSE;
+            url_prefix = c.req.uri.path;url_postfix = c.req.uri.query;
+        END;
+    END; %]
+    [% url_prefix  = url_prefix.replace('/$', '');
+       url_postfix = url_postfix.replace('^/', ''); %]
+
     [% IF pager.previous_page %]
         <a href="[% url_prefix %]/page=[% pager.previous_page %]/[% url_postfix %]">&lt; Previous</a> 
     [% END %]
