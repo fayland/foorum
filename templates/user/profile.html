@@ -29,7 +29,7 @@
 	
 	[% IF user.country %]
 	<tr class='title'><td colspan='2'>[% c.loc('Location Information') %]</td></tr>
-	<tr class='misc1'><td align='right'>[% c.loc('Country') %]</td><td>[% c.user.country | code2country(lang) %]</td></tr>
+	<tr class='misc1'><td align='right'>[% c.loc('Country') %]</td><td>[% user.country | code2country(lang) %]</td></tr>
 	[% END %]
 
 	<tr class='title'><td colspan='2'>[% c.loc('Contact Information') %]</td></tr>
