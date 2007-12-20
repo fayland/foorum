@@ -17,15 +17,6 @@ input, textarea, select { border-width: 1px; padding: 1px; font-size: 9pt; borde
     text-align:center;
 }
 
-.lightbox {
-    color:black;
-    margin: 6px 12px 6px 12px;
-}
-.lightbox A:visited { color:gray; }
-.lightbox A:active { color:black;}
-.lightbox A:hover { color:black; }
-.lightbox A:link { color:black; }
-
 .pager {
     margin:2px;
     padding:0;

@@ -36,7 +36,6 @@
 
 [% UNLESS simple_wrapper %]
 
-<div class='barline'></div>
 <div id="gbar">
 <table border="0" cellpadding="0" cellspacing="0">
 <tbody>
@@ -64,19 +63,7 @@
 <div id="guser" width="100%" align="right">
 <nowrap>
     [% IF c.user_exists %]
-    [% c.load_once("jquery/blockUI.js") %]
-    <script>
-        function my_panel() {
-            $.blockUI("<div class='lightbox'><h3>[% c.loc('My Panel') %]</h3><ul>" + 
-                "<li><a href='/message'>[% c.loc('Message') %]</a></li>" + 
-                "<li><a href='/my/topics'>[% c.loc('My Recent Topics') %]</a></li>" + 
-                "<li><a href='/my/starred'><img src='http://mail.google.com/mail/images/star_on_2.gif' /> My Starred Items</a></li>" + 
-                "<li><a href='/profile/edit'>[% c.loc('Edit Profile') %]</a></li>" + 
-                "</ul><div style='text-align:right'><a href='javascript:$.unblockUI()'>[% c.loc('Close') %]</a></div></div>");
-        }
-    </script>
     <span id='new_message'></span> 
-       <a href='javascript:my_panel();'>[% c.loc('My Panel') %]</a> 
      | <a href='/logout'>[% c.loc("Log out") %]</a> 
     [% ELSE %]
     <a href='/register'>[% c.loc("Register") %]</a>  | <a href='/login'>[% c.loc("Log in") %]</a> | <a href='/profile/forget_password'>[% c.loc("Forget password?") %]</a>
@@ -88,10 +75,14 @@
     [% IF roles.site.admin OR roles.site.moderator %]
     | <a href='/admin'>[% c.loc('Site Admin') %]</a>
     [% END %]
+    [% IF c.user_exists %]
+    <br />
+    <a href='/message'>[% c.loc('Message') %]</a> | <a href='/my/topics'>[% c.loc('My Recent Topics') %]</a> | <a href='/my/starred'><img src='http://mail.google.com/mail/images/star_on_2.gif' /> My Starred Items</a> | <a href='/profile/edit'>[% c.loc('Edit Profile') %]</a>
+    [% END %]
 </nowrap>
 </div>
-<div style="clear: both;">
-</div>
+<div class='barline'></div>
+<div style="clear: both;"></div>
 <p></p>
 [% END %]
 

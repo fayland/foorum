@@ -76,7 +76,7 @@ A:link { color: #333333 }
 .horizontal { width: 100%; height: 1px; border-top:1px solid #F5DEB3; margin: 4px; }
 
 /* header bar */
-.barline { border-top:1px solid #F5DEB3; font-size:0; height:1px; position:absolute; right:0; top:26px; width:110% }
+.barline { border-top:1px solid #F5DEB3; font-size:0; height:1px; clear:both; width:100% }
 
 .tabs {
     padding-left: 2em;
