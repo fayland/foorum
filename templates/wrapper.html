@@ -64,7 +64,7 @@
 <nowrap>
     [% IF c.user_exists %]
     <span id='new_message'></span> 
-     | <a href='/logout'>[% c.loc("Log out") %]</a> 
+    <a href='/logout'>[% c.loc("Log out") %]</a> 
     [% ELSE %]
     <a href='/register'>[% c.loc("Register") %]</a>  | <a href='/login'>[% c.loc("Log in") %]</a> | <a href='/profile/forget_password'>[% c.loc("Forget password?") %]</a>
     [% END %]
