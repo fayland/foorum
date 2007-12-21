@@ -4,12 +4,12 @@
    default:
      class: 'Cache::FileCache'
      namespace: 'Foorum'
-     default<i>expires</i>in: 600
+     default_expires_in: 600
 </blockquote><p>optional: cache_root: '/home/faylandfoorum/cache'</p><p>and we can configure Cache::Memcached as backend cache</p><p>cache:</p><blockquote> backends:
    default:
      class: 'Cache::Memcached'
      servers:
        - '127.0.0.1:11211'
-     compress<i>threshold: '10</i>000'
+     compress_threshold: '10_000'
      debug: 0
 </blockquote><p>See Also L&lt;Catalyst::Plugin::Cache&gt;</p><h1> Mail Configure </h1><p>we have several conf under directory conf/examples for mail.</p><ul><li>sendmail.yml - under Linux/Unix we recommended this one. cp conf/examples/sendmail.yml conf/mail.yml </li><li>SMTP.yml - if u have a SMTP server. cp it as conf/mail.yml and change SMTP server and user/pass </li><li>Gmail.yml - if u have no choice, try this. </li></ul><p>See Also L&lt;Email::Send&gt;</p>
