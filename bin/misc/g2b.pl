@@ -28,7 +28,7 @@ close(FH);
 print "lib/Foorum/I18N/tw.po OK\n";
 
 # for root/js/jquery/validate/messages_cn.js
-open(FH, "<$home/root/js/jquery/validate/messages_cn.js");
+open(FH, "<$home/root/static/js/jquery/validate/messages_cn.js");
 flock(FH, 1);
 binmode(FH, ':encoding(simp-trad)');
 $simp = <FH>;
@@ -36,18 +36,16 @@ close(FH);
 
 $trad = simp_to_trad($simp);
 
-open(FH, ">$home/root/js/jquery/validate/messages_tw.js");
+open(FH, ">$home/root/static/js/jquery/validate/messages_tw.js");
 flock(FH, 2);
 binmode(FH, ':utf8');
 print FH $trad;
 close(FH);
 
-print "root/js/jquery/validate/messages_cn.js OK\n";
-
-print "lib/Foorum/I18N/tw.po OK\n";
+print "root/static/js/jquery/validate/messages_cn.js OK\n";
 
 # for root/js/site/formatter/ubbhelp-cn.js
-open(FH, "<$home/root/js/site/formatter/ubbhelp-cn.js");
+open(FH, "<$home/root/static/js/site/formatter/ubbhelp-cn.js");
 flock(FH, 1);
 binmode(FH, ':encoding(simp-trad)');
 $simp = <FH>;
@@ -55,14 +53,12 @@ close(FH);
 
 $trad = simp_to_trad($simp);
 
-open(FH, ">$home/root/js/site/formatter/ubbhelp-tw.js");
+open(FH, ">$home/root/static/js/site/formatter/ubbhelp-tw.js");
 flock(FH, 2);
 binmode(FH, ':utf8');
 print FH $trad;
 close(FH);
 
-print "root/js/site/formatter/ubbhelp-cn.js OK\n";
-
-
+print "root/js/static/site/formatter/ubbhelp-cn.js OK\n";
 
 1;
