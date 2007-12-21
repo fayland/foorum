@@ -26,7 +26,7 @@ Page [% pager.current_page %] of [% pager.last_page %]
     [% END %]
 
     [% IF start_page != 1 %]
-        <a href="[% url_prefix %]/page=1/[% url_postfix %]" title="First">&lt;&lt;</a>
+        <a href="[% url_prefix %]/page=1/[% url_postfix %]" title="First">|&lt;&lt;</a>
     [% END %]
     [% IF pager.previous_page %]
         <a href="[% url_prefix %]/page=[% pager.previous_page %]/[% url_postfix %]">&lt; Prev</a> 
