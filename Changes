@@ -9,6 +9,7 @@ This file documents the revision history for Foorum.
     - rewrite Model/Email.pm to send email after compose a message
     - add Plain/Textile Formatter to post/reply/edit
     - add Text::GooglewikiFormat
+    - new language: Chinese Traditional
 
 0.08  Sun Dec 9 16:30:30 2007
     - I18N encoding fix
