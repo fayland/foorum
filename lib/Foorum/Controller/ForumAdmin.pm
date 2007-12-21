@@ -120,7 +120,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
     foreach (@moderator_users) {
         $c->model('Policy')->create_user_role(
             $c,
-            {   user_id => $_->user_id,
+            {   user_id => $_->{user_id},
                 role    => 'moderator',
                 field   => $forum->{forum_id},
             }
