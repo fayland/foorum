@@ -19,7 +19,7 @@
 [% FOREACH item IN shared_items %]
 <tr align='center' class='misc[% IF loop.count mod 2 %]1[% ELSE %]2[% END %]'>
 
-<td><a href="javascript:share('[% item.object_type %]', '[% item.object_id %]', 'shareDiv')"><span id='shareDiv'>Unshare</span></a></td>
+<td><a href="javascript:share('[% item.object_type %]', '[% item.object_id %]', 'shareDiv')"><span id='shareDiv'><img src='[% c.config.dir.images %]/site/t/unshare.gif' /></span></a></td>
 
 [% INCLUDE include/object_tds.html object = item %]
 

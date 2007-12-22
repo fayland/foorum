@@ -80,8 +80,8 @@
     [% IF c.user_exists %]
     <br />
     <a href='/my/topics'>[% c.loc('My Recent Topics') %]</a> | 
-    <a href='/my/starred'><img src='http://mail.google.com/mail/images/star_on_2.gif' /> [% c.loc("My Starred Items") %]</a> | 
-    <a href='/my/shared'>[% c.loc("My Shared Items") %]</a>
+    <a href='/my/starred'><img src='[% c.config.dir.images %]/site/t/star_on.gif' align='absmiddle' /> [% c.loc("My Starred Items") %]</a> | 
+    <a href='/my/shared'><img src='[% c.config.dir.images %]/site/t/unshare.gif' align='absmiddle' /> [% c.loc("My Shared Items") %]</a>
     [% END %]
 </nowrap>
 </div>
