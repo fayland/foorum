@@ -371,7 +371,6 @@ CREATE TABLE IF NOT EXISTS `topic` (
   `last_updator_id` int(11) unsigned NOT NULL default '0',
   `last_update_date` datetime default NULL,
   `author_id` int(11) unsigned NOT NULL default '0',
-  `post_on` datetime DEFAULT NULL,
   `total_replies` int(11) NOT NULL default '0',
   `status` enum('healthy','banned','deleted') NOT NULL default 'healthy',
   PRIMARY KEY  (`topic_id`),
