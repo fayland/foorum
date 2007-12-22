@@ -51,6 +51,42 @@ sub starred : Local {
     );
 }
 
+sub shared : Local {
+    my ( $self, $c ) = @_;
+
+    my $page = get_page_from_url( $c->req->path );
+
+    my $rs = $c->model('DBIC::Share')->search(
+        { user_id => $c->user->user_id, },
+        {   order_by => \'time DESC',
+            rows     => 20,
+            page     => $page,
+        }
+    );
+
+    my @objects = $rs->all;
+
+    my @shared_items;
+    foreach my $rec (@objects) {
+        my $object = $c->model('Object')->get_object_by_type_id(
+            $c,
+            {   object_type => $rec->object_type,
+                object_id   => $rec->object_id,
+            }
+        );
+        next unless ($object);
+        push @shared_items, $object;
+    }
+
+    $c->stash(
+        {   template      => 'my/shared.html',
+            shared_items => \@shared_items,
+            pager         => $rs->pager,
+            url_prefix    => '/my/shared',
+        }
+    );
+} 
+
 sub topics : Local {
     my ( $self, $c ) = @_;
 

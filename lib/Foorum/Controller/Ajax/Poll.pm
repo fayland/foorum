@@ -3,7 +3,6 @@ package Foorum::Controller::Ajax::Poll;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use YAML::Syck;
 use Data::Dumper;
 
 sub vote : Local {

@@ -48,9 +48,16 @@ foreach my $filename (@filenames) {
         $string =~ s/</&lt;/gs;
         my $html = Text::GooglewikiFormat::format($string, \%tags);
         $html = <<HTML;
+<html>
+<head>
+<title>$filename</title>
 <link type="text/css" rel="stylesheet" href="http://code.google.com/hosting/css/d_20071112.css" />
+</head>
+<body>
 <h1>From <a href="$project_url/wiki/$filename">$project_url/wiki/$filename</a></h1>
 $html
+</body>
+</html>
 HTML
         open(FH, ">$trunk_dir/docs/$filename\.html");
         flock(FH, 2);

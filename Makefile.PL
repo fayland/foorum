@@ -35,9 +35,8 @@ requires 'Template::Plugin::Date';
 requires 'Template::Plugin::String::Compare';
 requires 'File::Remove';
 requires 'HTML::Email::Obfuscate';
-requires 'Locale::Country::Multilingual';
-requires 'YAML::Syck';
-requires 'File::Slurp';
+requires 'Locale::Country::Multilingual' => '0.03'; # for tw lang
+#requires 'File::Slurp';
 requires 'Net::IP::Match::Regexp';
 requires 'Net::CIDR::Lite';
 

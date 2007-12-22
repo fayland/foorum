@@ -10,6 +10,8 @@ This file documents the revision history for Foorum.
     - add Plain/Textile Formatter to post/reply/edit
     - add Text::GooglewikiFormat
     - new language: Chinese Traditional
+    - add =pod formatter supports
+    - My Shared Items
 
 0.08  Sun Dec 9 16:30:30 2007
     - I18N encoding fix

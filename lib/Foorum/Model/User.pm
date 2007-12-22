@@ -53,13 +53,14 @@ sub get_multi {
         $val_map_key{$_} = $cache_key;
     }
 
-    # XXX?
-    # if ($c->config->{cache}{backend}{default}{class} eq 'Cache::Memcached') {
-    # FIXME Catalyst::Plugin::Cache with Cache::Memcached do not support get_multi;
-    # my $users = $c->cache->get_multi(@mem_keys);
+    my $cache = $c->default_cache_backend;
     my $users;
-    foreach (@mem_keys) {
-        $users->{$_} = $c->cache->get($_);
+    if ($cache->can('get_multi')) { # for Cache::Memcached
+        $users = $cache->get_multi(@mem_keys);
+    } else {
+        foreach (@mem_keys) {
+            $users->{$_} = $c->cache->get($_);
+        }
     }
 
     my %return_users;

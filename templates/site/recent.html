@@ -17,6 +17,7 @@
         <li[% IF recent_type == 'my' %] class="ui-tabs-selected"[% END %]><a href='/my/topics'><span>[% c.loc('My Recent Topics') %]</span></a></li>
         [% IF c.user_exists %]
         <li><a href='/my/starred'><span>[% c.loc('My Starred Items') %]</span></a></li>
+        <li><a href='/my/shared'><span>[% c.loc('My Shared Items') %]</span></a></li>
         [% END %]
         <li><a href='/site/popular'><span>[% c.loc("Popular") %]</span></a></li>
         <li><a href='/site/members'><span>[% c.loc('Recent Members') %]</span></a></li>

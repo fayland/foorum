@@ -110,7 +110,7 @@ sub remove_forum {
             ->search( { poll_id => { 'IN', \@poll_ids }, } )->delete;
     }
 
-    # comment and star
+    # comment and star/share
     if ( scalar @topic_ids ) {
         $c->model('DBIC::Comment')->search(
             {   object_type => 'topic',
@@ -118,6 +118,11 @@ sub remove_forum {
             }
         )->delete;
         $c->model('DBIC::Star')->search(
+            {   object_type => 'topic',
+                object_id   => { 'IN', \@topic_ids },
+            }
+        )->delete;
+        $c->model('DBIC::Share')->search(
             {   object_type => 'topic',
                 object_id   => { 'IN', \@topic_ids },
             }
@@ -130,6 +135,11 @@ sub remove_forum {
             }
         )->delete;
         $c->model('DBIC::Star')->search(
+            {   object_type => 'poll',
+                object_id   => { 'IN', \@poll_ids },
+            }
+        )->delete;
+        $c->model('DBIC::Share')->search(
             {   object_type => 'poll',
                 object_id   => { 'IN', \@poll_ids },
             }
@@ -180,7 +190,7 @@ sub merge_forums {
     $c->model('DBIC::Poll')->search( { forum_id => $from_id, } )
         ->update( { forum_id => $to_id, } );
 
-    # comment and star
+    # comment
     $c->model('DBIC::Comment')->search( { forum_id => $from_id, } )
         ->update( { forum_id => $to_id, } );
 

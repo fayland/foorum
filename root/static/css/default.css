@@ -77,8 +77,3 @@ A:link { color: #333333 }
 
 /* header bar */
 .barline { border-top:1px solid #F5DEB3; font-size:0; height:1px; clear:both; width:100% }
-
-.tabs {
-    padding-left: 2em;
-    padding-right: 2em;
-}

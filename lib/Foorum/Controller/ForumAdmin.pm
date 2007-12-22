@@ -3,8 +3,7 @@ package Foorum::Controller::ForumAdmin;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use File::Slurp;
-use YAML::Syck;
+#use File::Slurp;
 use Foorum::Utils qw/is_color encodeHTML/;
 use Data::Dumper;
 
@@ -139,14 +138,13 @@ sub style : Chained('forum_for_admin') Args(0) {
 
     $c->stash->{template} = 'forumadmin/style.html';
 
-    # style.yml and style.css
-    my $yml
-        = $c->path_to( 'style', 'custom', "forum$forum_id\.yml" )->stringify;
+    # style.json and style.css
+    my $json = $c->path_to( 'root', 'static', 'css', 'style',
+        "forum$forum_id\.json" )->stringify;
 
     unless ( $c->req->method eq 'POST' ) {
-        if ( -e $yml ) {
-            my $style = LoadFile($yml);
-            $c->stash->{style} = $style;
+        if ( -e $json ) {
+            $c->stash->{has_style} = 1;
         }
         return;
     }
@@ -181,8 +179,8 @@ sub style : Chained('forum_for_admin') Args(0) {
 
     return if ( $c->form->has_error );
 
-    # save the style.yml and style.css
-    my $css = $c->path_to( 'root', 'static', 'css', 'custom',
+    # save the style.json and style.css
+    my $css = $c->path_to( 'root', 'static', 'css', 'style',
         "forum$forum_id\.css" )->stringify;
 
     my $style = $c->req->params;
@@ -202,18 +200,18 @@ sub style : Chained('forum_for_admin') Args(0) {
         close(FH);
     }
 
-    my $yml_content = $c->view('TT')->render(
+    my $json_content = $c->view('TT')->render(
         $c,
-        'style/style.yml',
+        'style/style.json',
         {   no_wrapper => 1,
             style      => $style,
         }
     );
 
-    #    write_file($yml, $yml_content);
-    if ( open( FH, '>', $yml ) ) {
+    #    write_file($json, $json_content);
+    if ( open( FH, '>', $json ) ) {
         flock( FH, 2 );
-        print FH $yml_content;
+        print FH $json_content;
         close(FH);
     }
 
@@ -226,13 +224,13 @@ sub del_style : Chained('forum_for_admin') Args(0) {
     my $forum    = $c->stash->{forum};
     my $forum_id = $forum->{forum_id};
 
-    my $yml
-        = $c->path_to( 'style', 'custom', "forum$forum_id\.yml" )->stringify;
-    my $css = $c->path_to( 'root', 'static', 'css', 'custom',
+    my $css = $c->path_to( 'root', 'static', 'css', 'style',
         "forum$forum_id\.css" )->stringify;
+    my $json = $c->path_to( 'root', 'static', 'css', 'style',
+        "forum$forum_id\.json" )->stringify;
 
-    unlink $yml if ( -e $yml );
-    unlink $css if ( -e $css );
+    unlink $json if ( -e $json );
+    unlink $css  if ( -e $css );
 
     $c->res->redirect( $forum->{forum_url} );
 }

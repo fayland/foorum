@@ -8,15 +8,15 @@
 
 [% c.load_once("jquery.js") %]
 [% c.load_once("utils.js") %]
-[% IF c.user_exists %]
+[% IF c.user_exists AND c.req.path != 'message' AND c.req.path != 'message/inbox' %]
     [% c.load_once("site/message.js") %]
 [% END %]
 [% c.load_once("common.css") %]
 [% IF forum.forum_id %]
     [% TRY %]
-    [% css_file = c.config.home _ '/root/static/css/custom/forum' _ forum.forum_id _ '.css' %]
+    [% css_file = c.config.home _ '/root/static/css/style/forum' _ forum.forum_id _ '.css' %]
     [% USE File( css_file ) %]
-    [% c.load_once("custom/forum" _ forum.forum_id _ ".css") %]
+    [% c.load_once("style/forum" _ forum.forum_id _ ".css") %]
     [% CATCH File %]
     [% c.load_once("default.css") %]
     [% END %]
@@ -64,6 +64,8 @@
 <nowrap>
     [% IF c.user_exists %]
     <span id='new_message'></span> 
+    <a href='/message'>[% c.loc('Message') %]</a> | 
+    <a href='/profile/edit'>[% c.loc('Edit Profile') %]</a> | 
     <a href='/logout'>[% c.loc("Log out") %]</a> 
     [% ELSE %]
     <a href='/register'>[% c.loc("Register") %]</a>  | <a href='/login'>[% c.loc("Log in") %]</a> | <a href='/profile/forget_password'>[% c.loc("Forget password?") %]</a>
@@ -77,7 +79,9 @@
     [% END %]
     [% IF c.user_exists %]
     <br />
-    <a href='/message'>[% c.loc('Message') %]</a> | <a href='/my/topics'>[% c.loc('My Recent Topics') %]</a> | <a href='/my/starred'><img src='http://mail.google.com/mail/images/star_on_2.gif' /> My Starred Items</a> | <a href='/profile/edit'>[% c.loc('Edit Profile') %]</a>
+    <a href='/my/topics'>[% c.loc('My Recent Topics') %]</a> | 
+    <a href='/my/starred'><img src='http://mail.google.com/mail/images/star_on_2.gif' /> [% c.loc("My Starred Items") %]</a> | 
+    <a href='/my/shared'>[% c.loc("My Shared Items") %]</a>
     [% END %]
 </nowrap>
 </div>

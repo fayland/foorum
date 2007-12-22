@@ -76,4 +76,4 @@ A:link { color: [% style.link %] }
 .horizontal { width: 100%; height: 1px;border-top:1px solid [% style.titlecolor %]; margin: 4px; }
 
 /* header bar */
-.barline { border-top:1px solid [% style.titlecolor %]; font-size:0; height:1px; position:absolute; right:0; top:26px; width:110% }
+.barline { border-top:1px solid [% style.titlecolor %]; font-size:0; height:1px; clear:both; width:100% }

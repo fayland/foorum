@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Model';
 use Data::Dumper;
-use Foorum::Log qw/error_log/;
+use Foorum::ExternalUtils qw/error_log/;
 
 sub log_path {
     my ( $self, $c, $loadtime ) = @_;
@@ -63,7 +63,7 @@ sub log_error {
 
     $level ||= 'debug';
 
-    # thin wrapper for Foorum::Log sub error_log
+    # thin wrapper for Foorum::ExternalUtils sub error_log
     error_log( $c->model('DBIC'), $level, $error );
 }
 

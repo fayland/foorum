@@ -126,6 +126,10 @@ use L<Cache::Memcached> or use L<Cache::FileCache> or others;
 
 use L<TheSchwartz>;
 
+=item Multi Formatter
+
+L<HTML::BBCode>, L<Text::Textile>, L<Pod::Xhtml>, L<Text::GooglewikiFormat>
+
 =item Captcha
 
 To keep robot out.

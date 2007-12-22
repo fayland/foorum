@@ -28,7 +28,7 @@ sub recent : Local {
             'me.status' => { '!=', 'banned' },
             @extra_cols,
         },
-        {   order_by => 'last_update_date desc',
+        {   order_by => 'topic_id desc',
             prefetch => [ 'author', 'last_updator', 'forum' ],
             join     => [qw/forum/],
             rows     => 20,

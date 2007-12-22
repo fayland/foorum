@@ -334,6 +334,8 @@ CREATE TABLE IF NOT EXISTS `star` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE share LIKE star;
+
 -- --------------------------------------------------------
 
 --
@@ -369,11 +371,11 @@ CREATE TABLE IF NOT EXISTS `topic` (
   `last_updator_id` int(11) unsigned NOT NULL default '0',
   `last_update_date` datetime default NULL,
   `author_id` int(11) unsigned NOT NULL default '0',
+  `post_on` datetime DEFAULT NULL,
   `total_replies` int(11) NOT NULL default '0',
   `status` enum('healthy','banned','deleted') NOT NULL default 'healthy',
   PRIMARY KEY  (`topic_id`),
-  KEY `topic_id` (`topic_id`),
-  KEY `last_updator_id` (`last_updator_id`),
+  KEY `last_update_date` (`last_update_date`),
   KEY `author_id` (`author_id`),
   KEY `forum_id` (`forum_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

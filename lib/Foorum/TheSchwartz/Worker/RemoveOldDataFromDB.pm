@@ -2,8 +2,7 @@ package Foorum::TheSchwartz::Worker::RemoveOldDataFromDB;
 
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
-use Foorum::ExternalUtils qw/schema/;
-use Foorum::Log qw/error_log/;
+use Foorum::ExternalUtils qw/schema error_log/;
 
 sub work {
     my $class = shift;

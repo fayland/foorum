@@ -3,7 +3,6 @@ package Foorum::Controller::Ajax;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use YAML::Syck;
 use Data::Dumper;
 
 sub auto : Private {
@@ -46,42 +45,6 @@ sub new_message : Local {
 
 =pod
 
-=item loadstyle?style=$stylename
-
-(ForumAdmin.pm/style) Load the $stylename.yml under HOME/style, and print the javscript
-
-=cut
-
-sub loadstyle : Local {
-    my ( $self, $c ) = @_;
-
-    my $style = $c->req->param('style');
-    return unless ($style);
-    $style =~ s/\W+/\_/isg;
-
-    my $output;
-
-    my $style_file
-        = $c->path_to( 'style', 'system', "$style\.yml" )->stringify;
-    return unless ( -e $style_file );
-
-    $style = LoadFile($style_file);
-
-    foreach ( keys %{$style} ) {
-        my $background = qq~\$('#$_').style.background = "$style->{$_}";~
-            if ( $style->{$_} =~ /^\#/ );
-        $output .= <<JAVASCRIPT;
-        \$('#$_').value = "$style->{$_}";
-        $background
-JAVASCRIPT
-    }
-
-    $c->res->content_type('text/javascript');
-    $c->res->body($output);
-}
-
-=pod
-
 =item validate_username
 
 Ajax way to validate the username in Register progress.
@@ -97,6 +60,50 @@ sub validate_username : Local {
     return $c->res->body($ERROR) if ($ERROR);
 
     $c->res->body('OK');
+}
+
+sub star : Local {
+    my ( $self, $c ) = @_;
+    
+    return $c->res->body('LOGIN FIRST') unless ( $c->user_exists );
+
+    my $object_type = $c->req->param('obj_type');
+    my $object_id   = $c->req->param('obj_id');
+
+    # validate
+    $object_type =~ s/\W+//g;
+    $object_id   =~ s/\D+//g;
+    return $c->res->body('ERROR') unless ( $object_type and $object_id );
+
+    # if we already has it, it's unstar, or else, it's star
+    my $ret = $c->model('DBIC')->resultset('Star')->del_or_create( {
+        user_id     => $c->user->user_id,
+        object_type => $object_type,
+        object_id   => $object_id,
+    } );
+    $c->res->body($ret);
+}
+
+sub share : Local {
+    my ( $self, $c ) = @_;
+    
+    return $c->res->body('LOGIN FIRST') unless ( $c->user_exists );
+
+    my $object_type = $c->req->param('obj_type');
+    my $object_id   = $c->req->param('obj_id');
+
+    # validate
+    $object_type =~ s/\W+//g;
+    $object_id   =~ s/\D+//g;
+    return $c->res->body('ERROR') unless ( $object_type and $object_id );
+
+    # if we already has it, it's unstar, or else, it's star
+    my $ret = $c->model('DBIC')->resultset('Share')->del_or_create( {
+        user_id     => $c->user->user_id,
+        object_type => $object_type,
+        object_id   => $object_id,
+    } );
+    $c->res->body($ret);
 }
 
 =pod

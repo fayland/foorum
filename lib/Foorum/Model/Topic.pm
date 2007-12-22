@@ -28,6 +28,22 @@ sub get {
     return $topic;
 }
 
+sub create {
+    my ($self, $c, $create) = @_;
+    
+    my $topic = $c->model('DBIC')->resultset('Topic')->create( $create );
+    
+    # star it by default
+    $c->model('DBIC')->resultset('Star')->create( {
+        user_id => $create->{author_id},
+        object_type => 'topic',
+        object_id   => $topic->topic_id,
+        time        => time(),
+    } );
+    
+    return $topic;
+}
+
 sub update {
     my ($self, $c, $topic_id, $update) = @_;
     
@@ -54,6 +70,18 @@ sub remove {
         $c->model('Comment')->remove( $c, $comment );
         $total_replies++;
     }
+    
+    # delete star/share
+    $c->model('DBIC::Star')->search(
+        {   object_type => 'topic',
+            object_id   => $topic_id,
+        }
+    )->delete;
+    $c->model('DBIC::Share')->search(
+        {   object_type => 'topic',
+            object_id   => $topic_id,
+        }
+    )->delete;
 
     # log action
     $c->model('Log')->log_action(

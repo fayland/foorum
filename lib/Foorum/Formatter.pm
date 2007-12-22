@@ -3,23 +3,32 @@ package Foorum::Formatter;
 use strict;
 use warnings;
 use base 'Exporter';
-use vars qw/@EXPORT_OK $VERSION/;
-@EXPORT_OK = qw/
-    filter_format
-    /;
+use vars qw/
+    @EXPORT_OK $VERSION
+    $has_text_textile $has_ubb_code $has_text_wiki $has_pod_simple $has_uri_find
+/;
+@EXPORT_OK = qw/ filter_format /;
 $VERSION = '0.01'; # version
-
-use vars qw/$has_text_textile $has_ubb_code $has_text_wiki $has_pod_simple $has_uri_find/;
-$has_text_textile = eval "use Text::Textile; 1;";
-$has_ubb_code     = eval "use Foorum::Formatter::BBCode; 1;";
-$has_text_wiki    = eval "use Text::GooglewikiFormat; 1;";
-$has_pod_simple   = eval "use Pod::Simple::Text; 1;";
-$has_uri_find     = eval "use URI::Find; 1;";
 
 sub filter_format {
     my ( $text, $params ) = @_;
 
     my $format = $params->{format} || 'plain';
+
+    # don't run eval at beginning, run it when required
+    if ( $format eq 'textile' and not defined $has_text_textile ) {
+        $has_text_textile = eval "use Text::Textile; 1;";
+    }
+    if ( $format eq 'ubb'     and not defined $has_ubb_code ) {
+        $has_ubb_code     = eval "use Foorum::Formatter::BBCode; 1;";
+    }
+    if ( $format eq 'wiki'    and not defined $has_text_wiki ) {
+        $has_text_wiki    = eval "use Text::GooglewikiFormat; 1;";
+    }
+    if ( $format eq 'pod'     and not defined $has_pod_simple ) {
+        $has_pod_simple   = eval "use Foorum::Formatter::Pod; 1;";
+    }
+
     if ( $format eq 'textile' and $has_text_textile ) {
         my $formatter = Text::Textile->new();
         $formatter->charset('utf-8');
@@ -31,14 +40,10 @@ sub filter_format {
             }
         );
         $text = $formatter->parse($text);
-    } elsif ( $format eq 'pod' and $has_pod_simple) {
-#        my $pod_format = Pod::Simple::Text->new;
-#        my $output;
-#        $pod_format->output_string( \$output );
-#        $text = "=pod\n\n$text" unless $text =~ /\n=[a-z]+\s/;
-#        $pod_format->parse_string_document($text);
-#        $text = $output;
-    } elsif ( $format eq 'wiki' and $has_text_wiki) {
+    } elsif ( $format eq 'pod' and $has_pod_simple ) {
+        my $pod_format = Foorum::Formatter::Pod->new;
+        $text = $pod_format->format( $text );
+    } elsif ( $format eq 'wiki' and $has_text_wiki ) {
         $text =~ s/&/&amp;/gs;
         $text =~ s/>/&gt;/gs;
         $text =~ s/</&lt;/gs;
@@ -68,6 +73,7 @@ sub filter_format {
         #$text =~ s/"/&quot;/g; #"
         $text =~ s|\n|<br />\n|gs;    # linebreaks
         
+        $has_uri_find = eval "use URI::Find; 1;" if (not defined $has_uri_find);
         if ($has_uri_find) {
             # find URIs
             my $finder = URI::Find->new( sub {

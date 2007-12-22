@@ -15,6 +15,7 @@ use vars qw/@EXPORT_OK $config $schema $cache $theschwartz $tt2/;
     cache
     theschwartz
     tt2
+    error_log
 /;
 
 use File::Spec;
@@ -90,4 +91,15 @@ sub tt2 {
     return $tt2;
 }
 
+sub error_log {
+    my ( $schema, $level, $text ) = @_;
+
+    return unless ($text);
+    $schema->resultset('LogError')->create(
+        {   level => $level || 'debug',
+            text => $text,
+            time => \'NOW()', #'
+        }
+    );
+}
 1;

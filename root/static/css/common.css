@@ -17,6 +17,11 @@ input, textarea, select { border-width: 1px; padding: 1px; font-size: 9pt; borde
     text-align:center;
 }
 
+.tabs {
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
 .pager {
     margin:2px;
     padding:0;

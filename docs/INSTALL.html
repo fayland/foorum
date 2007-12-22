@@ -1,3 +1,10 @@
+<html>
+<head>
+<title>INSTALL</title>
 <link type="text/css" rel="stylesheet" href="http://code.google.com/hosting/css/d_20071112.css" />
+</head>
+<body>
 <h1>From <a href="http://code.google.com/p/foorum/wiki/INSTALL">http://code.google.com/p/foorum/wiki/INSTALL</a></h1>
 <p>#labels Phase-Deploy<br />Steps:</p><ul><li>mysql -uroot -p </li><li>mysql&gt;CREATE DATABASE foorum; </li><li>mysql&gt;CREATE DATABASE theschwartz; </li><li>mysql&gt;exit; </li><li>mysql -uroot -p foorum &lt; bin/db/foorum.sql </li><li>mysql -uroot -p theschwartz &lt; bin/db/theschwartz.sql </li><li>cp foorum.yml foorum_local.yml </li><li>vi foorum_local.yml and change the 'dsn_pwd' config etc. </li><li>perl Makefile.PL; make; make test; </li><li>perl bin/foorum_server.pl </li></ul>
+</body>
+</html>

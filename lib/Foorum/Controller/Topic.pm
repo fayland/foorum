@@ -25,13 +25,15 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
 
     if ( $c->user_exists ) {
 
+        my $query = {
+            user_id     => $c->user->user_id,
+            object_type => 'topic',
+            object_id   => $topic_id,
+        };
         # 'star' status
-        $c->stash->{has_star} = $c->model('DBIC::Star')->count(
-            {   user_id     => $c->user->user_id,
-                object_type => 'topic',
-                object_id   => $topic_id,
-            }
-        );
+        $c->stash->{is_starred} = $c->model('DBIC::Star')->count( $query );
+        # 'share' status
+        $c->stash->{is_shared} = $c->model('DBIC')->resultset('Share')->count( $query );
 
         # 'visit'
         $c->model('Visit')->make_visited( $c, 'topic', $topic_id );
@@ -89,15 +91,14 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
 
     # create record
     my $topic_title = encodeHTML($title);
-    my $topic = $c->model('DBIC')->resultset('Topic')->create(
-        {   forum_id         => $forum_id,
-            title            => $topic_title,
-            author_id        => $c->user->user_id,
-            last_updator_id  => $c->user->user_id,
-            last_update_date => \"NOW()",
-            hit              => 0,
-        }
-    );
+    my $topic = $c->model('Topic')->create($c, {
+        forum_id         => $forum_id,
+        title            => $topic_title,
+        author_id        => $c->user->user_id,
+        last_updator_id  => $c->user->user_id,
+        last_update_date => \"NOW()", #"
+        hit              => 0,
+    } );
     $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
 
     # clear visit

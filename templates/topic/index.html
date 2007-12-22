@@ -36,7 +36,10 @@
 [% END %]
 <tr class='title'>
     <td colspan='2'>
-    [% IF c.user_exists %]<a href="javascript:star('topic', '[% topic.topic_id %]', 'starDiv')"><span id='starDiv'><img src="http://mail.google.com/mail/images/star_[% IF has_star;'on';ELSE;'off';END %]_2.gif" align='absmiddle' /> Star</span></a>[% END %]
+    [% IF c.user_exists %]
+    <a href="javascript:star('topic', '[% topic.topic_id %]', 'starDiv')"><span id='starDiv'><img src="http://mail.google.com/mail/images/star_[% IF is_starred;'on';ELSE;'off';END %]_2.gif" align='absmiddle' /> [% IF is_starred;'Unstar';ELSE;'Star';END %]</span></a> | 
+    <a href="javascript:share('topic', '[% topic.topic_id %]', 'shareDiv')"><span id='shareDiv'>[% IF is_shared;'Unshare';ELSE;'Share';END %]</span></a>
+    [% END %]
     <a href='http://del.icio.us/post?url=[% c.req.base _ c.req.path  | uri %]&title=[% title | uri %]'><img src='[% c.config.dir.images %]/site/s/delicious.gif' align='absmiddle' />del.icio.us</a> 
     <a href='http://digg.com/submit?phase=2&URL=[% c.req.base _ c.req.path | uri %]'><img src='[% c.config.dir.images %]/site/s/digg.gif' align='absmiddle' />digg</a>
     </td>

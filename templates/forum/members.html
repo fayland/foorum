@@ -8,7 +8,7 @@
         <li><a href='/forumadmin/[% forum.forum_id  %]/basic'><span>[% c.loc('Basic Setting') %]</span></a></li>
         <li><a href='/forumadmin/[% forum.forum_id  %]/style'><span>[% c.loc('Style Setting') %]</span></a></li>
         [% TRY %]
-        [% css_file = c.config.home _ '/style/custom/forum' _ forum.forum_id _ '.yml' %]
+        [% css_file = c.config.home _ '/root/static/css/style/forum' _ forum.forum_id _ '.css' %]
         [% USE File( css_file ) %]
         <li><a href='/forumadmin/[% forum.forum_id  %]/del_style'><span>[% c.loc('Delete Style') %]</span></a></li>
         [% CATCH File %]

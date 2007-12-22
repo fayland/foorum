@@ -2,8 +2,7 @@ package Foorum::TheSchwartz::Worker::DailyChart;
 
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
-use Foorum::ExternalUtils qw/schema tt2/;
-use Foorum::Log qw/error_log/;
+use Foorum::ExternalUtils qw/schema tt2 error_log/;
 
 sub work {
     my $class = shift;

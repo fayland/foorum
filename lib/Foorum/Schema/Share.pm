@@ -1,4 +1,4 @@
-package Foorum::Schema::Star;
+package Foorum::Schema::Share;
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use warnings;
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components("Core");
-__PACKAGE__->table("star");
+__PACKAGE__->table("share");
 __PACKAGE__->add_columns(
   "user_id",
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
@@ -21,10 +21,10 @@ __PACKAGE__->set_primary_key("user_id", "object_id", "object_type");
 
 
 # Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-22 16:10:21
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:IJ4G0WywuB/dkDWAVtPYNQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:g3eQtENeOt624IAxDKw5DQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
-__PACKAGE__->resultset_class('Foorum::ResultSet::Star');
+__PACKAGE__->resultset_class('Foorum::ResultSet::Share');
 
 1;

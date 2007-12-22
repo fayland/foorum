@@ -2,8 +2,7 @@ package Foorum::TheSchwartz::Worker::DailyReport;
 
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
-use Foorum::ExternalUtils qw/schema config/;
-use Foorum::Log qw/error_log/;
+use Foorum::ExternalUtils qw/schema config error_log/;
 
 sub work {
     my $class = shift;
