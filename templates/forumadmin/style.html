@@ -53,6 +53,7 @@
             <option value="forum[% forum.forum_id %]">My Style</option>
             [% END %]
             <option value='black'>Black</option>
+            <option value='green'>Green</option>
         </select><input type='button' value='Show' onclick='LoadStyle()' /></td></tr>
     [% TRY %]
     [% css_file = c.config.home _ '/root/static/css/style/forum' _ forum.forum_id _ '.css' %]

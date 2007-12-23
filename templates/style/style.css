@@ -1,24 +1,28 @@
 .highlight { color:[% style.highlight %]; }
 .semilight { color:[% style.semilight %]; }
-.tblr { border:1px solid [% style.border_color %] }
-.blr { border:1px solid [% style.border_color %];border-top:0px }
-.tlr { border:1px solid [% style.border_color %];border-bottom:0px }
+.tblr { border:1px solid [% style.tablebordercolor %] }
+.blr { border:1px solid [% style.tablebordercolor %];border-top:0px }
+.tlr { border:1px solid [% style.tablebordercolor %];border-bottom:0px }
 
-.one TABLE { border:1px solid [% style.border_color %];border-left: 0px;border-bottom: 0px;width:[% style.tablewidth %]%;border-collapse: collapse; }
-.one TD, .multi TD { border:1px solid [% style.border_color %];BORDER-RIGHT: 0px;BORDER-TOP: 0px;padding: 6px; }
-.multi TABLE { border:1px solid [% style.border_color %];border-left: 0px;border-bottom: 0px;border-top: 0px;width:[% style.tablewidth %]%;border-collapse: collapse; }
+.one TABLE { border:1px solid [% style.tablebordercolor %];border-left: 0px;border-bottom: 0px;width:[% style.tablewidth %]%;border-collapse: collapse; }
+.one TD, .multi TD { border:1px solid [% style.tablebordercolor %];border-right: 0px;border-top: 0px;padding: 6px; }
+.multi TABLE { border:1px solid [% style.tablebordercolor %];border-left: 0px;border-bottom: 0px;border-top: 0px;width:[% style.tablewidth %]%;border-collapse: collapse; }
 .multi TD TABLE { border: 0px;width:100%; }
 .multi TD TABLE TD { border: 0px;text-align:left;padding:2px }
 
 .none TABLE { border:0px; width:[% style.tablewidth %]%; }
 .none TD { border: 0px; padding: 6px; }
 
-.online,.online TABLE,.online TD { border: 0px;Padding:0px }
-hr { background:[% style.border_color %];height:1 }
+.tablewidth { width: [% style.tablewidth %]%; }
+.tablewidth TABLE { width: [% style.tablewidth %]% }
+
+.online,.online TABLE,.online TD { border: 0px;padding:0px }
+hr { background:[% style.tablebordercolor %];height:1 }
 body {
     color: [% style.bg_fontcolor %];
     background-color: [% style.bg_color %];
     [% IF style.bg_image %]background-image: url("[% style.bg_image %]");[% END %]
+    
 }
 A:visited { color: [% style.vlink %] }
 A:active { color: [% style.alink %] }
