@@ -68,7 +68,7 @@ sub default : Private {
             {   template    => 'site/popular.html',
                 pager       => $hit_rs->pager,
                 objects     => \@objects,
-                url_prefix => $url_prefix
+                url_prefix => '/' . $url_prefix
             }
         );
     }
