@@ -24,8 +24,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("user_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-22 16:10:21
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5+Xw49kJFYG9BLC5aQ2mQg
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-23 13:01:34
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ag9n79wilQ6NHb2TJKZWEw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

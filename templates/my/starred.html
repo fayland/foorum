@@ -5,11 +5,10 @@
 
 <div id='recent_tabs' class='tabs'>
     <ul class="ui-tabs-nav">
-        <li><a href='/site/recent'><span>[% c.loc('Recent Topics') %]</span></a></li>
-        <li><a href='/site/recent/elite'><span>[% c.loc('Recent Elite Topics') %]</span></a></li>
-        <li><a href='/my/topics'><span>[% c.loc('My Recent Topics') %]</span></a></li>
+        <li><a href='/u/[% c.user.username %]'><span>My Homepage</span></a></li>
+        <li><a href='/u/[% c.user.username %]/topics'><span>[% c.loc('My Recent Topics') %]</span></a></li>
         <li class="ui-tabs-selected"><a href='/my/starred'><span>[% c.loc('My Starred Items') %]</span></a></li>
-        <li><a href='/my/shared'><span>[% c.loc('My Shared Items') %]</span></a></li>
+        <li><a href='/u/[% c.user.username %]/shared'><span>[% c.loc('My Shared Items') %]</span></a></li>
     </ul>
     <div class="ui-tabs-container">
 

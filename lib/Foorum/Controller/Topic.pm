@@ -121,7 +121,6 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
         $c,
         $c->user,
         {   threads      => \"threads + 1",
-            last_post_id => $topic->topic_id,
         }
     );
 
@@ -219,7 +218,6 @@ sub reply : Regex('^forum/(\w+)/(\d+)(/(\d+))?/reply$') {
         $c,
         $c->user,
         {   replies      => \"replies + 1",
-            last_post_id => $topic_id,
         }
     );
 

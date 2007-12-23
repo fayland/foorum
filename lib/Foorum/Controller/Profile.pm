@@ -6,33 +6,9 @@ use base 'Catalyst::Controller';
 use Foorum::Utils qw/generate_random_word/;
 use Foorum::ExternalUtils qw/theschwartz/;
 use Digest ();
-use Encode qw/decode/;
 use Locale::Country::Multilingual;
 use vars qw/$lcm/;
 $lcm = Locale::Country::Multilingual->new();
-
-sub user_profile : Regex('^u/(\w+)$') {
-    my ( $self, $c ) = @_;
-
-    my $username = $c->req->snippets->[0];
-    my $user = $c->controller('Get')->user($c, $username);
-
-    # get last_post
-    if ( $user->{last_post_id} ) {
-        $user->{last_post} = $c->model('Topic')->get($c, $user->{last_post_id} );
-    }
-
-    # get comments
-    $c->model('Comment')->get_comments_by_object(
-        $c,
-        {   object_type => 'user_profile',
-            object_id   => $user->{user_id},
-        }
-    );
-
-    $c->stash->{whos_view_this_page} = 1;
-    $c->stash->{template}            = 'user/profile.html';
-}
 
 sub edit : Local {
     my ( $self, $c ) = @_;
@@ -46,7 +22,7 @@ sub edit : Local {
     my @codes = $lcm->all_country_codes();
     my %countries;
     foreach (@codes) {
-        $countries{$_} = decode( 'utf8', $lcm->code2country($_) );
+        $countries{$_} = $lcm->code2country($_);
     }
     $c->stash->{countries} = \%countries;
 

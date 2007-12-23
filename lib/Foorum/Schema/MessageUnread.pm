@@ -16,8 +16,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("message_id", "user_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-22 16:10:21
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xzN+WGijDpk4OH4kgiC08A
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-23 13:01:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2DC8Z09Bx/YcMRq8KSgIeQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
