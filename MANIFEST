@@ -4,6 +4,7 @@ bin/cron/TheSchwartz_worker.pl
 bin/db/foorum.sql
 bin/db/make_schema.pl
 bin/db/theschwartz.sql
+bin/db/upgrade/0.1.0.sql
 bin/foorum_server.pl
 bin/misc/.perltidyrc
 bin/misc/bdfgw.pl
@@ -69,6 +70,7 @@ lib/Foorum/Controller/Site/Popular.pm
 lib/Foorum/Controller/StaticInfo.pm
 lib/Foorum/Controller/Topic.pm
 lib/Foorum/Controller/TopicAction.pm
+lib/Foorum/Controller/U.pm
 lib/Foorum/Controller/Utils.pm
 lib/Foorum/ExternalUtils.pm
 lib/Foorum/Formatter.pm
@@ -76,7 +78,6 @@ lib/Foorum/Formatter/BBCode.pm
 lib/Foorum/Formatter/Pod.pm
 lib/Foorum/I18N/cn.po
 lib/Foorum/I18N/tw.po
-lib/Foorum/Log.pm
 lib/Foorum/Model/BannedIP.pm
 lib/Foorum/Model/ClearCachedPage.pm
 lib/Foorum/Model/Comment.pm
@@ -96,6 +97,8 @@ lib/Foorum/Model/User.pm
 lib/Foorum/Model/UserAuth.pm
 lib/Foorum/Model/Validation.pm
 lib/Foorum/Model/Visit.pm
+lib/Foorum/ResultSet/Share.pm
+lib/Foorum/ResultSet/Star.pm
 lib/Foorum/Schema.pm
 lib/Foorum/Schema/BannedIp.pm
 lib/Foorum/Schema/Comment.pm
@@ -205,6 +208,7 @@ root/static/css/jquery.ui/themes/light/light.modal.css
 root/static/css/jquery.ui/themes/light/light.tabs.css
 root/static/css/jquery.ui/themes/light/light.tree.css
 root/static/css/style/black.json
+root/static/css/style/green.json
 root/static/favicon.ico
 root/static/images/background/0.gif
 root/static/images/background/1.jpg
@@ -294,11 +298,17 @@ root/static/images/site/feed-icon-16x16.gif
 root/static/images/site/gender_F.gif
 root/static/images/site/gender_M.gif
 root/static/images/site/help.gif
+root/static/images/site/loading.gif
 root/static/images/site/locked.gif
 root/static/images/site/message.gif
+root/static/images/site/new-window-icon.gif
 root/static/images/site/new.gif
 root/static/images/site/s/delicious.gif
 root/static/images/site/s/digg.gif
+root/static/images/site/t/share.gif
+root/static/images/site/t/star_off.gif
+root/static/images/site/t/star_on.gif
+root/static/images/site/t/unshare.gif
 root/static/images/site/top.gif
 root/static/js/jquery.js
 root/static/js/jquery.ui/GPL-LICENSE.txt
@@ -348,6 +358,7 @@ t/formatter/textile.t
 t/formatter/ubb.t
 t/formatter/wiki.t
 t/schema/star.t
+t/utils.t
 templates/admin/ban_ip/default.html
 templates/admin/bar.html
 templates/admin/forum/create.html
@@ -409,7 +420,6 @@ templates/message/compose.html
 templates/message/inbox.html
 templates/message/message.html
 templates/message/outbox.html
-templates/my/shared.html
 templates/my/starred.html
 templates/poll/index.html
 templates/poll/new.html
@@ -434,10 +444,11 @@ templates/style/style.json
 templates/sub/pager.html
 templates/topic/create.html
 templates/topic/index.html
+templates/u/profile.html
+templates/u/shared.html
 templates/upload/input.html
 templates/upload/upload.html
 templates/user/login.html
-templates/user/profile.html
 templates/user/profile/change_email.html
 templates/user/profile/change_password.html
 templates/user/profile/change_username.html
