@@ -57,14 +57,13 @@ if ( __PACKAGE__->config->{debug_mode} ) {
         my $key = "/" . $c->req->path;
 
         # Change Start
-        my $lang = $c->req->cookie('lang')->value
-            if ( $c->req->cookie('lang') );
+        my $lang;
+        $lang   = $c->req->cookie('lang')->value if ( $c->req->cookie('lang') );
         $lang ||= $c->user->lang if ( $c->user_exists );
         $lang ||= $c->config->{default_lang};
         $lang = $c->req->param('lang') if ( $c->req->param('lang') );
         $lang =~ s/\W+//isg;
         $key .= ':' . $lang;
-
         # Change End
 
         if ( scalar $c->req->param ) {
