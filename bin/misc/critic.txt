@@ -6,7 +6,7 @@ bin\foorum_server.pl source OK
 bin\misc\bdfgw.pl source OK
 bin\misc\g2b.pl source OK
 bin\misc\graph.pl source OK
-bin\misc\js-min.pl: Integer with leading zeros at line 25, column 32. See page 58 of PBP.
+bin\misc\js-min.pl source OK
 bin\misc\perlcritic.pl source OK
 bin\misc\perltidy.pl source OK
 bin\setup.pl source OK
@@ -64,7 +64,7 @@ lib\Foorum\Model\Object.pm source OK
 lib\Foorum\Model\Online.pm source OK
 lib\Foorum\Model\Policy.pm source OK
 lib\Foorum\Model\Topic.pm source OK
-lib\Foorum\Model\Upload.pm: Integer with leading zeros at line 121, column 31. See page 58 of PBP.
+lib\Foorum\Model\Upload.pm source OK
 lib\Foorum\Model\User.pm source OK
 lib\Foorum\Model\UserAuth.pm source OK
 lib\Foorum\Model\Validation.pm source OK
@@ -80,4 +80,4 @@ lib\Foorum\TheSchwartz\Worker\SendScheduledEmail.pm source OK
 lib\Foorum\Utils.pm source OK
 lib\Foorum\View\JSON.pm source OK
 lib\Foorum\View\TT.pm source OK
-lib\Foorum.pm: Stricture disabled at line 37, column 9. See page 429 of PBP.
+lib\Foorum.pm source OK

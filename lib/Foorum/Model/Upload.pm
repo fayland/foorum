@@ -118,7 +118,7 @@ sub add_file {
     my $directory_2 = int( $upload_id / 3200 );
     my $upload_dir = $c->path_to( 'root', 'upload', $directory_1, $directory_2 )
         ->stringify;
-    mkpath( [$upload_dir], 0, 0777 );    # mkdir -p
+    mkpath( [$upload_dir], 0, 0777 ); ## no critic (ProhibitLeadingZeros)
 
     my $target
         = $c->path_to( 'root', 'upload', $directory_1, $directory_2, $basename )

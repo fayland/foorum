@@ -22,7 +22,7 @@ while ( defined( my $file = $files->() ) ) {
 
     my $out_dir = dirname($out_file);
     unless ( -d $out_dir ) {
-        mkpath( [$out_dir], 0, 0777 );    # mkdir -k
+        mkpath( [$out_dir], 0, 0777 ); ## no critic (ProhibitLeadingZeros)
     }
 
     eval { minify_js( $in_file, $out_file ); };

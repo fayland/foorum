@@ -34,7 +34,7 @@ if ( __PACKAGE__->config->{debug_mode} ) {
     {
 
         # these code are copied from Catalyst.pm setup_log
-        no strict 'refs';
+        no strict 'refs'; ## no critic (ProhibitNoStrict)
         my $class = __PACKAGE__;
         *{"$class\::debug"} = sub {1};
     }
