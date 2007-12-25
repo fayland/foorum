@@ -55,7 +55,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
     my $forum_id   = $forum->{forum_id};
     $forum_code = $forum->{forum_code};
 
-    my @extra_cols = ( 'elite', 1 ) if ($is_elite);
+    my @extra_cols = ($is_elite) ? ( 'elite', 1 ) : ();
     my $it = $c->model('DBIC')->resultset('Topic')->search(
         {   forum_id    => $forum_id,
             'me.status' => { '!=', 'banned' },

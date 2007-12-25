@@ -1,5 +1,7 @@
 package Foorum::TheSchwartz::Worker::DailyChart;
 
+use strict;
+use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::ExternalUtils qw/schema tt2 error_log/;

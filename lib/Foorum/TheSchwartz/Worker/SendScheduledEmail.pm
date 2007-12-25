@@ -1,5 +1,7 @@
 package Foorum::TheSchwartz::Worker::SendScheduledEmail;
 
+use strict;
+use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::ExternalUtils qw/schema config error_log/;

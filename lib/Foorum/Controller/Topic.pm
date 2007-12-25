@@ -158,7 +158,7 @@ sub reply : Regex('^forum/(\w+)/(\d+)(/(\d+))?/reply$') {
     $c->stash->{template} = 'comment/reply.html';
 
     unless ( $c->req->method eq 'POST' ) {
-        my $comment = $c->model('Comment')->get(
+        $c->stash->{comment} = $c->model('Comment')->get(
             $c,
             $comment_id,
             {   object_type => 'topic',

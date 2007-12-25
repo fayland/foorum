@@ -60,9 +60,8 @@ sub basic : Chained('forum_for_admin') Args(0) {
 
     # check forum_code
     my $forum_code = $c->req->param('forum_code');
-    my $err = $c->model('Validation')->validate_forum_code( $c, $forum_code )
-        if ( $forum_code and $forum_code ne $forum->{forum_code} );
-    if ($err) {
+    if ( $forum_code and $forum_code ne $forum->{forum_code} ) {
+        my $err = $c->model('Validation')->validate_forum_code( $c, $forum_code );
         $c->set_invalid_form( forum_code => $err );
         return;
     }
@@ -74,7 +73,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
 
     # get forum admin
     my $admin = $role->{$forum_id}->{admin};
-    my $admin_username = $admin->{username} if ($admin);
+    my $admin_username = ($admin) ? $admin->{username} : '';
 
     my @moderators = split( /\s*\,\s*/, $moderators );
     my @moderator_users;
