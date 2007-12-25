@@ -9,6 +9,11 @@ bin\foorum_server.pl: Code before strictures are enabled at line 3, column 1. Se
 bin\misc\bdfgw.pl source OK
 bin\misc\g2b.pl source OK
 bin\misc\graph.pl source OK
+bin\misc\js-min.pl: Integer with leading zeros at line 25, column 32. See page 58 of PBP.
+bin\misc\js-min.pl: Bareword file handle opened at line 42, column 5. See pages 202,204 of PBP.
+bin\misc\js-min.pl: Two-argument "open" used at line 42, column 5. See page 207 of PBP.
+bin\misc\js-min.pl: Bareword file handle opened at line 43, column 5. See pages 202,204 of PBP.
+bin\misc\js-min.pl: Two-argument "open" used at line 43, column 5. See page 207 of PBP.
 bin\misc\perlcritic.pl source OK
 bin\misc\perltidy.pl source OK
 bin\setup.pl source OK
