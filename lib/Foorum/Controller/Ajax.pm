@@ -18,33 +18,6 @@ sub auto : Private {
 
 =pod
 
-=item new_message
-
-(Global Site) check if a user get any new message
-
-=cut
-
-sub new_message : Local {
-    my ( $self, $c ) = @_;
-
-    $c->stash->{donot_log_path} = 1;
-
-    return $c->res->body(' ') unless ( $c->user_exists );
-
-    my $count = $c->model('DBIC::MessageUnread')
-        ->count( { user_id => $c->user->user_id, } );
-
-    if ($count) {
-        $c->res->body( "<a href='/message'><span style='color:red'>"
-                . $c->localize( "You have new messages ([_1])", $count )
-                . "</span></a>" );
-    } else {
-        return $c->res->body(' ');
-    }
-}
-
-=pod
-
 =item validate_username
 
 Ajax way to validate the username in Register progress.

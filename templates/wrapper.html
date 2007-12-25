@@ -8,9 +8,6 @@
 
 [% c.load_once("jquery.js") %]
 [% c.load_once("utils.js") %]
-[% IF c.user_exists AND c.req.path != 'message' AND c.req.path != 'message/inbox' %]
-    [% c.load_once("site/message.js") %]
-[% END %]
 [% c.load_once("common.css") %]
 [% IF forum.forum_id %]
     [% TRY %]
@@ -63,7 +60,9 @@
 <div id="guser" width="100%" align="right">
 <nowrap>
     [% IF c.user_exists %]
-    <span id='new_message'></span> 
+        [% IF message_unread %]
+        <a href='/message'><span style='color:red'>[% c.loc( "You have new messages ([_1])", message_unread) %]</span></a>
+        [% END %]
     <a href='/message'>[% c.loc('Message') %]</a> | 
     <a href='/profile/edit'>[% c.loc('Edit Profile') %]</a> | 
     <a href='/logout'>[% c.loc("Log out") %]</a> 
