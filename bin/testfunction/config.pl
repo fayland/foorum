@@ -8,6 +8,6 @@ use Foorum::ExternalUtils qw/config/;
 use Data::Dumper;
 
 my $config = config();
-print Dumper(\$config);
+print Dumper( \$config );
 
 1;

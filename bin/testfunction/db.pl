@@ -10,6 +10,6 @@ my $schema = schema();
 
 # show the model classes available
 my @sources = $schema->sources();
-print 'found schema model sources :-  ' . join(", ",@sources) . "\n";
+print 'found schema model sources :-  ' . join( ", ", @sources ) . "\n";
 
 1;

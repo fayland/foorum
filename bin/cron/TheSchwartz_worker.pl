@@ -5,10 +5,11 @@ use warnings;
 
 # for both Linux/Win32
 my $has_proc_pid_file = eval "use Proc::PID::File; 1;";
-my $has_home_dir = eval "use File::HomeDir; 1;";
-if ($has_proc_pid_file and $has_home_dir) {
+my $has_home_dir      = eval "use File::HomeDir; 1;";
+if ( $has_proc_pid_file and $has_home_dir ) {
+
     # If already running, then exit
-    if (Proc::PID::File->running( { dir => File::HomeDir->my_home } )) {
+    if ( Proc::PID::File->running( { dir => File::HomeDir->my_home } ) ) {
         exit(0);
     }
 }
@@ -28,9 +29,11 @@ my $client = theschwartz();
 my $verbose = sub {
     my $msg = shift;
     $msg =~ s/\s+$//;
-    if ($msg eq 'TheSchwartz::work_once found no jobs') {
+    if ( $msg eq 'TheSchwartz::work_once found no jobs' ) {
+
         # do nothing
-    } elsif ($msg eq 'job completed') {
+    } elsif ( $msg eq 'job completed' ) {
+
         # add localtime()
         print STDERR 'job completed @ ' . localtime() . "\n";
     } else {

@@ -19,5 +19,4 @@ make_schema_at(
     [ $config->{dsn}, $config->{dsn_user}, $config->{dsn_pwd} ]
 );
 
-
 1;
