@@ -12,8 +12,8 @@ sub work {
 
     my $schema = schema();
 
-    my $rs = $schema->resultset('ScheduledEmail')
-        ->search( { processed => 'N' } );
+    my $rs
+        = $schema->resultset('ScheduledEmail')->search( { processed => 'N' } );
 
     my $handled = 0;
     while ( my $rec = $rs->next ) {
@@ -55,7 +55,7 @@ sub send_email {
     my ( $from, $to, $subject, $plain_body, $html_body ) = @_;
 
     my $top = MIME::Entity->build(
-        'X-Mailer' => undef,                   # remove X-Mailer tag in header
+        'X-Mailer' => undef,                     # remove X-Mailer tag in header
         'Type'     => "multipart/alternative",
         'Reply-To' => $from,
         'From'     => $from,

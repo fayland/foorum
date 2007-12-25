@@ -77,8 +77,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
         $upload_id = $c->model('Upload')
             ->add_file( $c, $upload, { forum_id => $comment->forum_id } );
         unless ($upload_id) {
-            return $c->set_invalid_form(
-                upload => $c->stash->{upload_error} );
+            return $c->set_invalid_form( upload => $c->stash->{upload_error} );
         }
     }
 
@@ -122,8 +121,7 @@ sub edit : LocalRegex('^(\d+)/edit$') {
 
     # permission
     if ( $c->user->user_id != $comment->author_id
-        and not $c->model('Policy')->is_moderator( $c, 'site' ) )
-    {
+        and not $c->model('Policy')->is_moderator( $c, 'site' ) ) {
         $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
     }
 
@@ -144,8 +142,7 @@ sub edit : LocalRegex('^(\d+)/edit$') {
 
     my $new_upload = $c->req->upload('upload');
     my $upload_id  = $comment->upload_id;
-    if ( ( $c->req->param('attachment_action') eq 'delete' ) or $new_upload )
-    {
+    if ( ( $c->req->param('attachment_action') eq 'delete' ) or $new_upload ) {
 
         # delete old upload
         if ($old_upload) {
@@ -211,8 +208,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
 
     # permission
     if ( $c->user->user_id != $comment->author_id
-        and not $c->model('Policy')->is_moderator( $c, 'site' ) )
-    {
+        and not $c->model('Policy')->is_moderator( $c, 'site' ) ) {
         $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
     }
 

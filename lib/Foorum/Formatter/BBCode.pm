@@ -97,8 +97,8 @@ controls="ImageWindow,StatusBar,ControlPanel" width='352' height='288' border='0
     } elsif ( $tag eq 'size' ) {
         $attr = 8  if ( $attr < 8 );    # validation
         $attr = 16 if ( $attr > 16 );
-        $html = sprintf( $self->{options}->{html_tags}->{size}, $attr,
-            $content );
+        $html
+            = sprintf( $self->{options}->{html_tags}->{size}, $attr, $content );
         return $html;
     }
 

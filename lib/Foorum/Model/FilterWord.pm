@@ -56,8 +56,7 @@ sub convert_offensive_word {
             my $converted_chars = 0;
             foreach my $offset ( 2 .. length($word) ) {
                 next
-                    if ( int( rand(10) ) % 2 == 1 )
-                    ;    # randomly skip some chars
+                    if ( int( rand(10) ) % 2 == 1 );  # randomly skip some chars
                 substr( $asterisk_word, $offset - 1, 1 ) = '*';
                 $converted_chars++;
                 last if ( $converted_chars == 2 );    # that's enough

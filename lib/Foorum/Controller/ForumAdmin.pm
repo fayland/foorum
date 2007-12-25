@@ -82,7 +82,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
         next if ( $_ eq $admin_username );    # avoid the same man
         last
             if ( scalar @moderator_users > 2 )
-            ;    # only allow 3 moderators at most
+            ;                                 # only allow 3 moderators at most
         my $moderator_user = $c->model('User')->get( $c, { username => $_ } );
         unless ($moderator_user) {
             $c->stash->{non_existence_user} = $_;
@@ -183,8 +183,9 @@ sub style : Chained('forum_for_admin') Args(0) {
     return if ( $c->form->has_error );
 
     # save the style.json and style.css
-    my $css = $c->path_to( 'root', 'static', 'css', 'style',
-        "forum$forum_id\.css" )->stringify;
+    my $css
+        = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.css" )
+        ->stringify;
 
     my $style = $c->req->params;
 
@@ -227,8 +228,9 @@ sub del_style : Chained('forum_for_admin') Args(0) {
     my $forum    = $c->stash->{forum};
     my $forum_id = $forum->{forum_id};
 
-    my $css = $c->path_to( 'root', 'static', 'css', 'style',
-        "forum$forum_id\.css" )->stringify;
+    my $css
+        = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.css" )
+        ->stringify;
     my $json = $c->path_to( 'root', 'static', 'css', 'style',
         "forum$forum_id\.json" )->stringify;
 
@@ -313,8 +315,7 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
 
     unless ( grep { $from eq $_ } ( 'user', 'rejected', 'blocked', 'pending' )
             and grep { $to eq $_ } ( 'user', 'rejected', 'blocked' )
-            and $user_id =~ /^\d+$/ )
-    {
+            and $user_id =~ /^\d+$/ ) {
         return $c->res->body('Illegal request');
     }
 
@@ -332,8 +333,7 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
             { total_members => \"total_members - 1" } );
     } elsif (
         ( $from eq 'rejected' or $from eq 'blocked' or $from eq 'pending' )
-        and $to eq 'user' )
-    {
+        and $to eq 'user' ) {
         $c->model('Forum')
             ->update( $c, $forum_id,
             { total_members => \"total_members + 1" } );

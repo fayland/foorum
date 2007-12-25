@@ -161,8 +161,7 @@ sub merge_forums {
     my $from_id = $info->{from_id} or return 0;
     my $to_id   = $info->{to_id}   or return 0;
 
-    my $old_forum
-        = $c->model('DBIC::Forum')->find( { forum_id => $from_id } );
+    my $old_forum = $c->model('DBIC::Forum')->find( { forum_id => $from_id } );
     return unless ($old_forum);
     my $new_forum = $c->model('DBIC::Forum')->find( { forum_id => $to_id } );
     return unless ($new_forum);

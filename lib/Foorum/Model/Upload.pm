@@ -67,7 +67,7 @@ sub remove_by_upload {
 
     my $directory_1 = int( $upload->{upload_id} / 3200 / 3200 );
     my $directory_2 = int( $upload->{upload_id} / 3200 );
-    my $file = $c->path_to( 'root', 'upload', $directory_1, $directory_2,
+    my $file        = $c->path_to( 'root', 'upload', $directory_1, $directory_2,
         $upload->{filename} )->stringify;
     remove($file);
     $c->model('DBIC::Upload')->search( { upload_id => $upload->{upload_id} } )
@@ -90,8 +90,7 @@ sub add_file {
     }
     ($filesize) = ( $filesize =~ /^(\d+\.?\d{0,1})/ );    # float(6,1)
 
-    my ( $filename_no_postfix, $filetype )
-        = ( $basename =~ /^(.*?)\.(\w+)$/ );
+    my ( $filename_no_postfix, $filetype ) = ( $basename =~ /^(.*?)\.(\w+)$/ );
     $filetype = lc($filetype);
     unless ( grep { $filetype eq $_ } @valid_types ) {
         $c->log->debug("UNSUPPORTED_FILETYPE, $filetype");
@@ -101,7 +100,7 @@ sub add_file {
 
     if ( length($filename_no_postfix) > 30 ) {
         $filename_no_postfix
-            = substr( $filename_no_postfix, 0, 30 );    # varchar(36)
+            = substr( $filename_no_postfix, 0, 30 );      # varchar(36)
         $basename = $filename_no_postfix . ".$filetype";
     }
     my $upload_rs = $c->model('DBIC::Upload')->create(
@@ -117,21 +116,20 @@ sub add_file {
 
     my $directory_1 = int( $upload_id / 3200 / 3200 );
     my $directory_2 = int( $upload_id / 3200 );
-    my $upload_dir
-        = $c->path_to( 'root', 'upload', $directory_1, $directory_2 )
+    my $upload_dir = $c->path_to( 'root', 'upload', $directory_1, $directory_2 )
         ->stringify;
     mkpath( [$upload_dir], 0, 0777 );    # mkdir -p
 
-    my $target = $c->path_to( 'root', 'upload', $directory_1, $directory_2,
-        $basename )->stringify;
+    my $target
+        = $c->path_to( 'root', 'upload', $directory_1, $directory_2, $basename )
+        ->stringify;
 
     # rename if exist
     if ( -e $target ) {
         my $random_filename;
         while ( -e $target ) {
             $random_filename = generate_random_word(15) . ".$filetype";
-            $target
-                = $c->path_to( 'root', 'upload', $directory_1, $directory_2,
+            $target = $c->path_to( 'root', 'upload', $directory_1, $directory_2,
                 $random_filename )->stringify;
         }
         $upload_rs->update( { filename => $random_filename } );

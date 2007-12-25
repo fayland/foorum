@@ -15,8 +15,7 @@ my $wiki_dir    = abs_path("$Bin/../../../wiki");
 my $project_url = 'http://code.google.com/p/foorum';
 
 my %tags = %Text::GooglewikiFormat::tags;
-my @filenames
-    = ( 'README', 'INSTALL', 'Configure', 'I18N', 'TroubleShooting' );
+my @filenames = ( 'README', 'INSTALL', 'Configure', 'I18N', 'TroubleShooting' );
 
 # replace link sub
 my $linksub = sub {
@@ -34,8 +33,7 @@ my $linksub = sub {
         grep {
             $link eq $_
         } @filenames
-        )
-    {
+        ) {
         return qq|<a href="$link\.html">$ori_text</a>|;
     } else {
         return $ori_text;

@@ -42,8 +42,7 @@ sub __serve_static_info {
                     'templates', 'lang', 'en', $type, "$type_id.html"
                 )
             )
-            )
-        {
+            ) {
             $c->stash->{template} = "$type/$type_id.html";
         }
     }

@@ -59,8 +59,7 @@ sub register_stat {
 
     my $dbh = $schema->storage->dbh;
 
-    my $sql
-        = q~SELECT COUNT(*) FROM stat WHERE stat_key = ? AND date = NOW()~;
+    my $sql = q~SELECT COUNT(*) FROM stat WHERE stat_key = ? AND date = NOW()~;
     my $sth = $dbh->prepare($sql);
     $sth->execute($stat_key);
 

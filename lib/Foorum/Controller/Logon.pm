@@ -47,29 +47,26 @@ sub login : Global {
             and $c->authenticate(
                 { username => $username, password => $password }
             )
-            )
-        {
+            ) {
 
             # check if he is activated
             if (    $c->config->{mail}->{on}
                 and $c->config->{register}->{activation}
-                and $c->user->get('status') eq 'unverified' )
-            {
+                and $c->user->get('status') eq 'unverified' ) {
                 my $username = $c->user->username;
                 $c->logout;
                 return $c->res->redirect("/register/activation/$username");
             }
 
             if (   $c->user->get('status') eq 'banned'
-                or $c->user->get('status') eq 'blocked' )
-            {
+                or $c->user->get('status') eq 'blocked' ) {
                 $c->logout;
                 $c->detach( '/print_error', ['ERROR_ACCOUNT_CLOSED_STATUS'] );
             }
 
             # remember me
             if ( $c->req->param('remember_me') ) {
-                $c->session_time_to_live(604800);  # 7 days = 24 * 60 * 60 * 7
+                $c->session_time_to_live(604800);    # 7 days = 24 * 60 * 60 * 7
             }
 
             # login_times++
@@ -94,7 +91,7 @@ sub login : Global {
         } else {
             $failure_login_times = 0 unless ($failure_login_times);
             $failure_login_times++;
-            $c->cache->set( $mem_key, $failure_login_times, 600 ); # 10 minite
+            $c->cache->set( $mem_key, $failure_login_times, 600 );   # 10 minite
             $c->stash->{failure_login_times} = $failure_login_times;
 
             if ($can_login) {

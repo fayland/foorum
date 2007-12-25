@@ -180,8 +180,7 @@ sub clear_cached_policy {
 
         # clear user cache too
         $c->model('User')
-            ->delete_cache_by_user_cond( $c,
-            { user_id => $info->{user_id} } );
+            ->delete_cache_by_user_cond( $c, { user_id => $info->{user_id} } );
     }
 
     # field_id != 'site'
@@ -189,8 +188,7 @@ sub clear_cached_policy {
         and (  not $info->{role}
             or $info->{role} eq 'admin'
             or $info->{role} eq 'moderator' )
-        )
-    {
+        ) {
         $info->{forum_id} = $info->{field};
     }
 

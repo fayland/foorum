@@ -68,8 +68,9 @@ sub create {
     } elsif ( $c->stash->{lang} ne 'en' ) {
 
         # try to use lang=en for default
-        $file_prefix = $c->path_to( 'templates', 'lang', 'en', 'email',
-            $template_name )->stringify;
+        $file_prefix
+            = $c->path_to( 'templates', 'lang', 'en', 'email', $template_name )
+            ->stringify;
         if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
             $template_prefix = 'lang/en/email/' . $template_name;
         }
@@ -94,8 +95,8 @@ sub create {
             = $c->view('TT')->render( $c, $template_prefix . '.txt', $stash );
     }
     if ( -e $file_prefix . '.html' ) {
-        $html_body = $c->view('TT')
-            ->render( $c, $template_prefix . '.html', $stash );
+        $html_body
+            = $c->view('TT')->render( $c, $template_prefix . '.html', $stash );
     }
 
     # get the subject from $plain_body or $html_body

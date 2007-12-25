@@ -23,8 +23,7 @@ sub forum : Private {
 
     # check policy
     if (    $c->user_exists
-        and $c->model('Policy')->is_blocked( $c, $forum_id ) )
-    {
+        and $c->model('Policy')->is_blocked( $c, $forum_id ) ) {
         $c->detach( '/print_error', ['ERROR_USER_BLOCKED'] );
     }
     if ( $forum->{policy} eq 'private' ) {

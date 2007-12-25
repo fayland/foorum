@@ -99,8 +99,8 @@ sub inbox : Local {
         {   columns  => [ 'message_id', 'title', 'post_on', ],
             prefetch => ['sender'],
             order_by => 'post_on DESC',
-            rows => $c->config->{per_page}->{message},
-            page => $page_no,
+            rows     => $c->config->{per_page}->{message},
+            page     => $page_no,
         }
     );
     my @messages = $it->all;
@@ -127,8 +127,8 @@ sub outbox : Local {
         {   columns  => [ 'message_id', 'title', 'post_on', ],
             prefetch => ['recipient'],
             order_by => 'post_on DESC',
-            rows => $c->config->{per_page}->{message},
-            page => $page_no,
+            rows     => $c->config->{per_page}->{message},
+            page     => $page_no,
         }
     );
     my @messages = $it->all;

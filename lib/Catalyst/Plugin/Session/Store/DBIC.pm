@@ -70,8 +70,8 @@ sub setup_session {
 
     $c->NEXT::setup_session(@_);
 
-    Catalyst::Exception->throw( message => __PACKAGE__
-            . qq/: You must provide a value for dbic_class/ )
+    Catalyst::Exception->throw(
+        message => __PACKAGE__ . qq/: You must provide a value for dbic_class/ )
         unless $c->config->{session}->{dbic_class};
 }
 
@@ -180,8 +180,7 @@ sub store_session_data {
 
     # set user_id in session table
     eval {
-        if ( $c->user_exists )
-        {
+        if ( $c->user_exists ) {
             $fields{user_id} = $c->user->user_id;
         }
     };

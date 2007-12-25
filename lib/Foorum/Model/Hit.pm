@@ -8,9 +8,9 @@ use Data::Dumper;
 sub register {
     my ( $self, $c, $object_type, $object_id, $object_hit ) = @_;
 
-   # we update table 'hit' then use Foorum::TheSchwartz::Worker::Hit to update
-   # the real table every 5 minutes
-   # the status field is time(), after update in real, that will be 0
+    # we update table 'hit' then use Foorum::TheSchwartz::Worker::Hit to update
+    # the real table every 5 minutes
+    # the status field is time(), after update in real, that will be 0
 
     my $hit = $c->model('DBIC')->resultset('Hit')->search(
         {   object_type => $object_type,

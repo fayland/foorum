@@ -30,8 +30,7 @@ sub edit : Local {
         my $birthday = $c->user->{details}->{birthday};
         if (    $birthday
             and $birthday
-            and $birthday =~ /^(\d+)\-(\d+)\-(\d+)$/ )
-        {
+            and $birthday =~ /^(\d+)\-(\d+)\-(\d+)$/ ) {
             $c->stash(
                 {   year  => $1,
                     month => $2,
@@ -85,7 +84,7 @@ sub edit : Local {
         $c->user,
         {   nickname => $c->req->param('nickname') || $c->user->username,
             gender   => $c->req->param('gender')   || 'NA',
-            lang => $c->req->param('lang') || $c->config->{default_lang},
+            lang    => $c->req->param('lang')    || $c->config->{default_lang},
             country => $c->req->param('country') || '',
         }
     );
@@ -293,8 +292,7 @@ sub profile_photo : Local {
         ? $c->user->{profile_photo}->{value}
         : 0;
     my $new_upload_id = $old_upload_id;
-    if ( ( $c->req->param('attachment_action') eq 'delete' ) or $new_upload )
-    {
+    if ( ( $c->req->param('attachment_action') eq 'delete' ) or $new_upload ) {
 
         # delete old upload
         if ($old_upload_id) {
@@ -312,8 +310,7 @@ sub profile_photo : Local {
             }
 
             my $client = theschwartz();
-            $client->insert(
-                'Foorum::TheSchwartz::Worker::ResizeProfilePhoto',
+            $client->insert( 'Foorum::TheSchwartz::Worker::ResizeProfilePhoto',
                 $new_upload_id );
         }
     }

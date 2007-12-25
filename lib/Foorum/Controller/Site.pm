@@ -10,7 +10,7 @@ use Data::Dumper;
 sub recent : Local {
     my ( $slef, $c, $recent_type ) = @_;
 
-    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;   # /site/recent/rss
+    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;    # /site/recent/rss
 
     my @extra_cols;
     my $url_prefix;
@@ -84,8 +84,7 @@ sub online : Local {
 
     $c->cache_page('300');
 
-    my ( $results, $pager )
-        = $c->model('Online')->get_data( $c, $forum_code );
+    my ( $results, $pager ) = $c->model('Online')->get_data( $c, $forum_code );
 
     $c->stash(
         {   results  => $results,

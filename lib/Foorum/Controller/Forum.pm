@@ -47,7 +47,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
 
     my $is_elite = ( $c->req->path =~ /\/elite(\/|$)/ ) ? 1 : 0;
     my $page_no  = get_page_from_url( $c->req->path );
-    my $rss      = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;  # /forum/1/rss
+    my $rss      = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;    # /forum/1/rss
 
     # get the forum information
     my $forum_code = $c->req->snippets->[0];
@@ -171,8 +171,7 @@ sub members : LocalRegex('^(\w+)/members(/(\w+))?$') {
 
     if (    $member_type ne 'pending'
         and $member_type ne 'blocked'
-        and $member_type ne 'rejected' )
-    {
+        and $member_type ne 'rejected' ) {
         $member_type = 'user';
     }
 
@@ -201,8 +200,7 @@ sub members : LocalRegex('^(\w+)/members(/(\w+))?$') {
         @members = $c->model('DBIC::User')->search(
             { user_id => { 'IN', \@all_user_ids }, },
             {   columns => [
-                    'user_id',  'username',
-                    'nickname', 'gender',
+                    'user_id', 'username', 'nickname', 'gender',
                     'register_time'
                 ],
             }
@@ -285,13 +283,11 @@ sub join_us : Private {
         if ($rs) {
             if (   $rs->role eq 'user'
                 or $rs->role eq 'moderator'
-                or $rs->role eq 'admin' )
-            {
+                or $rs->role eq 'admin' ) {
                 return $c->res->redirect( $forum->{forum_url} );
             } elsif ( $rs->role eq 'blocked'
                 or $rs->role eq 'pending'
-                or $rs->role eq 'rejected' )
-            {
+                or $rs->role eq 'rejected' ) {
                 my $role = uc( $rs->role );
                 $c->detach( '/print_error', ["ERROR_USER_$role"] );
             }

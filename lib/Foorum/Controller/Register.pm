@@ -36,8 +36,7 @@ sub default : Private {
     $c->form(
         username => [qw/NOT_BLANK/],
         password => [ qw/NOT_BLANK/, [qw/LENGTH 6 20/] ],
-        { passwords => [ 'password', 'confirm_password' ] } =>
-            ['DUPLICATION'],
+        { passwords => [ 'password', 'confirm_password' ] } => ['DUPLICATION'],
     );
     return if ( $c->form->has_error );
 
@@ -78,7 +77,7 @@ sub default : Private {
 
         # send activation code
         $c->model('Email')->send_activation( $c, $user );
-        $c->res->redirect("/register/activation/$username");   # to activation
+        $c->res->redirect("/register/activation/$username");    # to activation
     } else {
         $c->login( $username, $password );
         $c->forward(
@@ -138,9 +137,9 @@ sub activation : Local {
         );
         $activation_rs->delete;
 
-# login will be failed since the $user->password is SHA1 Hashed.
-# $c->login( $username, $user->{password} );
-# so instead, we use set_authenticated, check Catalyst::Plugin::Authentication
+  # login will be failed since the $user->password is SHA1 Hashed.
+  # $c->login( $username, $user->{password} );
+  # so instead, we use set_authenticated, check Catalyst::Plugin::Authentication
         bless $user, "Catalyst::Authentication::User::Hash";    # XXX?
         $c->set_authenticated($user);
         $c->res->redirect('/profile/edit');

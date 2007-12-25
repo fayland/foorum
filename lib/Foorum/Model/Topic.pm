@@ -23,8 +23,8 @@ sub get {
     }
 
     if ( $attrs->{with_author} ) {
-        $topic->{author} = $c->model('User')
-            ->get( $c, { user_id => $topic->{author_id} } );
+        $topic->{author}
+            = $c->model('User')->get( $c, { user_id => $topic->{author_id} } );
     }
 
     return $topic;

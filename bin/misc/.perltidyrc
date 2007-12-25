@@ -1,4 +1,4 @@
--l=78 # max line width is 78 cols
+-l=80 # max line width is 80 cols
 -i=4 # indent level 4 cols
 -ci=4 # continuation indent 4 cols
 -vt=2 # maximal vertical tightness
@@ -11,3 +11,4 @@
 -nolq # don&apos;t outdent long quoted strings
 -wbb="% + - * / x != == >= <= =~ !~ < > | & >= < = **= += *= &= <<= &&= -= /= |= >>= ||= .= %= ^= x=" # break before operators
 -ce # cuddled elses
+-bar # force the opening brace to always be on the right

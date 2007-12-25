@@ -66,12 +66,10 @@ sub work {
 
         # update into real table
         if ( $r->object_type eq 'topic' ) {
-            $schema->resultset('Topic')
-                ->search( { topic_id => $r->object_id } )
+            $schema->resultset('Topic')->search( { topic_id => $r->object_id } )
                 ->update( { hit => $r->hit_all, } );
         } elsif ( $r->object_type eq 'poll' ) {
-            $schema->resultset('Poll')
-                ->search( { poll_id => $r->object_id, } )
+            $schema->resultset('Poll')->search( { poll_id => $r->object_id, } )
                 ->update( { hit => $r->hit_all, } );
         }
         $last_update_time = $r->last_update_time

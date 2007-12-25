@@ -9,12 +9,11 @@ use Foorum::Formatter qw/filter_format/;
 sub default : Private {
     my ( $self, $c, undef, undef, $type ) = @_;
 
-    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;   # /site/recent/rss
+    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;    # /site/recent/rss
 
     unless ( $type
-        and grep { $type eq $_ } ( 'weekly', 'monthly', 'yesterday', 'all' ) )
-    {
-        $type = 'today';                                    # default
+        and grep { $type eq $_ } ( 'weekly', 'monthly', 'yesterday', 'all' ) ) {
+        $type = 'today';                                     # default
     }
     $c->stash->{type} = $type;
 

@@ -44,7 +44,7 @@ if ($worker) {
     $cron->add_entry( "0 0 * * *", \&run_worker, 'DailyReport' );    # daily
     $cron->add_entry( "0 0 * * *", \&run_worker, 'DailyChart' );     # daily
     $cron->add_entry( "*/13 * * * *", \&run_worker, 'SendScheduledEmail' )
-        ;    # sendmail
+        ;                                                            # sendmail
     $cron->run();
 } else {
     print <<USAGE;

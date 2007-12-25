@@ -17,8 +17,7 @@ sub validate_username {
     }
 
     # username_reserved
-    my @reserved
-        = $c->model('FilterWord')->get_data( $c, 'username_reserved' );
+    my @reserved = $c->model('FilterWord')->get_data( $c, 'username_reserved' );
     return 'HAS_RESERVED' if ( grep { lc($username) eq lc($_) } @reserved );
 
     # unique
@@ -60,8 +59,7 @@ sub validate_forum_code {
     return 'HAS_RESERVED' if ( grep { lc($forum_code) eq lc($_) } @reserved );
 
     # unique
-    my $cnt
-        = $c->model('DBIC::Forum')->count( { forum_code => $forum_code, } );
+    my $cnt = $c->model('DBIC::Forum')->count( { forum_code => $forum_code, } );
     return 'DBIC_UNIQUE' if ($cnt);
 
     return;

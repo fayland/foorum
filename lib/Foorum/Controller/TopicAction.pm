@@ -22,8 +22,7 @@ sub lock_or_sticky_or_elite :
 
     # check policy
     unless ( $c->model('Policy')->is_moderator( $c, $forum_id )
-        or ( $action eq 'lock' and $topic->{author_id} == $c->user->user_id )
-        )
+        or ( $action eq 'lock' and $topic->{author_id} == $c->user->user_id ) )
     {
         $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
     }

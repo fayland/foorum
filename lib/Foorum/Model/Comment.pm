@@ -107,8 +107,8 @@ sub get {
         );
     }
     if ( $attrs->{with_author} ) {
-        $comment->{author} = $c->model('User')
-            ->get( $c, { user_id => $comment->author_id } );
+        $comment->{author}
+            = $c->model('User')->get( $c, { user_id => $comment->author_id } );
     }
 
     $c->stash->{comment} = $comment;
@@ -176,8 +176,8 @@ sub remove {
         $c->model('Upload')
             ->remove_file_by_upload_id( $c, $comment->upload_id );
     }
-    $c->model('DBIC::Comment')
-        ->search( { comment_id => $comment->comment_id } )->delete;
+    $c->model('DBIC::Comment')->search( { comment_id => $comment->comment_id } )
+        ->delete;
 
     my $object_type = $comment->object_type;
     my $object_id   = $comment->object_id;

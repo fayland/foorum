@@ -24,8 +24,7 @@ sub get_object_from_url {
         if ( $user_sig =~ /^\d+$/ ) {
             $object_id = $user_sig;
         } else {
-            my $user
-                = $c->model('User')->get( $c, { username => $user_sig } );
+            my $user = $c->model('User')->get( $c, { username => $user_sig } );
             return unless ($user);
             $object_id = $user->{user_id};
         }
@@ -45,8 +44,7 @@ sub get_url_from_object {
     switch ($object_type) {
         case 'poll' { return "/forum/$forum_id/poll/$object_id"; }
         case 'user_profile' {
-            my $user
-                = $c->model('User')->get( $c, { user_id => $object_id } );
+            my $user = $c->model('User')->get( $c, { user_id => $object_id } );
             return '/u/' . $user->{username} if ($user);
         }
     }
@@ -69,7 +67,7 @@ sub get_object_by_type_id {
                 title       => $object->{title},
                 author      => $c->model('User')
                     ->get( $c, { user_id => $object->{author_id} } ),
-                url => '/forum/' . $object->{forum_id} . "/$object_id",
+                url         => '/forum/' . $object->{forum_id} . "/$object_id",
                 last_update => $object->{last_update_date},
             };
         }

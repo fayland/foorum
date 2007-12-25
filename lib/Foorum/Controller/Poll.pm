@@ -25,7 +25,7 @@ sub create : Regex('^forum/(\w+)/poll/new$') {
     $multi = 0 if ( $multi ne '1' );    # 0 or 1
 
     my $now = time();
-    $duration = $now + $duration * 86400;  # 86400 = 24 * 60 * 60, means 1 day
+    $duration = $now + $duration * 86400;    # 86400 = 24 * 60 * 60, means 1 day
 
     # we prefer [% | html %] now because of my bad memory in TT html
     my $title = $c->req->param('title');
@@ -93,8 +93,8 @@ sub poll : Regex('^forum/(\w+)/poll/(\d+)$') {
     );
 
     # register hit
-    $poll->{_column_data}->{hit} = $c->model('Hit')
-        ->register( $c, 'poll', $poll->poll_id, $poll->hit );
+    $poll->{_column_data}->{hit}
+        = $c->model('Hit')->register( $c, 'poll', $poll->poll_id, $poll->hit );
 
     $c->stash(
         {   can_vote => $can_vote,

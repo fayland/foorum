@@ -82,8 +82,7 @@ sub _handler_session {
             $has_me = 1;
         }
         if ( $session->user_id ) {
-            if ( $c->user_exists and $session->user_id == $c->user->user_id )
-            {
+            if ( $c->user_exists and $session->user_id == $c->user->user_id ) {
                 $user  = $c->user;
                 $refer = $c->req->path;
             } else {

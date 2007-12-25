@@ -85,8 +85,7 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
         $upload_id = $c->model('Upload')
             ->add_file( $c, $upload, { forum_id => $forum_id } );
         unless ($upload_id) {
-            return $c->set_invalid_form(
-                upload => $c->stash->{upload_error} );
+            return $c->set_invalid_form( upload => $c->stash->{upload_error} );
         }
     }
 
@@ -182,8 +181,7 @@ sub reply : Regex('^forum/(\w+)/(\d+)(/(\d+))?/reply$') {
         $upload_id = $c->model('Upload')
             ->add_file( $c, $upload, { forum_id => $forum_id } );
         unless ($upload_id) {
-            return $c->set_invalid_form(
-                upload => $c->stash->{upload_error} );
+            return $c->set_invalid_form( upload => $c->stash->{upload_error} );
         }
     }
 
@@ -258,8 +256,7 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
 
     # permission
     if ( $c->user->user_id != $comment->author_id
-        and not $c->model('Policy')->is_moderator( $c, $forum_id ) )
-    {
+        and not $c->model('Policy')->is_moderator( $c, $forum_id ) ) {
         $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
     }
 
@@ -282,8 +279,7 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
 
     my $new_upload = $c->req->upload('upload');
     my $upload_id  = $comment->upload_id;
-    if ( ( $c->req->param('attachment_action') eq 'delete' ) or $new_upload )
-    {
+    if ( ( $c->req->param('attachment_action') eq 'delete' ) or $new_upload ) {
 
         # delete old upload
         if ($old_upload) {
@@ -318,8 +314,7 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
     );
 
     if (    $comment->reply_to == 0
-        and $topic->{title} ne $c->req->param('title') )
-    {
+        and $topic->{title} ne $c->req->param('title') ) {
         $c->model('Topic')
             ->update( $c, $topic_id, { title => $c->req->param('title') } );
         $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
@@ -352,8 +347,7 @@ sub delete : Regex('^forum/(\w+)/(\d+)/(\d+)/delete$') {
 
     # permission
     if ( $c->user->user_id != $comment->author_id
-        and not $c->model('Policy')->is_moderator( $c, $forum_id ) )
-    {
+        and not $c->model('Policy')->is_moderator( $c, $forum_id ) ) {
         $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
     }
 
@@ -361,8 +355,7 @@ sub delete : Regex('^forum/(\w+)/(\d+)/(\d+)/delete$') {
     if ( $comment->reply_to == 0 ) {
 
         # u can only delete 5 topics one day
-        my $most_deletion_per_day
-            = $c->config->{topic}->{most_deletion_per_day}
+        my $most_deletion_per_day = $c->config->{topic}->{most_deletion_per_day}
             || 5;
         my $deleted_count = $c->model('DBIC')->resultset('LogAction')->count(
             {   forum_id => $forum_id,
