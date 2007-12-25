@@ -197,10 +197,10 @@ sub style : Chained('forum_for_admin') Args(0) {
     );
 
     #    write_file($css, $css_content);
-    if ( open( FH, '>', $css ) ) {
-        flock( FH, 2 );
-        print FH $css_content;
-        close(FH);
+    if ( open( my $fh, '>', $css ) ) {
+        flock( $fh, 2 );
+        print $fh $css_content;
+        close($fh);
     }
 
     my $json_content = $c->view('TT')->render(
@@ -212,10 +212,10 @@ sub style : Chained('forum_for_admin') Args(0) {
     );
 
     #    write_file($json, $json_content);
-    if ( open( FH, '>', $json ) ) {
-        flock( FH, 2 );
-        print FH $json_content;
-        close(FH);
+    if ( open( my $fh, '>', $json ) ) {
+        flock( $fh, 2 );
+        print $fh $json_content;
+        close($fh);
     }
 
     $c->res->redirect( $forum->{forum_url} );

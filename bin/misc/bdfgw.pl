@@ -45,10 +45,10 @@ $tags{link} = $linksub;
 foreach my $filename (@filenames) {
     {
         local $/;
-        open( FH, "$wiki_dir/$filename\.wiki" );
-        flock( FH, 1 );
-        my $string = <FH>;
-        close(FH);
+        open( my $fh, '<', "$wiki_dir/$filename\.wiki" );
+        flock( $fh, 1 );
+        my $string = <$fh>;
+        close($fh);
         $string =~ s/&/&amp;/gs;
         $string =~ s/>/&gt;/gs;
         $string =~ s/</&lt;/gs;
@@ -65,10 +65,10 @@ $html
 </body>
 </html>
 HTML
-        open( FH, ">$trunk_dir/docs/$filename\.html" );
-        flock( FH, 2 );
-        print FH $html;
-        close(FH);
+        open( $fh, '>', "$trunk_dir/docs/$filename\.html" );
+        flock( $fh, 2 );
+        print $fh $html;
+        close($fh);
         print "format $filename OK\n";
 
         # XXX? TODO

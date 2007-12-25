@@ -1,0 +1,90 @@
+bin\cron\chart.pl: Expression form of "eval" at line 7, column 25. See page 161 of PBP.
+bin\cron\chart.pl: Expression form of "eval" at line 8, column 25. See page 161 of PBP.
+bin\cron\TheSchwartz_client.pl: Expression form of "eval" at line 7, column 25. See page 161 of PBP.
+bin\cron\TheSchwartz_client.pl: Expression form of "eval" at line 8, column 25. See page 161 of PBP.
+bin\cron\TheSchwartz_worker.pl: Expression form of "eval" at line 7, column 25. See page 161 of PBP.
+bin\cron\TheSchwartz_worker.pl: Expression form of "eval" at line 8, column 25. See page 161 of PBP.
+bin\db\make_schema.pl source OK
+bin\foorum_server.pl: Code before strictures are enabled at line 3, column 1. See page 429 of PBP.
+bin\misc\bdfgw.pl source OK
+bin\misc\g2b.pl source OK
+bin\misc\graph.pl source OK
+bin\misc\perlcritic.pl source OK
+bin\misc\perltidy.pl source OK
+bin\setup.pl source OK
+bin\testfunction\cache.pl source OK
+bin\testfunction\config.pl source OK
+bin\testfunction\db.pl source OK
+bin\testfunction\mail.pl source OK
+bin\testfunction\theschwartz.pl source OK
+lib\Catalyst\Action\PathLogger.pm source OK
+lib\Catalyst\Plugin\FoorumUtils.pm source OK
+lib\Catalyst\Plugin\Session\Store\DBIC.pm source OK
+lib\Foorum\Controller\Admin\BanIP.pm source OK
+lib\Foorum\Controller\Admin\Forum.pm source OK
+lib\Foorum\Controller\Admin\Log.pm source OK
+lib\Foorum\Controller\Admin\Tools.pm source OK
+lib\Foorum\Controller\Admin\User.pm source OK
+lib\Foorum\Controller\Admin.pm source OK
+lib\Foorum\Controller\Ajax\Poll.pm source OK
+lib\Foorum\Controller\Ajax.pm source OK
+lib\Foorum\Controller\Comment.pm source OK
+lib\Foorum\Controller\Forum.pm source OK
+lib\Foorum\Controller\ForumAdmin.pm source OK
+lib\Foorum\Controller\Get.pm source OK
+lib\Foorum\Controller\Logon.pm source OK
+lib\Foorum\Controller\Message.pm source OK
+lib\Foorum\Controller\My.pm source OK
+lib\Foorum\Controller\Poll.pm source OK
+lib\Foorum\Controller\Post.pm source OK
+lib\Foorum\Controller\Profile.pm source OK
+lib\Foorum\Controller\Register.pm: Expression form of "eval" at line 165, column 5. See page 161 of PBP.
+lib\Foorum\Controller\Root.pm source OK
+lib\Foorum\Controller\Search.pm source OK
+lib\Foorum\Controller\Site\Popular.pm source OK
+lib\Foorum\Controller\Site.pm source OK
+lib\Foorum\Controller\StaticInfo.pm source OK
+lib\Foorum\Controller\Topic.pm source OK
+lib\Foorum\Controller\TopicAction.pm source OK
+lib\Foorum\Controller\U.pm source OK
+lib\Foorum\Controller\Utils.pm source OK
+lib\Foorum\ExternalUtils.pm: Expression form of "eval" at line 55, column 5. See page 161 of PBP.
+lib\Foorum\Formatter\BBCode.pm source OK
+lib\Foorum\Formatter\Pod.pm source OK
+lib\Foorum\Formatter.pm: Expression form of "eval" at line 20, column 29. See page 161 of PBP.
+lib\Foorum\Formatter.pm: Expression form of "eval" at line 23, column 25. See page 161 of PBP.
+lib\Foorum\Formatter.pm: Expression form of "eval" at line 26, column 26. See page 161 of PBP.
+lib\Foorum\Formatter.pm: Expression form of "eval" at line 29, column 27. See page 161 of PBP.
+lib\Foorum\Formatter.pm: Expression form of "eval" at line 79, column 25. See page 161 of PBP.
+lib\Foorum\Model\BannedIP.pm source OK
+lib\Foorum\Model\ClearCachedPage.pm source OK
+lib\Foorum\Model\Comment.pm source OK
+lib\Foorum\Model\DBIC.pm: Expression form of "eval" at line 7, column 9. See page 161 of PBP.
+lib\Foorum\Model\DBIC.pm: Expression form of "eval" at line 9, column 9. See page 161 of PBP.
+lib\Foorum\Model\Email.pm source OK
+lib\Foorum\Model\FilterWord.pm source OK
+lib\Foorum\Model\Forum.pm source OK
+lib\Foorum\Model\Hit.pm source OK
+lib\Foorum\Model\Log.pm source OK
+lib\Foorum\Model\Message.pm source OK
+lib\Foorum\Model\Object.pm source OK
+lib\Foorum\Model\Online.pm source OK
+lib\Foorum\Model\Policy.pm source OK
+lib\Foorum\Model\Topic.pm source OK
+lib\Foorum\Model\Upload.pm: Integer with leading zeros at line 121, column 31. See page 58 of PBP.
+lib\Foorum\Model\User.pm source OK
+lib\Foorum\Model\UserAuth.pm source OK
+lib\Foorum\Model\Validation.pm source OK
+lib\Foorum\Model\Visit.pm source OK
+lib\Foorum\ResultSet\Share.pm source OK
+lib\Foorum\ResultSet\Star.pm source OK
+lib\Foorum\TheSchwartz\Worker\DailyChart.pm source OK
+lib\Foorum\TheSchwartz\Worker\DailyReport.pm source OK
+lib\Foorum\TheSchwartz\Worker\Hit.pm source OK
+lib\Foorum\TheSchwartz\Worker\RemoveOldDataFromDB.pm source OK
+lib\Foorum\TheSchwartz\Worker\ResizeProfilePhoto.pm source OK
+lib\Foorum\TheSchwartz\Worker\SendScheduledEmail.pm source OK
+lib\Foorum\Utils.pm source OK
+lib\Foorum\View\JSON.pm source OK
+lib\Foorum\View\TT.pm source OK
+lib\Foorum.pm: Stricture disabled at line 37, column 9. See page 429 of PBP.
