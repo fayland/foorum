@@ -5,6 +5,13 @@ use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::ExternalUtils qw/schema error_log/;
+use File::Spec;
+use Cwd qw/abs_path/;
+use YAML qw/LoadFile/;
+
+my ( undef, $path ) = File::Spec->splitpath(__FILE__);
+my $cron_yml = abs_path( "$path/../../../../conf/cron.yml" );
+my $cron_config = LoadFile($cron_yml);
 
 sub work {
     my $class = shift;
