@@ -60,8 +60,8 @@ __PACKAGE__->set_primary_key("forum_id");
 __PACKAGE__->add_unique_constraint("forum_code", ["forum_code"]);
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-23 13:01:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:brbkJhhnCt9gwNaBAfIw5w
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-25 09:59:32
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:aQq6M2A89YWTHrmNYUff4g
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
