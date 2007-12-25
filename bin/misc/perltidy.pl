@@ -14,8 +14,11 @@ my $files = File::Next::files( $path );
 while ( defined ( my $file = $files->() ) ) {
     next if ($file !~ /\.p[ml]$/); # only .pm .pl
     next if ($file =~ /perltidy/); # skip this file
-    next if ($file =~ /\/Schema\//); # skip Schema dir
-    next if ($file =~ /Schema\.pm$/); # skip Schema.pm
+    next if ($file =~ /Schema\.pm$/); # skip this file
+    next if ($file =~ /(\/|\\)Schema(\/|\\)/); # skip Schema dir and Schema.pm
+
+    print "$file\n";
+
     my $tidyfile = $file . '.tdy';
     Perl::Tidy::perltidy(
         source            => $file,
