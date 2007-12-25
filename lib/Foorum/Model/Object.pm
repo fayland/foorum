@@ -21,10 +21,11 @@ sub get_object_from_url {
     # 2. user profile, eg: /u/fayland or /u/1
     elsif ( $path =~ /\/u\/(\w+)/ ) {
         my $user_sig = $1;
-        if ($user_sig =~ /^\d+$/) {
+        if ( $user_sig =~ /^\d+$/ ) {
             $object_id = $user_sig;
         } else {
-            my $user = $c->model('User')->get( $c, { username => $user_sig } );
+            my $user
+                = $c->model('User')->get( $c, { username => $user_sig } );
             return unless ($user);
             $object_id = $user->{user_id};
         }
@@ -60,30 +61,29 @@ sub get_object_by_type_id {
 
     switch ($object_type) {
         case 'topic' {
-            my $object = $c->model('Topic')->get($c, $object_id);
+            my $object = $c->model('Topic')->get( $c, $object_id );
             return unless ($object);
             return {
                 object_type => 'topic',
                 object_id   => $object_id,
-                title  => $object->{title},
-                author => $c->model('User')->get($c, { user_id => $object->{author_id} } ),
-                url    => '/forum/' . $object->{forum_id} . "/$object_id",
+                title       => $object->{title},
+                author      => $c->model('User')
+                    ->get( $c, { user_id => $object->{author_id} } ),
+                url => '/forum/' . $object->{forum_id} . "/$object_id",
                 last_update => $object->{last_update_date},
             };
         }
         case 'poll' {
-            my $object = $c->model('DBIC::Poll')->find(
-                {
-                    poll_id => $object_id,
-                }
-            );
+            my $object
+                = $c->model('DBIC::Poll')->find( { poll_id => $object_id, } );
             return unless ($object_id);
             return {
                 object_type => 'poll',
                 object_id   => $object_id,
-                title  => $object->title,
-                author => $c->model('User')->get($c, { user_id => $object->author_id } ),
-                url    => '/forum/' . $object->forum_id . "/poll/$object_id",
+                title       => $object->title,
+                author      => $c->model('User')
+                    ->get( $c, { user_id => $object->author_id } ),
+                url => '/forum/' . $object->forum_id . "/poll/$object_id",
                 last_update => '-',
             };
         }

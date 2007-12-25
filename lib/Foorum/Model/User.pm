@@ -55,7 +55,7 @@ sub get_multi {
 
     my $cache = $c->default_cache_backend;
     my $users;
-    if ($cache->can('get_multi')) { # for Cache::Memcached
+    if ( $cache->can('get_multi') ) {    # for Cache::Memcached
         $users = $cache->get_multi(@mem_keys);
     } else {
         foreach (@mem_keys) {
@@ -99,14 +99,15 @@ sub get_user_from_db {
     }
 
     # user profile photo
-    my $profile_photo = $c->model('DBIC')->resultset('UserProfilePhoto')->find( {
-        user_id => $user->user_id,
-    } );
+    my $profile_photo = $c->model('DBIC')->resultset('UserProfilePhoto')
+        ->find( { user_id => $user->user_id, } );
     if ($profile_photo) {
         $profile_photo = $profile_photo->{_column_data};
-        if ($profile_photo->{type} eq 'upload') {
-             my $profile_photo_upload = $c->model('Upload')->get( $c, $profile_photo->{value} );
-             $profile_photo->{upload} = $profile_photo_upload if ($profile_photo_upload);
+        if ( $profile_photo->{type} eq 'upload' ) {
+            my $profile_photo_upload
+                = $c->model('Upload')->get( $c, $profile_photo->{value} );
+            $profile_photo->{upload} = $profile_photo_upload
+                if ($profile_photo_upload);
         }
     }
 

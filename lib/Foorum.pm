@@ -33,6 +33,7 @@ if ( __PACKAGE__->config->{debug_mode} ) {
     __PACKAGE__->log->enable( 'debug', 'info', 'warn' )
         ;                                        # for developer server
     {
+
         # these code are copied from Catalyst.pm setup_log
         no strict 'refs';
         my $class = __PACKAGE__;
@@ -45,50 +46,53 @@ if ( __PACKAGE__->config->{debug_mode} ) {
 
 {
     use Sub::Install;
+
     # rewrite _get_page_cache_key in C::A::PageCache for own use
     my $_get_page_cache_key = sub {
         my $c = shift;
-    
+
         # We can't rely on the params after the user's code has run, so
         # use the key created during the initial dispatch phase
         return $c->_page_cache_key if ( $c->_page_cache_key );
-    
+
         my $key = "/" . $c->req->path;
-                                                                                                         # Change Start
-        my $lang = $c->req->cookie('lang')->value if ( $c->req->cookie('lang') );
+
+        # Change Start
+        my $lang = $c->req->cookie('lang')->value
+            if ( $c->req->cookie('lang') );
         $lang ||= $c->user->lang if ( $c->user_exists );
         $lang ||= $c->config->{default_lang};
         $lang = $c->req->param('lang') if ( $c->req->param('lang') );
         $lang =~ s/\W+//isg;
         $key .= ':' . $lang;
+
         # Change End
-    
+
         if ( scalar $c->req->param ) {
             my @params;
             foreach my $arg ( sort keys %{ $c->req->params } ) {
                 if ( ref $c->req->params->{$arg} ) {
                     my $list = $c->req->params->{$arg};
-                    push @params, map { "$arg=" . $_  } sort @{$list};
-                }
-                else {
+                    push @params, map { "$arg=" . $_ } sort @{$list};
+                } else {
                     push @params, "$arg=" . $c->req->params->{$arg};
                 }
             }
             $key .= '?' . join( '&', @params );
-        }
-        elsif ( my $query = $c->req->uri->query ) {
+        } elsif ( my $query = $c->req->uri->query ) {
             $key .= '?' . $query;
         }
-    
-        $c->_page_cache_key( $key );
-    
+
+        $c->_page_cache_key($key);
+
         return $key;
     };
-    Sub::Install::install_sub( {
-        code => $_get_page_cache_key,
-        into => 'Catalyst::Plugin::PageCache',
-        as   => '_get_page_cache_key'
-    } );
+    Sub::Install::install_sub(
+        {   code => $_get_page_cache_key,
+            into => 'Catalyst::Plugin::PageCache',
+            as   => '_get_page_cache_key'
+        }
+    );
 }
 
 1;

@@ -119,8 +119,7 @@ sub change_password : Local {
 
     # check the password typed in is correct
     my $password = $c->req->param('password');
-    my $d        = Digest->new(
-        $c->config->{authentication}->{password_hash_type} );
+    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
     if ( $computed ne $c->user->{password} ) {
@@ -142,13 +141,12 @@ sub change_password : Local {
     $d->add($new_password);
     my $new_computed = $d->digest;
 
-    $c->model('User')
-        ->update( $c, $c->user, { password => $new_computed, } );
+    $c->model('User')->update( $c, $c->user, { password => $new_computed, } );
 
     $c->detach(
         '/print_message',
-        [   {   msg => 'OK',
-                url => '/profile/edit',
+        [   {   msg          => 'OK',
+                url          => '/profile/edit',
                 stay_in_page => 1,
             }
         ]
@@ -173,16 +171,21 @@ sub forget_password : Local {
 
     # create a random password
     my $random_password = &generate_random_word(8);
-    my $d               = Digest->new(
-        $c->config->{authentication}->{password_hash_type} );
+    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($random_password);
     my $computed = $d->digest;
 
     # send email
-    $c->model('Email')->create($c, { template => 'forget_password', to => $email, stash => {
-        username => $username,
-        password => $random_password
-    } } );
+    $c->model('Email')->create(
+        $c,
+        {   template => 'forget_password',
+            to       => $email,
+            stash    => {
+                username => $username,
+                password => $random_password
+            }
+        }
+    );
     $c->model('User')->update( $c, $user, { password => $computed } );
     $c->detach(
         '/print_message',
@@ -206,8 +209,7 @@ sub change_email : Local {
 
     # check the password typed in is correct
     my $password = $c->req->param('password');
-    my $d        = Digest->new(
-        $c->config->{authentication}->{password_hash_type} );
+    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
     if ( $computed ne $c->user->{password} ) {
@@ -247,8 +249,7 @@ sub change_username : Local {
 
     # check the password typed in is correct
     my $password = $c->req->param('password');
-    my $d        = Digest->new(
-        $c->config->{authentication}->{password_hash_type} );
+    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
     if ( $computed ne $c->user->{password} ) {
@@ -288,7 +289,7 @@ sub profile_photo : Local {
 
     my $new_upload = $c->req->upload('upload');
     my $old_upload_id
-        = ($c->user->{profile_photo}->{type} eq 'upload')
+        = ( $c->user->{profile_photo}->{type} eq 'upload' )
         ? $c->user->{profile_photo}->{value}
         : 0;
     my $new_upload_id = $old_upload_id;
@@ -309,23 +310,28 @@ sub profile_photo : Local {
                 return $c->set_invalid_form(
                     upload => $c->stash->{upload_error} );
             }
-            
+
             my $client = theschwartz();
-            $client->insert('Foorum::TheSchwartz::Worker::ResizeProfilePhoto', $new_upload_id);
+            $client->insert(
+                'Foorum::TheSchwartz::Worker::ResizeProfilePhoto',
+                $new_upload_id );
         }
     }
 
-    $c->model('DBIC')->resultset('UserProfilePhoto')->search( { user_id => $c->user->{user_id} } )->delete;
-    $c->model('DBIC')->resultset('UserProfilePhoto')->create( {
-        user_id => $c->user->{user_id},
-        type    => 'upload',
-        value   => $new_upload_id,
-        width => 0, height => 0,
-        time  => time(),
-    } );
-    
-    $c->model('User')->delete_cache_by_user($c, $c->user);
-    
+    $c->model('DBIC')->resultset('UserProfilePhoto')
+        ->search( { user_id => $c->user->{user_id} } )->delete;
+    $c->model('DBIC')->resultset('UserProfilePhoto')->create(
+        {   user_id => $c->user->{user_id},
+            type    => 'upload',
+            value   => $new_upload_id,
+            width   => 0,
+            height  => 0,
+            time    => time(),
+        }
+    );
+
+    $c->model('User')->delete_cache_by_user( $c, $c->user );
+
     $c->res->redirect( '/u/' . $c->user->{username} );
 }
 

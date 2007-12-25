@@ -3,6 +3,7 @@ package Foorum::Controller::ForumAdmin;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+
 #use File::Slurp;
 use Foorum::Utils qw/is_color encodeHTML/;
 use Data::Dumper;
@@ -99,7 +100,9 @@ sub basic : Chained('forum_for_admin') Args(0) {
     my @extra_update;
     push @extra_update, ( forum_code => $forum_code )
         if ( $c->stash->{is_site_admin} );
-    $c->model('Forum')->update($c, $forum_id,
+    $c->model('Forum')->update(
+        $c,
+        $forum_id,
         {   name        => $name,
             description => $description,
 
@@ -256,8 +259,8 @@ sub announcement : Chained('forum_for_admin') Args(0) {
         return;
     }
 
-    my $title = $c->req->param('title');
-    my $text  = $c->req->param('text');
+    my $title     = $c->req->param('title');
+    my $text      = $c->req->param('text');
     my $formatter = $c->req->param('formatter');
 
     # if no text is typed, delete the record.
@@ -270,7 +273,7 @@ sub announcement : Chained('forum_for_admin') Args(0) {
                     update_on => \"NOW()",
                     author_id => $c->user->user_id,
                     title     => $title,
-                    formatter   => $formatter,
+                    formatter => $formatter,
                 }
             );
         } else {
@@ -324,12 +327,16 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
     return $c->res->body('no record available') unless ($rs);
 
     if ( $from eq 'user' and ( $to eq 'rejected' or $to eq 'blocked' ) ) {
-        $c->model('Forum')->update($c, $forum_id, { total_members => \"total_members - 1" } );
+        $c->model('Forum')
+            ->update( $c, $forum_id,
+            { total_members => \"total_members - 1" } );
     } elsif (
         ( $from eq 'rejected' or $from eq 'blocked' or $from eq 'pending' )
         and $to eq 'user' )
     {
-        $c->model('Forum')->update($c, $forum_id, { total_members => \"total_members + 1" } );
+        $c->model('Forum')
+            ->update( $c, $forum_id,
+            { total_members => \"total_members + 1" } );
     }
 
     my $where = {

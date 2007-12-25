@@ -93,7 +93,8 @@ sub poll : Regex('^forum/(\w+)/poll/(\d+)$') {
     );
 
     # register hit
-    $poll->{_column_data}->{hit} = $c->model('Hit')->register($c, 'poll', $poll->poll_id, $poll->hit);
+    $poll->{_column_data}->{hit} = $c->model('Hit')
+        ->register( $c, 'poll', $poll->poll_id, $poll->hit );
 
     $c->stash(
         {   can_vote => $can_vote,

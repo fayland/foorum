@@ -64,7 +64,7 @@ sub validate_username : Local {
 
 sub star : Local {
     my ( $self, $c ) = @_;
-    
+
     return $c->res->body('LOGIN FIRST') unless ( $c->user_exists );
 
     my $object_type = $c->req->param('obj_type');
@@ -76,17 +76,18 @@ sub star : Local {
     return $c->res->body('ERROR') unless ( $object_type and $object_id );
 
     # if we already has it, it's unstar, or else, it's star
-    my $ret = $c->model('DBIC')->resultset('Star')->del_or_create( {
-        user_id     => $c->user->user_id,
-        object_type => $object_type,
-        object_id   => $object_id,
-    } );
+    my $ret = $c->model('DBIC')->resultset('Star')->del_or_create(
+        {   user_id     => $c->user->user_id,
+            object_type => $object_type,
+            object_id   => $object_id,
+        }
+    );
     $c->res->body($ret);
 }
 
 sub share : Local {
     my ( $self, $c ) = @_;
-    
+
     return $c->res->body('LOGIN FIRST') unless ( $c->user_exists );
 
     my $object_type = $c->req->param('obj_type');
@@ -98,11 +99,12 @@ sub share : Local {
     return $c->res->body('ERROR') unless ( $object_type and $object_id );
 
     # if we already has it, it's unstar, or else, it's star
-    my $ret = $c->model('DBIC')->resultset('Share')->del_or_create( {
-        user_id     => $c->user->user_id,
-        object_type => $object_type,
-        object_id   => $object_id,
-    } );
+    my $ret = $c->model('DBIC')->resultset('Share')->del_or_create(
+        {   user_id     => $c->user->user_id,
+            object_type => $object_type,
+            object_id   => $object_id,
+        }
+    );
     $c->res->body($ret);
 }
 

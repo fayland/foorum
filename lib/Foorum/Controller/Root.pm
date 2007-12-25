@@ -35,6 +35,7 @@ sub auto : Private {
     $c->languages( [ $c->stash->{lang} ] );
 
     my $path = $c->req->path;
+
     # for maintain, but admin can login and do something
     if ( $c->config->{site}->{maintain} and $path !~ /^(admin|login)\// ) {
         $c->stash->{template} = 'simple/maintain.html';
@@ -70,11 +71,13 @@ sub end : ActionClass('PathLogger') {
     return 1 if ( $c->res->body );
 
     if ( $c->res->location ) {
-        if ($c->stash->{is_rss_template}) { # No redirection for RSS.
-            $c->stash->{error}->{msg} = 'Permission Denied to ' . $c->req->base . $c->req->path;
-            $c->stash->{template} = 'simple/error.html'; # print_error
-            $c->res->location(undef); # reset
+        if ( $c->stash->{is_rss_template} ) {    # No redirection for RSS.
+            $c->stash->{error}->{msg}
+                = 'Permission Denied to ' . $c->req->base . $c->req->path;
+            $c->stash->{template} = 'simple/error.html';    # print_error
+            $c->res->location(undef);                       # reset
         } else {
+
             # for login using!
             if ( $c->res->location =~ /^\/login/ ) {
                 my $location = '/login?referer=/' . $c->req->path;
@@ -88,6 +91,7 @@ sub end : ActionClass('PathLogger') {
 
     if ( $c->stash->{is_rss_template} ) {
         $c->stash->{no_wrapper} = 1;
+
         #$c->res->content_type('application/rss+xml');
         $c->res->content_type('text/xml');
     } elsif ( $c->stash->{template} =~ /^simple\// ) {

@@ -10,7 +10,7 @@ use Data::Dumper;
 sub recent : Local {
     my ( $slef, $c, $recent_type ) = @_;
 
-    my $rss      = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0; # /site/recent/rss
+    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;   # /site/recent/rss
 
     my @extra_cols;
     my $url_prefix;
@@ -25,7 +25,7 @@ sub recent : Local {
     my $page = get_page_from_url( $c->req->path );
     my $rs   = $c->model('DBIC::Topic')->search(
         {   'forum.policy' => 'public',
-            'me.status' => { '!=', 'banned' },
+            'me.status'    => { '!=', 'banned' },
             @extra_cols,
         },
         {   order_by => 'topic_id desc',
@@ -37,8 +37,7 @@ sub recent : Local {
     );
 
     $c->stash(
-        {
-            recent_type => $recent_type,
+        {   recent_type => $recent_type,
             url_prefix  => $url_prefix,
         }
     );
@@ -53,26 +52,28 @@ sub recent : Local {
                 {   order_by => 'post_on',
                     rows     => 1,
                     page     => 1,
-                    columns  => ['text', 'formatter'],
+                    columns  => [ 'text', 'formatter' ],
                 }
             );
             next unless ($rs);
             $_->{text} = $rs->text;
+
             # filter format by Foorum::Filter
             $_->{text} = $c->model('FilterWord')
                 ->convert_offensive_word( $c, $_->{text} );
-            $_->{text} = filter_format($_->{text}, { format => $rs->formatter });
+            $_->{text}
+                = filter_format( $_->{text}, { format => $rs->formatter } );
         }
         $c->stash->{topics} = \@topics;
-        
+
         $c->cache_page('600');
         $c->stash->{template} = 'site/recent.rss.html';
     } else {
         $c->cache_page('300');
         $c->stash(
-            {   template    => 'site/recent.html',
-                pager       => $rs->pager,
-                topics      => \@topics,
+            {   template => 'site/recent.html',
+                pager    => $rs->pager,
+                topics   => \@topics,
             }
         );
     }
@@ -95,24 +96,30 @@ sub online : Local {
 }
 
 sub members : Local {
-    my ($self, $c) = @_;
-    
+    my ( $self, $c ) = @_;
+
     $c->cache_page('300');
-    
-    my $page = get_page_from_url($c->req->path);
-    my $rs = $c->model('DBIC')->resultset('User')->search( undef, {
-        order_by => 'register_time DESC',
-        columns => ['user_id', 'username', 'nickname', 'register_time', 'gender', 'status'],
-        page => $page,
-        rows => 20,
-    } );
-    
-    $c->stash( {
-        users => [ $rs->all ],
-        pager => $rs->pager,
-        url_prefix => '/site/user',
-        template => 'site/user.html',
-    } );
+
+    my $page = get_page_from_url( $c->req->path );
+    my $rs   = $c->model('DBIC')->resultset('User')->search(
+        undef,
+        {   order_by => 'register_time DESC',
+            columns  => [
+                'user_id', 'username', 'nickname', 'register_time',
+                'gender',  'status'
+            ],
+            page => $page,
+            rows => 20,
+        }
+    );
+
+    $c->stash(
+        {   users      => [ $rs->all ],
+            pager      => $rs->pager,
+            url_prefix => '/site/user',
+            template   => 'site/user.html',
+        }
+    );
 }
 
 =pod

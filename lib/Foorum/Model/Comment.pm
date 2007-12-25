@@ -29,7 +29,7 @@ sub get_comments_by_object {
                 object_id   => $object_id,
             },
             {   order_by => 'post_on',
-                prefetch => [ 'upload' ],
+                prefetch => ['upload'],
             }
         );
 
@@ -65,11 +65,12 @@ sub get_comments_by_object {
     foreach (@comments) {
         push @all_user_ids, $_->{author_id};
     }
-    if (scalar @all_user_ids) {
+    if ( scalar @all_user_ids ) {
         @all_user_ids = uniq @all_user_ids;
-        my $authors = $c->model('User')->get_multi($c, 'user_id', \@all_user_ids);
+        my $authors
+            = $c->model('User')->get_multi( $c, 'user_id', \@all_user_ids );
         foreach (@comments) {
-            $_->{author} = $authors->{$_->{author_id}};
+            $_->{author} = $authors->{ $_->{author_id} };
         }
     }
 
@@ -106,7 +107,8 @@ sub get {
         );
     }
     if ( $attrs->{with_author} ) {
-        $comment->{author} = $c->model('User')->get($c, { user_id => $comment->author_id });
+        $comment->{author} = $c->model('User')
+            ->get( $c, { user_id => $comment->author_id } );
     }
 
     $c->stash->{comment} = $comment;
@@ -123,7 +125,7 @@ sub create {
     my $reply_to    = $info->{reply_to} || 0;
     my $formatter   = $info->{formatter} || 'ubb';
     my $title       = $info->{title} || $c->req->param('title');
-    my $text        = $info->{text}  || $c->req->param('text') || '';
+    my $text        = $info->{text} || $c->req->param('text') || '';
 
     # we don't use [% | html %] now because of my bad memory in TT html
     $title = encodeHTML($title);
@@ -135,7 +137,7 @@ sub create {
             title       => $title,
             text        => $text,
             formatter   => $formatter,
-            post_on     => \'NOW()',      #'
+            post_on     => \'NOW()',                  #'
             post_ip     => $c->req->address,
             reply_to    => $reply_to,
             forum_id    => $forum_id,
@@ -145,16 +147,23 @@ sub create {
 
     my $cache_key = "comment|object_type=$object_type|object_id=$object_id";
     $c->cache->remove($cache_key);
-    
+
     # Email Sent
-    if ($object_type eq 'user_profile') {
-        my $rept = $c->model('User')->get($c, { user_id => $object_id } );
+    if ( $object_type eq 'user_profile' ) {
+        my $rept = $c->model('User')->get( $c, { user_id => $object_id } );
+
         # Send Notification Email
-        $c->model('Email')->create($c, { template => 'new_comment', to => $rept->{email}, stash => {
-            rept => $rept,
-            from => $c->user,
-            comment => $comment,
-        } } );
+        $c->model('Email')->create(
+            $c,
+            {   template => 'new_comment',
+                to       => $rept->{email},
+                stash    => {
+                    rept    => $rept,
+                    from    => $c->user,
+                    comment => $comment,
+                }
+            }
+        );
     }
 
     return $comment;

@@ -177,6 +177,7 @@ sub clear_cached_policy {
     my ( $self, $c, $info ) = @_;
 
     if ( $info->{user_id} ) {
+
         # clear user cache too
         $c->model('User')
             ->delete_cache_by_user_cond( $c,

@@ -11,8 +11,8 @@ sub auto : Private {
     my ( $self, $c ) = @_;
 
     my @cidr_ips = $c->model('BannedIP')->get($c);
-    if (scalar @cidr_ips) {
-        my $regexp   = create_iprange_regexp(@cidr_ips);
+    if ( scalar @cidr_ips ) {
+        my $regexp = create_iprange_regexp(@cidr_ips);
         if ( match_ip( $c->req->address, $regexp ) ) {
             $c->forward( '/print_error', ['IP banned'] );
             return 0;
@@ -57,20 +57,19 @@ sub default : Private {
 
     # password
     my $password = $c->req->param('password');
-    my $d        = Digest->new(
-        $c->config->{authentication}->{password_hash_type} );
+    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
 
     my $user = $c->model('DBIC')->resultset('User')->create(
-        {   username    => $username,
-            nickname    => $c->req->param('nickname') || $username,
-            password    => $computed,
-            email       => $email,
+        {   username      => $username,
+            nickname      => $c->req->param('nickname') || $username,
+            password      => $computed,
+            email         => $email,
             register_time => time(),
-            register_ip => $c->req->address,
-            lang        => $c->config->{default_lang},
-            status      => 'unverified',
+            register_ip   => $c->req->address,
+            lang          => $c->config->{default_lang},
+            status        => 'unverified',
         }
     );
 
@@ -142,7 +141,7 @@ sub activation : Local {
 # login will be failed since the $user->password is SHA1 Hashed.
 # $c->login( $username, $user->{password} );
 # so instead, we use set_authenticated, check Catalyst::Plugin::Authentication
-        bless $user, "Catalyst::Authentication::User::Hash"; # XXX?
+        bless $user, "Catalyst::Authentication::User::Hash";    # XXX?
         $c->set_authenticated($user);
         $c->res->redirect('/profile/edit');
     } else {

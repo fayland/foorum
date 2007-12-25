@@ -10,46 +10,50 @@ sub get {
 
     # if $forum_code is all numberic, that's forum_id
     # or else, it's forum_code
-    
-    my $forum; # return value
+
+    my $forum;    # return value
     my $forum_id = 0;
-    if ($forum_code =~ /^\d+$/) {
+    if ( $forum_code =~ /^\d+$/ ) {
         $forum_id = $forum_code;
     } else {
         my $mem_key = 'global|forum_code_to_id';
         my $mem_val = $c->cache->get($mem_key);
-        if ($mem_val and $mem_val->{$forum_code}) {
+        if ( $mem_val and $mem_val->{$forum_code} ) {
             $forum_id = $mem_val->{$forum_code};
         } else {
-            $forum = $c->model('DBIC')->resultset('Forum')->search( { forum_code => $forum_code } )->first;
+            $forum = $c->model('DBIC')->resultset('Forum')
+                ->search( { forum_code => $forum_code } )->first;
             return unless $forum;
             $forum_id = $forum->forum_id;
             $mem_val->{$forum_code} = $forum_id;
-            $c->cache->set($mem_key, $mem_val, 36000); # 10 hours
-            
+            $c->cache->set( $mem_key, $mem_val, 36000 );    # 10 hours
+
             # set cache
-            $forum = $forum->{_column_data}; # hash for cache
+            $forum = $forum->{_column_data};                # hash for cache
             $forum->{forum_url} = $self->get_forum_url( $c, $forum );
-            $c->cache->set("forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200);
+            $c->cache->set( "forum|forum_id=$forum_id",
+                { val => $forum, 1 => 2 }, 7200 );
         }
     }
-    
+
     return unless ($forum_id);
-    
-    unless ($forum) { # do not get from convert forum_code to forum_id
+
+    unless ($forum) {    # do not get from convert forum_code to forum_id
         my $cache_key = "forum|forum_id=$forum_id";
         my $cache_val = $c->cache->get($cache_key);
-    
-        if ($cache_val and $cache_val->{val}) {
+
+        if ( $cache_val and $cache_val->{val} ) {
             $forum = $cache_val->{val};
         } else {
-            $forum = $c->model('DBIC')->resultset('Forum')->find( { forum_id => $forum_id } );
+            $forum = $c->model('DBIC')->resultset('Forum')
+                ->find( { forum_id => $forum_id } );
             return unless ($forum);
-            
+
             # set cache
-            $forum = $forum->{_column_data}; # hash for cache
+            $forum = $forum->{_column_data};    # hash for cache
             $forum->{forum_url} = $self->get_forum_url( $c, $forum );
-            $c->cache->set("forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200);
+            $c->cache->set( "forum|forum_id=$forum_id",
+                { val => $forum, 1 => 2 }, 7200 );
         }
     }
 
@@ -65,17 +69,18 @@ sub get_forum_url {
 }
 
 sub update {
-    my ($self, $c, $forum_id, $update) = @_;
-    
-    $c->model('DBIC')->resultset('Forum')->search( { forum_id => $forum_id } )->update($update);
-    
+    my ( $self, $c, $forum_id, $update ) = @_;
+
+    $c->model('DBIC')->resultset('Forum')->search( { forum_id => $forum_id } )
+        ->update($update);
+
     $c->cache->remove("forum|forum_id=$forum_id");
-    
-    if ($update->{forum_code}) {
+
+    if ( $update->{forum_code} ) {
         my $mem_key = 'global|forum_code_to_id';
         my $mem_val = $c->cache->get($mem_key);
-        $mem_val->{$update->{forum_code}} = $forum_id;
-        $c->cache->set($mem_key, $mem_val, 36000); # 10 hours
+        $mem_val->{ $update->{forum_code} } = $forum_id;
+        $c->cache->set( $mem_key, $mem_val, 36000 );    # 10 hours
     }
 }
 
@@ -156,7 +161,8 @@ sub merge_forums {
     my $from_id = $info->{from_id} or return 0;
     my $to_id   = $info->{to_id}   or return 0;
 
-    my $old_forum = $c->model('DBIC::Forum')->find( { forum_id => $from_id } );
+    my $old_forum
+        = $c->model('DBIC::Forum')->find( { forum_id => $from_id } );
     return unless ($old_forum);
     my $new_forum = $c->model('DBIC::Forum')->find( { forum_id => $to_id } );
     return unless ($new_forum);

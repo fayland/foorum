@@ -12,43 +12,47 @@ sub get {
     my $cache_value = $c->cache->get($cache_key);
 
     my $topic;
-    if ($cache_value and $cache_value->{val}) {
+    if ( $cache_value and $cache_value->{val} ) {
         $topic = $cache_value->{val};
     } else {
-        $topic = $c->model('DBIC')->resultset('Topic')->find( { topic_id => $topic_id } );
+        $topic = $c->model('DBIC')->resultset('Topic')
+            ->find( { topic_id => $topic_id } );
         return unless ($topic);
-        $topic = $topic->{_column_data}; # for cache
-        $c->cache->set($cache_key, { val => $topic, 1 => 2 }, 7200);
+        $topic = $topic->{_column_data};    # for cache
+        $c->cache->set( $cache_key, { val => $topic, 1 => 2 }, 7200 );
     }
 
-    if ($attrs->{with_author}) {
-        $topic->{author} = $c->model('User')->get($c, { user_id => $topic->{author_id} });
+    if ( $attrs->{with_author} ) {
+        $topic->{author} = $c->model('User')
+            ->get( $c, { user_id => $topic->{author_id} } );
     }
 
     return $topic;
 }
 
 sub create {
-    my ($self, $c, $create) = @_;
-    
-    my $topic = $c->model('DBIC')->resultset('Topic')->create( $create );
-    
+    my ( $self, $c, $create ) = @_;
+
+    my $topic = $c->model('DBIC')->resultset('Topic')->create($create);
+
     # star it by default
-    $c->model('DBIC')->resultset('Star')->create( {
-        user_id => $create->{author_id},
-        object_type => 'topic',
-        object_id   => $topic->topic_id,
-        time        => time(),
-    } );
-    
+    $c->model('DBIC')->resultset('Star')->create(
+        {   user_id     => $create->{author_id},
+            object_type => 'topic',
+            object_id   => $topic->topic_id,
+            time        => time(),
+        }
+    );
+
     return $topic;
 }
 
 sub update {
-    my ($self, $c, $topic_id, $update) = @_;
-    
-    $c->model('DBIC')->resultset('Topic')->search( { topic_id => $topic_id } )->update($update);
-    
+    my ( $self, $c, $topic_id, $update ) = @_;
+
+    $c->model('DBIC')->resultset('Topic')->search( { topic_id => $topic_id } )
+        ->update($update);
+
     $c->cache->remove("topic|topic_id=$topic_id");
 }
 
@@ -70,7 +74,7 @@ sub remove {
         $c->model('Comment')->remove( $c, $comment );
         $total_replies++;
     }
-    
+
     # delete star/share
     $c->model('DBIC::Star')->search(
         {   object_type => 'topic',
@@ -100,7 +104,9 @@ sub remove {
         ->search( { forum_id => $forum_id },
         { order_by => 'last_update_date DESC', } )->first;
     my $last_post_id = $lastest ? $lastest->topic_id : 0;
-    $c->model('Forum')->update( $c, $forum_id, 
+    $c->model('Forum')->update(
+        $c,
+        $forum_id,
         {   total_topics  => \'total_topics - 1',
             last_post_id  => $last_post_id,
             total_replies => \"total_replies - $total_replies",

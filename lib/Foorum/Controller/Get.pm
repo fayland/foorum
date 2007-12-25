@@ -9,10 +9,10 @@ use base 'Catalyst::Controller';
 # so we move it here. Controller based.
 
 sub forum : Private {
-    my ($self, $c, $forum_code, $attr ) = @_;
-    
-    my $forum = $c->model('Forum')->get($c, $forum_code, $attr );
-    
+    my ( $self, $c, $forum_code, $attr ) = @_;
+
+    my $forum = $c->model('Forum')->get( $c, $forum_code, $attr );
+
     # print error if the forum_id is non-exist
     $c->detach( '/print_error', ['Non-existent forum'] ) unless ($forum);
     $c->detach( '/print_error', ['Status: Banned'] )
@@ -49,41 +49,41 @@ sub forum : Private {
 }
 
 sub topic : Private {
-    my ($self, $c, $topic_id, $attrs) = @_;
-    
-    my $topic = $c->model('Topic')->get($c, $topic_id, $attrs);
-    
+    my ( $self, $c, $topic_id, $attrs ) = @_;
+
+    my $topic = $c->model('Topic')->get( $c, $topic_id, $attrs );
+
     # print error if the topic is non-existent
     $c->detach( '/print_error', ['Non-existent topic'] ) unless ($topic);
-    
+
     # check forum_id
-    if ($attrs->{forum_id} and $attrs->{forum_id} != $topic->{forum_id}) {
+    if ( $attrs->{forum_id} and $attrs->{forum_id} != $topic->{forum_id} ) {
         $c->detach( '/print_error', ['Non-existent topic'] );
     }
-    
+
     my $forum_id = $topic->{forum_id};
     $c->detach( '/print_error', ['Status: Banned'] )
         if ( $topic->{status} eq 'banned'
         and not $c->model('Policy')->is_moderator( $c, $forum_id ) );
-    
+
     $c->stash->{topic} = $topic;
     return $topic;
 }
 
 sub user : Private {
-    my ($self, $c, $user_sig) = @_;
-    
+    my ( $self, $c, $user_sig ) = @_;
+
     my $user;
-    if ($user_sig =~ /^\d+$/) { # that's user_id
-        $user = $c->model('User')->get($c, { user_id => $user_sig } );
+    if ( $user_sig =~ /^\d+$/ ) {    # that's user_id
+        $user = $c->model('User')->get( $c, { user_id => $user_sig } );
     } else {
-        $user = $c->model('User')->get($c, { username => $user_sig } );
+        $user = $c->model('User')->get( $c, { username => $user_sig } );
     }
-    
+
     $c->detach( '/print_error', ['ERROR_USER_NON_EXSIT'] ) unless ($user);
-    
-    if ($user->{status} eq 'banned' or $user->{status} eq 'blocked') {
-        $c->detach('/print_error', [ 'ERROR_ACCOUNT_CLOSED_STATUS' ] );
+
+    if ( $user->{status} eq 'banned' or $user->{status} eq 'blocked' ) {
+        $c->detach( '/print_error', ['ERROR_ACCOUNT_CLOSED_STATUS'] );
     }
 
     $c->stash->{user} = $user;

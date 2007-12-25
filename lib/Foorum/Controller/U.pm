@@ -9,14 +9,15 @@ sub user_profile : LocalRegex('^(\w+)$') {
     my ( $self, $c ) = @_;
 
     my $username = $c->req->snippets->[0];
-    my $user = $c->controller('Get')->user($c, $username);
+    my $user = $c->controller('Get')->user( $c, $username );
 
     # recent topics
     if ( $user->{threads} ) {
-        my $rs   = $c->model('DBIC::Topic')->search(
-            {  author_id  => $user->{user_id},
-              'me.status' => { '!=', 'banned' }, },
-            {   order_by => \'last_update_date DESC', #'
+        my $rs = $c->model('DBIC::Topic')->search(
+            {   author_id   => $user->{user_id},
+                'me.status' => { '!=', 'banned' },
+            },
+            {   order_by => \'last_update_date DESC',      #'
                 prefetch => [ 'last_updator', 'forum' ],
                 join     => [qw/forum/],
                 rows     => 5,
@@ -25,12 +26,12 @@ sub user_profile : LocalRegex('^(\w+)$') {
         );
         $c->stash->{recent_topics} = [ $rs->all ];
     }
-    
+
     # shared items
     {
         my $rs = $c->model('DBIC::Share')->search(
             { user_id => $user->{user_id}, },
-            {   order_by => \'time DESC', #'
+            {   order_by => \'time DESC',    #'
                 rows     => 5,
                 page     => 1,
             }
@@ -39,10 +40,10 @@ sub user_profile : LocalRegex('^(\w+)$') {
         my @shared_items;
         foreach my $rec (@objects) {
             my $object = $c->model('Object')->get_object_by_type_id(
-               $c,
-               {   object_type => $rec->object_type,
-                   object_id   => $rec->object_id,
-               }
+                $c,
+                {   object_type => $rec->object_type,
+                    object_id   => $rec->object_id,
+                }
             );
             next unless ($object);
             push @shared_items, $object;
@@ -63,15 +64,15 @@ sub user_profile : LocalRegex('^(\w+)$') {
 }
 
 sub shared : LocalRegex('^(\w+)/shared$') {
-    my ($self, $c) = @_;
-    
+    my ( $self, $c ) = @_;
+
     my $username = $c->req->snippets->[0];
-    my $user = $c->controller('Get')->user($c, $username);
-    
+    my $user = $c->controller('Get')->user( $c, $username );
+
     my $page = get_page_from_url( $c->req->path );
-    my $rs = $c->model('DBIC::Share')->search(
+    my $rs   = $c->model('DBIC::Share')->search(
         { user_id => $user->{user_id}, },
-        {   order_by => \'time DESC', #'
+        {   order_by => \'time DESC',    #'
             rows     => 20,
             page     => $page,
         }
@@ -88,27 +89,29 @@ sub shared : LocalRegex('^(\w+)/shared$') {
             }
         );
         next unless ($object);
-        if ($c->user_exists) {
+        if ( $c->user_exists ) {
+
             # shared
-            if ($c->user->{user_id} == $user->{user_id}) {
+            if ( $c->user->{user_id} == $user->{user_id} ) {
                 $object->{is_shared} = 1;
             } else {
-                $object->{is_shared} = $c->model('DBIC::Share')->count( {
-                    user_id => $c->user->{user_id},
-                    object_type => $rec->object_type,
-                    object_id   => $rec->object_id,
-                } );
+                $object->{is_shared} = $c->model('DBIC::Share')->count(
+                    {   user_id     => $c->user->{user_id},
+                        object_type => $rec->object_type,
+                        object_id   => $rec->object_id,
+                    }
+                );
             }
         }
-        
+
         push @shared_items, $object;
     }
 
     $c->stash(
-        {   template      => 'u/shared.html',
+        {   template     => 'u/shared.html',
             shared_items => \@shared_items,
-            pager         => $rs->pager,
-            url_prefix    => "/u/$username/shared",
+            pager        => $rs->pager,
+            url_prefix   => "/u/$username/shared",
         }
     );
 }
@@ -117,12 +120,13 @@ sub topics : LocalRegex('^(\w+)/topics$') {
     my ( $self, $c ) = @_;
 
     my $username = $c->req->snippets->[0];
-    my $user = $c->controller('Get')->user($c, $username);
+    my $user = $c->controller('Get')->user( $c, $username );
 
     my $page = get_page_from_url( $c->req->path );
     my $rs   = $c->model('DBIC::Topic')->search(
-        {  author_id  => $user->{user_id},
-          'me.status' => { '!=', 'banned' }, },
+        {   author_id   => $user->{user_id},
+            'me.status' => { '!=', 'banned' },
+        },
         {   order_by => \'last_update_date DESC',
             prefetch => [ 'last_updator', 'forum' ],
             join     => [qw/forum/],

@@ -19,9 +19,11 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
     my $forum_id = $forum->{forum_id};
 
     # get the topic
-    my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
-    
-    $topic->{hit} = $c->model('Hit')->register($c, 'topic', $topic_id, $topic->{hit});
+    my $topic = $c->controller('Get')
+        ->topic( $c, $topic_id, { forum_id => $forum_id } );
+
+    $topic->{hit}
+        = $c->model('Hit')->register( $c, 'topic', $topic_id, $topic->{hit} );
 
     if ( $c->user_exists ) {
 
@@ -30,10 +32,13 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
             object_type => 'topic',
             object_id   => $topic_id,
         };
+
         # 'star' status
-        $c->stash->{is_starred} = $c->model('DBIC::Star')->count( $query );
+        $c->stash->{is_starred} = $c->model('DBIC::Star')->count($query);
+
         # 'share' status
-        $c->stash->{is_shared} = $c->model('DBIC')->resultset('Share')->count( $query );
+        $c->stash->{is_shared}
+            = $c->model('DBIC')->resultset('Share')->count($query);
 
         # 'visit'
         $c->model('Visit')->make_visited( $c, 'topic', $topic_id );
@@ -85,20 +90,22 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
         }
     }
 
-    my $title = $c->req->param('title');
+    my $title     = $c->req->param('title');
     my $formatter = $c->req->param('formatter');
-    my $text  = $c->req->param('text');
+    my $text      = $c->req->param('text');
 
     # create record
     my $topic_title = encodeHTML($title);
-    my $topic = $c->model('Topic')->create($c, {
-        forum_id         => $forum_id,
-        title            => $topic_title,
-        author_id        => $c->user->user_id,
-        last_updator_id  => $c->user->user_id,
-        last_update_date => \"NOW()", #"
-        hit              => 0,
-    } );
+    my $topic       = $c->model('Topic')->create(
+        $c,
+        {   forum_id         => $forum_id,
+            title            => $topic_title,
+            author_id        => $c->user->user_id,
+            last_updator_id  => $c->user->user_id,
+            last_update_date => \"NOW()",            #"
+            hit              => 0,
+        }
+    );
     $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
 
     # clear visit
@@ -117,16 +124,13 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     );
 
     # update user stat
-    $c->model('User')->update(
-        $c,
-        $c->user,
-        {   threads      => \"threads + 1",
-        }
-    );
+    $c->model('User')->update( $c, $c->user, { threads => \"threads + 1", } );
 
     # update forum
-    $c->model('Forum')->update($c, $forum_id,
-        {   total_topics => \'total_topics + 1', #'
+    $c->model('Forum')->update(
+        $c,
+        $forum_id,
+        {   total_topics => \'total_topics + 1',    #'
             last_post_id => $topic->topic_id,
         }
     );
@@ -145,7 +149,8 @@ sub reply : Regex('^forum/(\w+)/(\d+)(/(\d+))?/reply$') {
     my $forum      = $c->controller('Get')->forum( $c, $forum_code );
     my $forum_id   = $forum->{forum_id};
     my $topic_id   = $c->req->snippets->[1];
-    my $topic      = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
+    my $topic      = $c->controller('Get')
+        ->topic( $c, $topic_id, { forum_id => $forum_id } );
     my $comment_id = $c->req->snippets->[3];
 
     # topic is closed or not
@@ -183,11 +188,11 @@ sub reply : Regex('^forum/(\w+)/(\d+)(/(\d+))?/reply$') {
     }
 
     $comment_id = 0 unless ($comment_id);
-    
-    my $title = $c->req->param('title');
+
+    my $title     = $c->req->param('title');
     my $formatter = $c->req->param('formatter');
-    my $text  = $c->req->param('text');
-    
+    my $text      = $c->req->param('text');
+
     my $comment = $c->model('Comment')->create(
         $c,
         {   object_type => 'topic',
@@ -202,24 +207,24 @@ sub reply : Regex('^forum/(\w+)/(\d+)(/(\d+))?/reply$') {
     );
 
     # update forum and topic
-    $c->model('Forum')->update($c, $forum_id,
+    $c->model('Forum')->update(
+        $c,
+        $forum_id,
         {   total_replies => \'total_replies + 1',
             last_post_id  => $topic_id,
         }
     );
-    $c->model('Topic')->update( $c, $topic_id, {
-        total_replies    => \"total_replies + 1",
-        last_update_date => \"NOW()",
-        last_updator_id  => $c->user->user_id,
-    } );
- 
-    # update user stat
-    $c->model('User')->update(
+    $c->model('Topic')->update(
         $c,
-        $c->user,
-        {   replies      => \"replies + 1",
+        $topic_id,
+        {   total_replies    => \"total_replies + 1",
+            last_update_date => \"NOW()",
+            last_updator_id  => $c->user->user_id,
         }
     );
+
+    # update user stat
+    $c->model('User')->update( $c, $c->user, { replies => \"replies + 1", } );
 
     $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
 
@@ -243,7 +248,8 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
     my $forum      = $c->controller('Get')->forum( $c, $forum_code );
     my $forum_id   = $forum->{forum_id};
     my $topic_id   = $c->req->snippets->[1];
-    my $topic      = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
+    my $topic      = $c->controller('Get')
+        ->topic( $c, $topic_id, { forum_id => $forum_id } );
     my $comment_id = $c->req->snippets->[2];
     my $comment
         = $c->model('Comment')
@@ -298,14 +304,14 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
 
     my $title = $c->req->param('title');
     $title = encodeHTML($title);
-    my $text  = $c->req->param('text');
+    my $text      = $c->req->param('text');
     my $formatter = $c->req->param('formatter');
-    
+
     $comment->update(
         {   title     => $title,
             text      => $text,
             formatter => $formatter,
-            update_on => \'NOW()',         #'
+            update_on => \'NOW()',           #'
             post_ip   => $c->req->address,
             upload_id => $upload_id,
         }
@@ -314,7 +320,8 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
     if (    $comment->reply_to == 0
         and $topic->{title} ne $c->req->param('title') )
     {
-        $c->model('Topic')->update( $c, $topic_id, { title => $c->req->param('title') } );
+        $c->model('Topic')
+            ->update( $c, $topic_id, { title => $c->req->param('title') } );
         $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
     }
 
@@ -371,7 +378,8 @@ sub delete : Regex('^forum/(\w+)/(\d+)/(\d+)/delete$') {
             );
         }
 
-        $c->model('Topic')->remove( $c, $forum_id, $topic_id,
+        $c->model('Topic')
+            ->remove( $c, $forum_id, $topic_id,
             { log_text => $comment->title } );
         $url = $forum->{forum_url};
         $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
@@ -402,12 +410,18 @@ sub delete : Regex('^forum/(\w+)/(\d+)/(\d+)/delete$') {
                 last_update_date => '',
             );
         }
-        $c->model('Topic')->update( $c, $topic_id, { total_replies => \"total_replies - 1",
-            @extra_cols,
-        } );
-        
+        $c->model('Topic')->update(
+            $c,
+            $topic_id,
+            {   total_replies => \"total_replies - 1",
+                @extra_cols,
+            }
+        );
+
         # update forum
-        $c->model('Forum')->update($c, $forum_id, { total_replies => \'total_replies - 1' } );
+        $c->model('Forum')
+            ->update( $c, $forum_id,
+            { total_replies => \'total_replies - 1' } );
     }
 
     $c->forward(

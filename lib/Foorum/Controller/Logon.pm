@@ -21,8 +21,8 @@ sub login : Global {
     $username =~ s/\W+//isg;
     my $email    = $c->req->param('email');
     my $password = $c->req->param('password');
-    if (not $username and $email) {
-        my $user = $c->model('User')->get($c, { email => $email } );
+    if ( not $username and $email ) {
+        my $user = $c->model('User')->get( $c, { email => $email } );
         if ($user) {
             $username = $user->{username};
         } else {
@@ -43,7 +43,13 @@ sub login : Global {
                 and $c->validate_captcha( $c->req->param('captcha') ) );
         $can_login = ( $failure_login_times < 3 or $captcha_ok );
 
-        if ( $can_login and $c->authenticate( { username => $username, password => $password } ) ) {
+        if ($can_login
+            and $c->authenticate(
+                { username => $username, password => $password }
+            )
+            )
+        {
+
             # check if he is activated
             if (    $c->config->{mail}->{on}
                 and $c->config->{register}->{activation}
@@ -53,10 +59,12 @@ sub login : Global {
                 $c->logout;
                 return $c->res->redirect("/register/activation/$username");
             }
-            
-            if ($c->user->get('status') eq 'banned' or $c->user->get('status') eq 'blocked') {
+
+            if (   $c->user->get('status') eq 'banned'
+                or $c->user->get('status') eq 'blocked' )
+            {
                 $c->logout;
-                $c->detach('/print_error', [ 'ERROR_ACCOUNT_CLOSED_STATUS' ] );
+                $c->detach( '/print_error', ['ERROR_ACCOUNT_CLOSED_STATUS'] );
             }
 
             # remember me

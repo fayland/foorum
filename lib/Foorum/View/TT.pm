@@ -13,7 +13,7 @@ use Locale::Country::Multilingual;
 use vars qw/$lcm $Email/;
 
 my $tmpdir = File::Spec->tmpdir();
-$lcm = Locale::Country::Multilingual->new();
+$lcm   = Locale::Country::Multilingual->new();
 $Email = HTML::Email::Obfuscate->new();
 
 __PACKAGE__->config(
@@ -24,9 +24,9 @@ __PACKAGE__->config(
     COMPILE_EXT  => '.ttp1',
     STASH        => Template::Stash::XS->new,
     FILTERS      => {
-        email_obfuscate => sub { $Email->escape_html(shift) },
-        decodeHTML      => sub { decodeHTML(shift) },
-        code2country => [ \&code2country, 1 ],
+        email_obfuscate => sub               { $Email->escape_html(shift) },
+        decodeHTML      => sub               { decodeHTML(shift) },
+        code2country    => [ \&code2country, 1 ],
     }
 );
 
@@ -36,7 +36,7 @@ sub code2country {
     return sub {
         my $code = shift;
         return $lcm->code2country($code);
-    }
+        }
 }
 
 sub render {

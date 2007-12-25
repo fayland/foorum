@@ -93,13 +93,13 @@ sub edit : Local {
 }
 
 sub ban : Local {
-    my ($self, $c) = @_;
-    
+    my ( $self, $c ) = @_;
+
     my $username = $c->req->param('username');
-    my $user = $c->controller('Get')->user($c, $username);
-    
+    my $user = $c->controller('Get')->user( $c, $username );
+
     $c->model('User')->update( $c, $user, { status => 'banned' } );
-    
+
     $c->model('Log')->log_action(
         $c,
         {   action      => 'ban',
@@ -109,7 +109,7 @@ sub ban : Local {
             text        => $c->req->referer || 'unknown',
         }
     );
-    
+
     $c->res->redirect("/u/$username");
 }
 

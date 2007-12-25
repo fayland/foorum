@@ -113,12 +113,15 @@ convert MySQL DateTime format to TT2 date.format
 
 sub datetime_to_tt2_acceptable {
     my ($datetime) = @_;
-    
+
     # from MySQL DateTime
-    my ($YYYY, $MM, $DD, $hour, $minute, $second) = ($datetime =~ /^(\d+)-0?(\d+)-0?(\d+)\s+0?(\d+)\S+0?(\d+)\S+0?(\d+)$/);
+    my ( $YYYY, $MM, $DD, $hour, $minute, $second )
+        = ( $datetime
+            =~ /^(\d+)-0?(\d+)-0?(\d+)\s+0?(\d+)\S+0?(\d+)\S+0?(\d+)$/ );
 
     # 4:20:36 21/12/2007 TT2 accept this format
-    my $ret = sprintf( "%d:%d:%d %d/%d/%d", $hour, $minute, $second, $DD, $MM, $YYYY );
+    my $ret = sprintf( "%d:%d:%d %d/%d/%d",
+        $hour, $minute, $second, $DD, $MM, $YYYY );
     return $ret;
 }
 

@@ -34,10 +34,10 @@ sub post : Local {
             $c->detach( '/print_error', [ $c->stash->{upload_error} ] );
         }
     }
-    
-    my $title = $c->req->param('title');
+
+    my $title     = $c->req->param('title');
     my $formatter = $c->req->param('formatter');
-    my $text  = $c->req->param('text');
+    my $text      = $c->req->param('text');
 
     # create record
     $c->model('Comment')->create(
@@ -82,9 +82,9 @@ sub reply : LocalRegex('^(\d+)/reply$') {
         }
     }
 
-    my $title = $c->req->param('title');
+    my $title     = $c->req->param('title');
     my $formatter = $c->req->param('formatter');
-    my $text  = $c->req->param('text');
+    my $text      = $c->req->param('text');
 
     my ( $object_id, $object_type, $forum_id )
         = ( $comment->object_id, $comment->object_type, $comment->forum_id );
@@ -165,11 +165,11 @@ sub edit : LocalRegex('^(\d+)/edit$') {
             }
         }
     }
-    
-    my $title = $c->req->param('title');
-    my $text  = $c->req->param('text');
+
+    my $title     = $c->req->param('title');
+    my $text      = $c->req->param('text');
     my $formatter = $c->req->param('formatter');
-    
+
     $title = encodeHTML($title);
 
     $comment->update(

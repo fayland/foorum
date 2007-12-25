@@ -71,13 +71,19 @@ sub compose : Local {
             user_id    => $rept->{user_id},
         }
     );
-    
+
     # Send Notification Email
-    $c->model('Email')->create($c, { template => 'new_message', to => $rept->{email}, stash => {
-        rept => $rept,
-        from => $c->user,
-        message => $message,
-    } } );
+    $c->model('Email')->create(
+        $c,
+        {   template => 'new_message',
+            to       => $rept->{email},
+            stash    => {
+                rept    => $rept,
+                from    => $c->user,
+                message => $message,
+            }
+        }
+    );
 
     $c->res->redirect('/message/outbox');
 }

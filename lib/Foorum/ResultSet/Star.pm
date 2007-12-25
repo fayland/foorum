@@ -6,8 +6,8 @@ use warnings;
 use base 'DBIx::Class::ResultSet';
 
 sub del_or_create {
-    my ($self, $cond) = @_;
-    
+    my ( $self, $cond ) = @_;
+
     my $count = $self->count($cond);
     if ($count) {
         $self->search($cond)->delete;

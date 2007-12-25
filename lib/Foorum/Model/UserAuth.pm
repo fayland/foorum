@@ -5,16 +5,18 @@ use warnings;
 use base 'Catalyst::Model';
 
 sub auth {
-    my ($self, $c, $userinfo) = @_;
-    
+    my ( $self, $c, $userinfo ) = @_;
+
     my $where;
-    if (exists $userinfo->{user_id}) {
+    if ( exists $userinfo->{user_id} ) {
         $where = { user_id => $userinfo->{user_id} };
-    } elsif (exists $userinfo->{username}) {
+    } elsif ( exists $userinfo->{username} ) {
         $where = { username => $userinfo->{username} };
-    } elsif (exists $userinfo->{email}) {
+    } elsif ( exists $userinfo->{email} ) {
         $where = { email => $userinfo->{email} };
-    } else { return; }
+    } else {
+        return;
+    }
 
     my $user = $c->model('User')->get( $c, $where );
     return $user;

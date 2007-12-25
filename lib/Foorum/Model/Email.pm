@@ -54,53 +54,63 @@ sub send_activation {
 }
 
 sub create {
-    my ($self, $c, $opts) = @_;
-    
+    my ( $self, $c, $opts ) = @_;
+
     # find the template for TT use
     my $template_prefix;
     my $template_name = $opts->{template};
-    my $file_prefix = $c->path_to( 'templates', 'lang', $c->stash->{lang}, 'email', $template_name )->stringify;
-    if (-e $file_prefix . '.txt' or -e $file_prefix . '.html') {
-        $template_prefix = 'lang/' . $c->stash->{lang} . '/email/' . $template_name;
-    } elsif ($c->stash->{lang} ne 'en') {
+    my $file_prefix
+        = $c->path_to( 'templates', 'lang', $c->stash->{lang}, 'email',
+        $template_name )->stringify;
+    if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
+        $template_prefix
+            = 'lang/' . $c->stash->{lang} . '/email/' . $template_name;
+    } elsif ( $c->stash->{lang} ne 'en' ) {
+
         # try to use lang=en for default
-        $file_prefix = $c->path_to( 'templates', 'lang', 'en', 'email', $template_name )->stringify;
-        if (-e $file_prefix . '.txt' or -e $file_prefix . '.html') {
+        $file_prefix = $c->path_to( 'templates', 'lang', 'en', 'email',
+            $template_name )->stringify;
+        if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
             $template_prefix = 'lang/en/email/' . $template_name;
         }
     }
     unless ($template_prefix) {
-        $c->model('Log')->log_error($c, 'error', "Template not found in Email.pm notification with params: $template_name");
+        $c->model('Log')->log_error( $c, 'error',
+            "Template not found in Email.pm notification with params: $template_name"
+        );
         return 0;
     }
-    
+
     # prepare the tt2
-    my ($plain_body, $html_body);
+    my ( $plain_body, $html_body );
     my $stash = $opts->{stash} || {};
-    $stash->{c} = $c; # add $c to tt2
-    $stash->{base} = $c->req->base;
+    $stash->{c}          = $c;              # add $c to tt2
+    $stash->{base}       = $c->req->base;
     $stash->{no_wrapper} = 1;
-    
+
     # prepare TXT format
-    if (-e $file_prefix . '.txt') {
-        $plain_body = $c->view('TT')->render( $c, $template_prefix . '.txt', $stash);
+    if ( -e $file_prefix . '.txt' ) {
+        $plain_body
+            = $c->view('TT')->render( $c, $template_prefix . '.txt', $stash );
     }
-    if (-e $file_prefix . '.html') {
-        $html_body = $c->view('TT')->render( $c, $template_prefix . '.html', $stash);
+    if ( -e $file_prefix . '.html' ) {
+        $html_body = $c->view('TT')
+            ->render( $c, $template_prefix . '.html', $stash );
     }
+
     # get the subject from $plain_body or $html_body
     # the format is ########Title Subject#########
     my $subject;
-    if ($plain_body and $plain_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg) {
+    if ( $plain_body and $plain_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg ) {
         $subject = $1;
     }
-    if ($html_body and $html_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg) {
+    if ( $html_body and $html_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg ) {
         $subject = $1;
     }
     $subject ||= 'Notification From ' . $c->config->{name};
-    
-    my $to = $opts->{to};
-    my $from = $opts->{from} || $c->config->{mail}->{from_email};
+
+    my $to         = $opts->{to};
+    my $from       = $opts->{from} || $c->config->{mail}->{from_email};
     my $email_type = $opts->{email_type} || $opts->{template};
     $c->model('DBIC')->resultset('ScheduledEmail')->create(
         {   email_type => $email_type,
@@ -113,10 +123,10 @@ sub create {
             processed  => 'N',
         }
     );
-    
+
     my $client = theschwartz();
     $client->insert('Foorum::TheSchwartz::Worker::SendScheduledEmail');
-    
+
     return 1;
 }
 
