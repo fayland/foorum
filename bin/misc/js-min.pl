@@ -37,11 +37,11 @@ while ( defined( my $file = $files->() ) ) {
 sub minify_js {
     my ( $in_file, $out_file ) = @_;
 
-    open( INFILE,  $in_file )     or die;
-    open( OUTFILE, ">$out_file" ) or die;
-    minify( input => *INFILE, outfile => *OUTFILE );
-    close(INFILE);
-    close(OUTFILE);
+    open( my $infh, '<', $in_file )     or die $!;
+    open( my $outfh, '>', $out_file )   or die $!;
+    minify( input => $infh, outfile => $outfh );
+    close($infh);
+    close($outfh);
 }
 
 exit;

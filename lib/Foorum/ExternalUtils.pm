@@ -52,7 +52,7 @@ sub cache {
     my %params = %{ $config->{cache}{backends}{default} };
     my $class  = delete $params{class};
 
-    eval("use $class;");
+    eval("use $class;"); ## no critic (ProhibitStringyEval)
     unless ($@) {
         $cache = $class->new( \%params );
     }

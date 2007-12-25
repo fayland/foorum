@@ -162,7 +162,7 @@ sub import_contacts : Local {
     );
     return unless ( $c->req->method eq 'POST' );
 
-    eval("use WWW::Contact;");
+    eval("use WWW::Contact;"); ## no critic (ProhibitStringyEval)
     if ($@) {
         $c->detach( '/print_error', ['ERROR_EMAIL_OFF'] );
     }

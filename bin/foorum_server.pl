@@ -1,11 +1,12 @@
 #!/usr/bin/perl -w
 
+use strict;
+
 BEGIN {
     $ENV{CATALYST_ENGINE} ||= 'HTTP';
     $ENV{CATALYST_SCRIPT_GEN} = 27;
 }
 
-use strict;
 use Getopt::Long;
 use Pod::Usage;
 use FindBin;
