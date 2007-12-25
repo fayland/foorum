@@ -53,7 +53,7 @@ recommends 'Email::Send::SMTP::TLS';
 recommends 'HTML::BBCode' => '2.00';
 recommends 'Text::Textile';
 requires   'URI::Find';
-requires   'Text::GooglewikiFormat';
+requires   'Text::GooglewikiFormat' => '0.04';
 
 # db debug
 recommends 'Catalyst::Model::DBIC::Schema::QueryLog';
