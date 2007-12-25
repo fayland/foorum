@@ -148,6 +148,11 @@ sub message : LocalRegex('^(\d+)$') {
         ->find( { message_id => $message_id, },
         { prefetch => [ 'sender', 'recipient' ], } );
     $c->stash->{message} = $message;
+    
+    # permission check
+    if ($c->user->{user_id} != $message->from_id and $c->user->{user_id} != $message->to_id) {
+        $c->detach('/print_error', [ 'ERROR_PERMISSION_DENIED' ]);
+    }
 
     # mark as read
     $c->model('DBIC')->resultset('MessageUnread')->search(
@@ -167,6 +172,11 @@ sub delete : LocalRegex('^(\d+)/delete$') {
     my $message = $c->model('DBIC')->resultset('Message')
         ->find( { message_id => $message_id, } );
 
+    # permission check
+    if ($c->user->{user_id} != $message->from_id and $c->user->{user_id} != $message->to_id) {
+        $c->detach('/print_error', [ 'ERROR_PERMISSION_DENIED' ]);
+    }
+
     # mark as read
     $c->model('DBIC')->resultset('MessageUnread')->search(
         {   message_id => $message_id,
@@ -178,7 +188,6 @@ sub delete : LocalRegex('^(\d+)/delete$') {
     # we set 'from_status' as 'deleted' when from_id delete it
     # we set 'to_status' as 'deleted' when to_id delete it
     # if both 'from_status' and 'to_status' eq 'deleted', we remove it from db
-
     if ( $c->user->user_id == $message->from_id ) {    # outbox
         if ( $message->to_status eq 'deleted' ) {
             $c->model('Message')->remove_from_db( $c, $message_id );
