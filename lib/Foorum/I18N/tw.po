@@ -239,8 +239,8 @@ msgstr "密碼確認"
 msgid "Captcha"
 msgstr "驗証碼"
 
-msgid "Country"
-msgstr "國家"
+msgid "Country/Territory"
+msgstr "國家或地區"
 
 msgid "Location Information"
 msgstr "地區信息"

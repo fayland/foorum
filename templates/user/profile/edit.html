@@ -64,7 +64,7 @@ END; %]
 	Format: http://www.fayland.org/
 	</td></tr>
 	<tr class='title'><td colspan='2'>[% c.loc('Location Information') %]</td></tr>
-	<tr class='misc1'><td align='right'>[% c.loc('Country') %]</td><td>
+	<tr class='misc1'><td align='right'>[% c.loc('Country/Territory') %]</td><td>
 	    <select name='country'>
 	    [% FOREACH country IN countries.keys.sort %]
 	    <option value='[% country %]'>[% country %]:[% countries.$country %]</option>
