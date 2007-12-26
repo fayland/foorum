@@ -57,11 +57,20 @@ foreach my $filename (@filenames) {
 <html>
 <head>
 <title>$filename</title>
-<link type="text/css" rel="stylesheet" href="http://code.google.com/hosting/css/d_20071112.css" />
+<link type="text/css" rel="stylesheet" href="d_20071112.css" />
+<!--[if IE]>
+ <link type="text/css" rel="stylesheet" href="d_ie.css" />
+<![endif]--> 
 </head>
-<body>
+<body class="t6">
 <h1>From <a href="$project_url/wiki/$filename">$project_url/wiki/$filename</a></h1>
+<div id="wikicontent">
 $html
+</div>
+<script src="prettify.js"></script>
+<script>
+ prettyPrint();
+</script>
 </body>
 </html>
 HTML

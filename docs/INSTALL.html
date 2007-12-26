@@ -1,10 +1,19 @@
 <html>
 <head>
 <title>INSTALL</title>
-<link type="text/css" rel="stylesheet" href="http://code.google.com/hosting/css/d_20071112.css" />
+<link type="text/css" rel="stylesheet" href="d_20071112.css" />
+<!--[if IE]>
+ <link type="text/css" rel="stylesheet" href="d_ie.css" />
+<![endif]--> 
 </head>
-<body>
+<body class="t6">
 <h1>From <a href="http://code.google.com/p/foorum/wiki/INSTALL">http://code.google.com/p/foorum/wiki/INSTALL</a></h1>
+<div id="wikicontent">
 <p>#labels Phase-Deploy<br />Steps:</p><ul><li>mysql -uroot -p </li><li>mysql&gt;CREATE DATABASE foorum; </li><li>mysql&gt;CREATE DATABASE theschwartz; </li><li>mysql&gt;exit; </li><li>mysql -uroot -p foorum &lt; bin/db/foorum.sql </li><li>mysql -uroot -p theschwartz &lt; bin/db/theschwartz.sql </li><li>cp foorum.yml foorum_local.yml </li><li>vi foorum_local.yml and change the 'dsn_pwd' config etc. </li><li>perl Makefile.PL; make; make test; </li><li>perl bin/foorum_server.pl </li></ul>
+</div>
+<script src="prettify.js"></script>
+<script>
+ prettyPrint();
+</script>
 </body>
 </html>

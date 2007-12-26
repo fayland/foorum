@@ -1,22 +1,19 @@
 <html>
 <head>
 <title>Configure</title>
-<link type="text/css" rel="stylesheet" href="http://code.google.com/hosting/css/d_20071112.css" />
+<link type="text/css" rel="stylesheet" href="d_20071112.css" />
+<!--[if IE]>
+ <link type="text/css" rel="stylesheet" href="d_ie.css" />
+<![endif]--> 
 </head>
-<body>
+<body class="t6">
 <h1>From <a href="http://code.google.com/p/foorum/wiki/Configure">http://code.google.com/p/foorum/wiki/Configure</a></h1>
-<p>#labels Phase-Deploy</p><p>Generally, run bin/setup.pl</p><h1> Cache Configure </h1><p>we have built-in FileCache in foorum.yml</p><p>cache:</p><blockquote> backends:
-   default:
-     class: 'Cache::FileCache'
-     namespace: 'Foorum'
-     default_expires_in: 600
-</blockquote><p>optional: cache_root: '/home/faylandfoorum/cache'</p><p>and we can configure Cache::Memcached as backend cache</p><p>cache:</p><blockquote> backends:
-   default:
-     class: 'Cache::Memcached'
-     servers:
-       - '127.0.0.1:11211'
-     compress_threshold: '10_000'
-     debug: 0
-</blockquote><p>See Also L&lt;Catalyst::Plugin::Cache&gt;</p><h1> Mail Configure </h1><p>we have several conf under directory conf/examples for mail.</p><ul><li>sendmail.yml - under Linux/Unix we recommended this one. cp conf/examples/sendmail.yml conf/mail.yml </li><li>SMTP.yml - if u have a SMTP server. cp it as conf/mail.yml and change SMTP server and user/pass </li><li>Gmail.yml - if u have no choice, try this. </li></ul><p>See Also L&lt;Email::Send&gt;</p>
+<div id="wikicontent">
+<p>#labels Phase-Deploy<br />Generally, run bin/setup.pl</p><h1> Cache Configure </h1><p>we have built-in FileCache in foorum.yml</p><pre class="prettyprint">cache:  backends:    default:      class: 'Cache::FileCache'      namespace: 'Foorum'      default_expires_in: 600</pre><p>optional: cache_root: '/home/faylandfoorum/cache'</p><p>and we can configure Cache::Memcached as backend cache</p><pre class="prettyprint">cache:  backends:    default:      class: 'Cache::Memcached'      servers:        - '127.0.0.1:11211'      compress_threshold: '10_000'      debug: 0</pre><p>See Also L&lt;Catalyst::Plugin::Cache&gt;</p><h1> Mail Configure </h1><p>we have several conf under directory conf/examples for mail.</p><ul><li>sendmail.yml - under Linux/Unix we recommended this one. cp conf/examples/sendmail.yml conf/mail.yml </li><li>SMTP.yml - if u have a SMTP server. cp it as conf/mail.yml and change SMTP server and user/pass </li><li>Gmail.yml - if u have no choice, try this. </li></ul><p>See Also L&lt;Email::Send&gt;</p>
+</div>
+<script src="prettify.js"></script>
+<script>
+ prettyPrint();
+</script>
 </body>
 </html>
