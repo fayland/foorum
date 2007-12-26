@@ -119,7 +119,7 @@ Linux/Unix/Win32 both OK.
 
 =item templates
 
-use L<Template>; for UI.
+use L<Template> for UI.
 
 =item built-in cache
 
@@ -127,7 +127,7 @@ use L<Cache::Memcached> or use L<Cache::FileCache> or others;
 
 =item reliable job queue
 
-use L<TheSchwartz>;
+use L<TheSchwartz>
 
 =item Multi Formatter
 
@@ -139,9 +139,13 @@ To keep robot out.
 
 =back
 
+=head1 JOIN US
+
+please send me an email to add u into the google.code Project members list.
+
 =head1 SEE ALSO
 
-L<Catalyst::Runtime>
+L<Catalyst::Runtime>, L<DBIx::Class>, L<Template>
 
 =head1 AUTHOR
 
