@@ -105,13 +105,17 @@ Foorum - forum system based on Catalyst
 
 nothing for now.
 
+=head1 LIVE DEMO
+
+L<http://www.foorumbbs.com/>
+
 =head1 FEATURES
 
 =over 4
 
 =item open source
 
-u can FETCH all code from L<http://fayland.googlecode.com/svn/trunk/Foorum/> any time any where.
+u can FETCH all code from L<http://foorum.googlecode.com/svn/trunk/> any time any where.
 
 =item Win32 compatibility
 
