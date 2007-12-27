@@ -39,8 +39,10 @@ sub get_comments_by_object {
             $rec->{upload} = $upload->{_column_data} if ($upload);
 
             # filter format by Foorum::Filter
-            $rec->{title} = $c->model('FilterWord')->convert_offensive_word( $c, $rec->{title} );
-            $rec->{text}  = $c->model('FilterWord')->convert_offensive_word( $c, $rec->{text} );
+            $rec->{title}
+                = $c->model('FilterWord')->convert_offensive_word( $c, $rec->{title} );
+            $rec->{text}
+                = $c->model('FilterWord')->convert_offensive_word( $c, $rec->{text} );
             $rec->{text} = filter_format( $rec->{text}, { format => $rec->{formatter} } );
 
             push @comments, $rec;
@@ -98,10 +100,12 @@ sub get {
         $comment->{_column_data}->{text} = $c->model('FilterWord')
             ->convert_offensive_word( $c, $comment->{_column_data}->{text} );
         $comment->{_column_data}->{text}
-            = filter_format( $comment->{_column_data}->{text}, { format => $comment->formatter } );
+            = filter_format( $comment->{_column_data}->{text},
+            { format => $comment->formatter } );
     }
     if ( $attrs->{with_author} ) {
-        $comment->{author} = $c->model('User')->get( $c, { user_id => $comment->author_id } );
+        $comment->{author}
+            = $c->model('User')->get( $c, { user_id => $comment->author_id } );
     }
 
     $c->stash->{comment} = $comment;

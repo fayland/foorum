@@ -4,8 +4,8 @@ use strict;
 use warnings;
 
 # for both Linux/Win32
-my $has_proc_pid_file = eval "use Proc::PID::File; 1;";    ## no critic (ProhibitStringyEval)
-my $has_home_dir      = eval "use File::HomeDir; 1;";      ## no critic (ProhibitStringyEval)
+my $has_proc_pid_file = eval "use Proc::PID::File; 1;"; ## no critic (ProhibitStringyEval)
+my $has_home_dir      = eval "use File::HomeDir; 1;";   ## no critic (ProhibitStringyEval)
 if ( $has_proc_pid_file and $has_home_dir ) {
 
     # If already running, then exit
@@ -26,8 +26,8 @@ my $year  = $atime[5] + 1900;
 my $month = $atime[4] + 1;
 my $day   = $atime[3];
 
-my @stats
-    = $schema->resultset('Stat')->search( { date => \"> DATE_SUB(NOW(), INTERVAL 7 DAY)", } )->all;
+my @stats = $schema->resultset('Stat')
+    ->search( { date => \"> DATE_SUB(NOW(), INTERVAL 7 DAY)", } )->all;
 
 my $stats;
 foreach (@stats) {

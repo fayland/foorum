@@ -20,7 +20,8 @@ sub default : Private {
     my ( $self, $c ) = @_;
 
     my @forums
-        = $c->model('DBIC')->resultset('Forum')->search( {}, { order_by => 'forum_id', } )->all;
+        = $c->model('DBIC')->resultset('Forum')->search( {}, { order_by => 'forum_id', } )
+        ->all;
 
     $c->stash->{forums}   = \@forums;
     $c->stash->{template} = 'admin/forum/index.html';
@@ -134,7 +135,8 @@ sub merge_forums : Local {
     $c->stash->{template} = 'admin/forum/merge_forums.html';
     return unless ( $from_id and $to_id );
 
-    my $message = $c->model('Forum')->merge_forums( $c, { from_id => $from_id, to_id => $to_id } );
+    my $message = $c->model('Forum')
+        ->merge_forums( $c, { from_id => $from_id, to_id => $to_id } );
     $c->stash->{message} = ($message) ? 'OK' : 'FAIL';
 }
 

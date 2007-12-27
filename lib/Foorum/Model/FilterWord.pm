@@ -35,7 +35,8 @@ sub has_bad_word {
     foreach my $word (@bad_words) {
         if ( $text =~ /$word/ ) {
             if ($RaiseError) {
-                $c->detach( '/print_error', [qq~Sorry, your input has a bad word "$word".~] );
+                $c->detach( '/print_error',
+                    [qq~Sorry, your input has a bad word "$word".~] );
             } else {
                 return 1;
             }

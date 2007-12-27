@@ -84,25 +84,26 @@ sub get_user_from_db {
     return unless ($user);
 
     # user_details
-    my $user_details
-        = $c->model('DBIC')->resultset('UserDetails')->find( { user_id => $user->user_id } );
+    my $user_details = $c->model('DBIC')->resultset('UserDetails')
+        ->find( { user_id => $user->user_id } );
     $user_details = $user_details->{_column_data} if ($user_details);
 
     # user role
-    my @roles
-        = $c->model('DBIC')->resultset('UserRole')->search( { user_id => $user->user_id, } )->all;
+    my @roles = $c->model('DBIC')->resultset('UserRole')
+        ->search( { user_id => $user->user_id, } )->all;
     my $roles;
     foreach (@roles) {
         $roles->{ $_->field }->{ $_->role } = 1;
     }
 
     # user profile photo
-    my $profile_photo
-        = $c->model('DBIC')->resultset('UserProfilePhoto')->find( { user_id => $user->user_id, } );
+    my $profile_photo = $c->model('DBIC')->resultset('UserProfilePhoto')
+        ->find( { user_id => $user->user_id, } );
     if ($profile_photo) {
         $profile_photo = $profile_photo->{_column_data};
         if ( $profile_photo->{type} eq 'upload' ) {
-            my $profile_photo_upload = $c->model('Upload')->get( $c, $profile_photo->{value} );
+            my $profile_photo_upload
+                = $c->model('Upload')->get( $c, $profile_photo->{value} );
             $profile_photo->{upload} = $profile_photo_upload
                 if ($profile_photo_upload);
         }
@@ -121,9 +122,11 @@ sub delete_cache_by_user {
     return unless ($user);
 
     my @ckeys;
-    push @ckeys, 'user|' . Object::Signature::signature( { user_id  => $user->{user_id} } );
-    push @ckeys, 'user|' . Object::Signature::signature( { username => $user->{username} } );
-    push @ckeys, 'user|' . Object::Signature::signature( { email    => $user->{email} } );
+    push @ckeys,
+        'user|' . Object::Signature::signature( { user_id => $user->{user_id} } );
+    push @ckeys,
+        'user|' . Object::Signature::signature( { username => $user->{username} } );
+    push @ckeys, 'user|' . Object::Signature::signature( { email => $user->{email} } );
 
     foreach my $ckey (@ckeys) {
         $c->cache->remove($ckey);

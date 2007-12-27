@@ -21,8 +21,8 @@ sub get {
         if ( $mem_val and $mem_val->{$forum_code} ) {
             $forum_id = $mem_val->{$forum_code};
         } else {
-            $forum = $c->model('DBIC')->resultset('Forum')->search( { forum_code => $forum_code } )
-                ->first;
+            $forum = $c->model('DBIC')->resultset('Forum')
+                ->search( { forum_code => $forum_code } )->first;
             return unless $forum;
             $forum_id = $forum->forum_id;
             $mem_val->{$forum_code} = $forum_id;
@@ -44,7 +44,8 @@ sub get {
         if ( $cache_val and $cache_val->{val} ) {
             $forum = $cache_val->{val};
         } else {
-            $forum = $c->model('DBIC')->resultset('Forum')->find( { forum_id => $forum_id } );
+            $forum = $c->model('DBIC')->resultset('Forum')
+                ->find( { forum_id => $forum_id } );
             return unless ($forum);
 
             # set cache
@@ -68,7 +69,8 @@ sub get_forum_url {
 sub update {
     my ( $self, $c, $forum_id, $update ) = @_;
 
-    $c->model('DBIC')->resultset('Forum')->search( { forum_id => $forum_id } )->update($update);
+    $c->model('DBIC')->resultset('Forum')->search( { forum_id => $forum_id } )
+        ->update($update);
 
     $c->cache->remove("forum|forum_id=$forum_id");
 
@@ -105,8 +107,10 @@ sub remove_forum {
     }
     $c->model('DBIC::Poll')->search( { forum_id => $forum_id, } )->delete;
     if ( scalar @poll_ids ) {
-        $c->model('DBIC::PollOption')->search( { poll_id => { 'IN', \@poll_ids }, } )->delete;
-        $c->model('DBIC::PollResult')->search( { poll_id => { 'IN', \@poll_ids }, } )->delete;
+        $c->model('DBIC::PollOption')->search( { poll_id => { 'IN', \@poll_ids }, } )
+            ->delete;
+        $c->model('DBIC::PollResult')->search( { poll_id => { 'IN', \@poll_ids }, } )
+            ->delete;
     }
 
     # comment and star/share
@@ -186,7 +190,8 @@ sub merge_forums {
     # $c->cache->remove("topic|topic_id=$topic_id");
 
     # polls
-    $c->model('DBIC::Poll')->search( { forum_id => $from_id, } )->update( { forum_id => $to_id, } );
+    $c->model('DBIC::Poll')->search( { forum_id => $from_id, } )
+        ->update( { forum_id => $to_id, } );
 
     # comment
     $c->model('DBIC::Comment')->search( { forum_id => $from_id, } )

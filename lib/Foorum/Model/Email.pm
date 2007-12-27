@@ -11,7 +11,8 @@ sub send_activation {
     my ( $self, $c, $user, $new_email ) = @_;
 
     my $activation_code;
-    my $rs = $c->model('DBIC')->resultset('UserActivation')->find( { user_id => $user->user_id, } );
+    my $rs = $c->model('DBIC')->resultset('UserActivation')
+        ->find( { user_id => $user->user_id, } );
     if ($rs) {
         $activation_code = $rs->activation_code;
     } else {
@@ -59,13 +60,15 @@ sub create {
     my $template_prefix;
     my $template_name = $opts->{template};
     my $file_prefix
-        = $c->path_to( 'templates', 'lang', $c->stash->{lang}, 'email', $template_name )->stringify;
+        = $c->path_to( 'templates', 'lang', $c->stash->{lang}, 'email', $template_name )
+        ->stringify;
     if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
         $template_prefix = 'lang/' . $c->stash->{lang} . '/email/' . $template_name;
     } elsif ( $c->stash->{lang} ne 'en' ) {
 
         # try to use lang=en for default
-        $file_prefix = $c->path_to( 'templates', 'lang', 'en', 'email', $template_name )->stringify;
+        $file_prefix = $c->path_to( 'templates', 'lang', 'en', 'email', $template_name )
+            ->stringify;
         if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
             $template_prefix = 'lang/en/email/' . $template_name;
         }

@@ -38,9 +38,9 @@ sub login : Global {
 
     if ( $username and $password ) {
 
-        my $can_login = 0;
-        my $captcha_ok
-            = ( $failure_login_times > 2 and $c->validate_captcha( $c->req->param('captcha') ) );
+        my $can_login  = 0;
+        my $captcha_ok = ( $failure_login_times > 2
+                and $c->validate_captcha( $c->req->param('captcha') ) );
         $can_login = ( $failure_login_times < 3 or $captcha_ok );
 
         if (    $can_login

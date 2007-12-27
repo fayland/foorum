@@ -27,9 +27,8 @@ sub work {
     my $month = $atime[4] + 1;
     my $day   = $atime[3];
 
-    my @stats
-        = $schema->resultset('Stat')->search( { date => \"> DATE_SUB(NOW(), INTERVAL 7 DAY)", } )
-        ->all;
+    my @stats = $schema->resultset('Stat')
+        ->search( { date => \"> DATE_SUB(NOW(), INTERVAL 7 DAY)", } )->all;
 
     my $stats;
     foreach (@stats) {
@@ -47,7 +46,8 @@ sub work {
     use File::Spec;
     my ( undef, $path ) = File::Spec->splitpath(__FILE__);
 
-    $tt2->process( 'stats/chart.html', $var, "$path/../../../../root/static/stats/$filename.html" );
+    $tt2->process( 'stats/chart.html', $var,
+        "$path/../../../../root/static/stats/$filename.html" );
 
     $job->completed();
 }

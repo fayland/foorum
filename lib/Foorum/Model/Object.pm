@@ -65,7 +65,8 @@ sub get_object_by_type_id {
                 object_type => 'topic',
                 object_id   => $object_id,
                 title       => $object->{title},
-                author      => $c->model('User')->get( $c, { user_id => $object->{author_id} } ),
+                author =>
+                    $c->model('User')->get( $c, { user_id => $object->{author_id} } ),
                 url         => '/forum/' . $object->{forum_id} . "/$object_id",
                 last_update => $object->{last_update_date},
             };
@@ -77,8 +78,8 @@ sub get_object_by_type_id {
                 object_type => 'poll',
                 object_id   => $object_id,
                 title       => $object->title,
-                author      => $c->model('User')->get( $c, { user_id => $object->author_id } ),
-                url         => '/forum/' . $object->forum_id . "/poll/$object_id",
+                author => $c->model('User')->get( $c, { user_id => $object->author_id } ),
+                url    => '/forum/' . $object->forum_id . "/poll/$object_id",
                 last_update => '-',
             };
         }

@@ -21,7 +21,7 @@ sub work {
     #my @update_cols;
     my $sql = 'UPDATE hit SET ';
     if ( $hour == 1 and $min < 5 ) {    # the first hour of today
-            #push @update_cols, ( hit_yesterday => \'hit_today', hit_today => \'hit_new' );
+           #push @update_cols, ( hit_yesterday => \'hit_today', hit_today => \'hit_new' );
         $sql .= 'hit_yesterday = hit_today, hit_today = hit_new, ';
     } else {
 
@@ -56,7 +56,7 @@ sub work {
     $dbh->do($sql);
 
     # update the real data in table
-    my $rs               = $schema->resultset('Hit')->search( { last_update_time => { '>', 0 } } );
+    my $rs = $schema->resultset('Hit')->search( { last_update_time => { '>', 0 } } );
     my $last_update_time = 0;
     my $updated_count    = 0;
     while ( my $r = $rs->next ) {

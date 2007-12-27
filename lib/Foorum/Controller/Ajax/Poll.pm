@@ -15,12 +15,12 @@ sub vote : Local {
     return $c->res->body('PLEASE SELECT ONE') unless ( scalar @option_id );
 
     # check the 'multi', 'duration' and 'anonymous'
-    my $poll = $c->model('DBIC::Poll')
-        ->find( { poll_id => $poll_id, }, { columns => [ 'multi', 'duration', 'anonymous' ], } );
+    my $poll = $c->model('DBIC::Poll')->find( { poll_id => $poll_id, },
+        { columns => [ 'multi', 'duration', 'anonymous' ], } );
 
     return $c->res->body('NO SUCH POLL') unless ($poll);
 
-    # return $c->res->body('ANONYMOUS NOT ALLOWED') if (not $poll->anonymous and $c->user_exists);
+# return $c->res->body('ANONYMOUS NOT ALLOWED') if (not $poll->anonymous and $c->user_exists);
     return $c->res->body('MULTI_VOTE DENIED')
         if ( scalar @option_id > 1 and not $poll->multi );
     return $c->res->body('VOTE EXPIRE') if ( time() > $poll->duration );

@@ -17,7 +17,8 @@ sub get {
     my $cache_val = $c->cache->get($cache_key);
     return $cache_val if ($cache_val);
 
-    my $upload = $c->model('DBIC')->resultset('Upload')->find( { upload_id => $upload_id } );
+    my $upload
+        = $c->model('DBIC')->resultset('Upload')->find( { upload_id => $upload_id } );
     return unless ($upload);
 
     $cache_val = $upload->{_column_data};
@@ -29,8 +30,8 @@ sub get {
 sub remove_for_forum {
     my ( $self, $c, $forum_id ) = @_;
 
-    my $rs = $c->model('DBIC::Upload')
-        ->search( { forum_id => $forum_id, }, { columns => [ 'upload_id', 'filename' ], } );
+    my $rs = $c->model('DBIC::Upload')->search( { forum_id => $forum_id, },
+        { columns => [ 'upload_id', 'filename' ], } );
     while ( my $u = $rs->next ) {
         remove_by_upload( $self, $c, $u );
     }
@@ -66,7 +67,8 @@ sub remove_by_upload {
 
     my $directory_1 = int( $upload->{upload_id} / 3200 / 3200 );
     my $directory_2 = int( $upload->{upload_id} / 3200 );
-    my $file = $c->path_to( 'root', 'upload', $directory_1, $directory_2, $upload->{filename} )
+    my $file
+        = $c->path_to( 'root', 'upload', $directory_1, $directory_2, $upload->{filename} )
         ->stringify;
     remove($file);
     $c->model('DBIC::Upload')->search( { upload_id => $upload->{upload_id} } )->delete;
@@ -113,18 +115,20 @@ sub add_file {
 
     my $directory_1 = int( $upload_id / 3200 / 3200 );
     my $directory_2 = int( $upload_id / 3200 );
-    my $upload_dir  = $c->path_to( 'root', 'upload', $directory_1, $directory_2 )->stringify;
+    my $upload_dir
+        = $c->path_to( 'root', 'upload', $directory_1, $directory_2 )->stringify;
     mkpath( [$upload_dir], 0, 0777 );    ## no critic (ProhibitLeadingZeros)
 
-    my $target = $c->path_to( 'root', 'upload', $directory_1, $directory_2, $basename )->stringify;
+    my $target = $c->path_to( 'root', 'upload', $directory_1, $directory_2, $basename )
+        ->stringify;
 
     # rename if exist
     if ( -e $target ) {
         my $random_filename;
         while ( -e $target ) {
             $random_filename = generate_random_word(15) . ".$filetype";
-            $target = $c->path_to( 'root', 'upload', $directory_1, $directory_2, $random_filename )
-                ->stringify;
+            $target          = $c->path_to( 'root', 'upload', $directory_1, $directory_2,
+                $random_filename )->stringify;
         }
         $upload_rs->update( { filename => $random_filename } );
     }

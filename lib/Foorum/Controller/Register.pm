@@ -111,8 +111,8 @@ sub activation : Local {
     my $user = $c->model('User')->get( $c, { username => $username } );
     $c->detach( '/print_error', ['ERROR_USER_NON_EXIST'] ) unless ($user);
 
-    my $activation_rs
-        = $c->model('DBIC')->resultset('UserActivation')->find( { user_id => $user->{user_id} } );
+    my $activation_rs = $c->model('DBIC')->resultset('UserActivation')
+        ->find( { user_id => $user->{user_id} } );
     unless ($activation_rs) {
         if ( $user->{status} eq 'unverified' ) {    # new account
             $c->model('Email')->send_activation( $c, $user );

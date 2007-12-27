@@ -219,7 +219,8 @@ sub delete_expired_sessions {
 
     my $config = $c->config->{session};
 
-    $c->_dbic_session_resultset->search( { $config->{expires_field} => { '<', time() }, } )->delete;
+    $c->_dbic_session_resultset->search(
+        { $config->{expires_field} => { '<', time() }, } )->delete;
 }
 
 =head1 CONFIGURATION

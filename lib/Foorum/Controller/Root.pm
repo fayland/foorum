@@ -72,7 +72,8 @@ sub end : ActionClass('PathLogger') {
 
     if ( $c->res->location ) {
         if ( $c->stash->{is_rss_template} ) {    # No redirection for RSS.
-            $c->stash->{error}->{msg} = 'Permission Denied to ' . $c->req->base . $c->req->path;
+            $c->stash->{error}->{msg}
+                = 'Permission Denied to ' . $c->req->base . $c->req->path;
             $c->stash->{template} = 'simple/error.html';    # print_error
             $c->res->location(undef);                       # reset
         } else {
@@ -109,8 +110,8 @@ sub end : ActionClass('PathLogger') {
     if (    not $c->stash->{no_wrapper}
         and $c->user_exists
         and $c->req->path !~ /^message\// ) {
-        $c->stash->{message_unread}
-            = $c->model('DBIC::MessageUnread')->count( { user_id => $c->user->user_id, } );
+        $c->stash->{message_unread} = $c->model('DBIC::MessageUnread')
+            ->count( { user_id => $c->user->user_id, } );
     }
     $c->forward( $c->view('TT') );
 

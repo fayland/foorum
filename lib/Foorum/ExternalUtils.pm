@@ -37,8 +37,8 @@ sub schema {
     $config = config() unless ($config);
 
     $schema
-        = Foorum::Schema->connect( $config->{dsn}, $config->{dsn_user}, $config->{dsn_pwd},
-        { AutoCommit => 1, RaiseError => 1, PrintError => 1 },
+        = Foorum::Schema->connect( $config->{dsn}, $config->{dsn_user},
+        $config->{dsn_pwd}, { AutoCommit => 1, RaiseError => 1, PrintError => 1 },
         );
     return $schema;
 }

@@ -75,8 +75,8 @@ sub edit : Local {
                 if ( $key eq 'username' ) {
 
                     # validate
-                    my $ERROR_USERNAME
-                        = $c->model('Validation')->validate_username( $c, $query->{username} );
+                    my $ERROR_USERNAME = $c->model('Validation')
+                        ->validate_username( $c, $query->{username} );
                     next if ($ERROR_USERNAME);
                 }
                 push @update_cols, ( $key, $query->{$key} );

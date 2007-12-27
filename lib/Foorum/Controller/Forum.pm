@@ -22,8 +22,8 @@ sub board : Path {
         next unless $_->last_post_id;
         $_->{last_post} = $c->model('Topic')->get( $c, $_->last_post_id );
         next unless $_->{last_post};
-        $_->{last_post}->{updator}
-            = $c->model('User')->get( $c, { user_id => $_->{last_post}->{last_updator_id} } );
+        $_->{last_post}->{updator} = $c->model('User')
+            ->get( $c, { user_id => $_->{last_post}->{last_updator_id} } );
     }
 
     $c->cache_page('300');
@@ -85,7 +85,8 @@ sub forum_list : Regex('^forum/(\w+)$') {
             $_->{text} = $rs->text;
 
             # filter format by Foorum::Filter
-            $_->{text} = $c->model('FilterWord')->convert_offensive_word( $c, $_->{text} );
+            $_->{text}
+                = $c->model('FilterWord')->convert_offensive_word( $c, $_->{text} );
             $_->{text} = filter_format( $_->{text}, { format => $rs->formatter } );
         }
         $c->stash->{topics}   = \@topics;
@@ -124,7 +125,8 @@ sub forum_list : Regex('^forum/(\w+)$') {
 
             # filter format by Foorum::Filter
             $announcement->{_column_data}->{text}
-                = filter_format( $announcement->{_column_data}->{text}, { format => 'ubb' } )
+                = filter_format( $announcement->{_column_data}->{text},
+                { format => 'ubb' } )
                 if ($announcement);
             $c->stash->{announcement} = $announcement;
             $c->res->cookies->{"ann_$forum_id"} = { value => 1 };
@@ -135,7 +137,8 @@ sub forum_list : Regex('^forum/(\w+)$') {
 
     if ( $c->user_exists ) {
         my @all_topic_ids = map { $_->topic_id } @topics;
-        $c->stash->{is_visited} = $c->model('Visit')->is_visited( $c, 'topic', \@all_topic_ids )
+        $c->stash->{is_visited}
+            = $c->model('Visit')->is_visited( $c, 'topic', \@all_topic_ids )
             if ( scalar @all_topic_ids );
     }
 
@@ -192,8 +195,12 @@ sub members : LocalRegex('^(\w+)/members(/(\w+))?$') {
     my @members;
     my %members;
     if ( scalar @all_user_ids ) {
-        @members = $c->model('DBIC::User')->search( { user_id => { 'IN', \@all_user_ids }, },
-            { columns => [ 'user_id', 'username', 'nickname', 'gender', 'register_time' ], } )->all;
+        @members = $c->model('DBIC::User')->search(
+            { user_id => { 'IN', \@all_user_ids }, },
+            {   columns =>
+                    [ 'user_id', 'username', 'nickname', 'gender', 'register_time' ],
+            }
+        )->all;
         %members = map { $_->user_id => $_ } @members;
     }
 

@@ -5,7 +5,8 @@ use warnings;
 use base 'HTML::BBCode';    # > 2.00
 use Class::C3;              # for next::method();
 
-our @bbcode_tags = qw(code quote b u i color size list url email img font align flash music);
+our @bbcode_tags
+    = qw(code quote b u i color size list url email img font align flash music);
 
 sub new {
     my $self = (shift)->next::method(@_);
@@ -72,10 +73,12 @@ sub _do_BB {
 
         # patch for music
         if ( $content =~ /\.(ram|rmm|mp3|mp2|mpa|ra|mpga)$/ ) {
-            $html = qq!<div><embed name="rplayer" type="audio/x-pn-realaudio-plugin" src="$content" 
+            $html
+                = qq!<div><embed name="rplayer" type="audio/x-pn-realaudio-plugin" src="$content" 
 controls="StatusBar,ControlPanel" width='320' height='70' border='0' autostart='flase'></embed></div>!;
         } elsif ( $content =~ /\.(rm|mpg|mpv|mpeg|dat)$/ ) {
-            $html = qq!<div><embed name="rplayer" type="audio/x-pn-realaudio-plugin" src="$content" 
+            $html
+                = qq!<div><embed name="rplayer" type="audio/x-pn-realaudio-plugin" src="$content" 
 controls="ImageWindow,StatusBar,ControlPanel" width='352' height='288' border='0' autostart='flase'></embed></div>!;
         } elsif ( $content =~ /\.(wma|mpa)$/ ) {
             $html

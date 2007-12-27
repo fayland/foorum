@@ -140,7 +140,8 @@ sub style : Chained('forum_for_admin') Args(0) {
     $c->stash->{template} = 'forumadmin/style.html';
 
     # style.json and style.css
-    my $json = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.json" )->stringify;
+    my $json = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.json" )
+        ->stringify;
 
     unless ( $c->req->method eq 'POST' ) {
         if ( -e $json ) {
@@ -180,7 +181,8 @@ sub style : Chained('forum_for_admin') Args(0) {
     return if ( $c->form->has_error );
 
     # save the style.json and style.css
-    my $css = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.css" )->stringify;
+    my $css = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.css" )
+        ->stringify;
 
     my $style = $c->req->params;
 
@@ -223,8 +225,10 @@ sub del_style : Chained('forum_for_admin') Args(0) {
     my $forum    = $c->stash->{forum};
     my $forum_id = $forum->{forum_id};
 
-    my $css  = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.css" )->stringify;
-    my $json = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.json" )->stringify;
+    my $css = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.css" )
+        ->stringify;
+    my $json = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.json" )
+        ->stringify;
 
     unlink $json if ( -e $json );
     unlink $css  if ( -e $css );
@@ -320,10 +324,12 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
     return $c->res->body('no record available') unless ($rs);
 
     if ( $from eq 'user' and ( $to eq 'rejected' or $to eq 'blocked' ) ) {
-        $c->model('Forum')->update( $c, $forum_id, { total_members => \"total_members - 1" } );
+        $c->model('Forum')
+            ->update( $c, $forum_id, { total_members => \"total_members - 1" } );
     } elsif ( ( $from eq 'rejected' or $from eq 'blocked' or $from eq 'pending' )
         and $to eq 'user' ) {
-        $c->model('Forum')->update( $c, $forum_id, { total_members => \"total_members + 1" } );
+        $c->model('Forum')
+            ->update( $c, $forum_id, { total_members => \"total_members + 1" } );
     }
 
     my $where = {

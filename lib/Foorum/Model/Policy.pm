@@ -179,7 +179,8 @@ sub clear_cached_policy {
     if ( $info->{user_id} ) {
 
         # clear user cache too
-        $c->model('User')->delete_cache_by_user_cond( $c, { user_id => $info->{user_id} } );
+        $c->model('User')
+            ->delete_cache_by_user_cond( $c, { user_id => $info->{user_id} } );
     }
 
     # field_id != 'site'
