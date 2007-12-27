@@ -91,8 +91,8 @@ sub compose : Local {
 sub inbox : Local {
     my ( $self, $c ) = @_;
 
-    my $page_no = get_page_from_url( $c->req->path );
-    my $it      = $c->model('DBIC')->resultset('Message')->search(
+    my $page = get_page_from_url( $c->req->path );
+    my $it   = $c->model('DBIC')->resultset('Message')->search(
         {   to_id     => $c->user->user_id,
             to_status => 'open',
         },
@@ -100,7 +100,7 @@ sub inbox : Local {
             prefetch => ['sender'],
             order_by => 'post_on DESC',
             rows     => $c->config->{per_page}->{message},
-            page     => $page_no,
+            page     => $page,
         }
     );
     my @messages = $it->all;
@@ -119,8 +119,8 @@ sub inbox : Local {
 sub outbox : Local {
     my ( $self, $c ) = @_;
 
-    my $page_no = get_page_from_url( $c->req->path );
-    my $it      = $c->model('DBIC')->resultset('Message')->search(
+    my $page = get_page_from_url( $c->req->path );
+    my $it   = $c->model('DBIC')->resultset('Message')->search(
         {   from_id     => $c->user->user_id,
             from_status => 'open',
         },
@@ -128,7 +128,7 @@ sub outbox : Local {
             prefetch => ['recipient'],
             order_by => 'post_on DESC',
             rows     => $c->config->{per_page}->{message},
-            page     => $page_no,
+            page     => $page,
         }
     );
     my @messages = $it->all;
@@ -148,10 +148,11 @@ sub message : LocalRegex('^(\d+)$') {
         ->find( { message_id => $message_id, },
         { prefetch => [ 'sender', 'recipient' ], } );
     $c->stash->{message} = $message;
-    
+
     # permission check
-    if ($c->user->{user_id} != $message->from_id and $c->user->{user_id} != $message->to_id) {
-        $c->detach('/print_error', [ 'ERROR_PERMISSION_DENIED' ]);
+    if (    $c->user->{user_id} != $message->from_id
+        and $c->user->{user_id} != $message->to_id ) {
+        $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
     }
 
     # mark as read
@@ -173,8 +174,9 @@ sub delete : LocalRegex('^(\d+)/delete$') {
         ->find( { message_id => $message_id, } );
 
     # permission check
-    if ($c->user->{user_id} != $message->from_id and $c->user->{user_id} != $message->to_id) {
-        $c->detach('/print_error', [ 'ERROR_PERMISSION_DENIED' ]);
+    if (    $c->user->{user_id} != $message->from_id
+        and $c->user->{user_id} != $message->to_id ) {
+        $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
     }
 
     # mark as read

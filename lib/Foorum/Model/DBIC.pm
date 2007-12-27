@@ -4,9 +4,11 @@ use strict;
 
 BEGIN {
     if ( Foorum->config->{debug_mode} ) {
-        eval("use base 'Catalyst::Model::DBIC::Schema::QueryLog';"); ## no critic (ProhibitStringyEval)
+        eval("use base 'Catalyst::Model::DBIC::Schema::QueryLog';")
+            ;    ## no critic (ProhibitStringyEval)
     } else {
-        eval("use base 'Catalyst::Model::DBIC::Schema';"); ## no critic (ProhibitStringyEval)
+        eval("use base 'Catalyst::Model::DBIC::Schema';")
+            ;    ## no critic (ProhibitStringyEval)
     }
     die $@ if ($@);
 }

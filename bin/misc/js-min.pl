@@ -22,7 +22,7 @@ while ( defined( my $file = $files->() ) ) {
 
     my $out_dir = dirname($out_file);
     unless ( -d $out_dir ) {
-        mkpath( [$out_dir], 0, 0777 ); ## no critic (ProhibitLeadingZeros)
+        mkpath( [$out_dir], 0, 0777 );    ## no critic (ProhibitLeadingZeros)
     }
 
     eval { minify_js( $in_file, $out_file ); };
@@ -37,8 +37,8 @@ while ( defined( my $file = $files->() ) ) {
 sub minify_js {
     my ( $in_file, $out_file ) = @_;
 
-    open( my $infh, '<', $in_file )     or die $!;
-    open( my $outfh, '>', $out_file )   or die $!;
+    open( my $infh,  '<', $in_file )  or die $!;
+    open( my $outfh, '>', $out_file ) or die $!;
     minify( input => $infh, outfile => $outfh );
     close($infh);
     close($outfh);

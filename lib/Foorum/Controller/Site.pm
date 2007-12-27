@@ -23,6 +23,7 @@ sub recent : Local {
     }
 
     my $page = get_page_from_url( $c->req->path );
+    my $rows = ($rss) ? 10 : 20;
     my $rs   = $c->model('DBIC::Topic')->search(
         {   'forum.policy' => 'public',
             'me.status'    => { '!=', 'banned' },
@@ -31,7 +32,7 @@ sub recent : Local {
         {   order_by => 'topic_id desc',
             prefetch => [ 'author', 'last_updator', 'forum' ],
             join     => [qw/forum/],
-            rows     => 20,
+            rows     => $rows,
             page     => $page,
         }
     );

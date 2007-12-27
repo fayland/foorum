@@ -11,8 +11,8 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
 
     my $forum_code = $c->req->snippets->[0];
     my $topic_id   = $c->req->snippets->[1];
-    my $page_no    = get_page_from_url( $c->req->path );
-    $page_no = 1 unless ( $page_no and $page_no =~ /^\d+$/ );
+    my $page       = get_page_from_url( $c->req->path );
+    $page = 1 unless ( $page and $page =~ /^\d+$/ );
 
     # get the forum information
     my $forum = $c->controller('Get')->forum( $c, $forum_code );
@@ -49,7 +49,7 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
         $c,
         {   object_type => 'topic',
             object_id   => $topic_id,
-            page        => $page_no,
+            page        => $page,
         }
     );
 

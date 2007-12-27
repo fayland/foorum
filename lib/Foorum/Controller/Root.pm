@@ -106,10 +106,13 @@ sub end : ActionClass('PathLogger') {
         $c->stash->{elapsed_time}
             = tv_interval( $c->stash->{start_t0}, [gettimeofday] );
     }
-    
+
     # new message
-    if (not $c->stash->{no_wrapper} and $c->user_exists and $c->req->path !~ /^message\//) {
-        $c->stash->{message_unread} = $c->model('DBIC::MessageUnread')->count( { user_id => $c->user->user_id, } );
+    if (    not $c->stash->{no_wrapper}
+        and $c->user_exists
+        and $c->req->path !~ /^message\// ) {
+        $c->stash->{message_unread} = $c->model('DBIC::MessageUnread')
+            ->count( { user_id => $c->user->user_id, } );
     }
     $c->forward( $c->view('TT') );
 

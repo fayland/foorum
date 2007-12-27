@@ -46,7 +46,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
     my ( $self, $c ) = @_;
 
     my $is_elite = ( $c->req->path =~ /\/elite(\/|$)/ ) ? 1 : 0;
-    my $page_no  = get_page_from_url( $c->req->path );
+    my $page     = get_page_from_url( $c->req->path );
     my $rss      = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;    # /forum/1/rss
 
     # get the forum information
@@ -56,14 +56,16 @@ sub forum_list : Regex('^forum/(\w+)$') {
     $forum_code = $forum->{forum_code};
 
     my @extra_cols = ($is_elite) ? ( 'elite', 1 ) : ();
+    my $rows
+        = ($rss) ? 10 : $c->config->{per_page}->{forum};  # 10 for RSS is enough
     my $it = $c->model('DBIC')->resultset('Topic')->search(
         {   forum_id    => $forum_id,
             'me.status' => { '!=', 'banned' },
             @extra_cols,
         },
         {   order_by => 'sticky DESC, last_update_date DESC',
-            rows     => $c->config->{per_page}->{forum},
-            page     => $page_no,
+            rows     => $rows,
+            page     => $page,
             prefetch => [ 'author', 'last_updator' ],
         }
     );
@@ -103,7 +105,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
         = $c->model('Policy')->get_forum_moderators( $c, $forum_id );
 
     # for page 1 and normal mode
-    if ( $page_no == 1 and not $is_elite ) {
+    if ( $page == 1 and not $is_elite ) {
 
         # for private forum
         if ( $forum->{policy} eq 'private' ) {
@@ -175,7 +177,7 @@ sub members : LocalRegex('^(\w+)/members(/(\w+))?$') {
         $member_type = 'user';
     }
 
-    my $page_no = get_page_from_url( $c->req->path );
+    my $page = get_page_from_url( $c->req->path );
 
     my ( @query_cols, @attr_cols );
     if ( $member_type eq 'user' ) {
@@ -188,7 +190,7 @@ sub members : LocalRegex('^(\w+)/members(/(\w+))?$') {
         { @query_cols, field => $forum_id, },
         {   @attr_cols,
             rows => 20,
-            page => $page_no,
+            page => $page,
         }
     );
     my @user_roles = $rs->all;

@@ -17,16 +17,20 @@ sub filter_format {
 
     # don't run eval at beginning, run it when required
     if ( $format eq 'textile' and not defined $has_text_textile ) {
-        $has_text_textile = eval "use Text::Textile; 1;"; ## no critic (ProhibitStringyEval)
+        $has_text_textile
+            = eval "use Text::Textile; 1;";   ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'ubb' and not defined $has_ubb_code ) {
-        $has_ubb_code = eval "use Foorum::Formatter::BBCode; 1;"; ## no critic (ProhibitStringyEval)
+        $has_ubb_code = eval "use Foorum::Formatter::BBCode; 1;"
+            ;                                 ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'wiki' and not defined $has_text_wiki ) {
-        $has_text_wiki = eval "use Text::GooglewikiFormat; 1;"; ## no critic (ProhibitStringyEval)
+        $has_text_wiki = eval
+            "use Text::GooglewikiFormat; 1;"; ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'pod' and not defined $has_pod_simple ) {
-        $has_pod_simple = eval "use Foorum::Formatter::Pod; 1;"; ## no critic (ProhibitStringyEval)
+        $has_pod_simple = eval
+            "use Foorum::Formatter::Pod; 1;"; ## no critic (ProhibitStringyEval)
     }
 
     if ( $format eq 'textile' and $has_text_textile ) {
@@ -76,7 +80,8 @@ sub filter_format {
         #$text =~ s/"/&quot;/g; #"
         $text =~ s|\n|<br />\n|gs;    # linebreaks
 
-        $has_uri_find = eval "use URI::Find; 1;" ## no critic (ProhibitStringyEval)
+        $has_uri_find
+            = eval "use URI::Find; 1;"    ## no critic (ProhibitStringyEval)
             if ( not defined $has_uri_find );
         if ($has_uri_find) {
 

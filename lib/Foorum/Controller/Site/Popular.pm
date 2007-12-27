@@ -18,9 +18,10 @@ sub default : Private {
     $c->stash->{type} = $type;
 
     my $page   = get_page_from_url( $c->req->path );
+    my $rows   = ($rss) ? 10 : 20;
     my $hit_rs = $c->model('DBIC')->resultset('Hit')->search(
         undef,
-        {   rows     => 20,
+        {   rows     => $rows,
             page     => $page,
             order_by => "hit_${type} DESC, hit_id DESC",
         }
