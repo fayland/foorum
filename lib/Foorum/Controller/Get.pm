@@ -89,12 +89,29 @@ sub user : Private {
     return $user;
 }
 
-=pod
+1;
+__END__
+
+=head1 NAME
+
+Foorum::Controller::Get
+
+=head1 DESCRIPTION
+
+Usually we write something like follows:
+
+  my $user = $c->model('User')->get($c, { username => $username } );
+  $c->detach( '/print_error', ['ERROR_USER_NON_EXSIT'] ) unless ($user);
+  if ( $user->{status} eq 'banned' or $user->{status} eq 'blocked' ) {
+      $c->detach( '/print_error', ['ERROR_ACCOUNT_CLOSED_STATUS'] );
+  }
+
+It's pretty trival to write it everywhere, and we can't put '/print_error' into Model/User.pm since we do not need to raise error every time. so I put it into Controller/Get.pm
+
+so does forum, topic.
 
 =head2 AUTHOR
 
 Fayland Lam <fayland@gmail.com>
 
 =cut
-
-1;
