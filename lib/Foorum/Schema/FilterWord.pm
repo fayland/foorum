@@ -26,8 +26,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("word", "type");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-25 09:59:32
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ueh0IkCjsPL/N+xk5z7ipA
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-27 18:18:18
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Rnhuw3m3Bj+QEFDDTWLdvQ
 
 
 
