@@ -49,14 +49,11 @@ lib\Foorum\Controller\Utils.pm source OK
 lib\Foorum\ExternalUtils.pm source OK
 lib\Foorum\Formatter\BBCode.pm source OK
 lib\Foorum\Formatter\Pod.pm source OK
-lib\Foorum\Formatter.pm: Expression form of "eval" at line 24, column 25. See page 161 of PBP.
-lib\Foorum\Formatter.pm: Expression form of "eval" at line 28, column 26. See page 161 of PBP.
-lib\Foorum\Formatter.pm: Expression form of "eval" at line 32, column 27. See page 161 of PBP.
+lib\Foorum\Formatter.pm source OK
 lib\Foorum\Model\BannedIP.pm source OK
 lib\Foorum\Model\ClearCachedPage.pm source OK
 lib\Foorum\Model\Comment.pm source OK
-lib\Foorum\Model\DBIC.pm: Expression form of "eval" at line 7, column 9. See page 161 of PBP.
-lib\Foorum\Model\DBIC.pm: Expression form of "eval" at line 10, column 9. See page 161 of PBP.
+lib\Foorum\Model\DBIC.pm source OK
 lib\Foorum\Model\Email.pm source OK
 lib\Foorum\Model\FilterWord.pm source OK
 lib\Foorum\Model\Forum.pm source OK
