@@ -12,8 +12,8 @@ BEGIN { $ENV{CATALYST_ENGINE} = 'FastCGI' }
 use strict;
 use warnings;
 use Getopt::Long;
-use lib '/home/faylandfoorum/foorumbbs.com/Foorum/lib'; # your Foorum dir
-use lib '/home/faylandfoorum/perl5/lib/perl5';          # your Perl module dir
+use lib '/home/username/foorumbbs.com/Foorum/lib'; # your Foorum dir
+use lib '/home/username/perl5/lib/perl5';          # your Perl module dir
 use Foorum;
 
 $SIG{USR1} = 'INGORE';
