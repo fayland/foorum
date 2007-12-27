@@ -49,7 +49,7 @@ sub work {
         {   email_type => 'daily_report',
             from_email => $config->{mail}->{from_email},
             to_email   => $config->{mail}->{daily_report_email},
-            subject    => 'Daily Report @ ' . scalar( localtime() ),
+            subject    => '[Foorum] Daily Report @ ' . scalar( localtime() ),
             plain_body => $text_body,
             time       => \'NOW()',
             processed  => 'N',
