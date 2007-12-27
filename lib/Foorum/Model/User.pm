@@ -152,12 +152,137 @@ sub update {
         ->update($update);
 }
 
+# get user_settings
+# we don't merge it into sub get_user_from_db is because it's not used so frequently
+sub get_user_settings {
+    my ($self, $c, $user) = @_;
+    
+    # this cachekey would be delete from Controller/Settings.pm
+    my $cachekey = 'user|user_settings|user_id=' . $user->{user_id};
+    my $cacheval = $c->cache->get($cachekey);
+    
+    if ($cacheval) {
+        $cacheval = $cacheval->{val};
+    } else {
+        my $settings_rs = $c->model('DBIC')->resultset('UserSettings')->search( {
+            user_id => $user->{user_id}
+        } );
+        $cacheval = {};
+        while (my $rs = $settings_rs->next) {
+            $cacheval->{ $rs->type } = $rs->value;
+        }
+        $c->cache->set($cachekey, { val => $cacheval, 1 => }); # for empty $cacheval
+    }
+    
+    # if not stored in db, we use default value;
+    my $default = {
+        'send_starred_notification' => 'Y',
+    };
+    my $ret = { %$default, %$cacheval }; # merge
+    return $ret;
+}
+
+1;
+__END__
+
 =pod
+
+=head1 NAME
+
+Foorum::Model::User - User object
+
+=head1 FUNC
+
+=over 4
+
+=item get
+
+  $c->model('User')->get($c, { user_id => ? } );
+  $c->model('User')->get($c, { username => ? } );
+  $c->model('User')->get($c, { email => ? } );
+
+get() do not query database directly, it try to get from cache, if not exists, get_user_from_db() and set cache. return is a hashref: (we may call it $user_obj below)
+
+  {
+    user_id  => 1,
+    username => 'fayland',
+    # etc. from user table columns
+    details  => {
+        birthday => '1984-02-06',
+        gtalk    => 'fayland'
+        # etc. from user_details table columns
+    },
+    roles    => {
+        1 => { admin => 1 },
+        site => { admin => 1 },
+        # etc. from user_roles, $field => { $role => 1 }
+    }
+    profile_photo => {
+        type  => 'upload',
+        value => 10,
+        # etc. from user_profile_photo table columns
+        upload => {
+            upload_id => 10,
+            filename  => 'fayland.jpg',
+            # etc. from upload table columns
+        }
+    }
+  }
+
+=item get_multi
+
+  $c->model('User')->get_multi($c, user_id => [1, 2, 3]  );
+  $c->model('User')->get_multi($c, username => ['fayland', 'testman'] );
+
+get_multi() is to ease a loop for many users. if cache backend is memcached, it would use $memcached->get_multi(); to get cached user, and use get_user_from_db() to missing users. return is a hashref:
+
+  # $user_obj is the user hash above
+  1 => $user_obj,
+  2 => $user_obj,
+  # or
+  fayland => $user_obj,
+  testman => $user_obj,
+
+(TODO: we may use { user_id => { 'IN' => \@user_ids } } for missing users.)
+
+=item get_user_from_db()
+
+  $c->model('User')->get_user_from_db($c, { user_id => ? } );
+  $c->model('User')->get_user_from_db($c, { username => ? } );
+  $c->model('User')->get_user_from_db($c, { email => ? } );
+
+query db directly. return $user_obj
+
+=item update()
+
+  $c->model('User')->update($c, $user_obj, { update_column => $value } );
+
+the difference between $row->update of L<DBIx::Class> is that it delete cache.
+
+=item delete_cache_by_user()
+
+  $c->model('User')->delete_cache_by_user($c, $user_obj);
+
+=item delete_cache_by_user_cond
+
+  $c->model('User')->delete_cache_by_user_cond($c, { user_id => ? } );
+  $c->model('User')->delete_cache_by_user_cond($c, { username => ? } );
+  $c->model('User')->delete_cache_by_user_cond($c, { email => ? } );
+
+=item get_user_settings
+
+  $c->model('User')->get_user_settings($c, $user_obj);
+
+get records from user_settings table. return is hashref
+
+  {
+    send_starred_notification => 'N',
+  }
+
+=back
 
 =head2 AUTHOR
 
-Fayland Lam <fayland@gmail.com>
+Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;
