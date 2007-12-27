@@ -57,9 +57,9 @@ foreach my $filename (@filenames) {
 <html>
 <head>
 <title>$filename</title>
-<link type="text/css" rel="stylesheet" href="d_20071112.css" />
+<link type="text/css" rel="stylesheet" href="static/d_20071112.css" />
 <!--[if IE]>
- <link type="text/css" rel="stylesheet" href="d_ie.css" />
+<link type="text/css" rel="stylesheet" href="static/d_ie.css" />
 <![endif]--> 
 </head>
 <body class="t6">
@@ -67,7 +67,7 @@ foreach my $filename (@filenames) {
 <div id="wikicontent">
 $html
 </div>
-<script src="prettify.js"></script>
+<script src="static/prettify.js"></script>
 <script>
  prettyPrint();
 </script>
