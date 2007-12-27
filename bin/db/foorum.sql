@@ -479,7 +479,7 @@ CREATE TABLE IF NOT EXISTS `user_role` (
 
 CREATE TABLE IF NOT EXISTS `user_settings` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `type` varchar(24) NOT NULL,
+  `type` varchar(48) NOT NULL,
   `value` varchar(48) NOT NULL,
   PRIMARY KEY (`user_id`,`type`),
   KEY `user_id` (`user_id`)

@@ -8,8 +8,9 @@ use TheSchwartz;          # theschwartz
 use Template;             # template
 use Template::Stash::XS;
 use base 'Exporter';
-use vars qw/@EXPORT_OK $config $schema $cache $theschwartz $tt2/;
+use vars qw/@EXPORT_OK $base_path $config $schema $cache $theschwartz $tt2/;
 @EXPORT_OK = qw/
+    base_path
     config
     schema
     cache
@@ -19,7 +20,14 @@ use vars qw/@EXPORT_OK $config $schema $cache $theschwartz $tt2/;
     /;
 
 use File::Spec;
+use Cwd qw/abs_path/;
 my ( undef, $path ) = File::Spec->splitpath(__FILE__);
+
+sub base_path {
+    return $base_path if ($base_path);
+    $base_path = abs_path("$path/../../");
+    return $base_path;
+}
 
 sub config {
 
