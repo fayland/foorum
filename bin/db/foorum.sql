@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 27, 2007 at 10:23 AM
+-- Generation Time: Dec 27, 2007 at 11:15 AM
 -- Server version: 6.0.3
 -- PHP Version: 5.2.5
 
@@ -19,7 +19,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `banned_ip`
 --
 
-DROP TABLE IF EXISTS `banned_ip`;
 CREATE TABLE IF NOT EXISTS `banned_ip` (
   `ip_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `cidr_ip` varchar(20) NOT NULL DEFAULT '',
@@ -33,7 +32,6 @@ CREATE TABLE IF NOT EXISTS `banned_ip` (
 -- Table structure for table `comment`
 --
 
-DROP TABLE IF EXISTS `comment`;
 CREATE TABLE IF NOT EXISTS `comment` (
   `comment_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `reply_to` int(11) unsigned NOT NULL DEFAULT '0',
@@ -60,7 +58,6 @@ CREATE TABLE IF NOT EXISTS `comment` (
 -- Table structure for table `filter_word`
 --
 
-DROP TABLE IF EXISTS `filter_word`;
 CREATE TABLE IF NOT EXISTS `filter_word` (
   `word` varchar(64) NOT NULL,
   `type` enum('username_reserved','forum_code_reserved','bad_email_domain','offensive_word','bad_word') NOT NULL DEFAULT 'username_reserved',
@@ -74,7 +71,6 @@ CREATE TABLE IF NOT EXISTS `filter_word` (
 -- Table structure for table `forum`
 --
 
-DROP TABLE IF EXISTS `forum`;
 CREATE TABLE IF NOT EXISTS `forum` (
   `forum_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `forum_code` varchar(25) NOT NULL,
@@ -98,7 +94,6 @@ CREATE TABLE IF NOT EXISTS `forum` (
 -- Table structure for table `hit`
 --
 
-DROP TABLE IF EXISTS `hit`;
 CREATE TABLE IF NOT EXISTS `hit` (
   `hit_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `object_type` varchar(12) NOT NULL,
@@ -122,7 +117,6 @@ CREATE TABLE IF NOT EXISTS `hit` (
 -- Table structure for table `log_action`
 --
 
-DROP TABLE IF EXISTS `log_action`;
 CREATE TABLE IF NOT EXISTS `log_action` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `action` varchar(24) DEFAULT NULL,
@@ -141,7 +135,6 @@ CREATE TABLE IF NOT EXISTS `log_action` (
 -- Table structure for table `log_error`
 --
 
-DROP TABLE IF EXISTS `log_error`;
 CREATE TABLE IF NOT EXISTS `log_error` (
   `error_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `level` enum('info','debug','warn','error','fatal') NOT NULL DEFAULT 'debug',
@@ -157,7 +150,6 @@ CREATE TABLE IF NOT EXISTS `log_error` (
 -- Table structure for table `log_path`
 --
 
-DROP TABLE IF EXISTS `log_path`;
 CREATE TABLE IF NOT EXISTS `log_path` (
   `path_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `session_id` varchar(72) DEFAULT NULL,
@@ -179,7 +171,6 @@ CREATE TABLE IF NOT EXISTS `log_path` (
 -- Table structure for table `message`
 --
 
-DROP TABLE IF EXISTS `message`;
 CREATE TABLE IF NOT EXISTS `message` (
   `message_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `from_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -202,7 +193,6 @@ CREATE TABLE IF NOT EXISTS `message` (
 -- Table structure for table `message_unread`
 --
 
-DROP TABLE IF EXISTS `message_unread`;
 CREATE TABLE IF NOT EXISTS `message_unread` (
   `message_id` int(11) unsigned NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL DEFAULT '0',
@@ -216,7 +206,6 @@ CREATE TABLE IF NOT EXISTS `message_unread` (
 -- Table structure for table `poll`
 --
 
-DROP TABLE IF EXISTS `poll`;
 CREATE TABLE IF NOT EXISTS `poll` (
   `poll_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `forum_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -239,7 +228,6 @@ CREATE TABLE IF NOT EXISTS `poll` (
 -- Table structure for table `poll_option`
 --
 
-DROP TABLE IF EXISTS `poll_option`;
 CREATE TABLE IF NOT EXISTS `poll_option` (
   `option_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `poll_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -256,7 +244,6 @@ CREATE TABLE IF NOT EXISTS `poll_option` (
 -- Table structure for table `poll_result`
 --
 
-DROP TABLE IF EXISTS `poll_result`;
 CREATE TABLE IF NOT EXISTS `poll_result` (
   `option_id` int(11) unsigned NOT NULL DEFAULT '0',
   `poll_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -272,7 +259,6 @@ CREATE TABLE IF NOT EXISTS `poll_result` (
 -- Table structure for table `scheduled_email`
 --
 
-DROP TABLE IF EXISTS `scheduled_email`;
 CREATE TABLE IF NOT EXISTS `scheduled_email` (
   `email_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `email_type` varchar(24) DEFAULT NULL,
@@ -293,7 +279,6 @@ CREATE TABLE IF NOT EXISTS `scheduled_email` (
 -- Table structure for table `session`
 --
 
-DROP TABLE IF EXISTS `session`;
 CREATE TABLE IF NOT EXISTS `session` (
   `id` char(72) NOT NULL DEFAULT '',
   `session_data` text,
@@ -310,7 +295,6 @@ CREATE TABLE IF NOT EXISTS `session` (
 -- Table structure for table `share`
 --
 
-DROP TABLE IF EXISTS `share`;
 CREATE TABLE IF NOT EXISTS `share` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `object_type` varchar(12) NOT NULL DEFAULT '',
@@ -326,7 +310,6 @@ CREATE TABLE IF NOT EXISTS `share` (
 -- Table structure for table `star`
 --
 
-DROP TABLE IF EXISTS `star`;
 CREATE TABLE IF NOT EXISTS `star` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `object_type` varchar(12) NOT NULL DEFAULT '',
@@ -342,7 +325,6 @@ CREATE TABLE IF NOT EXISTS `star` (
 -- Table structure for table `stat`
 --
 
-DROP TABLE IF EXISTS `stat`;
 CREATE TABLE IF NOT EXISTS `stat` (
   `stat_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `stat_key` varchar(255) NOT NULL,
@@ -359,7 +341,6 @@ CREATE TABLE IF NOT EXISTS `stat` (
 -- Table structure for table `topic`
 --
 
-DROP TABLE IF EXISTS `topic`;
 CREATE TABLE IF NOT EXISTS `topic` (
   `topic_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `forum_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -385,7 +366,6 @@ CREATE TABLE IF NOT EXISTS `topic` (
 -- Table structure for table `upload`
 --
 
-DROP TABLE IF EXISTS `upload`;
 CREATE TABLE IF NOT EXISTS `upload` (
   `upload_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -403,7 +383,6 @@ CREATE TABLE IF NOT EXISTS `upload` (
 -- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
@@ -435,7 +414,6 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Table structure for table `user_activation`
 --
 
-DROP TABLE IF EXISTS `user_activation`;
 CREATE TABLE IF NOT EXISTS `user_activation` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `activation_code` varchar(12) DEFAULT NULL,
@@ -450,7 +428,6 @@ CREATE TABLE IF NOT EXISTS `user_activation` (
 -- Table structure for table `user_details`
 --
 
-DROP TABLE IF EXISTS `user_details`;
 CREATE TABLE IF NOT EXISTS `user_details` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `qq` varchar(14) DEFAULT NULL,
@@ -470,7 +447,6 @@ CREATE TABLE IF NOT EXISTS `user_details` (
 -- Table structure for table `user_profile_photo`
 --
 
-DROP TABLE IF EXISTS `user_profile_photo`;
 CREATE TABLE IF NOT EXISTS `user_profile_photo` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `type` enum('upload','url') NOT NULL DEFAULT 'upload',
@@ -487,7 +463,6 @@ CREATE TABLE IF NOT EXISTS `user_profile_photo` (
 -- Table structure for table `user_role`
 --
 
-DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE IF NOT EXISTS `user_role` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `role` enum('admin','moderator','user','blocked','pending','rejected') DEFAULT 'user',
@@ -499,10 +474,23 @@ CREATE TABLE IF NOT EXISTS `user_role` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user_settings`
+--
+
+CREATE TABLE IF NOT EXISTS `user_settings` (
+  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `type` varchar(24) NOT NULL,
+  `value` varchar(48) NOT NULL,
+  PRIMARY KEY (`user_id`,`type`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `variables`
 --
 
-DROP TABLE IF EXISTS `variables`;
 CREATE TABLE IF NOT EXISTS `variables` (
   `type` enum('global','log') NOT NULL DEFAULT 'global',
   `name` varchar(32) NOT NULL DEFAULT '',
@@ -517,7 +505,6 @@ CREATE TABLE IF NOT EXISTS `variables` (
 -- Table structure for table `visit`
 --
 
-DROP TABLE IF EXISTS `visit`;
 CREATE TABLE IF NOT EXISTS `visit` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `object_type` varchar(12) NOT NULL DEFAULT '',
