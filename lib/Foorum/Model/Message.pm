@@ -9,8 +9,7 @@ sub remove_from_db {
     my ( $self, $c, $message_id ) = @_;
 
     $c->model('DBIC::Message')->search( { message_id => $message_id } )->delete;
-    $c->model('DBIC::MessageUnread')->search( { message_id => $message_id } )
-        ->delete;
+    $c->model('DBIC::MessageUnread')->search( { message_id => $message_id } )->delete;
 }
 
 sub are_messages_unread {

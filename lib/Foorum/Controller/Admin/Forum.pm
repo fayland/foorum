@@ -19,8 +19,8 @@ sub auto : Private {
 sub default : Private {
     my ( $self, $c ) = @_;
 
-    my @forums = $c->model('DBIC')->resultset('Forum')
-        ->search( {}, { order_by => 'forum_id', } )->all;
+    my @forums
+        = $c->model('DBIC')->resultset('Forum')->search( {}, { order_by => 'forum_id', } )->all;
 
     $c->stash->{forums}   = \@forums;
     $c->stash->{template} = 'admin/forum/index.html';
@@ -68,8 +68,7 @@ sub create : Local {
     foreach (@moderators) {
         next if ( $_ eq $admin );    # avoid the same man
         last
-            if ( scalar @moderator_users > 2 )
-            ;                        # only allow 3 moderators at most
+            if ( scalar @moderator_users > 2 );    # only allow 3 moderators at most
         my $moderator_user = $c->model('User')->get( $c, { username => $_ } );
         unless ($moderator_user) {
             $c->stash->{non_existence_user} = $_;
@@ -135,8 +134,7 @@ sub merge_forums : Local {
     $c->stash->{template} = 'admin/forum/merge_forums.html';
     return unless ( $from_id and $to_id );
 
-    my $message = $c->model('Forum')
-        ->merge_forums( $c, { from_id => $from_id, to_id => $to_id } );
+    my $message = $c->model('Forum')->merge_forums( $c, { from_id => $from_id, to_id => $to_id } );
     $c->stash->{message} = ($message) ? 'OK' : 'FAIL';
 }
 

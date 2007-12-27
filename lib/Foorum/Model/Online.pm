@@ -86,8 +86,7 @@ sub _handler_session {
                 $user  = $c->user;
                 $refer = $c->req->path;
             } else {
-                $user = $c->model('User')
-                    ->get( $c, { user_id => $session->user_id } );
+                $user = $c->model('User')->get( $c, { user_id => $session->user_id } );
             }
         }
         push @results,

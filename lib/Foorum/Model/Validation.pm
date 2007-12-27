@@ -54,8 +54,7 @@ sub validate_forum_code {
     }
 
     # forum_code_reserved
-    my @reserved
-        = $c->model('FilterWord')->get_data( $c, 'forum_code_reserved' );
+    my @reserved = $c->model('FilterWord')->get_data( $c, 'forum_code_reserved' );
     return 'HAS_RESERVED' if ( grep { lc($forum_code) eq lc($_) } @reserved );
 
     # unique

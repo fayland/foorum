@@ -61,8 +61,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
     # check forum_code
     my $forum_code = $c->req->param('forum_code');
     if ( $forum_code and $forum_code ne $forum->{forum_code} ) {
-        my $err
-            = $c->model('Validation')->validate_forum_code( $c, $forum_code );
+        my $err = $c->model('Validation')->validate_forum_code( $c, $forum_code );
         $c->set_invalid_form( forum_code => $err );
         return;
     }
@@ -81,8 +80,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
     foreach (@moderators) {
         next if ( $_ eq $admin_username );    # avoid the same man
         last
-            if ( scalar @moderator_users > 2 )
-            ;                                 # only allow 3 moderators at most
+            if ( scalar @moderator_users > 2 );    # only allow 3 moderators at most
         my $moderator_user = $c->model('User')->get( $c, { username => $_ } );
         unless ($moderator_user) {
             $c->stash->{non_existence_user} = $_;
@@ -142,8 +140,7 @@ sub style : Chained('forum_for_admin') Args(0) {
     $c->stash->{template} = 'forumadmin/style.html';
 
     # style.json and style.css
-    my $json = $c->path_to( 'root', 'static', 'css', 'style',
-        "forum$forum_id\.json" )->stringify;
+    my $json = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.json" )->stringify;
 
     unless ( $c->req->method eq 'POST' ) {
         if ( -e $json ) {
@@ -154,38 +151,36 @@ sub style : Chained('forum_for_admin') Args(0) {
 
     # execute validation.
     $c->form(
-        bg_color         => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        bg_fontcolor     => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        alink            => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        vlink            => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        hlink            => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        tablebordercolor => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        titlecolor       => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        titlefont        => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        forumcolor1      => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        forumfont1       => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        forumcolor2      => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        forumfont2       => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        replycolor1      => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        replyfont1       => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        replycolor2      => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        replyfont2       => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        misccolor1       => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        miscfont1        => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        misccolor2       => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        miscfont2        => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        highlight        => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        semilight        => [ [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
-        tablewidth       => [ [ 'BETWEEN', 70, 100 ] ],
-        bg_image => [ 'HTTP_URL', [ 'REGEX', qr/^(gif|jpe?g|png)$/ ] ],
+        bg_color         => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        bg_fontcolor     => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        alink            => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        vlink            => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        hlink            => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        tablebordercolor => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        titlecolor       => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        titlefont        => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        forumcolor1      => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        forumfont1       => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        forumcolor2      => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        forumfont2       => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        replycolor1      => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        replyfont1       => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        replycolor2      => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        replyfont2       => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        misccolor1       => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        miscfont1        => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        misccolor2       => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        miscfont2        => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        highlight        => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        semilight        => [             [ 'REGEX',   qr/^\#[0-9a-zA-Z]{6}$/ ] ],
+        tablewidth       => [             [ 'BETWEEN', 70, 100 ] ],
+        bg_image         => [ 'HTTP_URL', [ 'REGEX',   qr/^(gif|jpe?g|png)$/ ] ],
     );
 
     return if ( $c->form->has_error );
 
     # save the style.json and style.css
-    my $css
-        = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.css" )
-        ->stringify;
+    my $css = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.css" )->stringify;
 
     my $style = $c->req->params;
 
@@ -228,11 +223,8 @@ sub del_style : Chained('forum_for_admin') Args(0) {
     my $forum    = $c->stash->{forum};
     my $forum_id = $forum->{forum_id};
 
-    my $css
-        = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.css" )
-        ->stringify;
-    my $json = $c->path_to( 'root', 'static', 'css', 'style',
-        "forum$forum_id\.json" )->stringify;
+    my $css  = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.css" )->stringify;
+    my $json = $c->path_to( 'root', 'static', 'css', 'style', "forum$forum_id\.json" )->stringify;
 
     unlink $json if ( -e $json );
     unlink $css  if ( -e $css );
@@ -313,7 +305,7 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
     my $to      = $c->req->param('to');
     my $user_id = $c->req->param('user_id');
 
-    unless ( grep { $from eq $_ } ( 'user', 'rejected', 'blocked', 'pending' )
+    unless (    grep { $from eq $_ } ( 'user', 'rejected', 'blocked', 'pending' )
             and grep { $to eq $_ } ( 'user', 'rejected', 'blocked' )
             and $user_id =~ /^\d+$/ ) {
         return $c->res->body('Illegal request');
@@ -328,15 +320,10 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
     return $c->res->body('no record available') unless ($rs);
 
     if ( $from eq 'user' and ( $to eq 'rejected' or $to eq 'blocked' ) ) {
-        $c->model('Forum')
-            ->update( $c, $forum_id,
-            { total_members => \"total_members - 1" } );
-    } elsif (
-        ( $from eq 'rejected' or $from eq 'blocked' or $from eq 'pending' )
+        $c->model('Forum')->update( $c, $forum_id, { total_members => \"total_members - 1" } );
+    } elsif ( ( $from eq 'rejected' or $from eq 'blocked' or $from eq 'pending' )
         and $to eq 'user' ) {
-        $c->model('Forum')
-            ->update( $c, $forum_id,
-            { total_members => \"total_members + 1" } );
+        $c->model('Forum')->update( $c, $forum_id, { total_members => \"total_members + 1" } );
     }
 
     my $where = {

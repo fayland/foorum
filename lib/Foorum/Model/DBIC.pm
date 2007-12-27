@@ -4,9 +4,10 @@ use strict;
 
 BEGIN {
     if ( Foorum->config->{debug_mode} ) {
-        eval("use base 'Catalyst::Model::DBIC::Schema::QueryLog';"); ## no critic (ProhibitStringyEval)
+        my $has_querylog = 
+        eval("use base 'Catalyst::Model::DBIC::Schema::QueryLog';");    ## no critic (ProhibitStringyEval)
     } else {
-        eval("use base 'Catalyst::Model::DBIC::Schema';"); ## no critic (ProhibitStringyEval)
+        eval("use base 'Catalyst::Model::DBIC::Schema';");    ## no critic (ProhibitStringyEval)
     }
     die $@ if ($@);
 }
@@ -14,10 +15,8 @@ BEGIN {
 __PACKAGE__->config(
     schema_class => 'Foorum::Schema',
     connect_info => [
-        Foorum->config->{dsn},
-        Foorum->config->{dsn_user},
-        Foorum->config->{dsn_pwd},
-        { AutoCommit => 1, RaiseError => 1, PrintError => 1 },
+        Foorum->config->{dsn}, Foorum->config->{dsn_user},
+        Foorum->config->{dsn_pwd}, { AutoCommit => 1, RaiseError => 1, PrintError => 1 },
     ],
 );
 

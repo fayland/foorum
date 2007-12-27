@@ -15,16 +15,14 @@ sub get {
     if ( $cache_value and $cache_value->{val} ) {
         $topic = $cache_value->{val};
     } else {
-        $topic = $c->model('DBIC')->resultset('Topic')
-            ->find( { topic_id => $topic_id } );
+        $topic = $c->model('DBIC')->resultset('Topic')->find( { topic_id => $topic_id } );
         return unless ($topic);
         $topic = $topic->{_column_data};    # for cache
         $c->cache->set( $cache_key, { val => $topic, 1 => 2 }, 7200 );
     }
 
     if ( $attrs->{with_author} ) {
-        $topic->{author}
-            = $c->model('User')->get( $c, { user_id => $topic->{author_id} } );
+        $topic->{author} = $c->model('User')->get( $c, { user_id => $topic->{author_id} } );
     }
 
     return $topic;
@@ -50,8 +48,7 @@ sub create {
 sub update {
     my ( $self, $c, $topic_id, $update ) = @_;
 
-    $c->model('DBIC')->resultset('Topic')->search( { topic_id => $topic_id } )
-        ->update($update);
+    $c->model('DBIC')->resultset('Topic')->search( { topic_id => $topic_id } )->update($update);
 
     $c->cache->remove("topic|topic_id=$topic_id");
 }
@@ -64,8 +61,8 @@ sub remove {
     $c->cache->remove("topic|topic_id=$topic_id");
 
     # delete comments with upload
-    my $total_replies = -1;    # since one comment is topic indeed.
-    my $comment_rs = $c->model('DBIC::Comment')->search(
+    my $total_replies = -1;                                   # since one comment is topic indeed.
+    my $comment_rs    = $c->model('DBIC::Comment')->search(
         {   object_type => 'topic',
             object_id   => $topic_id,
         }
@@ -99,10 +96,8 @@ sub remove {
     );
 
     # update last
-    my $lastest
-        = $c->model('DBIC')->resultset('Topic')
-        ->search( { forum_id => $forum_id },
-        { order_by => 'last_update_date DESC', } )->first;
+    my $lastest = $c->model('DBIC')->resultset('Topic')
+        ->search( { forum_id => $forum_id }, { order_by => 'last_update_date DESC', } )->first;
     my $last_post_id = $lastest ? $lastest->topic_id : 0;
     $c->model('Forum')->update(
         $c,

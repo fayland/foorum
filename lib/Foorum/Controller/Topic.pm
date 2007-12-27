@@ -19,11 +19,9 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
     my $forum_id = $forum->{forum_id};
 
     # get the topic
-    my $topic = $c->controller('Get')
-        ->topic( $c, $topic_id, { forum_id => $forum_id } );
+    my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
 
-    $topic->{hit}
-        = $c->model('Hit')->register( $c, 'topic', $topic_id, $topic->{hit} );
+    $topic->{hit} = $c->model('Hit')->register( $c, 'topic', $topic_id, $topic->{hit} );
 
     if ( $c->user_exists ) {
 
@@ -37,8 +35,7 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
         $c->stash->{is_starred} = $c->model('DBIC::Star')->count($query);
 
         # 'share' status
-        $c->stash->{is_shared}
-            = $c->model('DBIC')->resultset('Share')->count($query);
+        $c->stash->{is_shared} = $c->model('DBIC')->resultset('Share')->count($query);
 
         # 'visit'
         $c->model('Visit')->make_visited( $c, 'topic', $topic_id );
@@ -82,8 +79,7 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     my $upload    = $c->req->upload('upload');
     my $upload_id = 0;
     if ($upload) {
-        $upload_id = $c->model('Upload')
-            ->add_file( $c, $upload, { forum_id => $forum_id } );
+        $upload_id = $c->model('Upload')->add_file( $c, $upload, { forum_id => $forum_id } );
         unless ($upload_id) {
             return $c->set_invalid_form( upload => $c->stash->{upload_error} );
         }
@@ -148,8 +144,7 @@ sub reply : Regex('^forum/(\w+)/(\d+)(/(\d+))?/reply$') {
     my $forum      = $c->controller('Get')->forum( $c, $forum_code );
     my $forum_id   = $forum->{forum_id};
     my $topic_id   = $c->req->snippets->[1];
-    my $topic      = $c->controller('Get')
-        ->topic( $c, $topic_id, { forum_id => $forum_id } );
+    my $topic      = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
     my $comment_id = $c->req->snippets->[3];
 
     # topic is closed or not
@@ -178,8 +173,7 @@ sub reply : Regex('^forum/(\w+)/(\d+)(/(\d+))?/reply$') {
     my $upload    = $c->req->upload('upload');
     my $upload_id = 0;
     if ($upload) {
-        $upload_id = $c->model('Upload')
-            ->add_file( $c, $upload, { forum_id => $forum_id } );
+        $upload_id = $c->model('Upload')->add_file( $c, $upload, { forum_id => $forum_id } );
         unless ($upload_id) {
             return $c->set_invalid_form( upload => $c->stash->{upload_error} );
         }
@@ -246,13 +240,10 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
     my $forum      = $c->controller('Get')->forum( $c, $forum_code );
     my $forum_id   = $forum->{forum_id};
     my $topic_id   = $c->req->snippets->[1];
-    my $topic      = $c->controller('Get')
-        ->topic( $c, $topic_id, { forum_id => $forum_id } );
+    my $topic      = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
     my $comment_id = $c->req->snippets->[2];
-    my $comment
-        = $c->model('Comment')
-        ->get( $c, $comment_id,
-        { object_type => 'topic', object_id => $topic_id } );
+    my $comment    = $c->model('Comment')
+        ->get( $c, $comment_id, { object_type => 'topic', object_id => $topic_id } );
 
     # permission
     if ( $c->user->user_id != $comment->author_id
@@ -265,8 +256,7 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
     # edit upload
     my $old_upload;
     if ( $comment->upload_id ) {
-        $old_upload = $c->model('DBIC::Upload')
-            ->find( { upload_id => $comment->upload_id } );
+        $old_upload = $c->model('DBIC::Upload')->find( { upload_id => $comment->upload_id } );
     }
     $c->stash->{upload} = $old_upload;
 
@@ -287,13 +277,10 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
             $upload_id = 0;
         }
         if ($new_upload) {
-            $upload_id
-                = $c->model('Upload')
-                ->add_file( $c, $new_upload,
-                { forum_id => $comment->forum_id } );
+            $upload_id = $c->model('Upload')
+                ->add_file( $c, $new_upload, { forum_id => $comment->forum_id } );
             unless ($upload_id) {
-                return $c->set_invalid_form(
-                    upload => $c->stash->{upload_error} );
+                return $c->set_invalid_form( upload => $c->stash->{upload_error} );
             }
         }
     }
@@ -315,8 +302,7 @@ sub edit : Regex('^forum/(\w+)/(\d+)/(\d+)/edit$') {
 
     if (    $comment->reply_to == 0
         and $topic->{title} ne $c->req->param('title') ) {
-        $c->model('Topic')
-            ->update( $c, $topic_id, { title => $c->req->param('title') } );
+        $c->model('Topic')->update( $c, $topic_id, { title => $c->req->param('title') } );
         $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
     }
 
@@ -340,10 +326,8 @@ sub delete : Regex('^forum/(\w+)/(\d+)/(\d+)/delete$') {
     my $forum_id   = $forum->{forum_id};
     my $topic_id   = $c->req->snippets->[1];
     my $comment_id = $c->req->snippets->[2];
-    my $comment
-        = $c->model('Comment')
-        ->get( $c, $comment_id,
-        { object_type => 'topic', object_id => $topic_id } );
+    my $comment    = $c->model('Comment')
+        ->get( $c, $comment_id, { object_type => 'topic', object_id => $topic_id } );
 
     # permission
     if ( $c->user->user_id != $comment->author_id
@@ -371,9 +355,7 @@ sub delete : Regex('^forum/(\w+)/(\d+)/(\d+)/delete$') {
             );
         }
 
-        $c->model('Topic')
-            ->remove( $c, $forum_id, $topic_id,
-            { log_text => $comment->title } );
+        $c->model('Topic')->remove( $c, $forum_id, $topic_id, { log_text => $comment->title } );
         $url = $forum->{forum_url};
         $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
     } else {
@@ -412,9 +394,7 @@ sub delete : Regex('^forum/(\w+)/(\d+)/(\d+)/delete$') {
         );
 
         # update forum
-        $c->model('Forum')
-            ->update( $c, $forum_id,
-            { total_replies => \'total_replies - 1' } );
+        $c->model('Forum')->update( $c, $forum_id, { total_replies => \'total_replies - 1' } );
     }
 
     $c->forward(

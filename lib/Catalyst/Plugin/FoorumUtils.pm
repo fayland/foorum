@@ -16,12 +16,10 @@ sub load_once {
 
     if ( $url =~ /\.js$/i ) {
         my $js_dir = $c->config->{dir}->{js};
-        return
-            qq~<script type="text/javascript" src="$js_dir/$url"></script>\n~;
+        return qq~<script type="text/javascript" src="$js_dir/$url"></script>\n~;
     } elsif ( $url =~ /\.css$/i ) {
         my $static_dir = $c->config->{dir}->{static};
-        return
-            qq~<link rel="stylesheet" href="$static_dir/css/$url" type="text/css" />\n~;
+        return qq~<link rel="stylesheet" href="$static_dir/css/$url" type="text/css" />\n~;
     }
 }
 

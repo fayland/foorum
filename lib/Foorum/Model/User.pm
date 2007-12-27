@@ -47,8 +47,7 @@ sub get_multi {
     my @mem_keys;
     my %val_map_key;
     foreach (@$val) {
-        my $cache_key
-            = 'user|' . Object::Signature::signature( { $key => $_ } );
+        my $cache_key = 'user|' . Object::Signature::signature( { $key => $_ } );
         push @mem_keys, $cache_key;
         $val_map_key{$_} = $cache_key;
     }
@@ -71,8 +70,7 @@ sub get_multi {
             $return_users{$v} = get_user_from_db( $self, $c, { $key => $v } );
             next unless ( $return_users{$v} );
             $c->log->debug("set user to cache in multi: $key => $v");
-            $c->cache->set( $val_map_key{$v}, $return_users{$v}, 7200 )
-                ;    # two hours
+            $c->cache->set( $val_map_key{$v}, $return_users{$v}, 7200 );    # two hours
         }
     }
 
@@ -86,26 +84,25 @@ sub get_user_from_db {
     return unless ($user);
 
     # user_details
-    my $user_details = $c->model('DBIC')->resultset('UserDetails')
-        ->find( { user_id => $user->user_id } );
+    my $user_details
+        = $c->model('DBIC')->resultset('UserDetails')->find( { user_id => $user->user_id } );
     $user_details = $user_details->{_column_data} if ($user_details);
 
     # user role
-    my @roles = $c->model('DBIC')->resultset('UserRole')
-        ->search( { user_id => $user->user_id, } )->all;
+    my @roles
+        = $c->model('DBIC')->resultset('UserRole')->search( { user_id => $user->user_id, } )->all;
     my $roles;
     foreach (@roles) {
         $roles->{ $_->field }->{ $_->role } = 1;
     }
 
     # user profile photo
-    my $profile_photo = $c->model('DBIC')->resultset('UserProfilePhoto')
-        ->find( { user_id => $user->user_id, } );
+    my $profile_photo
+        = $c->model('DBIC')->resultset('UserProfilePhoto')->find( { user_id => $user->user_id, } );
     if ($profile_photo) {
         $profile_photo = $profile_photo->{_column_data};
         if ( $profile_photo->{type} eq 'upload' ) {
-            my $profile_photo_upload
-                = $c->model('Upload')->get( $c, $profile_photo->{value} );
+            my $profile_photo_upload = $c->model('Upload')->get( $c, $profile_photo->{value} );
             $profile_photo->{upload} = $profile_photo_upload
                 if ($profile_photo_upload);
         }
@@ -124,12 +121,9 @@ sub delete_cache_by_user {
     return unless ($user);
 
     my @ckeys;
-    push @ckeys, 'user|'
-        . Object::Signature::signature( { user_id => $user->{user_id} } );
-    push @ckeys, 'user|'
-        . Object::Signature::signature( { username => $user->{username} } );
-    push @ckeys,
-        'user|' . Object::Signature::signature( { email => $user->{email} } );
+    push @ckeys, 'user|' . Object::Signature::signature( { user_id  => $user->{user_id} } );
+    push @ckeys, 'user|' . Object::Signature::signature( { username => $user->{username} } );
+    push @ckeys, 'user|' . Object::Signature::signature( { email    => $user->{email} } );
 
     foreach my $ckey (@ckeys) {
         $c->cache->remove($ckey);
@@ -151,8 +145,8 @@ sub update {
     my ( $self, $c, $user, $update ) = @_;
 
     $self->delete_cache_by_user( $c, $user );
-    $c->model('DBIC')->resultset('User')
-        ->search( { user_id => $user->{user_id}, } )->update($update);
+    $c->model('DBIC')->resultset('User')->search( { user_id => $user->{user_id}, } )
+        ->update($update);
 }
 
 =pod

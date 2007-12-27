@@ -25,8 +25,7 @@ sub work {
     if ( $upload_id !~ /^\d+$/ ) {
         return $job->failed("Wrong upload_id: $upload_id");
     }
-    my $upload
-        = $schema->resultset('Upload')->find( { upload_id => $upload_id } );
+    my $upload = $schema->resultset('Upload')->find( { upload_id => $upload_id } );
     unless ($upload) {
         return $job->failed("No upload for $upload_id");
     }
@@ -34,9 +33,8 @@ sub work {
     # get file dir
     my $directory_1 = int( $upload_id / 3200 / 3200 );
     my $directory_2 = int( $upload_id / 3200 );
-    my $file
-        = abs_path( "$path/../../../../root/upload/$directory_1/$directory_2/"
-            . $upload->filename );
+    my $file        = abs_path(
+        "$path/../../../../root/upload/$directory_1/$directory_2/" . $upload->filename );
 
     # resize photo
     my $p = new Image::Magick;

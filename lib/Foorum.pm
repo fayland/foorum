@@ -30,11 +30,11 @@ __PACKAGE__->setup();
 
 __PACKAGE__->log->levels( 'error', 'fatal' );    # for real server
 if ( __PACKAGE__->config->{debug_mode} ) {
-    __PACKAGE__->log->enable( 'debug', 'info', 'warn' );  # for developer server
+    __PACKAGE__->log->enable( 'debug', 'info', 'warn' );    # for developer server
     {
 
         # these code are copied from Catalyst.pm setup_log
-        no strict 'refs';    ## no critic (ProhibitNoStrict)
+        no strict 'refs';                                   ## no critic (ProhibitNoStrict)
         my $class = __PACKAGE__;
         *{"$class\::debug"} = sub {1};
     }

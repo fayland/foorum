@@ -60,10 +60,8 @@ sub recent : Local {
             $_->{text} = $rs->text;
 
             # filter format by Foorum::Filter
-            $_->{text} = $c->model('FilterWord')
-                ->convert_offensive_word( $c, $_->{text} );
-            $_->{text}
-                = filter_format( $_->{text}, { format => $rs->formatter } );
+            $_->{text} = $c->model('FilterWord')->convert_offensive_word( $c, $_->{text} );
+            $_->{text} = filter_format( $_->{text}, { format => $rs->formatter } );
         }
         $c->stash->{topics} = \@topics;
 
@@ -104,12 +102,9 @@ sub members : Local {
     my $rs   = $c->model('DBIC')->resultset('User')->search(
         undef,
         {   order_by => 'register_time DESC',
-            columns  => [
-                'user_id', 'username', 'nickname', 'register_time',
-                'gender',  'status'
-            ],
-            page => $page,
-            rows => 20,
+            columns  => [ 'user_id', 'username', 'nickname', 'register_time', 'gender', 'status' ],
+            page     => $page,
+            rows     => 20,
         }
     );
 

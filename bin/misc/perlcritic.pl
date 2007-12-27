@@ -15,9 +15,9 @@ open( my $fh, '>', 'critic.txt' );
 flock( $fh, 2 );
 
 while ( defined( my $file = $files->() ) ) {
-    next if ( $file !~ /\.p[ml]$/ );             # only .pm .pl
-    next if ( $file =~ /Schema\.pm$/ );          # skip this file
-    next if ( $file =~ /(\/|\\)Schema(\/|\\)/ ); # skip Schema dir and Schema.pm
+    next if ( $file !~ /\.p[ml]$/ );                # only .pm .pl
+    next if ( $file =~ /Schema\.pm$/ );             # skip this file
+    next if ( $file =~ /(\/|\\)Schema(\/|\\)/ );    # skip Schema dir and Schema.pm
 
     print "$file\n";
 

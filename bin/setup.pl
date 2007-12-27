@@ -55,11 +55,10 @@ if ( -e "$path/foorum_local.yml" ) {
     $yaml = LoadFile("$path/foorum_local.yml");
 }
 
-$yaml->{dsn}      = "dbi:mysql:database=foorum;host=$dns_host;port=3306";
-$yaml->{dsn_user} = $dns_user;
-$yaml->{dsn_pwd}  = $dns_password;
-$yaml->{theschwartz_dsn}
-    = "dbi:mysql:database=theschwartz;host=$dns_host;port=3306";
+$yaml->{dsn}             = "dbi:mysql:database=foorum;host=$dns_host;port=3306";
+$yaml->{dsn_user}        = $dns_user;
+$yaml->{dsn_pwd}         = $dns_password;
+$yaml->{theschwartz_dsn} = "dbi:mysql:database=theschwartz;host=$dns_host;port=3306";
 
 print "\n\nSaving ....\n";
 DumpFile( "$path/foorum_local.yml", $yaml );

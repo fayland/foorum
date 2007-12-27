@@ -18,14 +18,10 @@ sub work {
     my $time = time() - 24 * 60 * 60;
 
     # check db
-    my $new_added_ip
-        = $schema->resultset('BannedIp')->count( { time => { '>', $time } } );
-    my $new_added_user = $schema->resultset('User')
-        ->count( { register_time => { '>', $time } } );
-    my $new_added_visits
-        = $schema->resultset('Visit')->count( { time => { '>', $time } } );
-    my $left_email
-        = $schema->resultset('ScheduledEmail')->count( { processed => 'N' } );
+    my $new_added_ip = $schema->resultset('BannedIp')->count( { time => { '>', $time } } );
+    my $new_added_user = $schema->resultset('User')->count( { register_time => { '>', $time } } );
+    my $new_added_visits = $schema->resultset('Visit')->count( { time => { '>', $time } } );
+    my $left_email = $schema->resultset('ScheduledEmail')->count( { processed => 'N' } );
     my $sent_email = $schema->resultset('ScheduledEmail')->count(
         {   processed => 'Y',
             time      => \"> DATE_SUB(NOW(), INTERVAL 1 DAY)",
@@ -33,8 +29,8 @@ sub work {
     );
     my $log_error_count = $schema->resultset('LogError')
         ->count( { time => \"> DATE_SUB(NOW(), INTERVAL 1 DAY)", } );
-    my $log_path_count = $schema->resultset('LogPath')
-        ->count( { time => \"> DATE_SUB(NOW(), INTERVAL 1 DAY)", } );
+    my $log_path_count
+        = $schema->resultset('LogPath')->count( { time => \"> DATE_SUB(NOW(), INTERVAL 1 DAY)", } );
 
     my $text_body = qq~
         NewAddedIP:     $new_added_ip\n

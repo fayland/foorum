@@ -56,7 +56,7 @@ sub default : Private {
 
     # password
     my $password = $c->req->param('password');
-    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
+    my $d        = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
 
@@ -111,13 +111,12 @@ sub activation : Local {
     my $user = $c->model('User')->get( $c, { username => $username } );
     $c->detach( '/print_error', ['ERROR_USER_NON_EXIST'] ) unless ($user);
 
-    my $activation_rs = $c->model('DBIC')->resultset('UserActivation')
-        ->find( { user_id => $user->{user_id} } );
+    my $activation_rs
+        = $c->model('DBIC')->resultset('UserActivation')->find( { user_id => $user->{user_id} } );
     unless ($activation_rs) {
         if ( $user->{status} eq 'unverified' ) {    # new account
             $c->model('Email')->send_activation( $c, $user );
-            return $c->res->redirect(
-                '/register/activation/' . $user->{username} );
+            return $c->res->redirect( '/register/activation/' . $user->{username} );
         } else {
             return $c->res->redirect('/profile/edit');
         }
@@ -137,9 +136,9 @@ sub activation : Local {
         );
         $activation_rs->delete;
 
-  # login will be failed since the $user->password is SHA1 Hashed.
-  # $c->login( $username, $user->{password} );
-  # so instead, we use set_authenticated, check Catalyst::Plugin::Authentication
+        # login will be failed since the $user->password is SHA1 Hashed.
+        # $c->login( $username, $user->{password} );
+        # so instead, we use set_authenticated, check Catalyst::Plugin::Authentication
         bless $user, "Catalyst::Authentication::User::Hash";    # XXX?
         $c->set_authenticated($user);
         $c->res->redirect('/profile/edit');

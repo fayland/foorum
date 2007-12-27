@@ -43,13 +43,10 @@ sub edit : Local {
     }
 
     my $birthday
-        = $c->req->param('year') . '-'
-        . $c->req->param('month') . '-'
-        . $c->req->param('day');
+        = $c->req->param('year') . '-' . $c->req->param('month') . '-' . $c->req->param('day');
     my ( @extra_valid, @extra_insert );
     if ( length($birthday) > 2 ) {    # is not --
-        @extra_valid
-            = ( { birthday => [ 'year', 'month', 'day' ] } => ['DATE'] );
+        @extra_valid = ( { birthday => [ 'year', 'month', 'day' ] } => ['DATE'] );
         @extra_insert = ( birthday => $birthday );
     }
 
@@ -84,8 +81,8 @@ sub edit : Local {
         $c->user,
         {   nickname => $c->req->param('nickname') || $c->user->username,
             gender   => $c->req->param('gender')   || 'NA',
-            lang    => $c->req->param('lang')    || $c->config->{default_lang},
-            country => $c->req->param('country') || '',
+            lang     => $c->req->param('lang')     || $c->config->{default_lang},
+            country  => $c->req->param('country')  || '',
         }
     );
 
@@ -118,7 +115,7 @@ sub change_password : Local {
 
     # check the password typed in is correct
     my $password = $c->req->param('password');
-    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
+    my $d        = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
     if ( $computed ne $c->user->{password} ) {
@@ -129,8 +126,7 @@ sub change_password : Local {
     # execute validation.
     $c->form(
         new_password => [ qw/NOT_BLANK/, [qw/LENGTH 6 20/] ],
-        { passwords => [ 'new_password', 'confirm_password' ] } =>
-            ['DUPLICATION'],
+        { passwords => [ 'new_password', 'confirm_password' ] } => ['DUPLICATION'],
     );
     return if ( $c->form->has_error );
 
@@ -170,7 +166,7 @@ sub forget_password : Local {
 
     # create a random password
     my $random_password = &generate_random_word(8);
-    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
+    my $d               = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($random_password);
     my $computed = $d->digest;
 
@@ -188,8 +184,7 @@ sub forget_password : Local {
     $c->model('User')->update( $c, $user, { password => $computed } );
     $c->detach(
         '/print_message',
-        [   {   msg =>
-                    'Your Password is Sent to Your Email, Please have a check',
+        [   {   msg          => 'Your Password is Sent to Your Email, Please have a check',
                 url          => '/login',
                 stay_in_page => 1,
             }
@@ -208,7 +203,7 @@ sub change_email : Local {
 
     # check the password typed in is correct
     my $password = $c->req->param('password');
-    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
+    my $d        = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
     if ( $computed ne $c->user->{password} ) {
@@ -248,7 +243,7 @@ sub change_username : Local {
 
     # check the password typed in is correct
     my $password = $c->req->param('password');
-    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
+    my $d        = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
     if ( $computed ne $c->user->{password} ) {
@@ -259,8 +254,7 @@ sub change_username : Local {
     # execute validation.
     $c->form(
         new_username => [qw/NOT_BLANK/],
-        { usernames => [ 'new_username', 'confirm_username' ] } =>
-            ['DUPLICATION'],
+        { usernames => [ 'new_username', 'confirm_username' ] } => ['DUPLICATION'],
     );
     return if ( $c->form->has_error );
 
@@ -296,8 +290,7 @@ sub profile_photo : Local {
 
         # delete old upload
         if ($old_upload_id) {
-            $c->model('Upload')
-                ->remove_by_upload( $c, $c->user->{profile_photo}->{upload} );
+            $c->model('Upload')->remove_by_upload( $c, $c->user->{profile_photo}->{upload} );
             $new_upload_id = 0;
         }
 
@@ -305,18 +298,16 @@ sub profile_photo : Local {
         if ($new_upload) {
             $new_upload_id = $c->model('Upload')->add_file( $c, $new_upload );
             unless ($new_upload_id) {
-                return $c->set_invalid_form(
-                    upload => $c->stash->{upload_error} );
+                return $c->set_invalid_form( upload => $c->stash->{upload_error} );
             }
 
             my $client = theschwartz();
-            $client->insert( 'Foorum::TheSchwartz::Worker::ResizeProfilePhoto',
-                $new_upload_id );
+            $client->insert( 'Foorum::TheSchwartz::Worker::ResizeProfilePhoto', $new_upload_id );
         }
     }
 
-    $c->model('DBIC')->resultset('UserProfilePhoto')
-        ->search( { user_id => $c->user->{user_id} } )->delete;
+    $c->model('DBIC')->resultset('UserProfilePhoto')->search( { user_id => $c->user->{user_id} } )
+        ->delete;
     $c->model('DBIC')->resultset('UserProfilePhoto')->create(
         {   user_id => $c->user->{user_id},
             type    => 'upload',

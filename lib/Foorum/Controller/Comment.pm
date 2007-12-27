@@ -28,8 +28,7 @@ sub post : Local {
     my $upload    = $c->req->upload('upload');
     my $upload_id = 0;
     if ($upload) {
-        $upload_id = $c->model('Upload')
-            ->add_file( $c, $upload, { forum_id => $forum_id } );
+        $upload_id = $c->model('Upload')->add_file( $c, $upload, { forum_id => $forum_id } );
         unless ($upload_id) {
             $c->detach( '/print_error', [ $c->stash->{upload_error} ] );
         }
@@ -62,8 +61,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
     $c->stash->{template} = 'comment/reply.html';
 
     my $comment_id = $c->req->snippets->[0];
-    my $comment    = $c->model('Comment')
-        ->get( $c, $comment_id, { with_author => 1, with_text => 1 } )
+    my $comment = $c->model('Comment')->get( $c, $comment_id, { with_author => 1, with_text => 1 } )
         ;    # show up
 
     return unless ( $c->req->method eq 'POST' );
@@ -74,8 +72,8 @@ sub reply : LocalRegex('^(\d+)/reply$') {
     my $upload    = $c->req->upload('upload');
     my $upload_id = 0;
     if ($upload) {
-        $upload_id = $c->model('Upload')
-            ->add_file( $c, $upload, { forum_id => $comment->forum_id } );
+        $upload_id
+            = $c->model('Upload')->add_file( $c, $upload, { forum_id => $comment->forum_id } );
         unless ($upload_id) {
             return $c->set_invalid_form( upload => $c->stash->{upload_error} );
         }
@@ -130,8 +128,7 @@ sub edit : LocalRegex('^(\d+)/edit$') {
     # edit upload
     my $old_upload;
     if ( $comment->upload_id ) {
-        $old_upload = $c->model('DBIC::Upload')
-            ->find( { upload_id => $comment->upload_id } );
+        $old_upload = $c->model('DBIC::Upload')->find( { upload_id => $comment->upload_id } );
     }
     $c->stash->{upload} = $old_upload;
 
@@ -152,13 +149,10 @@ sub edit : LocalRegex('^(\d+)/edit$') {
 
         # add new upload
         if ($new_upload) {
-            $upload_id
-                = $c->model('Upload')
-                ->add_file( $c, $new_upload,
-                { forum_id => $comment->forum_id } );
+            $upload_id = $c->model('Upload')
+                ->add_file( $c, $new_upload, { forum_id => $comment->forum_id } );
             unless ($upload_id) {
-                return $c->set_invalid_form(
-                    upload => $c->stash->{upload_error} );
+                return $c->set_invalid_form( upload => $c->stash->{upload_error} );
             }
         }
     }

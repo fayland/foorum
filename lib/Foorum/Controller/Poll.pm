@@ -71,8 +71,8 @@ sub poll : Regex('^forum/(\w+)/poll/(\d+)$') {
     my $forum_id   = $forum->{forum_id};
     my $poll_id    = $c->req->snippets->[1];
 
-    my $poll = $c->model('DBIC::Poll')->find( { poll_id => $poll_id, },
-        { prefetch => [ 'author', 'options' ], } );
+    my $poll = $c->model('DBIC::Poll')
+        ->find( { poll_id => $poll_id, }, { prefetch => [ 'author', 'options' ], } );
 
     my $can_vote = 0;
     if ( time() < $poll->duration and $c->user_exists ) {
@@ -113,8 +113,7 @@ sub view_polls : Regex('^forum/(\w+)/polls$') {
     my $page       = get_page_from_url( $c->req->path );
 
     # get all moderators
-    $c->stash->{forum_roles}
-        = $c->model('Policy')->get_forum_moderators( $c, $forum_id );
+    $c->stash->{forum_roles} = $c->model('Policy')->get_forum_moderators( $c, $forum_id );
 
     my $rs = $c->model('DBIC::Poll')->search(
         { forum_id => $forum_id, },

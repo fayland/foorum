@@ -109,8 +109,7 @@ sub inbox : Local {
 
     my @all_message_ids;
     push @all_message_ids, $_->message_id foreach (@messages);
-    $c->stash->{unread}
-        = $c->model('Message')->are_messages_unread( $c, \@all_message_ids )
+    $c->stash->{unread} = $c->model('Message')->are_messages_unread( $c, \@all_message_ids )
         if ( scalar @all_message_ids );
 
     $c->stash->{template} = 'message/inbox.html';
@@ -143,10 +142,8 @@ sub message : LocalRegex('^(\d+)$') {
 
     my $message_id = $c->req->snippets->[0];
 
-    my $message
-        = $c->model('DBIC')->resultset('Message')
-        ->find( { message_id => $message_id, },
-        { prefetch => [ 'sender', 'recipient' ], } );
+    my $message = $c->model('DBIC')->resultset('Message')
+        ->find( { message_id => $message_id, }, { prefetch => [ 'sender', 'recipient' ], } );
     $c->stash->{message} = $message;
 
     # permission check
@@ -170,8 +167,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
 
     my $message_id = $c->req->snippets->[0];
 
-    my $message = $c->model('DBIC')->resultset('Message')
-        ->find( { message_id => $message_id, } );
+    my $message = $c->model('DBIC')->resultset('Message')->find( { message_id => $message_id, } );
 
     # permission check
     if (    $c->user->{user_id} != $message->from_id

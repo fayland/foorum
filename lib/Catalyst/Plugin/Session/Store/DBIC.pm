@@ -93,10 +93,9 @@ sub setup_finished {
     my $model = $c->model($dbic_class) || $c->comp($dbic_class);
 
     my $rs
-        = ref $model ? $model
-        : $dbic_class->can('resultset_instance')
-        ? $dbic_class->resultset_instance
-        : $dbic_class;
+        = ref $model                             ? $model
+        : $dbic_class->can('resultset_instance') ? $dbic_class->resultset_instance
+        :                                          $dbic_class;
     $c->_dbic_session_resultset($rs);
 
     # Try to determine id_field if it isn't set
@@ -139,8 +138,7 @@ sub get_session_data {
         = $want_expires
         ? $config->{expires_field}
         : $config->{data_field};
-    my $session
-        = $c->_dbic_session_resultset->find( $key, { select => $field } );
+    my $session = $c->_dbic_session_resultset->find( $key, { select => $field } );
     return unless $session;
 
     my $data = $session->get_column($field);
@@ -206,8 +204,7 @@ sub delete_session_data {
 
     my $config = $c->config->{session};
 
-    $c->_dbic_session_resultset->search( { $config->{id_field} => $key, } )
-        ->delete;
+    $c->_dbic_session_resultset->search( { $config->{id_field} => $key, } )->delete;
 }
 
 =head2 delete_expired_sessions
@@ -222,8 +219,7 @@ sub delete_expired_sessions {
 
     my $config = $c->config->{session};
 
-    $c->_dbic_session_resultset->search(
-        { $config->{expires_field} => { '<', time() }, } )->delete;
+    $c->_dbic_session_resultset->search( { $config->{expires_field} => { '<', time() }, } )->delete;
 }
 
 =head1 CONFIGURATION

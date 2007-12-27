@@ -38,16 +38,13 @@ sub login : Global {
 
     if ( $username and $password ) {
 
-        my $can_login  = 0;
-        my $captcha_ok = ( $failure_login_times > 2
-                and $c->validate_captcha( $c->req->param('captcha') ) );
+        my $can_login = 0;
+        my $captcha_ok
+            = ( $failure_login_times > 2 and $c->validate_captcha( $c->req->param('captcha') ) );
         $can_login = ( $failure_login_times < 3 or $captcha_ok );
 
-        if ($can_login
-            and $c->authenticate(
-                { username => $username, password => $password }
-            )
-            ) {
+        if (    $can_login
+            and $c->authenticate( { username => $username, password => $password } ) ) {
 
             # check if he is activated
             if (    $c->config->{mail}->{on}
@@ -91,7 +88,7 @@ sub login : Global {
         } else {
             $failure_login_times = 0 unless ($failure_login_times);
             $failure_login_times++;
-            $c->cache->set( $mem_key, $failure_login_times, 600 );   # 10 minite
+            $c->cache->set( $mem_key, $failure_login_times, 600 );    # 10 minite
             $c->stash->{failure_login_times} = $failure_login_times;
 
             if ($can_login) {

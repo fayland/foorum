@@ -14,16 +14,13 @@ sub work {
 
     my $schema = schema();
 
-    my $rs
-        = $schema->resultset('ScheduledEmail')->search( { processed => 'N' } );
+    my $rs = $schema->resultset('ScheduledEmail')->search( { processed => 'N' } );
 
     my $handled = 0;
     while ( my $rec = $rs->next ) {
 
-        send_email(
-            $rec->from_email, $rec->to_email, $rec->subject,
-            $rec->plain_body, $rec->html_body
-        );
+        send_email( $rec->from_email, $rec->to_email, $rec->subject, $rec->plain_body,
+            $rec->html_body );
 
         # update processed
         $rec->update( { processed => 'Y' } );

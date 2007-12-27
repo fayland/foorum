@@ -23,10 +23,8 @@ my $linksub = sub {
     $opts ||= {};
 
     my $ori_text = $link;
-    ( $link, my $title )
-        = Text::GooglewikiFormat::find_link_title( $link, $opts );
-    ( $link, my $is_relative )
-        = Text::GooglewikiFormat::escape_link( $link, $opts );
+    ( $link, my $title ) = Text::GooglewikiFormat::find_link_title( $link, $opts );
+    ( $link, my $is_relative ) = Text::GooglewikiFormat::escape_link( $link, $opts );
     unless ($is_relative) {
         return qq|<a href="$link" rel="nofollow">$title</a>|;
     } elsif (

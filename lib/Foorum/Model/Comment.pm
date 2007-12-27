@@ -39,12 +39,9 @@ sub get_comments_by_object {
             $rec->{upload} = $upload->{_column_data} if ($upload);
 
             # filter format by Foorum::Filter
-            $rec->{title} = $c->model('FilterWord')
-                ->convert_offensive_word( $c, $rec->{title} );
-            $rec->{text} = $c->model('FilterWord')
-                ->convert_offensive_word( $c, $rec->{text} );
-            $rec->{text} = filter_format( $rec->{text},
-                { format => $rec->{formatter} } );
+            $rec->{title} = $c->model('FilterWord')->convert_offensive_word( $c, $rec->{title} );
+            $rec->{text}  = $c->model('FilterWord')->convert_offensive_word( $c, $rec->{text} );
+            $rec->{text} = filter_format( $rec->{text}, { format => $rec->{formatter} } );
 
             push @comments, $rec;
         }
@@ -67,8 +64,7 @@ sub get_comments_by_object {
     }
     if ( scalar @all_user_ids ) {
         @all_user_ids = uniq @all_user_ids;
-        my $authors
-            = $c->model('User')->get_multi( $c, 'user_id', \@all_user_ids );
+        my $authors = $c->model('User')->get_multi( $c, 'user_id', \@all_user_ids );
         foreach (@comments) {
             $_->{author} = $authors->{ $_->{author_id} };
         }
@@ -101,14 +97,11 @@ sub get {
         # filter format by Foorum::Filter
         $comment->{_column_data}->{text} = $c->model('FilterWord')
             ->convert_offensive_word( $c, $comment->{_column_data}->{text} );
-        $comment->{_column_data}->{text} = filter_format(
-            $comment->{_column_data}->{text},
-            { format => $comment->formatter }
-        );
+        $comment->{_column_data}->{text}
+            = filter_format( $comment->{_column_data}->{text}, { format => $comment->formatter } );
     }
     if ( $attrs->{with_author} ) {
-        $comment->{author}
-            = $c->model('User')->get( $c, { user_id => $comment->author_id } );
+        $comment->{author} = $c->model('User')->get( $c, { user_id => $comment->author_id } );
     }
 
     $c->stash->{comment} = $comment;
@@ -173,11 +166,9 @@ sub remove {
     my ( $self, $c, $comment ) = @_;
 
     if ( $comment->upload_id ) {
-        $c->model('Upload')
-            ->remove_file_by_upload_id( $c, $comment->upload_id );
+        $c->model('Upload')->remove_file_by_upload_id( $c, $comment->upload_id );
     }
-    $c->model('DBIC::Comment')->search( { comment_id => $comment->comment_id } )
-        ->delete;
+    $c->model('DBIC::Comment')->search( { comment_id => $comment->comment_id } )->delete;
 
     my $object_type = $comment->object_type;
     my $object_id   = $comment->object_id;

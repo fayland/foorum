@@ -16,13 +16,12 @@ sub work {
     my $schema = schema();
 
     # for /site/popular
-    my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst )
-        = localtime();
+    my ( $sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst ) = localtime();
 
     #my @update_cols;
     my $sql = 'UPDATE hit SET ';
     if ( $hour == 1 and $min < 5 ) {    # the first hour of today
-         #push @update_cols, ( hit_yesterday => \'hit_today', hit_today => \'hit_new' );
+            #push @update_cols, ( hit_yesterday => \'hit_today', hit_today => \'hit_new' );
         $sql .= 'hit_yesterday = hit_today, hit_today = hit_new, ';
     } else {
 
@@ -37,8 +36,7 @@ sub work {
         #push @update_cols, ( hit_weekly => \'hit_weekly + hit_new' ); #'
         $sql .= 'hit_weekly = hit_weekly + hit_new, ';
     }
-    if ( $mday == 1 and ( $hour == 1 and $min < 5 ) )
-    {       # The first day of the month
+    if ( $mday == 1 and ( $hour == 1 and $min < 5 ) ) {    # The first day of the month
             #push @update_cols, ( hit_monthly => \'hit_new' ); #'
         $sql .= 'hit_monthly = hit_new, ';
     } else {
@@ -58,8 +56,7 @@ sub work {
     $dbh->do($sql);
 
     # update the real data in table
-    my $rs = $schema->resultset('Hit')
-        ->search( { last_update_time => { '>', 0 } } );
+    my $rs               = $schema->resultset('Hit')->search( { last_update_time => { '>', 0 } } );
     my $last_update_time = 0;
     my $updated_count    = 0;
     while ( my $r = $rs->next ) {
@@ -87,8 +84,7 @@ sub work {
     )->update( { last_update_time => 0 } );
 
 #error_log($schema, 'info', "update_hit ($updated_count) - "  . dump(\@update_cols) . ' @ ' . localtime());
-    error_log( $schema, 'info',
-        "update_hit ($updated_count) - $sql \@ " . localtime() );
+    error_log( $schema, 'info', "update_hit ($updated_count) - $sql \@ " . localtime() );
 
     $job->completed();
 }

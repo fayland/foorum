@@ -27,8 +27,9 @@ sub work {
     my $month = $atime[4] + 1;
     my $day   = $atime[3];
 
-    my @stats = $schema->resultset('Stat')
-        ->search( { date => \"> DATE_SUB(NOW(), INTERVAL 7 DAY)", } )->all;
+    my @stats
+        = $schema->resultset('Stat')->search( { date => \"> DATE_SUB(NOW(), INTERVAL 7 DAY)", } )
+        ->all;
 
     my $stats;
     foreach (@stats) {
@@ -46,8 +47,7 @@ sub work {
     use File::Spec;
     my ( undef, $path ) = File::Spec->splitpath(__FILE__);
 
-    $tt2->process( 'stats/chart.html', $var,
-        "$path/../../../../root/static/stats/$filename.html" );
+    $tt2->process( 'stats/chart.html', $var, "$path/../../../../root/static/stats/$filename.html" );
 
     $job->completed();
 }
@@ -68,11 +68,9 @@ sub register_stat {
     my ($count) = $sth->fetchrow_array;
 
     unless ($count) {
-        $sql
-            = q~INSERT INTO stat SET stat_key = ?, stat_value = ?, date = NOW()~;
+        $sql = q~INSERT INTO stat SET stat_key = ?, stat_value = ?, date = NOW()~;
     } else {
-        $sql
-            = q~UPDATE stat SET stat_key = ?, date = NOW() WHERE stat_value = ?~;
+        $sql = q~UPDATE stat SET stat_key = ?, date = NOW() WHERE stat_value = ?~;
     }
     $sth = $dbh->prepare($sql);
     $sth->execute( $stat_key, $stat_value );
