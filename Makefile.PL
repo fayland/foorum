@@ -14,6 +14,7 @@ requires 'Catalyst::View::TT';
 requires 'Catalyst::View::JSON';
 requires 'Catalyst::Model::DBIC::Schema';
 requires 'Catalyst::Plugin::Static::Simple';
+requires 'YAML';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Cache::FileCache';
 requires 'Catalyst::Plugin::Cache';
@@ -45,9 +46,11 @@ requires 'Net::CIDR::Lite';
 requires 'TheSchwartz';
 requires 'Schedule::Cron';
 recommends 'Proc::PID::File';
+recommends 'File::HomeDir';
 
 # mail
-recommends 'MIME::Entity';
+requires 'MIME::Entity';
+requires 'Email::Send';
 recommends 'Email::Send::SMTP::TLS';
 
 # formatter
