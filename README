@@ -18,3 +18,4 @@ for test using, we recommend to use builtin server.pl try:
 
 L<Catalyst>, L<DBIx::Class>, L<Template>
 
+More at docs/*.html
