@@ -7,6 +7,7 @@ use Cwd qw/abs_path/;
 use YAML qw/DumpFile LoadFile/;
 use DBI;
 use lib "$FindBin::Bin/../lib";
+use vars qw/$dbh/;
 
 my $path = abs_path("$FindBin::RealBin/..");
 
@@ -41,7 +42,7 @@ while ( $dns_password = <> ) {
 }
 
 eval {
-    DBI->connect( "dbi:mysql:database=foorum;host=$dns_host;port=3306",
+    $dbh = DBI->connect( "dbi:mysql:database=foorum;host=$dns_host;port=3306",
         $dns_user, $dns_password, { RaiseError => 1, PrintError => 1 } )
         or die $DBI::errstr;
 };
@@ -63,5 +64,9 @@ $yaml->{theschwartz_dsn} = "dbi:mysql:database=theschwartz;host=$dns_host;port=3
 print "\n\nSaving ....\n";
 DumpFile( "$path/foorum_local.yml", $yaml );
 
-print "=" x 50, "\nDone!\n", "Thanks For Join US!\n";
+print "Attention! The first user created will be site admin automatically!\n";
+my $sql = q~INSERT INTO user_role SET user_id = 1, role = 'admin', field = 'site'~;
+$dbh->do($sql) or die $DBI::errstr;
+print "[OK] ", $sql, "\n";
 
+print "=" x 50, "\nDone!\n", "Thanks For Join US!\n";
