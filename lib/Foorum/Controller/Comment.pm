@@ -231,7 +231,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
 
 =head2 AUTHOR
 
-Fayland Lam <fayland@gmail.com>
+Fayland Lam <fayland at gmail.com>
 
 =cut
 

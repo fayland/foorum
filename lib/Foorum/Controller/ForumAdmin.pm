@@ -347,7 +347,7 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
 
 =head2 AUTHOR
 
-Fayland Lam <fayland@gmail.com>
+Fayland Lam <fayland at gmail.com>
 
 =cut
 

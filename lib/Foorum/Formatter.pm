@@ -122,6 +122,6 @@ L<HTML::BBCode>, L<Text::Textile>, L<Text::GooglewikiFormat>
 
 =head1 AUTHOR
 
-Fayland Lam <fayland@gmail.com>
+Fayland Lam <fayland at gmail.com>
 
 =cut

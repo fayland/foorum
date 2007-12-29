@@ -136,7 +136,7 @@ sub view_polls : Regex('^forum/(\w+)/polls$') {
 
 =head2 AUTHOR
 
-Fayland Lam <fayland@gmail.com>
+Fayland Lam <fayland at gmail.com>
 
 =cut
 

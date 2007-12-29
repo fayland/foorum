@@ -117,7 +117,7 @@ sub ban : Local {
 
 =head2 AUTHOR
 
-Fayland Lam <fayland@gmail.com>
+Fayland Lam <fayland at gmail.com>
 
 =cut
 

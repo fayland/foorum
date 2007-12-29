@@ -98,7 +98,7 @@ sub ban_or_unban_topic : Regex('^forum/(\w+)/(\d+)/(un)?ban$') {
 
 =head2 AUTHOR
 
-Fayland Lam <fayland@gmail.com>
+Fayland Lam <fayland at gmail.com>
 
 =cut
 
