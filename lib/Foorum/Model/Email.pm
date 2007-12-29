@@ -45,7 +45,7 @@ sub send_activation {
             to_email   => $user->email,
             subject    => 'Your Activation Code In ' . $c->config->{name},
             plain_body => $email_body,
-            time       => \'NOW()', #'
+            time       => \'NOW()',                                          #'
             processed  => 'N',
         }
     );
@@ -83,12 +83,13 @@ sub create {
     # prepare the tt2
     my ( $plain_body, $html_body );
     my $stash = {
-        c => $c,                # add $c to tt2
-        base => $c->req->base,
+        c          => $c,              # add $c to tt2
+        base       => $c->req->base,
         no_wrapper => 1,
     };
+
     # we will set 'base' in cron manually, so we put %$stash before %{$opts->{stash}}
-    $stash = { %$stash, %{$opts->{stash}} };
+    $stash = { %$stash, %{ $opts->{stash} } };
 
     # prepare TXT format
     if ( -e $file_prefix . '.txt' ) {

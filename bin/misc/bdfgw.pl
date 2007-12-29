@@ -15,7 +15,8 @@ my $wiki_dir    = abs_path("$Bin/../../../wiki");
 my $project_url = 'http://code.google.com/p/foorum';
 
 my %tags = %Text::GooglewikiFormat::tags;
-my @filenames = ( 'README', 'INSTALL', 'Configure', 'I18N', 'TroubleShooting', 'AUTHORS', 'RULES' );
+my @filenames
+    = ( 'README', 'INSTALL', 'Configure', 'I18N', 'TroubleShooting', 'AUTHORS', 'RULES' );
 
 # replace link sub
 my $linksub = sub {

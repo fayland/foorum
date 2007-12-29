@@ -56,7 +56,8 @@ print "Your site domain (http://www.foorumbbs.com/ by default): ";
 my $domain = <>;
 chomp($domain);
 $domain = 'http://www.foorumbbs.com/' unless ($domain);
-$domain .= '/';  $domain =~ s/\/+$/\//isg;
+$domain .= '/';
+$domain =~ s/\/+$/\//isg;
 
 my $yaml;
 if ( -e "$path/foorum_local.yml" ) {

@@ -13,7 +13,7 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
     my $topic_id   = $c->req->snippets->[1];
     my $page       = get_page_from_url( $c->req->path );
     $page = 1 unless ( $page and $page =~ /^\d+$/ );
-    my $rss      = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;     # /forum/ForumName/1/rss
+    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;    # /forum/ForumName/1/rss
 
     # get the forum information
     my $forum = $c->controller('Get')->forum( $c, $forum_code );
@@ -23,17 +23,21 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
     my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
 
     if ($rss) {
-        my @comments = $c->model('Comment')->get_all_comments_by_object($c, 'topic', $topic_id);
+        my @comments
+            = $c->model('Comment')->get_all_comments_by_object( $c, 'topic', $topic_id );
+
         # get last 20 items
         @comments = reverse(@comments);
-        @comments = splice(@comments, 0, 20);
+        @comments = splice( @comments, 0, 20 );
 
-        $c->stash( {
-            comments => \@comments,
-            template => 'topic/topic.rss.html'
-        } );
+        $c->stash(
+            {   comments => \@comments,
+                template => 'topic/topic.rss.html'
+            }
+        );
     } else {
-        $topic->{hit} = $c->model('Hit')->register( $c, 'topic', $topic_id, $topic->{hit} );
+        $topic->{hit}
+            = $c->model('Hit')->register( $c, 'topic', $topic_id, $topic->{hit} );
         if ( $c->user_exists ) {
             my $query = {
                 user_id     => $c->user->user_id,
@@ -43,13 +47,14 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
 
             # 'star' status
             $c->stash->{is_starred} = $c->model('DBIC::Star')->count($query);
-    
+
             # 'share' status
             $c->stash->{is_shared} = $c->model('DBIC')->resultset('Share')->count($query);
-    
+
             # 'visit'
             $c->model('Visit')->make_visited( $c, 'topic', $topic_id );
         }
+
         # get comments
         $c->model('Comment')->get_comments_by_object(
             $c,

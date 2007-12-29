@@ -17,13 +17,13 @@ sub get_comments_by_object {
     my $object_id   = $info->{object_id};
     my $page        = $info->{page} || get_page_from_url( $c->req->path );
 
-    my @comments = $self->get_all_comments_by_object($c, $object_type, $object_id);
+    my @comments = $self->get_all_comments_by_object( $c, $object_type, $object_id );
 
-    if ($object_type eq 'user_profile') {
+    if ( $object_type eq 'user_profile' ) {
         @comments = reverse(@comments);
     }
 
-    my $rows  = $info->{rows} || $c->config->{per_page}->{topic} || 10;
+    my $rows = $info->{rows} || $c->config->{per_page}->{topic} || 10;
     my $pager = Data::Page->new();
     $pager->current_page($page);
     $pager->entries_per_page($rows);
@@ -31,7 +31,7 @@ sub get_comments_by_object {
 
     @comments = splice( @comments, ( $page - 1 ) * $rows, $rows );
 
-    @comments = $self->prepare_comments_for_view($c, @comments);
+    @comments = $self->prepare_comments_for_view( $c, @comments );
 
     $c->stash->{comments}       = \@comments;
     $c->stash->{comments_pager} = $pager;
@@ -39,10 +39,10 @@ sub get_comments_by_object {
 
 sub get_all_comments_by_object {
     my ( $self, $c, $object_type, $object_id ) = @_;
-    
+
     my $cache_key   = "comment|object_type=$object_type|object_id=$object_id";
     my $cache_value = $c->cache->get($cache_key);
-    
+
     my @comments;
     if ($cache_value) {
         $c->log->debug("Cache: get comments $cache_key");
@@ -75,14 +75,14 @@ sub get_all_comments_by_object {
         $c->cache->set( $cache_key, $cache_value, 3600 );    # 1 hour
         $c->log->debug("Cache: set comments $cache_key");
     }
-    
+
     return wantarray ? @comments : \@comments;
 }
 
 # add author and others
 sub prepare_comments_for_view {
-    my ($self, $c, @comments) = @_;
-    
+    my ( $self, $c, @comments ) = @_;
+
     my @all_user_ids;
     foreach (@comments) {
         push @all_user_ids, $_->{author_id};
@@ -184,9 +184,13 @@ sub create {
             }
         );
     } else {
+
         # Send Update Notification for Starred Item
         my $client = theschwartz();
-        $client->insert( 'Foorum::TheSchwartz::Worker::SendStarredNofication', [$object_type, $object_id, $c->user->{user_id}] );
+        $client->insert(
+            'Foorum::TheSchwartz::Worker::SendStarredNofication',
+            [ $object_type, $object_id, $c->user->{user_id} ]
+        );
     }
 
     return $comment;

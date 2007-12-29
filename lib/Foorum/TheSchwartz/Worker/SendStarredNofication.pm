@@ -11,45 +11,45 @@ sub work {
     my TheSchwartz::Job $job = shift;
 
     my ($args) = $job->arg;
-    my ($object_type, $object_id, $from_id) = @$args;
+    my ( $object_type, $object_id, $from_id ) = @$args;
 
-    my $schema = schema();
-    my $config = config();
-    my $cache  = cache();
+    my $schema    = schema();
+    my $config    = config();
+    my $cache     = cache();
     my $base_path = base_path();
-    my $tt2    = tt2();
+    my $tt2       = tt2();
 
     # if it is a starred item and settings send_starred_notification is Y
-    my $starred_rs = $schema->resultset('Star')->search( {
-        object_type => $object_type,
-        object_id   => $object_id
-    }, {
-        columns => ['user_id'],
-    } );
+    my $starred_rs = $schema->resultset('Star')->search(
+        {   object_type => $object_type,
+            object_id   => $object_id
+        },
+        { columns => ['user_id'], }
+    );
     my @user_ids;
-    while (my $r = $starred_rs->next) {
+    while ( my $r = $starred_rs->next ) {
         push @user_ids, $r->user_id;
     }
-    if (scalar @user_ids) {
-        my $object = get_object($schema, $cache, $object_type, $object_id);
-        my $from   = get_user($schema, $cache, $from_id);
-        
+    if ( scalar @user_ids ) {
+        my $object = get_object( $schema, $cache, $object_type, $object_id );
+        my $from = get_user( $schema, $cache, $from_id );
+
         foreach my $user_id (@user_ids) {
-            my $user = get_user($schema, $cache, $user_id);
+            my $user = get_user( $schema, $cache, $user_id );
             next unless ($user);
-            next if ($user->{user_id} == $from->{user_id}); # skip himself
-            # Send Notification Email
-            send_mail( $schema, $tt2, $base_path,
+            next if ( $user->{user_id} == $from->{user_id} );    # skip himself
+                                                                 # Send Notification Email
+            send_mail(
+                $schema, $tt2,
+                $base_path,
                 {   template => 'starred_notification',
                     to       => $user->{email},
                     lang     => $user->{lang},
                     stash    => {
-                        c       => {
-                            config => $config,
-                        },
-                        rept    => $user,
-                        from    => $from,
-                        object  => $object,
+                        c      => { config => $config, },
+                        rept   => $user,
+                        from   => $from,
+                        object => $object,
                         base   => $config->{site}->{domain},
                     }
                 }
@@ -61,16 +61,17 @@ sub work {
 }
 
 use Object::Signature;
+
 sub get_user {
-    my ($schema, $cache, $user_id) = @_;
-    
+    my ( $schema, $cache, $user_id ) = @_;
+
     my $cache_key = 'user|' . Object::Signature::signature( { user_id => $user_id } );
     my $cache_val = $cache->get($cache_key);
-    
+
     if ($cache_val) {
         return $cache_val;
     }
-    
+
     my $user = $schema->resultset('User')->find( { user_id => $user_id } );
     return unless ($user);
 
@@ -79,27 +80,27 @@ sub get_user {
 }
 
 sub get_object {
-    my ($schema, $cache, $object_type, $object_id) = @_;
-    
-    if ($object_type eq 'topic') {
+    my ( $schema, $cache, $object_type, $object_id ) = @_;
+
+    if ( $object_type eq 'topic' ) {
         my $object = $schema->resultset('Topic')->find( { topic_id => $object_id, } );
         return unless ($object);
         return {
             object_type => 'topic',
             object_id   => $object_id,
             title       => $object->title,
-            author      => get_user($schema, $cache, $object->author_id ),
+            author      => get_user( $schema, $cache, $object->author_id ),
             url         => '/forum/' . $object->forum_id . "/$object_id",
             last_update => $object->last_update_date,
         };
-    } elsif ($object_type eq 'poll') {
+    } elsif ( $object_type eq 'poll' ) {
         my $object = $schema->resultset('Poll')->find( { poll_id => $object_id, } );
         return unless ($object);
         return {
             object_type => 'poll',
             object_id   => $object_id,
             title       => $object->title,
-            author      => get_user($schema, $cache, $object->author_id ),
+            author      => get_user( $schema, $cache, $object->author_id ),
             url         => '/forum/' . $object->forum_id . "/poll/$object_id",
             last_update => '-',
         };
@@ -107,15 +108,14 @@ sub get_object {
 }
 
 sub send_mail {
-    my ($schema, $tt2, $base_path, $opts) = @_;
-    
+    my ( $schema, $tt2, $base_path, $opts ) = @_;
+
     my $lang = $opts->{lang};
-    
+
     # find the template for TT use
     my $template_prefix;
     my $template_name = $opts->{template};
-    my $file_prefix
-        = "$base_path/templates/lang/$lang/email/$template_name";
+    my $file_prefix   = "$base_path/templates/lang/$lang/email/$template_name";
     if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
         $template_prefix = "lang/$lang/email/$template_name";
     } elsif ( $lang ne 'en' ) {
@@ -127,15 +127,17 @@ sub send_mail {
         }
     }
     unless ($template_prefix) {
-        error_log( $schema, 'error', "Template not found in Email.pm notification with params: $template_name" );
+        error_log( $schema, 'error',
+            "Template not found in Email.pm notification with params: $template_name" );
         return 0;
     }
-    
+
     # prepare the tt2
     my ( $plain_body, $html_body );
-    
-    my $stash = $opts->{stash};
+
+    my $stash  = $opts->{stash};
     my $config = $stash->{c}->{config};
+
     # prepare TXT format
     if ( -e $file_prefix . '.txt' ) {
         $tt2->process( $template_prefix . '.txt', $stash, \$plain_body );
@@ -143,7 +145,7 @@ sub send_mail {
     if ( -e $file_prefix . '.html' ) {
         $tt2->process( $template_prefix . '.html', $stash, \$html_body );
     }
-    
+
     # get the subject from $plain_body or $html_body
     # the format is ########Title Subject#########
     my $subject;

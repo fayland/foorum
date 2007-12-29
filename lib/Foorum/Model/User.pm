@@ -155,31 +155,30 @@ sub update {
 # get user_settings
 # we don't merge it into sub get_user_from_db is because it's not used so frequently
 sub get_user_settings {
-    my ($self, $c, $user) = @_;
-    
+    my ( $self, $c, $user ) = @_;
+
     # this cachekey would be delete from Controller/Settings.pm
     my $cachekey = 'user|user_settings|user_id=' . $user->{user_id};
     my $cacheval = $c->cache->get($cachekey);
-    
+
     if ($cacheval) {
         $cacheval = $cacheval->{val};
     } else {
-        my $settings_rs = $c->model('DBIC')->resultset('UserSettings')->search( {
-            user_id => $user->{user_id}
-        } );
+        my $settings_rs = $c->model('DBIC')->resultset('UserSettings')
+            ->search( { user_id => $user->{user_id} } );
         $cacheval = {};
-        while (my $rs = $settings_rs->next) {
+        while ( my $rs = $settings_rs->next ) {
             $cacheval->{ $rs->type } = $rs->value;
         }
-        $c->cache->set($cachekey, { val => $cacheval, 1 => }); # for empty $cacheval
+        $c->cache->set( $cachekey, { val => $cacheval, 1 => } );    # for empty $cacheval
     }
-    
+
     # if not stored in db, we use default value;
     my $default = {
         'send_starred_notification' => 'Y',
         'show_email_public'         => 'Y',
     };
-    my $ret = { %$default, %$cacheval }; # merge
+    my $ret = { %$default, %$cacheval };                            # merge
     return $ret;
 }
 
