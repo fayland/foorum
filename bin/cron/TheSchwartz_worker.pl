@@ -23,6 +23,7 @@ use Foorum::TheSchwartz::Worker::ResizeProfilePhoto;
 use Foorum::TheSchwartz::Worker::SendScheduledEmail;
 use Foorum::TheSchwartz::Worker::DailyReport;
 use Foorum::TheSchwartz::Worker::DailyChart;
+use Foorum::TheSchwartz::Worker::SendStarredNofication;
 
 my $client = theschwartz();
 
@@ -48,6 +49,7 @@ $client->can_do('Foorum::TheSchwartz::Worker::ResizeProfilePhoto');
 $client->can_do('Foorum::TheSchwartz::Worker::SendScheduledEmail');
 $client->can_do('Foorum::TheSchwartz::Worker::DailyReport');
 $client->can_do('Foorum::TheSchwartz::Worker::DailyChart');
+$client->can_do('Foorum::TheSchwartz::Worker::SendStarredNofication');
 $client->work();
 
 1;

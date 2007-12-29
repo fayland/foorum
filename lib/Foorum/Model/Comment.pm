@@ -5,6 +5,7 @@ use warnings;
 use base 'Catalyst::Model';
 use Foorum::Utils qw/get_page_from_url encodeHTML/;
 use Foorum::Formatter qw/filter_format/;
+use Foorum::ExternalUtils qw/theschwartz/;
 use Data::Page;
 use List::MoreUtils qw/uniq/;
 use Data::Dumper;
@@ -161,6 +162,10 @@ sub create {
                 }
             }
         );
+    } else {
+        # Send Update Notification for Starred Item
+        my $client = theschwartz();
+        $client->insert( 'Foorum::TheSchwartz::Worker::SendStarredNofication', [$object_type, $object_id, $c->user->{user_id}] );
     }
 
     return $comment;

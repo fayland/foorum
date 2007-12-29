@@ -6,6 +6,7 @@ This file documents the revision history for Foorum.
     - bug fix for message permission check (r160)
     - add requires 'Cache::FileCache'; in Makefile.PL (reported by hotsnow)
     - use Config::YAML instead of ConfigLoader because Config::YAML is simpler and faster
+    - new table 'user_settings' and /settings for 'SendUpdateNotification for MyStarredItems:'
 
 0.1.0 Fri Dec 24 20:56:00 2007
     - move trunk to http://foorum.googlecode.com/svn/trunk/

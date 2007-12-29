@@ -1,0 +1,34 @@
+[% USE FillInForm %]
+
+[% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
+[% c.load_once("jquery/validate.js") %]
+
+
+<div id='edit_profile_tabs' class='tabs'>
+    <ul class="ui-tabs-nav">
+        <li><a href='/profile/edit'><span>[% c.loc('Edit Profile') %]</span></a></li>
+        <li class="ui-tabs-selected"><a href='javascript:void(0);'><span>Settings</span></a></li>
+    </ul>
+    <div class="ui-tabs-container">
+
+[% FILTER fillinform fdat => settings || c.req.params %]
+<div class='one'>
+<form method='post'>
+<table align='center'>
+	<tbody>
+	[% IF thanks %]
+    <tr class='misc2'><td colspan='2' align="center"><strong>Settings OK</strong></td></tr>
+	[% END %]
+	<tr class='misc1'>
+	    <td width='50%' align='right'><label for='send_starred_notification'>Send Update Notification for <a href='/my/starred'><img src='[% c.config.dir.images %]/site/t/star_on.gif' align='absmiddle' /> [% c.loc("My Starred Items") %]</a>:</label></td>
+	    <td><input type='radio' name='send_starred_notification' id='send_starred_notification' checked='checked' value='Y' />Yes <input type='radio' name='send_starred_notification' id='send_starred_notification' value='N' />No</td>
+	</tr>
+	<tr class='misc2'><td></td><td><input type='submit' /></td></tr>
+	</tbody>
+</table>
+</form>
+</div>
+[% END %]
+
+    </div>
+</div>
