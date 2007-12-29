@@ -17,6 +17,7 @@ sub work {
     my ($object_type, $object_id, $from_id) = @$args;
 
     my $schema = schema();
+    my $config = config();
 
     # if it is a starred item and settings send_starred_notification is Y
     my $starred_rs = $schema->resultset('Star')->search( {
@@ -45,7 +46,7 @@ sub work {
                         rept    => $user,
                         from    => $from,
                         object  => $object,
-                        host    => 'http://www.foorumbbs.com/',
+                        host    => $config->{site}->{domain},
                     }
                 }
             );

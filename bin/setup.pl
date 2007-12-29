@@ -51,6 +51,13 @@ if ($@) {
     goto DBI;
 }
 
+print "Set your site domain which will be used in cron email.\n";
+print "Your site domain (http://www.foorumbbs.com/ by default): ";
+my $domain = <>;
+chomp($domain);
+$domain = 'http://www.foorumbbs.com/' unless ($domain);
+$domain .= '/';  $domain =~ s/\/+$/\//isg;
+
 my $yaml;
 if ( -e "$path/foorum_local.yml" ) {
     $yaml = LoadFile("$path/foorum_local.yml");
@@ -60,6 +67,7 @@ $yaml->{dsn}             = "dbi:mysql:database=foorum;host=$dns_host;port=3306";
 $yaml->{dsn_user}        = $dns_user;
 $yaml->{dsn_pwd}         = $dns_password;
 $yaml->{theschwartz_dsn} = "dbi:mysql:database=theschwartz;host=$dns_host;port=3306";
+$yaml->{site}->{domain}  = $domain;
 
 print "\n\nSaving ....\n";
 DumpFile( "$path/foorum_local.yml", $yaml );

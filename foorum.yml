@@ -99,6 +99,7 @@ logger:
 
 site:
   maintain: 0
+  domain: 'http://www.foorumbbs.com/'
 
 topic:
   most_deletion_per_day: 5
