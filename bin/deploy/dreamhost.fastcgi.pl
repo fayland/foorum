@@ -7,10 +7,11 @@
 # perl dispatch.cgi -l ~/foorum.sock
 #######################################
 
-BEGIN { $ENV{CATALYST_ENGINE} = 'FastCGI' }
-
 use strict;
 use warnings;
+
+BEGIN { $ENV{CATALYST_ENGINE} = 'FastCGI' }
+
 use Getopt::Long;
 use lib '/home/username/foorumbbs.com/Foorum/lib'; # your Foorum dir
 use lib '/home/username/perl5/lib/perl5';          # your Perl module dir

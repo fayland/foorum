@@ -2,6 +2,7 @@ bin\cron\chart.pl source OK
 bin\cron\TheSchwartz_client.pl source OK
 bin\cron\TheSchwartz_worker.pl source OK
 bin\db\make_schema.pl source OK
+bin\deploy\dreamhost.fastcgi.pl source OK
 bin\foorum_server.pl source OK
 bin\misc\bdfgw.pl source OK
 bin\misc\g2b.pl source OK
@@ -39,9 +40,11 @@ lib\Foorum\Controller\Profile.pm source OK
 lib\Foorum\Controller\Register.pm source OK
 lib\Foorum\Controller\Root.pm source OK
 lib\Foorum\Controller\Search.pm source OK
+lib\Foorum\Controller\Settings.pm source OK
 lib\Foorum\Controller\Site\Popular.pm source OK
 lib\Foorum\Controller\Site.pm source OK
 lib\Foorum\Controller\StaticInfo.pm source OK
+lib\Foorum\Controller\Test.pm source OK
 lib\Foorum\Controller\Topic.pm source OK
 lib\Foorum\Controller\TopicAction.pm source OK
 lib\Foorum\Controller\U.pm source OK
@@ -77,6 +80,7 @@ lib\Foorum\TheSchwartz\Worker\Hit.pm source OK
 lib\Foorum\TheSchwartz\Worker\RemoveOldDataFromDB.pm source OK
 lib\Foorum\TheSchwartz\Worker\ResizeProfilePhoto.pm source OK
 lib\Foorum\TheSchwartz\Worker\SendScheduledEmail.pm source OK
+lib\Foorum\TheSchwartz\Worker\SendStarredNofication.pm source OK
 lib\Foorum\Utils.pm source OK
 lib\Foorum\View\JSON.pm source OK
 lib\Foorum\View\TT.pm source OK
