@@ -13,9 +13,9 @@
 [% FOREACH comment IN comments %]
 <item>
 <title><![CDATA[[% comment.title %]]]></title>
-<link>[% url_prefix _ '/#' _ comment.comment_id %]</link>
+<link>[% url_prefix _ '/#c' _ comment.comment_id %]</link>
 <description><![CDATA[[% comment.text %]]]></description>
-<guid isPermaLink="true">[% url_prefix _ '/#' _ comment.comment_id %]</guid>
+<guid isPermaLink="true">[% url_prefix _ '/#c' _ comment.comment_id %]</guid>
 <pubDate>[% comment.post_on.replace('\s+', 'T') %]</pubDate>
 </item>
 [% END %]
