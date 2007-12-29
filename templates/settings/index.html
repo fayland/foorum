@@ -23,6 +23,10 @@
 	    <td width='50%' align='right'><label for='send_starred_notification'>Send Update Notification for <a href='/my/starred'><img src='[% c.config.dir.images %]/site/t/star_on.gif' align='absmiddle' /> [% c.loc("My Starred Items") %]</a>:</label></td>
 	    <td><input type='radio' name='send_starred_notification' id='send_starred_notification' checked='checked' value='Y' />Yes <input type='radio' name='send_starred_notification' id='send_starred_notification' value='N' />No</td>
 	</tr>
+	<tr class='misc2'>
+	    <td align='right'><label for='show_email_public'>Show My Email in <a href='/u/[% c.user.username %]'>My Profile Page</a>:</label></td>
+	    <td><input type='radio' name='show_email_public' id='show_email_public' checked='checked' value='Y' />Yes <input type='radio' name='show_email_public' id='show_email_public' value='N' />No</td>
+	</tr>
 	<tr class='misc2'><td></td><td><input type='submit' /></td></tr>
 	</tbody>
 </table>

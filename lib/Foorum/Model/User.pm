@@ -177,6 +177,7 @@ sub get_user_settings {
     # if not stored in db, we use default value;
     my $default = {
         'send_starred_notification' => 'Y',
+        'show_email_public'         => 'Y',
     };
     my $ret = { %$default, %$cacheval }; # merge
     return $ret;

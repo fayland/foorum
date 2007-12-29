@@ -59,6 +59,9 @@ sub user_profile : LocalRegex('^(\w+)$') {
         }
     );
 
+    # get user settings
+    $user->{settings} = $c->model('User')->get_user_settings($c, $user);
+
     $c->stash->{whos_view_this_page} = 1;
     $c->stash->{template}            = 'u/profile.html';
 }

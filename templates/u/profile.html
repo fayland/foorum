@@ -33,11 +33,16 @@
 	<tr class='misc1'><td align='right'>[% c.loc('Country/Territory') %]</td><td>[% user.country | code2country(lang) %]</td></tr>
 	[% END %]
 
+    [% has_contact_info = user.details.qq OR user.details.msn OR user.details.gtalk OR user.details.skype OR user.details.yahoo %]
+
+  [% IF has_contact_info OR NOT user.settings.show_email_public == 'N' %]
 	<tr class='title'><td colspan='2'>[% c.loc('Contact Information') %]</td></tr>
+	[% UNLESS user.settings.show_email_public == 'N' %]
 	<tr class='misc1'><td align='right'>[% c.loc("Email") %]</td><td>
 	    <img src='[% c.config.dir.images %]/myprofile/mail.png' width='20' height='20' align='absmiddle' /> [% user.email | email_obfuscate %] <a href='/help/email'><img src='[% c.config.dir.images %]/site/help.gif' width='16' height='16' align='absmiddle' /></a>
-	</td></tr>	
-	[% IF user.details.qq OR user.details.msn OR user.details.gtalk OR user.details.skype OR user.details.yahoo %]
+	</td></tr>
+	[% END %]
+	[% IF has_contact_info %]
 	[% IF user.details.qq %]
 	<tr class='misc2'><td align='right'>QQ:</td><td>
 	    <a target='_blank' href='tencent://message/?uin=[% user.details.qq %]&Site=Foorum&Menu=yes'><img border="0" src="http://wpa.qq.com/pa?p=1:[% user.details.qq %]:4" align='absmiddle' /> [% user.details.qq %]</a>
@@ -63,8 +68,8 @@
 	    <img src='[% c.config.dir.images %]/myprofile/skype.png' width='20' height='20' align='absmiddle' /> [% user.details.skype %]
 	</td></tr>
 	[% END %]
-	[% END %]
-	
+	[% END %][%# has_contact_info %]
+  [% END %][%# has_contact_info OR NOT user.settings.show_email_public == 'N' %]
 	</tbody>
 </table>
 </div>

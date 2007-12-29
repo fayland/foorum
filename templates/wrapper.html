@@ -28,6 +28,9 @@
     [% END %]
 </title>
 <link rel="shortcut icon" href="[% c.config.dir.static %]/favicon.ico" type="image/x-icon" />
+[% IF RSS_URL %]
+<link rel="alternate" type="application/rss+xml" title="[% title %]" href="[% RSS_URL %]" />
+[% END %]
 </head>
 <body>
 
@@ -79,6 +82,7 @@
     [% END %]
     [% IF c.user_exists %]
     <br />
+    <a href='/u/[% c.user.username %]'>[% c.loc('My Profile Page') %]</a> | 
     <a href='/u/[% c.user.username %]/topics'>[% c.loc('My Recent Topics') %]</a> | 
     <a href='/my/starred'><img src='[% c.config.dir.images %]/site/t/star_on.gif' align='absmiddle' /> [% c.loc("My Starred Items") %]</a> | 
     <a href='/u/[% c.user.username %]/shared'><img src='[% c.config.dir.images %]/site/t/unshare.gif' align='absmiddle' /> [% c.loc("My Shared Items") %]</a>
@@ -111,7 +115,6 @@
     &copy; [% date.format(date.now, format =>'%Y') %] [% c.config.name %]. Powered by <a href='/info/powered_by'>Foorum [% c.config.VERSION %]</a>.
     [% IF RSS_URL %]
     <a href='[% RSS_URL %]'><img src='[% c.config.dir.images %]/site/feed-icon-16x16.gif' width='16' height='16' align='absmiddle' /></a> 
-    <link rel="alternate" type="application/rss+xml" title="[% title %]" href="[% RSS_URL %]" />
     [% END %]
     </p>
 </div>
