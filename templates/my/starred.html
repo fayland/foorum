@@ -18,7 +18,7 @@
 [% FOREACH item IN starred_items %]
 <tr align='center' class='misc[% IF loop.count mod 2 %]1[% ELSE %]2[% END %]'>
 
-<td><a href="javascript:star('[% item.object_type %]', '[% item.object_id %]', 'starDiv')"><span id='starDiv'><img src='[% c.config.dir.images %]/site/t/star_on.gif' /></span></a></td>
+<td><a href="javascript:star('[% item.object_type %]', '[% item.object_id %]', 'starDiv_[% item.object_type %]_[% item.object_id %]')"><span id='starDiv_[% item.object_type %]_[% item.object_id %]'><img src='[% c.config.dir.images %]/site/t/star_on.gif' /></span></a></td>
 
 [% INCLUDE include/object_tds.html object = item %]
 
