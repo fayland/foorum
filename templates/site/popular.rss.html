@@ -12,7 +12,7 @@
 
 [% FOREACH obj IN objects %]
 <item>
-<title>[% obj.title %]</title>
+<title><![CDATA[[% obj.title %]]]></title>
 <link>[% base _ obj.url %]</link>
 <description><![CDATA[
 [% obj.text %]

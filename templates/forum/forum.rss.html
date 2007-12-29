@@ -11,11 +11,9 @@
 <generator>Foorum RSS Generator</generator>
 [% FOREACH t IN topics %]
 <item>
-<title>[% t.title %]</title>
+<title><![CDATA[[% t.title %]]]></title>
 <link>[% forum.forum_url _ '/' _ t.topic_id %]</link>
-<description><![CDATA[
-[% t.text %]
-]]></description>
+<description><![CDATA[[% t.text %]]]></description>
 <guid isPermaLink="true">[% forum.forum_url _ '/' _ t.topic_id %]</guid>
 <pubDate>[% t.last_update_date.replace('\s+', 'T') %]</pubDate>
 </item>
