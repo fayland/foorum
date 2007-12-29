@@ -8,7 +8,9 @@ use Data::Dumper;
 sub fill_user_role {
     my ( $self, $c, $field ) = @_;
 
-    my $roles = $c->user->{roles};
+    # XXX? Catalyst::Authentication::User::Hash has problems, no HOH
+    my $user  = $c->model('User')->get($c, { user_id => $c->user->{user_id} } );
+    my $roles = $user->{roles};
     $field ||= 'site';
 
     if ( $roles->{$field}->{user} ) {
