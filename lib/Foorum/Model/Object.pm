@@ -73,7 +73,7 @@ sub get_object_by_type_id {
         }
         case 'poll' {
             my $object = $c->model('DBIC::Poll')->find( { poll_id => $object_id, } );
-            return unless ($object_id);
+            return unless ($object);
             return {
                 object_type => 'poll',
                 object_id   => $object_id,
