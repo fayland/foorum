@@ -68,7 +68,6 @@ sub get_user {
     my $cache_val = $cache->get($cache_key);
     
     if ($cache_val) {
-        print STDERR "get $user_id from cache\n";
         return $cache_val;
     }
     
