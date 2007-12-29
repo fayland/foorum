@@ -8,6 +8,7 @@ This file documents the revision history for Foorum.
     - use Config::YAML instead of ConfigLoader because Config::YAML is simpler and faster
     - new table 'user_settings' & /settings for 'SendUpdateNotification for MyStarredItems' (r208)
     - new settings 'show_email_public': can hide email from public (r215)
+    - RSS title bug fix.
 
 0.1.0 Fri Dec 24 20:56:00 2007
     - move trunk to http://foorum.googlecode.com/svn/trunk/
