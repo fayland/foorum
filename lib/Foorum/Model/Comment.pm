@@ -19,7 +19,11 @@ sub get_comments_by_object {
 
     my @comments = $self->get_all_comments_by_object($c, $object_type, $object_id);
 
-    my $rows = $c->config->{per_page}->{topic} || 10;
+    if ($object_type eq 'user_profile') {
+        @comments = reverse(@comments);
+    }
+
+    my $rows  = $info->{rows} || $c->config->{per_page}->{topic} || 10;
     my $pager = Data::Page->new();
     $pager->current_page($page);
     $pager->entries_per_page($rows);
