@@ -71,6 +71,7 @@ sub compose : Local {
             user_id    => $rept->{user_id},
         }
     );
+    $c->cache->delete('global|message_unread_cnt|user_id=' . $rept->{user_id});
 
     # Send Notification Email
     $c->model('Email')->create(
@@ -160,6 +161,7 @@ sub message : LocalRegex('^(\d+)$') {
             user_id    => $c->user->user_id,
         }
     )->delete;
+    $c->cache->delete('global|message_unread_cnt|user_id=' . $c->user->{user_id});
 
     $c->stash->{template} = 'message/message.html';
 }
@@ -184,6 +186,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             user_id    => $c->user->user_id,
         }
     )->delete;
+    $c->cache->delete('global|message_unread_cnt|user_id=' . $c->user->{user_id});
 
     # both inbox and outbox.
     # we set 'from_status' as 'deleted' when from_id delete it

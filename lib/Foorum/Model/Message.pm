@@ -29,6 +29,22 @@ sub are_messages_unread {
     return $unread;
 }
 
+sub get_unread_cnt {
+    my ( $self, $c, $user_id ) = @_;
+    
+    my $cachekey = "global|message_unread_cnt|user_id=$user_id";
+    my $cacheval = $c->cache->get($cachekey);
+    
+    if ($cacheval) {
+        return $cacheval->{val};
+    } else {
+        my $cnt = $c->model('DBIC::MessageUnread')->count( { user_id => $user_id } );
+        $c->cache->set($cachekey, { val => $cnt, 1 => 2 }, 1800); # half an hour
+        
+        return $cnt;
+    }
+}
+
 1;
 
 __END__

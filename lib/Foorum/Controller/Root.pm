@@ -110,8 +110,7 @@ sub end : ActionClass('PathLogger') {
     if (    not $c->stash->{no_wrapper}
         and $c->user_exists
         and $c->req->path !~ /^message(\/|$)/ ) {
-        $c->stash->{message_unread} = $c->model('DBIC::MessageUnread')
-            ->count( { user_id => $c->user->user_id, } );
+        $c->stash->{message_unread} = $c->model('Message')->get_unread_cnt($c, $c->user->{user_id});
     }
     $c->forward( $c->view('TT') );
 
