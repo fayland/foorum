@@ -306,6 +306,99 @@ sub join_us : Private {
     }
 }
 
+
+sub create : Local {
+    my ( $self, $c ) = @_;
+    
+    return $c->res->redirect('/login') unless ($c->user_exists);
+
+    my $is_admin = $c->model('Policy')->is_admin( $c, 'site' );
+    $c->stash( { template => 'forum/create.html' } );
+
+    return unless ( $c->req->method eq 'POST' );
+
+    $c->form(
+        name => [ qw/NOT_BLANK/, [qw/LENGTH 1 40/] ],
+        description  => [qw/NOT_BLANK/, [qw/LENGTH 1 200/] ],
+    );
+    return if ( $c->form->has_error );
+
+    # check forum_code
+    my $forum_code = $c->req->param('forum_code');
+    my $err = $c->model('Validation')->validate_forum_code( $c, $forum_code );
+    if ($err) {
+        $c->set_invalid_form( forum_code => $err );
+        return;
+    }
+
+    my $name        = $c->req->param('name');
+    my $description = $c->req->param('description');
+    my $moderators  = $c->req->param('moderators');
+    my $private     = $c->req->param('private');
+
+    # validate the admin for roles.site.admin
+    my $admin_user;
+    if ($is_admin) {
+        my $admin       = $c->req->param('admin');
+        $admin_user = $c->model('User')->get( $c, { username => $admin } );
+        unless ($admin_user) {
+            return $c->set_invalid_form( admin => 'ADMIN_NONEXISTENCE' );
+        }
+    } else {
+        $admin_user = $c->user;
+    }
+    
+    # validate the moderators
+    my $total_members = 1;
+    my @moderators = split( /\s*\,\s*/, $moderators );
+    my @moderator_users;
+    foreach (@moderators) {
+        next if ( $_ eq $admin_user->{username} );    # avoid the same man
+        last
+            if ( scalar @moderator_users > 2 );    # only allow 3 moderators at most
+        my $moderator_user = $c->model('User')->get( $c, { username => $_ } );
+        unless ($moderator_user) {
+            $c->stash->{non_existence_user} = $_;
+            return $c->set_invalid_form( moderators => 'ADMIN_NONEXISTENCE' );
+        }
+        $total_members++;
+        push @moderator_users, $moderator_user;
+    }
+
+    # insert data into table.
+    my $policy = ( $private == 1 ) ? 'private' : 'public';
+    my $forum = $c->model('DBIC::Forum')->create(
+        {   name          => $name,
+            forum_code    => $forum_code,
+            description   => $description,
+            forum_type    => 'classical',
+            policy        => $policy,
+            total_members => $total_members,
+        }
+    );
+    $c->model('Policy')->create_user_role(
+        $c,
+        {   user_id => $admin_user->{user_id},
+            role    => 'admin',
+            field   => $forum->forum_id,
+        }
+    );
+    foreach (@moderator_users) {
+        $c->model('Policy')->create_user_role(
+            $c,
+            {   user_id => $_->{user_id},
+                role    => 'moderator',
+                field   => $forum->forum_id,
+            }
+        );
+    }
+
+    $c->res->redirect("/forum/$forum_code");
+}
+
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -313,5 +406,3 @@ sub join_us : Private {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

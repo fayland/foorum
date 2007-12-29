@@ -30,6 +30,8 @@ $(function() {
     
    $(".date").each(function (i) {
         var s = $(this).text();
+        if (! s) { return false; }
+        
         var f = this.id; //format
         if (! f) {
             f = 'yyyy-mm-dd hh:ii:ss';
