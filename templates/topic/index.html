@@ -1,6 +1,7 @@
 [% title = topic.title _ ' : ' _ forum.name %]
 
 [% url_prefix = forum.forum_url _ '/' _ topic.topic_id %]
+[% RSS_URL = url_prefix _ '/rss' %]
 
 [% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
 

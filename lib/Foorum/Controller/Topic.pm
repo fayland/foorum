@@ -13,6 +13,7 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
     my $topic_id   = $c->req->snippets->[1];
     my $page       = get_page_from_url( $c->req->path );
     $page = 1 unless ( $page and $page =~ /^\d+$/ );
+    my $rss      = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;     # /forum/ForumName/1/rss
 
     # get the forum information
     my $forum = $c->controller('Get')->forum( $c, $forum_code );
@@ -21,37 +22,45 @@ sub topic : Regex('^forum/(\w+)/(\d+)$') {
     # get the topic
     my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
 
-    $topic->{hit} = $c->model('Hit')->register( $c, 'topic', $topic_id, $topic->{hit} );
+    if ($rss) {
+        my @comments = $c->model('Comment')->get_all_comments_by_object($c, 'topic', $topic_id);
+        # get last 20 items
+        @comments = reverse(@comments);
+        @comments = splice(@comments, 0, 20);
 
-    if ( $c->user_exists ) {
+        $c->stash( {
+            comments => \@comments,
+            template => 'topic/topic.rss.html'
+        } );
+    } else {
+        $topic->{hit} = $c->model('Hit')->register( $c, 'topic', $topic_id, $topic->{hit} );
+        if ( $c->user_exists ) {
+            my $query = {
+                user_id     => $c->user->user_id,
+                object_type => 'topic',
+                object_id   => $topic_id,
+            };
 
-        my $query = {
-            user_id     => $c->user->user_id,
-            object_type => 'topic',
-            object_id   => $topic_id,
-        };
-
-        # 'star' status
-        $c->stash->{is_starred} = $c->model('DBIC::Star')->count($query);
-
-        # 'share' status
-        $c->stash->{is_shared} = $c->model('DBIC')->resultset('Share')->count($query);
-
-        # 'visit'
-        $c->model('Visit')->make_visited( $c, 'topic', $topic_id );
-    }
-
-    # get comments
-    $c->model('Comment')->get_comments_by_object(
-        $c,
-        {   object_type => 'topic',
-            object_id   => $topic_id,
-            page        => $page,
+            # 'star' status
+            $c->stash->{is_starred} = $c->model('DBIC::Star')->count($query);
+    
+            # 'share' status
+            $c->stash->{is_shared} = $c->model('DBIC')->resultset('Share')->count($query);
+    
+            # 'visit'
+            $c->model('Visit')->make_visited( $c, 'topic', $topic_id );
         }
-    );
-
-    $c->stash->{whos_view_this_page} = 1;
-    $c->stash->{template}            = 'topic/index.html';
+        # get comments
+        $c->model('Comment')->get_comments_by_object(
+            $c,
+            {   object_type => 'topic',
+                object_id   => $topic_id,
+                page        => $page,
+            }
+        );
+        $c->stash->{whos_view_this_page} = 1;
+        $c->stash->{template}            = 'topic/index.html';
+    }
 }
 
 sub create : Regex('^forum/(\w+)/topic/new$') {

@@ -17,12 +17,31 @@ sub get_comments_by_object {
     my $object_id   = $info->{object_id};
     my $page        = $info->{page} || get_page_from_url( $c->req->path );
 
+    my @comments = $self->get_all_comments_by_object($c, $object_type, $object_id);
+
+    my $rows = $c->config->{per_page}->{topic} || 10;
+    my $pager = Data::Page->new();
+    $pager->current_page($page);
+    $pager->entries_per_page($rows);
+    $pager->total_entries( scalar @comments );
+
+    @comments = splice( @comments, ( $page - 1 ) * $rows, $rows );
+
+    @comments = $self->prepare_comments_for_view($c, @comments);
+
+    $c->stash->{comments}       = \@comments;
+    $c->stash->{comments_pager} = $pager;
+}
+
+sub get_all_comments_by_object {
+    my ( $self, $c, $object_type, $object_id ) = @_;
+    
     my $cache_key   = "comment|object_type=$object_type|object_id=$object_id";
     my $cache_value = $c->cache->get($cache_key);
-
+    
     my @comments;
     if ($cache_value) {
-        $c->log->debug('Cache: get comments');
+        $c->log->debug("Cache: get comments $cache_key");
         @comments = @{ $cache_value->{comments} };
     } else {
         my $it = $c->model('DBIC')->resultset('Comment')->search(
@@ -50,17 +69,16 @@ sub get_comments_by_object {
         }
         $cache_value = { comments => \@comments };
         $c->cache->set( $cache_key, $cache_value, 3600 );    # 1 hour
-        $c->log->debug('Cache: set comments');
+        $c->log->debug("Cache: set comments $cache_key");
     }
+    
+    return wantarray ? @comments : \@comments;
+}
 
-    my $rows = $c->config->{per_page}->{topic} || 10;
-    my $pager = Data::Page->new();
-    $pager->current_page($page);
-    $pager->entries_per_page($rows);
-    $pager->total_entries( scalar @comments );
-
-    @comments = splice( @comments, ( $page - 1 ) * $rows, $rows );
-
+# add author and others
+sub prepare_comments_for_view {
+    my ($self, $c, @comments) = @_;
+    
     my @all_user_ids;
     foreach (@comments) {
         push @all_user_ids, $_->{author_id};
@@ -73,8 +91,7 @@ sub get_comments_by_object {
         }
     }
 
-    $c->stash->{comments}       = \@comments;
-    $c->stash->{comments_pager} = $pager;
+    return wantarray ? @comments : \@comments;
 }
 
 sub get {

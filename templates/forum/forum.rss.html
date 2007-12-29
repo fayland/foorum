@@ -3,9 +3,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-<title>[% forum.name %]</title>
+<title><![CDATA[[% forum.name %]]]></title>
 <link>[% forum.forum_url %]</link>
-<description>[% forum.description %]</description>
+<description><![CDATA[[% forum.description %]]]></description>
 <pubDate>[% date.format(date.now, '%Y-%m-%dT%H:%M:%S+00:00') %]</pubDate>
 <lastBuildDate>[% date.format(date.now, '%Y-%m-%dT%H:%M:%S+00:00') %]</lastBuildDate>
 <generator>Foorum RSS Generator</generator>
