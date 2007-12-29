@@ -37,6 +37,7 @@ sub work {
         foreach my $user_id (@user_ids) {
             my $user = get_user($schema, $cache, $user_id);
             next unless ($user);
+            next if ($user->{user_id} == $from->{user_id}); # skip himself
             # Send Notification Email
             send_mail( $schema, $tt2, $base_path,
                 {   template => 'starred_notification',
