@@ -49,6 +49,7 @@
 </div>
 
 [% FOREACH comment IN comments %]
+<a href="c[% comment.comment_id %]"></a>
 <div class='multi'>
 <table align='center'>
 <tr class='reply[% IF loop.count mod 2;'2';ELSE;'1';END; %]'>
