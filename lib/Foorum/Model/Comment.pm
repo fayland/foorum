@@ -22,15 +22,15 @@ sub get_comments_by_object {
     if ( $object_type eq 'user_profile' ) {
         @comments = reverse(@comments);
     }
-    
+
     # when url contains /comment_id=$comment_id/
     # we need show that page including $comment_id
-    if (scalar @comments > $rows and $c->req->path =~ /\/comment_id=(\d+)(\/|$)/) {
+    if ( scalar @comments > $rows and $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ ) {
         my $comment_id = $1;
         my $first_index = first_index { $_->{comment_id} == $comment_id } @comments;
         $page = int( $first_index / $rows ) + 1 if ($first_index);
     }
-    
+
     my $pager = Data::Page->new();
     $pager->current_page($page);
     $pager->entries_per_page($rows);

@@ -305,11 +305,10 @@ sub join_us : Private {
     }
 }
 
-
 sub create : Local {
     my ( $self, $c ) = @_;
-    
-    return $c->res->redirect('/login') unless ($c->user_exists);
+
+    return $c->res->redirect('/login') unless ( $c->user_exists );
 
     my $is_admin = $c->model('Policy')->is_admin( $c, 'site' );
     $c->stash( { template => 'forum/create.html' } );
@@ -317,8 +316,8 @@ sub create : Local {
     return unless ( $c->req->method eq 'POST' );
 
     $c->form(
-        name => [ qw/NOT_BLANK/, [qw/LENGTH 1 40/] ],
-        description  => [qw/NOT_BLANK/, [qw/LENGTH 1 200/] ],
+        name        => [ qw/NOT_BLANK/, [qw/LENGTH 1 40/] ],
+        description => [ qw/NOT_BLANK/, [qw/LENGTH 1 200/] ],
     );
     return if ( $c->form->has_error );
 
@@ -338,7 +337,7 @@ sub create : Local {
     # validate the admin for roles.site.admin
     my $admin_user;
     if ($is_admin) {
-        my $admin       = $c->req->param('admin');
+        my $admin = $c->req->param('admin');
         $admin_user = $c->model('User')->get( $c, { username => $admin } );
         unless ($admin_user) {
             return $c->set_invalid_form( admin => 'ADMIN_NONEXISTENCE' );
@@ -346,7 +345,7 @@ sub create : Local {
     } else {
         $admin_user = $c->user;
     }
-    
+
     # validate the moderators
     my $total_members = 1;
     my @moderators = split( /\s*\,\s*/, $moderators );
@@ -354,7 +353,7 @@ sub create : Local {
     foreach (@moderators) {
         next if ( $_ eq $admin_user->{username} );    # avoid the same man
         last
-            if ( scalar @moderator_users > 2 );    # only allow 3 moderators at most
+            if ( scalar @moderator_users > 2 );       # only allow 3 moderators at most
         my $moderator_user = $c->model('User')->get( $c, { username => $_ } );
         unless ($moderator_user) {
             $c->stash->{non_existence_user} = $_;

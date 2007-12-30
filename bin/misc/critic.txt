@@ -10,6 +10,7 @@ bin\misc\graph.pl source OK
 bin\misc\js-min.pl source OK
 bin\misc\perlcritic.pl source OK
 bin\misc\perltidy.pl source OK
+bin\misc\pod2html.pl source OK
 bin\setup.pl source OK
 bin\testfunction\cache.pl source OK
 bin\testfunction\config.pl source OK
@@ -17,11 +18,11 @@ bin\testfunction\db.pl source OK
 bin\testfunction\mail.pl source OK
 bin\testfunction\theschwartz.pl source OK
 lib\Catalyst\Action\PathLogger.pm source OK
-lib\Catalyst\Plugin\FoorumUtils.pm source OK
 lib\Catalyst\Plugin\Session\Store\DBIC.pm source OK
 lib\Foorum\Controller\Admin\BanIP.pm source OK
 lib\Foorum\Controller\Admin\Forum.pm source OK
 lib\Foorum\Controller\Admin\Log.pm source OK
+lib\Foorum\Controller\Admin\Settings.pm source OK
 lib\Foorum\Controller\Admin\Tools.pm source OK
 lib\Foorum\Controller\Admin\User.pm source OK
 lib\Foorum\Controller\Admin.pm source OK
@@ -35,7 +36,6 @@ lib\Foorum\Controller\Logon.pm source OK
 lib\Foorum\Controller\Message.pm source OK
 lib\Foorum\Controller\My.pm source OK
 lib\Foorum\Controller\Poll.pm source OK
-lib\Foorum\Controller\Post.pm source OK
 lib\Foorum\Controller\Profile.pm source OK
 lib\Foorum\Controller\Register.pm source OK
 lib\Foorum\Controller\Root.pm source OK
@@ -72,6 +72,7 @@ lib\Foorum\Model\User.pm source OK
 lib\Foorum\Model\UserAuth.pm source OK
 lib\Foorum\Model\Validation.pm source OK
 lib\Foorum\Model\Visit.pm source OK
+lib\Foorum\Plugin\FoorumUtils.pm source OK
 lib\Foorum\ResultSet\Share.pm source OK
 lib\Foorum\ResultSet\Star.pm source OK
 lib\Foorum\TheSchwartz\Worker\DailyChart.pm source OK

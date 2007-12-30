@@ -35,13 +35,13 @@ sub auto : Private {
     $c->languages( [ $c->stash->{lang} ] );
 
     my $path = $c->req->path;
-    
+
     # global settings
     $c->stash->{is_rss_template} = ( $path =~ /\/rss(\/|$)/ ) ? 1 : 0;
 
     # for maintain, but admin can login and do something
     if ( $c->config->{function_on}->{maintain} and $path !~ /^(admin|login)\// ) {
-        $c->stash->{template} = 'lang/' . $c->stash->{lang} . '/site/maintain.html';
+        $c->stash->{template}       = 'lang/' . $c->stash->{lang} . '/site/maintain.html';
         $c->stash->{simple_wrapper} = 1;
         return 0;
     }
@@ -95,7 +95,7 @@ sub end : ActionClass('PathLogger') {
 
         #$c->res->content_type('application/rss+xml');
         $c->res->content_type('text/xml');
-        
+
         # if it's not a RSS template, go error
         if ( $c->stash->{template} !~ /rss/ ) {
             $c->stash->{error}->{msg} = 'Service is not available now.';
@@ -117,7 +117,8 @@ sub end : ActionClass('PathLogger') {
     if (    not $c->stash->{no_wrapper}
         and $c->user_exists
         and $c->req->path !~ /^message(\/|$)/ ) {
-        $c->stash->{message_unread} = $c->model('Message')->get_unread_cnt($c, $c->user->{user_id});
+        $c->stash->{message_unread}
+            = $c->model('Message')->get_unread_cnt( $c, $c->user->{user_id} );
     }
     $c->forward( $c->view('TT') );
 

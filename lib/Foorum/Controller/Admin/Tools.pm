@@ -19,14 +19,14 @@ sub auto : Private {
 sub flush_cache : Local {
     my ( $self, $c ) = @_;
 
-    my $cache = $c->default_cache_backend; # get backend
-    
+    my $cache = $c->default_cache_backend;    # get backend
+
     my $result = 'Not available';
-    if ($cache->can('flush_all')) { # for Cache::Memcached
+    if ( $cache->can('flush_all') ) {         # for Cache::Memcached
         $result = $cache->flush_all;
-    } elsif ($cache->can('Clear')) { # for Cache::Cache, regardless namespace
+    } elsif ( $cache->can('Clear') ) {        # for Cache::Cache, regardless namespace
         $result = $cache->Clear();
-    } elsif ($cache->can('clear')) { # for Cache::Cache, this namespace
+    } elsif ( $cache->can('clear') ) {        # for Cache::Cache, this namespace
         $result = $cache->clear();
     }
 
@@ -40,10 +40,10 @@ sub flush_cache : Local {
 sub cache_stat : Local {
     my ( $self, $c ) = @_;
 
-    my $cache = $c->default_cache_backend; # get backend
+    my $cache = $c->default_cache_backend;    # get backend
 
     my $result = 'Not available';
-    if ($cache->can('stats')) { # for Cache::Memcached
+    if ( $cache->can('stats') ) {             # for Cache::Memcached
         $result = $cache->stats;
     }
 

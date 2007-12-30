@@ -123,7 +123,6 @@ sub datetime_to_tt2_acceptable {
     return $ret;
 }
 
-
 1;
 __END__
 

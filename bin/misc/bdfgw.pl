@@ -14,9 +14,11 @@ my $trunk_dir   = abs_path("$Bin/../../../trunk");
 my $wiki_dir    = abs_path("$Bin/../../../wiki");
 my $project_url = 'http://code.google.com/p/foorum';
 
-my %tags = %Text::GooglewikiFormat::tags;
-my @filenames
-    = ( 'README', 'INSTALL', 'Configure', 'I18N', 'TroubleShooting', 'AUTHORS', 'RULES', 'HowRSS' );
+my %tags      = %Text::GooglewikiFormat::tags;
+my @filenames = (
+    'README',          'INSTALL', 'Configure', 'I18N',
+    'TroubleShooting', 'AUTHORS', 'RULES',     'HowRSS'
+);
 
 # replace link sub
 my $linksub = sub {
@@ -54,7 +56,7 @@ foreach my $filename (@filenames) {
         $string =~ s/>/&gt;/gs;
         $string =~ s/</&lt;/gs;
         my $html = Text::GooglewikiFormat::format( $string, \%tags );
-        buildhtml($filename, $html);
+        buildhtml( $filename, $html );
 
         $indexpage .= qq~<li><a href="$filename\.html">$filename</a></li>~;
 
@@ -63,14 +65,14 @@ foreach my $filename (@filenames) {
     }
 }
 
-buildhtml('index', qq~<ul>$indexpage</ul>~);
+buildhtml( 'index', qq~<ul>$indexpage</ul>~ );
 
 sub buildhtml {
-    my ($filename, $html) = @_;
-    
+    my ( $filename, $html ) = @_;
+
     my $wiki_url = "$project_url/wiki/$filename";
-    $wiki_url = 'http://code.google.com/p/foorum/w/list' if ($filename eq 'index');
-    
+    $wiki_url = 'http://code.google.com/p/foorum/w/list' if ( $filename eq 'index' );
+
     $html = <<HTML;
 <html>
 <head>

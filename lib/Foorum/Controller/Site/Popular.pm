@@ -17,8 +17,9 @@ sub default : Private {
     }
     $c->stash->{type} = $type;
 
-    my $page   = get_page_from_url( $c->req->path );
-    my $rows   = ($rss) ? 10 : 20;
+    my $page = get_page_from_url( $c->req->path );
+    my $rows = ($rss) ? 10 : 20;
+
     # XXX? protect private forum
     my $hit_rs = $c->model('DBIC')->resultset('Hit')->search(
         undef,
