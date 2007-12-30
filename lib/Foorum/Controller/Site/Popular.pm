@@ -19,6 +19,7 @@ sub default : Private {
 
     my $page   = get_page_from_url( $c->req->path );
     my $rows   = ($rss) ? 10 : 20;
+    # XXX? protect private forum
     my $hit_rs = $c->model('DBIC')->resultset('Hit')->search(
         undef,
         {   rows     => $rows,
@@ -79,6 +80,9 @@ sub default : Private {
     }
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -86,5 +90,3 @@ sub default : Private {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

@@ -19,6 +19,7 @@ sub work {
     register_stat( $schema, 'Forum' );
     register_stat( $schema, 'Topic' );
     register_stat( $schema, 'Message' );
+    register_stat( $schema, 'Visit' );
 
     my $tt2 = tt2();
 
@@ -46,7 +47,7 @@ sub work {
     use File::Spec;
     my ( undef, $path ) = File::Spec->splitpath(__FILE__);
 
-    $tt2->process( 'stats/chart.html', $var,
+    $tt2->process( 'site/stats/chart.html', $var,
         "$path/../../../../root/static/stats/$filename.html" );
 
     $job->completed();

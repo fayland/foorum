@@ -51,6 +51,9 @@ sub starred : Local {
     );
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -58,5 +61,3 @@ sub starred : Local {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

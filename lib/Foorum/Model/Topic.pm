@@ -3,7 +3,6 @@ package Foorum::Model::Topic;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 
 sub get {
     my ( $self, $c, $topic_id, $attrs ) = @_;
@@ -113,6 +112,9 @@ sub remove {
     );
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -120,5 +122,3 @@ sub remove {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

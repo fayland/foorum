@@ -3,7 +3,6 @@ package Foorum::Model::ClearCachedPage;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 
 sub clear_when_topic_changes {
     my ( $self, $c, $forum ) = @_;
@@ -31,6 +30,9 @@ sub clear_when_topic_elite {
     $c->clear_cached_page('/site/recent/elite/rss');
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -38,5 +40,3 @@ sub clear_when_topic_elite {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

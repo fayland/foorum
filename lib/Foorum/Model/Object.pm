@@ -3,7 +3,6 @@ package Foorum::Model::Object;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 use Switch;
 
 sub get_object_from_url {
@@ -86,6 +85,9 @@ sub get_object_by_type_id {
     }
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -93,5 +95,3 @@ sub get_object_by_type_id {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

@@ -3,7 +3,6 @@ package Foorum::Model::FilterWord;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 
 sub get_data {
     my ( $self, $c, $type ) = @_;
@@ -69,6 +68,9 @@ sub convert_offensive_word {
     return $text;
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -76,5 +78,3 @@ sub convert_offensive_word {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

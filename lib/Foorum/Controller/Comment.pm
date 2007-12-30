@@ -3,7 +3,6 @@ package Foorum::Controller::Comment;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Data::Dumper;
 use Foorum::Utils qw/encodeHTML/;
 
 sub post : Local {
@@ -227,6 +226,9 @@ sub delete : LocalRegex('^(\d+)/delete$') {
     );
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -234,5 +236,3 @@ sub delete : LocalRegex('^(\d+)/delete$') {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

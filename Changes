@@ -1,6 +1,6 @@
 This file documents the revision history for Foorum.
 
-0.1.1
+0.1.1 Sun Dec 30 16:19:11 2007
     - use Perl::Critic to fix some errors, bin/misc/perlcritic.pl
     - use JavaScript::Minifier to minify js files, bin/misc/js-min.pl
     - bug fix for message permission check (r160)
@@ -8,8 +8,9 @@ This file documents the revision history for Foorum.
     - use Config::YAML instead of ConfigLoader because Config::YAML is simpler and faster
     - new table 'user_settings' & /settings for 'SendUpdateNotification for MyStarredItems' (r208)
     - new settings 'show_email_public': can hide email from public (r215)
-    - RSS title bug fix.
-    - Topic RSS
+    - Topic RSS && RSS title bug fix.
+    - What's New page
+    - Site Admin Settings: /admin/settings to change foorum_local.yml
 
 0.1.0 Fri Dec 24 20:56:00 2007
     - move trunk to http://foorum.googlecode.com/svn/trunk/

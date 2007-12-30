@@ -30,8 +30,7 @@ $(function() {
     
    $(".date").each(function (i) {
         var s = $(this).text();
-        if (! s) { return false; }
-        
+
         var f = this.id; //format
         if (! f) {
             f = 'yyyy-mm-dd hh:ii:ss';
@@ -54,19 +53,17 @@ $(function() {
         var timezoneOffset = -(new Date().getTimezoneOffset());
         d.setMinutes(d.getMinutes() + timezoneOffset);
         
-        if (isNaN(d.getFullYear())) {
-            return false;
-        }
-
-        var t = f
-            .split('yyyy').join(d.getFullYear())
-            .split('mm').join(_zeroPad(d.getMonth()+1))
-            .split('dd').join(_zeroPad(d.getDate()))
-            .split('hh').join(_zeroPad(d.getHours()))
-            .split('ii').join(_zeroPad(d.getMinutes()))
-            .split('ss').join(_zeroPad(d.getSeconds()))
-            ;
+        if (! isNaN(d.getFullYear())) {
+            var t = f
+                .split('yyyy').join(d.getFullYear())
+                .split('mm').join(_zeroPad(d.getMonth()+1))
+                .split('dd').join(_zeroPad(d.getDate()))
+                .split('hh').join(_zeroPad(d.getHours()))
+                .split('ii').join(_zeroPad(d.getMinutes()))
+                .split('ss').join(_zeroPad(d.getSeconds()))
+                ;
         
-        $(this).text(t);
+            $(this).text(t);
+        }
    } );
 } );

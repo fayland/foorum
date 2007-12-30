@@ -1,5 +1,6 @@
 conf/mail.yml
 foorum_local.yml
+lib/Foorum/Controller/Test.pm
 
 # Avoid version control files.
 \bRCS\b

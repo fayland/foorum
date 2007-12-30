@@ -3,7 +3,6 @@ package Foorum::Model::Message;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 
 sub remove_from_db {
     my ( $self, $c, $message_id ) = @_;
@@ -46,7 +45,6 @@ sub get_unread_cnt {
 }
 
 1;
-
 __END__
 
 =pod

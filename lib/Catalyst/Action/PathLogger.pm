@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use base 'Catalyst::Action';
 use Time::HiRes qw( gettimeofday tv_interval );
-use Data::Dumper;
 
 sub execute {
     my $self = shift;

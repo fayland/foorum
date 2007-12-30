@@ -43,6 +43,9 @@ sub __serve_static_info {
     }
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -50,5 +53,3 @@ sub __serve_static_info {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

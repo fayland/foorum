@@ -3,7 +3,6 @@ package Foorum::Controller::Ajax::Poll;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Data::Dumper;
 
 sub vote : Local {
     my ( $self, $c ) = @_;
@@ -66,6 +65,9 @@ sub end : Private {
 
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -73,5 +75,3 @@ sub end : Private {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

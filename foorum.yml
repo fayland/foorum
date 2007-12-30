@@ -97,16 +97,16 @@ logger:
   path: 1
   path_load_time_more_than: 2
 
-site:
+function_on:
   maintain: 0
+  register: 1
+  activation: 1
+
+site:
   domain: 'http://www.foorumbbs.com/'
 
-topic:
-  most_deletion_per_day: 5
-
-register:
-  closed: 0
-  activation: 1
+per_day:
+  most_deletion_topic: 5
 
 default_lang: en
 

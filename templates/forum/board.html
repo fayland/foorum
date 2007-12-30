@@ -43,8 +43,8 @@
 		</table>
 	</td>
 	<td class='forum1' width='80'>
-	    <a href='/u/[% roles.${f.forum_id}.admin.username %]'>[% roles.${f.forum_id}.admin.nickname %]</a>
-	    [% FOREACH moderator IN roles.${f.forum_id}.moderator %]
+	    <a href='/u/[% forum_roles.${f.forum_id}.admin.username %]'>[% forum_roles.${f.forum_id}.admin.nickname %]</a>
+	    [% FOREACH moderator IN forum_roles.${f.forum_id}.moderator %]
 	    <br /><a href='/u/[% moderator.username %]'>[% moderator.nickname %]</a>
 	    [% END %]
 	</td>

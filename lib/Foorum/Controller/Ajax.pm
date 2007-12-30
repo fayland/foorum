@@ -3,7 +3,6 @@ package Foorum::Controller::Ajax;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Data::Dumper;
 
 sub auto : Private {
     my ( $self, $c ) = @_;
@@ -80,6 +79,9 @@ sub share : Local {
     $c->res->body($ret);
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -88,4 +90,3 @@ Fayland Lam <fayland at gmail.com>
 
 =cut
 
-1;

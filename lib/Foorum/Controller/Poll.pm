@@ -132,6 +132,9 @@ sub view_polls : Regex('^forum/(\w+)/polls$') {
     );
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -139,5 +142,3 @@ sub view_polls : Regex('^forum/(\w+)/polls$') {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

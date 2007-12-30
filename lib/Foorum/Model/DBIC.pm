@@ -22,6 +22,9 @@ __PACKAGE__->config(
     ],
 );
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -29,5 +32,3 @@ __PACKAGE__->config(
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

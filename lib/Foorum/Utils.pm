@@ -123,6 +123,10 @@ sub datetime_to_tt2_acceptable {
     return $ret;
 }
 
+
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -130,5 +134,3 @@ sub datetime_to_tt2_acceptable {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

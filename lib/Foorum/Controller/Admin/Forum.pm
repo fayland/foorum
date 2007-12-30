@@ -3,7 +3,6 @@ package Foorum::Controller::Admin::Forum;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Data::Dumper;
 
 sub auto : Private {
     my ( $self, $c ) = @_;
@@ -53,6 +52,9 @@ sub merge_forums : Local {
     $c->stash->{message} = ($message) ? 'OK' : 'FAIL';
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -60,5 +62,3 @@ sub merge_forums : Local {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

@@ -6,7 +6,6 @@ use base 'Catalyst::Controller';
 
 #use File::Slurp;
 use Foorum::Utils qw/is_color encodeHTML/;
-use Data::Dumper;
 
 sub forum_for_admin : PathPart('forumadmin') Chained('/') CaptureArgs(1) {
     my ( $self, $c, $forum_code ) = @_;
@@ -343,6 +342,9 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
     $c->res->body('OK');
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -350,5 +352,3 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use base 'Catalyst::Model';
 use Email::Valid::Loose;
-use Data::Dumper;
 
 sub validate_username {
     my ( $self, $c, $username ) = @_;
@@ -81,6 +80,9 @@ sub validate_comment {
     }
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -88,5 +90,3 @@ sub validate_comment {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

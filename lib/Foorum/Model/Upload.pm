@@ -3,7 +3,6 @@ package Foorum::Model::Upload;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 use File::Remove qw(remove);
 use File::Path;
 use Foorum::Utils qw/generate_random_word/;
@@ -151,6 +150,9 @@ sub change_for_forum {
         ->update( { forum_id => $to_id, } );
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -158,5 +160,3 @@ sub change_for_forum {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

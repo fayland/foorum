@@ -22,6 +22,9 @@ sub auth {
     return $user;
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -29,5 +32,3 @@ sub auth {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

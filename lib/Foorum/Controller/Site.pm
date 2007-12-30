@@ -5,7 +5,6 @@ use warnings;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 use Foorum::Formatter qw/filter_format/;
-use Data::Dumper;
 
 sub recent : Local {
     my ( $slef, $c, $recent_type ) = @_;
@@ -120,6 +119,9 @@ sub members : Local {
     );
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -127,5 +129,3 @@ sub members : Local {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

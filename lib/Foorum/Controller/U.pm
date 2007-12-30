@@ -148,6 +148,9 @@ sub topics : LocalRegex('^(\w+)/topics$') {
     );
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -155,5 +158,3 @@ sub topics : LocalRegex('^(\w+)/topics$') {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

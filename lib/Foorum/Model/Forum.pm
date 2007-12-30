@@ -3,7 +3,6 @@ package Foorum::Model::Forum;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 
 sub get {
     my ( $self, $c, $forum_code, $attr ) = @_;
@@ -203,6 +202,9 @@ sub merge_forums {
     return 1;
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -210,5 +212,3 @@ sub merge_forums {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

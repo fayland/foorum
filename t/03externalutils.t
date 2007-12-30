@@ -6,6 +6,10 @@ use Cwd qw/abs_path/;
 use Foorum::ExternalUtils qw/base_path/;
 
 my $base_path = base_path();
+
+# XXX? since make test copy files to blib
+$base_path =~ s/\/blib$//isg;
+
 my $real = abs_path("$RealBin/../");
 
 is($base_path, $real, 'abs_path OK');

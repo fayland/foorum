@@ -17,10 +17,10 @@
 <table align='center'>
 	<tbody>
 	[% IF thanks %]
-    <tr class='misc2'><td colspan='2' align="center"><strong>Settings OK</strong></td></tr>
+    <tr class='misc2'><td colspan='2' align="center"><strong><span class='highlight'>Settings OK</span></strong></td></tr>
 	[% END %]
 	<tr class='misc1'>
-	    <td width='50%' align='right'><label for='send_starred_notification'>Send Update Notification for <a href='/my/starred'><img src='[% c.config.dir.images %]/site/t/star_on.gif' align='absmiddle' /> [% c.loc("My Starred Items") %]</a>:</label></td>
+	    <td width='40%' align='right'><label for='send_starred_notification'>Send Update Notification for <a href='/my/starred'><img src='[% c.config.dir.images %]/site/t/star_on.gif' align='absmiddle' /> [% c.loc("My Starred Items") %]</a>:</label></td>
 	    <td><input type='radio' name='send_starred_notification' id='send_starred_notification' checked='checked' value='Y' />Yes <input type='radio' name='send_starred_notification' id='send_starred_notification' value='N' />No</td>
 	</tr>
 	<tr class='misc2'>

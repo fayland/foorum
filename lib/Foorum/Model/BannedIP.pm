@@ -3,7 +3,6 @@ package Foorum::Model::BannedIP;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 
 sub get {
     my ( $self, $c ) = @_;
@@ -22,6 +21,9 @@ sub get {
     return wantarray ? @{$cache_data} : $cache_data;
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -30,4 +32,3 @@ Fayland Lam <fayland at gmail.com>
 
 =cut
 
-1;

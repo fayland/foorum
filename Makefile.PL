@@ -10,6 +10,7 @@ requires 'Digest';
 requires 'Switch';
 requires 'DateTime';
 requires 'File::Path';
+requires 'List::MoreUtils';
 requires 'Catalyst::View::TT';
 requires 'Catalyst::View::JSON';
 requires 'Catalyst::Model::DBIC::Schema';
@@ -22,7 +23,7 @@ requires 'Catalyst::Plugin::PageCache';
 requires 'Set::Object';
 requires 'Catalyst::Plugin::Authentication';
 requires 'Catalyst::Plugin::Authentication::Credential::Password';
-requires 'Catalyst::Authentication::Store::FromSub::Hash';
+requires 'Catalyst::Authentication::Store::FromSub::Hash' => '0.06';
 requires 'Catalyst::Plugin::Session';
 requires 'Catalyst::Plugin::Session::State::Cookie';
 requires 'Catalyst::Plugin::Session::Store::Delegate'; # for DBIC next line

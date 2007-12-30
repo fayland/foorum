@@ -3,7 +3,6 @@ package Foorum::Model::Hit;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 
 sub register {
     my ( $self, $c, $object_type, $object_id, $object_hit ) = @_;
@@ -46,6 +45,9 @@ sub register {
     return $return_hit;
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -53,5 +55,3 @@ sub register {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

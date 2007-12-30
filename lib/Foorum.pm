@@ -16,7 +16,7 @@ use Catalyst qw/
     PageCache
     FormValidator::Simple
     Captcha
-    FoorumUtils
+    +Foorum::Plugin::FoorumUtils
     /;
 
 #

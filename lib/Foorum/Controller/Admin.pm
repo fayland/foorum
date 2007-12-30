@@ -27,6 +27,9 @@ sub default : Private {
     $c->stash->{template} = 'admin/index.html';
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -34,5 +37,3 @@ sub default : Private {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

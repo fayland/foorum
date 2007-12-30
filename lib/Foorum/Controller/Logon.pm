@@ -111,6 +111,9 @@ sub logout : Global {
     $c->res->redirect('/');
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -118,5 +121,3 @@ sub logout : Global {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

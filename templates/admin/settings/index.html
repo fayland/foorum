@@ -1,0 +1,63 @@
+[% USE FillInForm %]
+
+[% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
+[% c.load_once("jquery/validate.js") %]
+
+
+[% WRAPPER 'admin/bar.html' %]
+
+[% FILTER fillinform fdat => fulfill || c.req.params %]
+<div class='one'>
+<form method='post'>
+<table align='center'>
+	<tbody>
+	[% IF thanks %]
+    <tr class='misc2'><td colspan='2' align="center"><strong><span class='highlight'>Settings OK</span></strong></td></tr>
+	[% END %]
+	<tr class='title'><td colspan='2'>Site</td></tr>
+	<tr class='misc1'>
+	    <td align='right'><label for='site_domain'>Site Domain:</label></td>
+	    <td><input type='text' name='site_domain' id='site_domain' value='[% c.req.base %]' size='32' /></td>
+	</tr>
+	<tr class='title'><td colspan='2'>Function On/Off</td></tr>
+	<tr class='misc1'>
+	    <td width='40%' align='right'><label for='maintain'>Site Maintain:</label></td>
+	    <td><input type='radio' name='maintain' id='maintain' checked='checked' value='1' />On <input type='radio' name='maintain' id='maintain' value='0' />Off</td>
+	</tr>
+	<tr class='misc2'>
+	    <td align='right'><label for='register'>Register:</label></td>
+	    <td><input type='radio' name='register' id='register' checked='checked' value='1' />On <input type='radio' name='register' id='register' value='0' />Off</td>
+	</tr>
+	<tr class='misc1'>
+	    <td align='right'><label for='activation'>Register Activation:</label></td>
+	    <td><input type='radio' name='activation' id='activation' checked='checked' value='1' />On <input type='radio' name='activation' id='activation' value='0' />Off</td>
+	</tr>
+	<tr class='title'><td colspan='2'>Items Per Page</td></tr>
+	<tr class='misc1'>
+	    <td width='40%' align='right'><label for='forum_per_page'>Forum:</label></td>
+	    <td><input type='text' name='forum_per_page' id='forum_per_page' size='3' /></td>
+	</tr>
+	<tr class='misc2'>
+	    <td width='40%' align='right'><label for='topic_per_page'>Topic:</label></td>
+	    <td><input type='text' name='topic_per_page' id='topic_per_page' size='3' /></td>
+	</tr>
+	<tr class='misc1'>
+	    <td width='40%' align='right'><label for='message_per_page'>Message:</label></td>
+	    <td><input type='text' name='message_per_page' id='message_per_page' size='3' /></td>
+	</tr>
+	<tr class='title'><td colspan='2'>Items Per Day</td></tr>
+	<tr class='misc1'>
+	    <td width='40%' align='right'><label for='most_deletion_topic'>Most Topics Deleted:</label></td>
+	    <td><input type='text' name='most_deletion_topic' id='most_deletion_topic' size='3' /></td>
+	</tr>
+	<tr class='misc2'><td></td><td><input type='submit' /></td></tr>
+	</tbody>
+</table>
+</form>
+</div>
+[% END %]
+
+    </div>
+</div>
+
+[% END %]

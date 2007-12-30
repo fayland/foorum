@@ -20,3 +20,12 @@ sub del_or_create {
 }
 
 1;
+__END__
+
+=pod
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut

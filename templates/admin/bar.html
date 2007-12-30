@@ -8,6 +8,7 @@
         <li><a href='#menu'><span>Menu</span></a></li>
         <li><a href='#forum'><span>Forum</span></a></li>
         <li><a href='#user'><span>User</span></a></li>
+        <li><a href='#settings'><span>Settings</span></a></li>
         <li><a href='#ban'><span>Ban</span></a></li>
         <li><a href='#tools'><span>Tools</span></a></li>
         <li><a href='#log'><span>Log</span></a></li>
@@ -20,6 +21,9 @@
     </div>
     <div id='user'>
         <a href='[% url_base %]/user'>User Lists</a> | <a href='[% url_base %]/user/edit'>Edit User</a>
+    </div>
+    <div id='settings'>
+        <a href='[% url_base %]/settings'>Global Settings</a>
     </div>
     <div id='ban'>
         <a href='[% url_base %]/banip'>Ban IP</a>
@@ -34,7 +38,7 @@
 
 <script>
     $(function() {
-        $('#admin_tabs ul').tabs([% IF c.req.path.match('forum') %]2[% ELSIF c.req.path.match('user') %]3[% ELSIF c.req.path.match('ban') %]4[% ELSIF c.req.path.match('tools') %]5[% ELSIF c.req.path.match('log') %]6[% END %]);
+        $('#admin_tabs ul').tabs([% IF c.req.path.match('forum') %]2[% ELSIF c.req.path.match('user') %]3[% ELSIF c.req.path.match('settings') %]4[% ELSIF c.req.path.match('ban') %]5[% ELSIF c.req.path.match('tools') %]6[% ELSIF c.req.path.match('log') %]7[% END %]);
     });
 </script>
 

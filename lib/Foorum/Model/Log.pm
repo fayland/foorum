@@ -85,6 +85,9 @@ sub check_c_error {
     return 1;
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -92,5 +95,3 @@ sub check_c_error {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

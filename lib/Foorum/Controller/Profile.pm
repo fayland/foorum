@@ -327,6 +327,9 @@ sub profile_photo : Local {
     $c->res->redirect( '/u/' . $c->user->{username} );
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -334,5 +337,3 @@ sub profile_photo : Local {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

@@ -7,8 +7,7 @@ use Foorum::Utils qw/get_page_from_url encodeHTML/;
 use Foorum::Formatter qw/filter_format/;
 use Foorum::ExternalUtils qw/theschwartz/;
 use Data::Page;
-use List::MoreUtils qw/uniq/;
-use Data::Dumper;
+use List::MoreUtils qw/uniq first_index/;
 
 sub get_comments_by_object {
     my ( $self, $c, $info ) = @_;
@@ -16,14 +15,22 @@ sub get_comments_by_object {
     my $object_type = $info->{object_type};
     my $object_id   = $info->{object_id};
     my $page        = $info->{page} || get_page_from_url( $c->req->path );
+    my $rows        = $info->{rows} || $c->config->{per_page}->{topic} || 10;
 
     my @comments = $self->get_all_comments_by_object( $c, $object_type, $object_id );
 
     if ( $object_type eq 'user_profile' ) {
         @comments = reverse(@comments);
     }
-
-    my $rows = $info->{rows} || $c->config->{per_page}->{topic} || 10;
+    
+    # when url contains /comment_id=$comment_id/
+    # we need show that page including $comment_id
+    if (scalar @comments > $rows and $c->req->path =~ /\/comment_id=(\d+)(\/|$)/) {
+        my $comment_id = $1;
+        my $first_index = first_index { $_->{comment_id} == $comment_id } @comments;
+        $page = int( $first_index / $rows ) + 1 if ($first_index);
+    }
+    
     my $pager = Data::Page->new();
     $pager->current_page($page);
     $pager->entries_per_page($rows);
@@ -210,6 +217,9 @@ sub remove {
     $c->cache->remove($cache_key);
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -217,5 +227,3 @@ sub remove {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

@@ -3,7 +3,6 @@ package Foorum::Model::Online;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 
 sub get_data {
     my ( $self, $c, $forum_code, $attr ) = @_;
@@ -114,6 +113,9 @@ sub _handler_session {
     return wantarray ? @results : \@results;
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -121,5 +123,3 @@ sub _handler_session {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

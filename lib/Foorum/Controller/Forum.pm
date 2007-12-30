@@ -5,7 +5,6 @@ use warnings;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 use Foorum::Formatter qw/filter_format/;
-use Data::Dumper;
 
 sub board : Path {
     my ( $self, $c ) = @_;
@@ -33,7 +32,7 @@ sub board : Path {
     push @forum_ids, $_->forum_id foreach (@forums);
     if ( scalar @forum_ids ) {
         my $roles = $c->model('Policy')->get_forum_moderators( $c, \@forum_ids );
-        $c->stash->{roles} = $roles;
+        $c->stash->{forum_roles} = $roles;
     }
 
     $c->stash->{whos_view_this_page} = 1;

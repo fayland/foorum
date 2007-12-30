@@ -3,7 +3,6 @@ package Foorum::Model::Visit;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 
 sub make_visited {
     my ( $self, $c, $object_type, $object_id ) = @_;
@@ -62,6 +61,9 @@ sub is_visited {
     return $visit;
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -69,5 +71,3 @@ sub is_visited {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Digest ();
-use Data::Dumper;
 use Net::IP::Match::Regexp qw( create_iprange_regexp match_ip );
 
 sub auto : Private {
@@ -25,7 +24,7 @@ sub auto : Private {
 sub default : Private {
     my ( $self, $c ) = @_;
 
-    if ( $c->config->{register}->{closed} ) {
+    unless ( $c->config->{function_on}->{register} ) {
         $c->detach( '/print_error', ['ERROR_REGISTER_CLOSED'] );
     }
 
@@ -73,7 +72,7 @@ sub default : Private {
     );
 
     # redirect or forward
-    if ( $c->config->{mail}->{on} and $c->config->{register}->{activation} ) {
+    if ( $c->config->{mail}->{on} and $c->config->{function_on}->{activation} ) {
 
         # send activation code
         $c->model('Email')->send_activation( $c, $user );
@@ -173,8 +172,12 @@ sub import_contacts : Local {
         $c->detach( '/print_error', [$errStr] );
     }
 
+    use Data::Dumper;
     $c->res->body( Dumper( \@contacts ) );
 }
+
+1;
+__END__
 
 =pod
 
@@ -183,5 +186,3 @@ sub import_contacts : Local {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

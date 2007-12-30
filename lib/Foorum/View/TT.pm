@@ -55,6 +55,9 @@ sub render {
     $self->NEXT::render(@_);
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -62,5 +65,3 @@ sub render {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

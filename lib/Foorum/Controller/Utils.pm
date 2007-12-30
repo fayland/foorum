@@ -33,6 +33,9 @@ sub print_error : Private {
     $c->stash->{template} = 'simple/error.html';
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -40,5 +43,3 @@ sub print_error : Private {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

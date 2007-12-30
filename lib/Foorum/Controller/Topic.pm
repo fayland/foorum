@@ -3,7 +3,6 @@ package Foorum::Controller::Topic;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Data::Dumper;
 use Foorum::Utils qw/encodeHTML get_page_from_url/;
 
 sub topic : Regex('^forum/(\w+)/(\d+)$') {
@@ -356,7 +355,7 @@ sub delete : Regex('^forum/(\w+)/(\d+)/(\d+)/delete$') {
     if ( $comment->reply_to == 0 ) {
 
         # u can only delete 5 topics one day
-        my $most_deletion_per_day = $c->config->{topic}->{most_deletion_per_day}
+        my $most_deletion_per_day = $c->config->{per_day}->{most_deletion_topic}
             || 5;
         my $deleted_count = $c->model('DBIC')->resultset('LogAction')->count(
             {   forum_id => $forum_id,
@@ -435,6 +434,9 @@ sub _check_policy {
 
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -442,5 +444,3 @@ sub _check_policy {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

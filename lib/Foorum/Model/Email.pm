@@ -5,7 +5,6 @@ use warnings;
 use base 'Catalyst::Model';
 use Foorum::Utils qw/generate_random_word/;
 use Foorum::ExternalUtils qw/theschwartz/;
-use Data::Dumper;
 
 sub send_activation {
     my ( $self, $c, $user, $new_email ) = @_;
@@ -131,6 +130,9 @@ sub create {
     return 1;
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -138,5 +140,3 @@ sub create {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

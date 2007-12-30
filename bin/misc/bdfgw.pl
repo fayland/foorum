@@ -16,7 +16,7 @@ my $project_url = 'http://code.google.com/p/foorum';
 
 my %tags = %Text::GooglewikiFormat::tags;
 my @filenames
-    = ( 'README', 'INSTALL', 'Configure', 'I18N', 'TroubleShooting', 'AUTHORS', 'RULES' );
+    = ( 'README', 'INSTALL', 'Configure', 'I18N', 'TroubleShooting', 'AUTHORS', 'RULES', 'HowRSS' );
 
 # replace link sub
 my $linksub = sub {
@@ -40,6 +40,8 @@ my $linksub = sub {
 };
 $tags{link} = $linksub;
 
+my $indexpage;
+
 # build in trunk/docs dir
 foreach my $filename (@filenames) {
     {
@@ -52,7 +54,24 @@ foreach my $filename (@filenames) {
         $string =~ s/>/&gt;/gs;
         $string =~ s/</&lt;/gs;
         my $html = Text::GooglewikiFormat::format( $string, \%tags );
-        $html = <<HTML;
+        buildhtml($filename, $html);
+
+        $indexpage .= qq~<li><a href="$filename\.html">$filename</a></li>~;
+
+        # XXX? TODO
+        # text to README INSTALL
+    }
+}
+
+buildhtml('index', qq~<ul>$indexpage</ul>~);
+
+sub buildhtml {
+    my ($filename, $html) = @_;
+    
+    my $wiki_url = "$project_url/wiki/$filename";
+    $wiki_url = 'http://code.google.com/p/foorum/w/list' if ($filename eq 'index');
+    
+    $html = <<HTML;
 <html>
 <head>
 <title>$filename</title>
@@ -62,7 +81,7 @@ foreach my $filename (@filenames) {
 <![endif]--> 
 </head>
 <body class="t6">
-<h1>From <a href="$project_url/wiki/$filename">$project_url/wiki/$filename</a></h1>
+<h1>From <a href="$wiki_url">$wiki_url</a></h1>
 <div id="wikicontent">
 $html
 </div>
@@ -73,13 +92,9 @@ $html
 </body>
 </html>
 HTML
-        open( $fh, '>', "$trunk_dir/docs/$filename\.html" );
-        flock( $fh, 2 );
-        print $fh $html;
-        close($fh);
-        print "format $filename OK\n";
-
-        # XXX? TODO
-        # text to README INSTALL
-    }
+    open( my $fh, '>', "$trunk_dir/docs/$filename\.html" );
+    flock( $fh, 2 );
+    print $fh $html;
+    close($fh);
+    print "format $filename OK\n";
 }

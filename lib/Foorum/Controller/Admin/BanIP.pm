@@ -3,7 +3,6 @@ package Foorum::Controller::Admin::BanIP;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Data::Dumper;
 use Net::CIDR::Lite;
 
 sub auto : Private {
@@ -71,6 +70,9 @@ sub add : Local {
     return $c->res->redirect('/admin/banip');
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -78,5 +80,3 @@ sub add : Local {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

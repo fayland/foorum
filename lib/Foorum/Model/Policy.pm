@@ -3,14 +3,11 @@ package Foorum::Model::Policy;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
-use Data::Dumper;
 
 sub fill_user_role {
     my ( $self, $c, $field ) = @_;
 
-    # XXX? Catalyst::Authentication::User::Hash has problems, no HOH
-    my $user  = $c->model('User')->get($c, { user_id => $c->user->{user_id} } );
-    my $roles = $user->{roles};
+    my $roles = $c->user->{roles};
     $field ||= 'site';
 
     if ( $roles->{$field}->{user} ) {
@@ -200,6 +197,9 @@ sub clear_cached_policy {
 
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -207,5 +207,3 @@ sub clear_cached_policy {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

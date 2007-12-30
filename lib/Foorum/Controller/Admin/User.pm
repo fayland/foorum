@@ -3,7 +3,6 @@ package Foorum::Controller::Admin::User;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Data::Dumper;
 use Foorum::Utils qw/get_page_from_url/;
 
 sub auto : Private {
@@ -113,6 +112,9 @@ sub ban : Local {
     $c->res->redirect("/u/$username");
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -120,5 +122,3 @@ sub ban : Local {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

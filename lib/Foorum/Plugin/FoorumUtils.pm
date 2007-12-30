@@ -1,4 +1,4 @@
-package Catalyst::Plugin::FoorumUtils;
+package Foorum::Plugin::FoorumUtils;
 
 use strict;
 use warnings;
@@ -25,3 +25,32 @@ sub load_once {
 }
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Plugin::FoorumUtils - pollute $c by Foorum
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item load_once
+
+Multi-times [% c.load_once('jquery.js') %] would only write one script tag in TT.
+
+It is a trick for INCLUDE tt.html may call the same script src many times.
+
+so does css. [% c.load_once('default.css') %]
+
+We insert before the 'jquery.js' with [% c.config.dir.js %] and the 'default.css' with [% c.config.dir.static %]/css
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut

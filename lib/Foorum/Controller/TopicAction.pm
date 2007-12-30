@@ -3,7 +3,6 @@ package Foorum::Controller::TopicAction;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Data::Dumper;
 
 sub lock_or_sticky_or_elite : Regex('^forum/(\w+)/(\d+)/(un)?(sticky|elite|lock)$') {
     my ( $self, $c ) = @_;
@@ -94,6 +93,9 @@ sub ban_or_unban_topic : Regex('^forum/(\w+)/(\d+)/(un)?ban$') {
     );
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -101,5 +103,3 @@ sub ban_or_unban_topic : Regex('^forum/(\w+)/(\d+)/(un)?ban$') {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

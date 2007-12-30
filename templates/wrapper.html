@@ -62,24 +62,28 @@
 
 <div id="guser" width="100%" align="right">
 <nowrap>
+    <a href='/help/WhatsNew'><span class='highlight'>What's New?</span></a> | 
+    [% UNLESS forum %]
+       <a href='/site/recent'>[% c.loc("Recent Topics") %]</a>
+     | <a href='/site/popular'>[% c.loc("Popular") %]</a>
+     | <a href='/forum/create'>[% c.loc("Create a Forum") %]</a>
+      <br />
+    [% END %]
     [% IF c.user_exists %]
         [% IF message_unread %]
         <a href='/message'><span style='color:red'>[% c.loc( "You have new messages ([_1])", message_unread) %]</span></a>
         [% END %]
-    <a href='/message'>[% c.loc('Message') %]</a> | 
-    <a href='/profile/edit'>[% c.loc('Edit Profile') %]</a> | 
-    <a href='/settings'>[% c.loc('Settings') %]</a> | 
-    <a href='/logout'>[% c.loc("Log out") %]</a> 
+     <a href='/message'>[% c.loc('Message') %]</a>
+     | <a href='/profile/edit'>[% c.loc('Edit Profile') %]</a>
+     | <a href='/settings'>[% c.loc('Settings') %]</a>
+     | <a href='/logout'>[% c.loc("Log out") %]</a> 
+     [% IF roles.site.admin OR roles.site.moderator %]
+     | <a href='/admin'>[% c.loc('Site Admin') %]</a>
+     [% END %]
     [% ELSE %]
-    <a href='/register'>[% c.loc("Register") %]</a>  | <a href='/login'>[% c.loc("Log in") %]</a> | <a href='/profile/forget_password'>[% c.loc("Forget password?") %]</a>
+     <a href='/register'>[% c.loc("Register") %]</a>  | <a href='/login'>[% c.loc("Log in") %]</a> | <a href='/profile/forget_password'>[% c.loc("Forget password?") %]</a>
     [% END %]
-    [% UNLESS forum %]
-     | <a href='/site/recent'>[% c.loc("Recent Topics") %]</a>
-     | <a href='/site/popular'>[% c.loc("Popular") %]</a>
-    [% END %]
-    [% IF roles.site.admin OR roles.site.moderator %]
-    | <a href='/admin'>[% c.loc('Site Admin') %]</a>
-    [% END %]
+
     [% IF c.user_exists %]
     <br />
     <a href='/u/[% c.user.username %]'>[% c.loc('My Profile Page') %]</a> | 
@@ -112,7 +116,7 @@
     <a href='/info/contact_us'>[% c.loc("Contact Us") %]</a> | 
     <a href='/help'>[% c.loc("Help Center") %]</a><br />
     [% END %]
-    &copy; [% date.format(date.now, format =>'%Y') %] &nbsp; [% c.config.name %]. Powered by <a href='/info/powered_by'>Foorum [% c.config.VERSION %]</a>.
+    &copy; [% date.format(date.now, format =>'%Y') %]&nbsp;[% c.config.name %]. Powered by <a href='/info/powered_by'>Foorum [% c.config.VERSION %]</a>.
     [% IF RSS_URL %]
     <a href='[% RSS_URL %]'><img src='[% c.config.dir.images %]/site/feed-icon-16x16.gif' width='16' height='16' align='absmiddle' /></a> 
     [% END %]
