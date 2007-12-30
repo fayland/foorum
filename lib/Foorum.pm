@@ -22,7 +22,7 @@ use Catalyst qw/
 #
 
 use vars qw/$VERSION/;
-$VERSION = '0.1.1';
+$VERSION = '0.1.2';
 
 __PACKAGE__->config( { VERSION => $VERSION } );
 __PACKAGE__->config( 'config_file' => [ 'foorum.yml', 'foorum_local.yml' ] );
