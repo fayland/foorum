@@ -114,6 +114,44 @@ sub error_log {
 1;
 __END__
 
+=head1 NAME
+
+Foorum::ExternalUtils - Utils for cron
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item base_path
+
+the same as $c->config->{home} or $c->path_to
+
+=item config
+
+the same as $c->config expect ->{home}
+
+=item schema
+
+the same as $c->model('DBIC')
+
+=item cache
+
+the same as $c->cache
+
+=item tt2
+
+generally like $c->view('TT'), yet a bit different
+
+=item theschwartz
+
+TheSchwartz->new with correct database from $config
+
+=item error_log
+
+insert log into table 'log_error'
+
+=back
+
 =pod
 
 =head2 AUTHOR
