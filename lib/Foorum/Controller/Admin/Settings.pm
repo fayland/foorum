@@ -5,6 +5,17 @@ use warnings;
 use base 'Catalyst::Controller';
 use YAML qw/DumpFile LoadFile/;
 
+sub auto : Private {
+    my ( $self, $c ) = @_;
+
+    # only administrator is allowed. site moderator is not allowed here
+    unless ( $c->model('Policy')->is_admin( $c, 'site' ) ) {
+        $c->forward( '/print_error', ['ERROR_PERMISSION_DENIED'] );
+        return 0;
+    }
+    return 1;
+}
+
 sub default : Private {
     my ( $self, $c ) = @_;
 
@@ -15,6 +26,8 @@ sub default : Private {
         my $fulfill = {
             maintain    => $c->config->{function_on}->{maintain},
             register    => $c->config->{function_on}->{register},
+            create_forum => $c->config->{function_on}->{create_forum},
+            
             site_domain => $c->config->{site}->{domain},
 
             message_per_page => $c->config->{per_page}->{message},
@@ -51,10 +64,13 @@ sub default : Private {
     $register = 1 if ( $register != 0 );
     my $activation = $params{activation};
     $activation = 1 if ( $activation != 0 );
+    my $create_forum = $params{create_forum};
+    $create_forum = 1 if ($create_forum != 0);
     $yaml->{function_on} = {
         activation => $activation,
         maintain   => $maintain,
-        register   => $register
+        register   => $register,
+        create_forum => $create_forum,
     };
 
     # per page

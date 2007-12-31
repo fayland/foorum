@@ -66,7 +66,9 @@
     [% UNLESS forum %]
        <a href='/site/recent'>[% c.loc("Recent Topics") %]</a>
      | <a href='/site/popular'>[% c.loc("Popular") %]</a>
+     [% IF c.config.function_on.create_forum %]
      | <a href='/forum/create'>[% c.loc("Create a Forum") %]</a>
+     [% END %]
       <br />
     [% END %]
     [% IF c.user_exists %]

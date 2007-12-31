@@ -101,6 +101,7 @@ function_on:
   maintain: 0
   register: 1
   activation: 1
+  create_forum: 1
 
 site:
   domain: 'http://www.foorumbbs.com/'

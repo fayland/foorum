@@ -311,6 +311,12 @@ sub create : Local {
     return $c->res->redirect('/login') unless ( $c->user_exists );
 
     my $is_admin = $c->model('Policy')->is_admin( $c, 'site' );
+    
+    # if function_on.create_forum is off, check is admin
+    if (not $c->config->{function_on}->{create_forum} and not $is_admin) {
+        $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
+    }
+    
     $c->stash( { template => 'forum/create.html' } );
 
     return unless ( $c->req->method eq 'POST' );
