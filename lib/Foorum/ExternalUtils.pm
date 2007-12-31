@@ -114,6 +114,8 @@ sub error_log {
 1;
 __END__
 
+=pod
+
 =head1 NAME
 
 Foorum::ExternalUtils - Utils for cron
@@ -151,8 +153,6 @@ TheSchwartz->new with correct database from $config
 insert log into table 'log_error'
 
 =back
-
-=pod
 
 =head2 AUTHOR
 
