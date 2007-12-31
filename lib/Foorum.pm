@@ -19,8 +19,6 @@ use Catalyst qw/
     +Foorum::Plugin::FoorumUtils
     /;
 
-#
-
 use vars qw/$VERSION/;
 $VERSION = '0.1.2';
 
@@ -154,7 +152,7 @@ L<http://code.google.com/p/foorum/issues/list>
 
 =head1 SEE ALSO
 
-L<Catalyst::Runtime>, L<DBIx::Class>, L<Template>
+L<Catalyst>, L<DBIx::Class>, L<Template>
 
 =head1 AUTHOR
 
