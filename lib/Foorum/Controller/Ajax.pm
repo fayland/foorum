@@ -84,15 +84,15 @@ sub preview : Local {
     my ( $self, $c ) = @_;
 
     return $c->res->body('LOGIN FIRST') unless ( $c->user_exists );
-    
+
     my $formatter = $c->req->param('formatter');
     my $text      = $c->req->param('text');
-    
-    return $c->res->body(' ') unless (length($text));
-    
+
+    return $c->res->body(' ') unless ( length($text) );
+
     $text = $c->model('FilterWord')->convert_offensive_word( $c, $text );
     $text = filter_format( $text, { format => $formatter } );
-    
+
     $c->res->body($text);
 }
 

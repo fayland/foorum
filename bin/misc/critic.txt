@@ -17,6 +17,7 @@ bin\testfunction\config.pl source OK
 bin\testfunction\db.pl source OK
 bin\testfunction\mail.pl source OK
 bin\testfunction\theschwartz.pl source OK
+bin\upgrade\0.1.2\up.pl source OK
 lib\Catalyst\Action\PathLogger.pm source OK
 lib\Catalyst\Plugin\Session\Store\DBIC.pm source OK
 lib\Foorum\Controller\Admin\BanIP.pm source OK

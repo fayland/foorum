@@ -4,7 +4,8 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 
-sub lock_or_sticky_or_elite : Regex('^forum/(\w+)/topic/(\d+)/(un)?(sticky|elite|lock)$') {
+sub lock_or_sticky_or_elite : Regex('^forum/(\w+)/topic/(\d+)/(un)?(sticky|elite|lock)$')
+{
     my ( $self, $c ) = @_;
 
     my $forum_code = $c->req->snippets->[0];

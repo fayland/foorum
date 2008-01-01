@@ -24,10 +24,10 @@ sub default : Private {
 
         # for FillInForm
         my $fulfill = {
-            maintain    => $c->config->{function_on}->{maintain},
-            register    => $c->config->{function_on}->{register},
+            maintain     => $c->config->{function_on}->{maintain},
+            register     => $c->config->{function_on}->{register},
             create_forum => $c->config->{function_on}->{create_forum},
-            
+
             site_domain => $c->config->{site}->{domain},
 
             message_per_page => $c->config->{per_page}->{message},
@@ -65,11 +65,11 @@ sub default : Private {
     my $activation = $params{activation};
     $activation = 1 if ( $activation != 0 );
     my $create_forum = $params{create_forum};
-    $create_forum = 1 if ($create_forum != 0);
+    $create_forum = 1 if ( $create_forum != 0 );
     $yaml->{function_on} = {
-        activation => $activation,
-        maintain   => $maintain,
-        register   => $register,
+        activation   => $activation,
+        maintain     => $maintain,
+        register     => $register,
         create_forum => $create_forum,
     };
 

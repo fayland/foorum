@@ -29,9 +29,10 @@ my $sql = q~select object_type, object_id FROM comment GROUP BY object_type, obj
 my $sth = $dbh->prepare($sql);
 $sth->execute();
 
-while (my ($object_type, $object_id) = $sth->fetchrow_array ) {
-    next if ($object_type ne 'topic');
+while ( my ( $object_type, $object_id ) = $sth->fetchrow_array ) {
+    next if ( $object_type ne 'topic' );
     print "Working on $object_type + $object_id\n";
+
     # get the first comment
     my $rs = $schema->resultset('Comment')->search(
         {   object_type => $object_type,
@@ -40,7 +41,7 @@ while (my ($object_type, $object_id) = $sth->fetchrow_array ) {
         {   order_by => 'post_on',
             rows     => 1,
             page     => 1,
-            columns  => [ 'comment_id' ],
+            columns  => ['comment_id'],
         }
     )->first;
     my $reply_to = $rs->comment_id;
@@ -49,7 +50,8 @@ while (my ($object_type, $object_id) = $sth->fetchrow_array ) {
             object_id   => $object_id,
             comment_id  => { '!=', $reply_to },
             reply_to    => 0,
-        } )->update( { reply_to => $reply_to } );
+        }
+    )->update( { reply_to => $reply_to } );
 }
 
 1;

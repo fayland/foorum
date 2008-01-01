@@ -90,17 +90,17 @@ sub user : Private {
 }
 
 sub comment : Private {
-    my ($self, $c, $comment_id, $attrs) = @_;
-    
-    my $comment = $c->model('Comment')->get($c, $comment_id, $attrs);
+    my ( $self, $c, $comment_id, $attrs ) = @_;
+
+    my $comment = $c->model('Comment')->get( $c, $comment_id, $attrs );
 
     # print error if the comment is non-exist
     $c->detach( '/print_error', ['Non-existent comment'] ) unless ($comment);
-    
+
     if ( $attrs->{object_type} and $comment->{object_type} != $attrs->{object_type} ) {
         $c->detach( '/print_error', ['Non-existent comment'] );
     }
-    if ( $attrs->{object_id}   and $comment->{object_id} != $attrs->{object_id} ) {
+    if ( $attrs->{object_id} and $comment->{object_id} != $attrs->{object_id} ) {
         $c->detach( '/print_error', ['Non-existent comment'] );
     }
 

@@ -8,7 +8,7 @@ use Foorum::Formatter qw/filter_format/;
 use Foorum::ExternalUtils qw/theschwartz/;
 use Data::Page;
 use List::MoreUtils qw/uniq first_index/;
-use Scalar::Util    qw/blessed/;
+use Scalar::Util qw/blessed/;
 
 sub get_comments_by_object {
     my ( $self, $c, $info ) = @_;
@@ -109,20 +109,18 @@ sub prepare_comments_for_view {
 sub get {
     my ( $self, $c, $comment_id, $attrs ) = @_;
 
-    my $comment = $c->model('DBIC')->resultset('Comment')->find(
-        {   comment_id => $comment_id,
-        }
-    );
+    my $comment
+        = $c->model('DBIC')->resultset('Comment')->find( { comment_id => $comment_id, } );
     return unless ($comment);
 
     $comment = $comment->{_column_data};
     if ( $attrs->{with_text} ) {
+
         # filter format by Foorum::Filter
-        $comment->{text} = $c->model('FilterWord')
-            ->convert_offensive_word( $c, $comment->{text} );
         $comment->{text}
-            = filter_format( $comment->{text},
-            { format => $comment->{formatter} } );
+            = $c->model('FilterWord')->convert_offensive_word( $c, $comment->{text} );
+        $comment->{text}
+            = filter_format( $comment->{text}, { format => $comment->{formatter} } );
     }
 
     return $comment;
@@ -199,7 +197,8 @@ sub remove {
     if ( $comment->{upload_id} ) {
         $c->model('Upload')->remove_file_by_upload_id( $c, $comment->{upload_id} );
     }
-    $c->model('DBIC::Comment')->search( { comment_id => $comment->{comment_id} } )->delete;
+    $c->model('DBIC::Comment')->search( { comment_id => $comment->{comment_id} } )
+        ->delete;
 
     my $object_type = $comment->{object_type};
     my $object_id   = $comment->{object_id};
