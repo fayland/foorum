@@ -30,6 +30,7 @@ my $sth = $dbh->prepare($sql);
 $sth->execute();
 
 while (my ($object_type, $object_id) = $sth->fetchrow_array ) {
+    next if ($object_type ne 'topic');
     print "Working on $object_type + $object_id\n";
     # get the first comment
     my $rs = $schema->resultset('Comment')->search(
