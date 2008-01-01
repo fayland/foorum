@@ -3,6 +3,7 @@ use inc::Module::Install;
 name 'Foorum';
 all_from 'lib/Foorum.pm';
 
+requires 'Template::Plugin::Math'; # Template 2.19 don't contain this one.
 requires 'Template';
 requires 'DBIx::Class';
 requires 'Catalyst' => '5.64';

@@ -11,6 +11,16 @@ function switch_formatter() {
         $('.wiki').hide();
     }
 }
+
+function preview() {
+    var formatter = $('input[@name=formatter]:checked').val();
+    var ctext = $('#text').val();
+    
+    $.post('/ajax/preview', { 'formatter': formatter, 'text': ctext }, function(data) {
+        $('#preview').html(data);
+    } );
+}
+
 $(document).ready(function() {
     switch_formatter();
 } );

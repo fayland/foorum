@@ -70,7 +70,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
 
     if ($rss) {
         foreach (@topics) {
-            my $rs = $c->model('DBIC::Comment')->find(
+            my $rs = $c->model('DBIC::Comment')->search(
                 {   object_type => 'topic',
                     object_id   => $_->topic_id,
                 },
@@ -79,7 +79,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
                     page     => 1,
                     columns  => [ 'text', 'formatter' ],
                 }
-            );
+            )->first;
             next unless ($rs);
             $_->{text} = $rs->text;
 

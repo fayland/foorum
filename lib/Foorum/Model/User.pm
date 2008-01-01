@@ -5,7 +5,6 @@ use warnings;
 use base 'Catalyst::Model';
 use Data::Dumper;
 use Object::Signature ();
-use Scalar::Util      ();
 
 # Usage:
 # $c->model('User')->get($c, { user_id => ? } );

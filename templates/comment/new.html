@@ -1,7 +1,16 @@
 [% USE FillInForm %]
 
+[% IF mode == 'edit' %]
+[% UNLESS c.req.method == 'POST';
+    comment_title = comment.title | decodeHTML;
+    filldata = {
+        title => comment_title,
+        text  => comment.text,
+        formatter => comment.formatter,
+    };
+END; %]
+[% ELSIF mode == 'topic' %]
 [% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
-[% c.load_once("site/new_post.js") %]
 
 <div id='edit_profile_tabs' class='tabs'>
     <ul class="ui-tabs-nav">
@@ -12,13 +21,28 @@
         <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
     </ul>
     <div class="ui-tabs-container">
+[% END %]
 
-[% FILTER fillinform fdat => c.req.params %]
+[% FILTER fillinform fdat => filldata || c.req.params %]
 
 <div class='one'>
 <form method="post" enctype="multipart/form-data">
 <table align='center' border='1' cellpadding='6'>
-  <tr class='title'><td colspan='2'>[% c.loc("New Topic") %]</td></tr>
+  <tr class='title'><td colspan='2'>
+    [% IF mode == 'edit' %]Eidt a Comment[% ELSIF mode == 'reply' %]Reply a Comment[% ELSIF mode == 'topic' %][% c.loc("New Topic") %][% END %]
+  </td></tr>
+  [% IF mode == 'reply' AND comment %]
+  <tr class='forum2'><td colspan='2' align='center'>
+    <table style='width:80%'>
+        <tr><td colspan='2' class='title'>[% comment.title %]</td></tr>
+        <tr class='forum1'><td width='150' valign='top'>
+            [% INCLUDE 'include/user_profile_simple.html' user = comment.author %]
+        </td><td>
+            [% comment.text %]
+        </td></tr>
+    </table>
+  </td></tr>
+  [% END %]
   <tr class='forum1'><td align='right'>[% c.loc('Title') %]</td><td><input type='text' size='60' maxlength='80' name='title' />
   [% IF c.form.error('title') %]title should be 1-80 chars.[% END %]
   </td></tr>
@@ -57,7 +81,6 @@ http://domain/page<br />
 <br />
 || table || cells ||
     </div>
-
     
     </td><td>
 
@@ -67,21 +90,40 @@ http://domain/page<br />
 
 	<textarea name="text" id='text' style='width: 90%' rows="15"></textarea>
 	[% IF c.form.error('text') %]text is required.[% END %]
-    
-    <div class='ubb'>
+
+	<div class='ubb'>
 	[% END %]
     </div>
 
   </td></tr>
   <tr class='forum2'><td align='right'>[% c.loc('Upload Attachment') %]</td><td>
-    [% INCLUDE upload/input.html %]
+  [% IF mode == 'edit' AND upload %]
+  [% USE Math %]
+
+  [% upload_id = upload.upload_id;
+     filetype  = upload.filetype;
+     dir1 = upload_id / 3200 / 3200;
+     dir1 = Math.int(dir1);
+     dir2 = upload_id / 3200;
+     dir2 = Math.int(dir2);
+  %]
+  <input type='radio' name='attachment_action' value='stay' checked='yes' /> Stay as before [ <a href="[% c.config.dir.upload %]/[% dir1 _ '/' _ dir2 _ '/' _ upload.filename %]">[% upload.filename %]</a> ]<br />
+  <input type='radio' name='attachment_action' value='delete' /> Delete it<br />
+  <input type='radio' name='attachment_action' value='replace' /> Replace it<br />
+  [% END %]
+  [% INCLUDE upload/input.html %]
   </td></tr>
-  <tr class='forum1'><td></td><td><input type='submit' /></td></tr>
+  <tr class='forum1'><td>&nbsp;</td><td><input type='submit' /> <input type='button' value='Preview' name='btn_preview' onclick="javascript:preview()" /></td></tr>
+  <tr class='forum2'><td>&nbsp;</td><td><div id='preview'></div></td></tr>
 </table>
 </form>
 </div>
 
 [% END %]
 
+[% IF mode == 'topic' %]
     </div>
 </div>
+[% END %]
+
+[% c.load_once("site/new_post.js") %]

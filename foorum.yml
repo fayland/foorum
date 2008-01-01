@@ -117,7 +117,7 @@ per_page:
   message: 8
 
 dir:
-  js: /static/js/min
+  js: /static/js
   images: /static/images
   static: /static
   upload: /upload

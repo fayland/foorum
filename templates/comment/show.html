@@ -25,11 +25,14 @@
       </table>
       <br>
       <div class='horizontal'></div>
+       [% IF topic AND topic.closed; no_reply = 1; END %]
        [% UNLESS no_reply %]
        <a href='/comment/[% comment.comment_id %]/reply'><img src='[% c.config.dir.images %]/replynow.gif' width='16' height='15' align='absmiddle'> Reply</a>
        [% END %]
        [% IF c.user_exists AND comment.author.user_id == c.user.user_id %]
        <a href='/comment/[% comment.comment_id %]/edit'><img src='[% c.config.dir.images %]/edit.gif' width='16' height='15' align='absmiddle'> Edit</a>
+       [% END %]
+       [% IF c.user_exists AND (roles.is_moderator OR comment.author.user_id == c.user.user_id) %]
        <a href='/comment/[% comment.comment_id %]/delete'><img src='[% c.config.dir.images %]/del.gif' width='16' height='15' align='absmiddle'> Delete</a>
        [% END %]
        <img src='[% c.config.dir.images %]/posttime.gif' width='16' height='15' align='absmiddle'> <span class='date'>[% comment.post_on %]</span>

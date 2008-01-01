@@ -89,6 +89,30 @@ sub user : Private {
     return $user;
 }
 
+sub comment : Private {
+    my ($self, $c, $comment_id, $attrs) = @_;
+    
+    my $comment = $c->model('Comment')->get($c, $comment_id, $attrs);
+
+    # print error if the comment is non-exist
+    $c->detach( '/print_error', ['Non-existent comment'] ) unless ($comment);
+    
+    if ( $attrs->{object_type} and $comment->{object_type} != $attrs->{object_type} ) {
+        $c->detach( '/print_error', ['Non-existent comment'] );
+    }
+    if ( $attrs->{object_id}   and $comment->{object_id} != $attrs->{object_id} ) {
+        $c->detach( '/print_error', ['Non-existent comment'] );
+    }
+
+    if ( $attrs->{with_author} ) {
+        $comment->{author}
+            = $c->model('User')->get( $c, { user_id => $comment->{author_id} } );
+    }
+
+    $c->stash->{comment} = $comment;
+    return $comment;
+}
+
 1;
 __END__
 

@@ -8,6 +8,7 @@ use Foorum::Formatter qw/filter_format/;
 use Foorum::ExternalUtils qw/theschwartz/;
 use Data::Page;
 use List::MoreUtils qw/uniq first_index/;
+use Scalar::Util    qw/blessed/;
 
 sub get_comments_by_object {
     my ( $self, $c, $info ) = @_;
@@ -108,36 +109,21 @@ sub prepare_comments_for_view {
 sub get {
     my ( $self, $c, $comment_id, $attrs ) = @_;
 
-    my @extra_where;
-    push @extra_where, ( object_type => $attrs->{object_type} )
-        if ( $attrs->{object_type} );
-    push @extra_where, ( object_id => $attrs->{object_id} )
-        if ( $attrs->{object_id} );
-
-    my $comment = $c->model('DBIC')->resultset('Comment')->search(
+    my $comment = $c->model('DBIC')->resultset('Comment')->find(
         {   comment_id => $comment_id,
-            @extra_where,
-        },
-    )->first;
+        }
+    );
+    return unless ($comment);
 
-    # print error if the comment is non-exist
-    $c->detach( '/print_error', ['Non-existent comment'] ) unless ($comment);
-
+    $comment = $comment->{_column_data};
     if ( $attrs->{with_text} ) {
-
         # filter format by Foorum::Filter
-        $comment->{_column_data}->{text} = $c->model('FilterWord')
-            ->convert_offensive_word( $c, $comment->{_column_data}->{text} );
-        $comment->{_column_data}->{text}
-            = filter_format( $comment->{_column_data}->{text},
-            { format => $comment->formatter } );
+        $comment->{text} = $c->model('FilterWord')
+            ->convert_offensive_word( $c, $comment->{text} );
+        $comment->{text}
+            = filter_format( $comment->{text},
+            { format => $comment->{formatter} } );
     }
-    if ( $attrs->{with_author} ) {
-        $comment->{author}
-            = $c->model('User')->get( $c, { user_id => $comment->author_id } );
-    }
-
-    $c->stash->{comment} = $comment;
 
     return $comment;
 }
@@ -206,13 +192,17 @@ sub create {
 sub remove {
     my ( $self, $c, $comment ) = @_;
 
-    if ( $comment->upload_id ) {
-        $c->model('Upload')->remove_file_by_upload_id( $c, $comment->upload_id );
+    if ( blessed $comment ) {
+        $comment = $comment->{_column_data};
     }
-    $c->model('DBIC::Comment')->search( { comment_id => $comment->comment_id } )->delete;
 
-    my $object_type = $comment->object_type;
-    my $object_id   = $comment->object_id;
+    if ( $comment->{upload_id} ) {
+        $c->model('Upload')->remove_file_by_upload_id( $c, $comment->{upload_id} );
+    }
+    $c->model('DBIC::Comment')->search( { comment_id => $comment->{comment_id} } )->delete;
+
+    my $object_type = $comment->{object_type};
+    my $object_id   = $comment->{object_id};
     my $cache_key   = "comment|object_type=$object_type|object_id=$object_id";
     $c->cache->remove($cache_key);
 }

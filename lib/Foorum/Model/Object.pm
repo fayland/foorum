@@ -16,6 +16,13 @@ sub get_object_from_url {
         $object_id   = $2;       # poll_id
         $object_type = 'poll';
     }
+    
+    # 1, topic, eg: /forum/ForumName/topic/3
+    if ( $path =~ /\/forum\/(\w+)\/topic\/(\d+)/ ) {
+        $forum_code = $1;
+        $object_id  = $2;
+        $object_type = 'topic';
+    }
 
     # 2. user profile, eg: /u/fayland or /u/1
     elsif ( $path =~ /\/u\/(\w+)/ ) {
@@ -42,10 +49,8 @@ sub get_url_from_object {
 
     switch ($object_type) {
         case 'poll' { return "/forum/$forum_id/poll/$object_id"; }
-        case 'user_profile' {
-            my $user = $c->model('User')->get( $c, { user_id => $object_id } );
-            return '/u/' . $user->{username} if ($user);
-        }
+        case 'topic' { return "/forum/$forum_id/topic/$object_id"; }
+        case 'user_profile' { return "/u/$object_id"; }
     }
 }
 

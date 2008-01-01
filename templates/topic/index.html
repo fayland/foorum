@@ -1,6 +1,6 @@
 [% title = topic.title _ ' : ' _ forum.name %]
 
-[% url_prefix = forum.forum_url _ '/' _ topic.topic_id %]
+[% url_prefix = forum.forum_url _ '/topic/' _ topic.topic_id %]
 [% RSS_URL = url_prefix _ '/rss' %]
 
 [% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
@@ -14,7 +14,7 @@
         <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
         <li class="ui-tabs-selected"><a href='javascript:void(0)'><span>[% topic.title %]([% topic.hit %])</span></a></li>
         [% UNLESS topic.closed %]
-        <li><a href='[% forum.forum_url %]/[% topic.topic_id %]/reply'><span>Reply Topic</span></a></li>
+        <li><a href='[% url_prefix %]/reply'><span>Reply Topic</span></a></li>
         [% END %]
     </ul>
     <div class="ui-tabs-container">
@@ -48,71 +48,10 @@
 </table>
 </div>
 
-[% FOREACH comment IN comments %]
-<a name="c[% comment.comment_id %]"></a>
-<div class='multi'>
-<table align='center'>
-<tr class='reply[% IF loop.count mod 2;'2';ELSE;'1';END; %]'>
-    <td valign='top' width='157'>
-        [% INCLUDE include/user_profile.html user = comment.author %]
-    </td>
-	<td valign='top' width='*'>
-	  <div><b>[% comment.title %]</b></div>
-	  <div class='horizontal'></div>
-	  <table width='100%' cellpadding='0' cellspacing='0' height='120' style="TABLE-LAYOUT: fixed">
-	  <tr valign='top'><td class="textbody">
-	  <span class="postclass">
-	  [% IF comment.author.status == 'banned' %]
-	    The author is banned.
-	  [% ELSE %]
-	    [% IF comment.upload %]
-	    [% INCLUDE upload/upload.html upload = comment.upload %]
-	    [% END %]
-	    [% comment.text %]
-	  [% END %]
-	  </span>
-      </td></tr>
-      </table>
-      <br>
-      <div class='horizontal'></div>
-       [% UNLESS topic.closed %]
-       <a href='[% url_prefix %]/[% comment.comment_id %]/reply'><img src='[% c.config.dir.images %]/replynow.gif' width='16' height='15' align='absmiddle'> [% c.loc('Reply') %]</a>
-       [% END %]
-       [% IF roles.is_moderator OR comment.author.user_id == c.user.user_id %]
-       <a href='[% url_prefix %]/[% comment.comment_id %]/edit'><img src='[% c.config.dir.images %]/edit.gif' width='16' height='15' align='absmiddle'> [% c.loc('Edit') %]</a>
-       [%# END %]
-       [%# IF roles.is_moderator %]
-       [%# IF loop.count != 1 %]
-       <a href='[% url_prefix %]/[% comment.comment_id %]/delete'><img src='[% c.config.dir.images %]/del.gif' width='16' height='15' align='absmiddle'> [% c.loc('Delete') %]</a>
-       [%# END %]
-       [% END %]
-       <img src='[% c.config.dir.images %]/posttime.gif' width='16' height='15' align='absmiddle'> <span class='date'>[% comment.post_on %]</span>
-    </td>
-</tr>
-</table>
-</div>
-[% END %]
-<div class='none'>
-<table align='center'>
-    <tr><td align='right'>[% INCLUDE 'sub/pager.html' pager = comments_pager %]</td></tr>
-</table>
-</div>
+[% INCLUDE comment/show.html %]
 
 [% IF c.user_exists AND NOT topic.closed %]
-<br />
-<div class='one'>
-<form method='post' action='[% url_prefix %]/reply' enctype="multipart/form-data">
-<table align='center'>
-    <tr class='title'><td colspan='2'>[% c.loc('Reply') %]</td></tr>
-    <tr class='misc1'><td align='right'>[% c.loc('Title') %]</td><td><input type='text' name='title' size='64' maxlength='80' /></td></tr>
-    <tr class='misc2'><td align='right'>[% c.loc('Content') %]</td><td><textarea name='text' style='width: 100%' rows="15"></textarea></td></tr>
-    <tr class='misc1'><td align='right'>[% c.loc('Upload Attachment') %]</td><td>
-    [% INCLUDE upload/input.html %]
-    </td></tr>
-    <tr class='misc2'><td></td><td><input type='submit' /></td></tr>
-</table>
-</form>
-</div>
+[% INCLUDE comment/post.html %]
 [% END %]
 
     </div>

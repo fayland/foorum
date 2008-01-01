@@ -127,7 +127,7 @@
 <div id='timer'><p>This page takes [% elapsed_time %] to load. </p></div>
 [% END %]
 
-[% IF c.config.extra.urchin_account %]
+[% IF c.config.extra.urchin_account AND NOT c.config.debug_mode %]
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write("\<script src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'>\<\/script>" );

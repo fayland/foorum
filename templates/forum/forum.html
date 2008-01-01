@@ -71,15 +71,15 @@ Admin: <a href='/u/[% forum_roles.${forum.forum_id}.admin.username %]'>[% forum_
 			    [% IF t.elite %]
 			    <a href='[% forum.forum_url %]/elite'><img src='[% c.config.dir.images %]/site/elite.gif' /></a> 
 			    [% END %]
-			    <a href='[% forum.forum_url %]/[% t.topic_id %]'><span class='semilight'>[% t.title %]</span></a>
+			    <a href='[% forum.forum_url %]/topic/[% t.topic_id %]'><span class='semilight'>[% t.title %]</span></a>
 			    [% IF c.user_exists AND NOT is_visited.topic.${t.topic_id} %]
 			    <img src='[% c.config.dir.images %]/site/new.gif' />
 			    [% END %]
 			    [% IF roles.is_moderator %]
             	<div style='float:right'>
-            	    <a href='[% forum.forum_url %]/[% t.topic_id %]/[% IF t.sticky %]unsticky[% ELSE %]sticky[% END %]'>[% IF t.sticky %][% c.loc('Unsticky') %][% ELSE %][% c.loc('Sticky') %][% END %]</a> |
-                    <a href='[% forum.forum_url %]/[% t.topic_id %]/[% IF t.closed %]unlock[% ELSE %]lock[% END %]'>[% IF t.closed %][% c.loc('Unlock') %][% ELSE %][% c.loc('Lock') %][% END %]</a> |
-                    <a href='[% forum.forum_url %]/[% t.topic_id %]/[% IF t.elite %]unelite[% ELSE %]elite[% END %]'>[% IF t.elite %][% c.loc('Unelite') %][% ELSE %][% c.loc('Elite') %][% END %]
+            	    <a href='[% forum.forum_url %]/topic/[% t.topic_id %]/[% IF t.sticky %]unsticky[% ELSE %]sticky[% END %]'>[% IF t.sticky %][% c.loc('Unsticky') %][% ELSE %][% c.loc('Sticky') %][% END %]</a> |
+                    <a href='[% forum.forum_url %]/topic/[% t.topic_id %]/[% IF t.closed %]unlock[% ELSE %]lock[% END %]'>[% IF t.closed %][% c.loc('Unlock') %][% ELSE %][% c.loc('Lock') %][% END %]</a> |
+                    <a href='[% forum.forum_url %]/topic/[% t.topic_id %]/[% IF t.elite %]unelite[% ELSE %]elite[% END %]'>[% IF t.elite %][% c.loc('Unelite') %][% ELSE %][% c.loc('Elite') %][% END %]
                 </div>
                 [% END %]
 			</td>
