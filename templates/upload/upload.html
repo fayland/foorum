@@ -11,8 +11,6 @@
 <div class='attachment'>
 [% IF filetype == 'jpg' OR filetype == 'jpeg' OR filetype == 'gif' OR filetype == 'gif' %]
 
-[% global_has_photos = 1 %][%# refer comment/show.html %]
-
 <a href="[% c.config.dir.upload %]/[% dir1 _ '/' _ dir2 _ '/' _ upload.filename %]" target='_blank'><img src='[% c.config.dir.upload %]/[% dir1 _ '/' _ dir2 _ '/' _ upload.filename %]' /></a>
 
 [% ELSE %]
