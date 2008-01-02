@@ -61,14 +61,13 @@
         if ($('#comment_text img').length) {
             $('#comment_text img').filter(function (index) {
                 return $(this).width() > 640;
-            } ).width(640);
-            /*.filter(function(index) {
+            } ).width(640).filter(function(index) {
                 var parentTag = $(this).parent().get(0).tagName;
                 if (parentTag != 'a') {
-                    $(this).before("<a href='" + $(this).attr('src') + "'>").after("</a>");
+                    $(this).wrap("<a href='" + $(this).attr('src') + "'></a>");
                 }
                 return 1;
-            } )*/
+            } )
             if ($('#comment_text a img').length) {
                 $('#comment_text a img').parent().lightBox( {
                 	imageLoading:  '[% c.config.dir.images %]/lightbox/lightbox-ico-loading.gif',
