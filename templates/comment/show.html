@@ -19,7 +19,8 @@
 	    [% PROCESS upload/upload.html upload = comment.upload %]
 	    [% END %]
 	    [% comment.text %]
-	    [% IF ${comment.text}.search('<img'); global_has_photos = 1; END; %]
+	    [% comment_text = comment.text;
+	       IF comment_text.search('<img'); global_has_photos = 1; END; %]
 	  [% END %]
 	  </span>
       </td></tr>
@@ -57,15 +58,26 @@
 
 <script>
     $(function() {
-        if ($('#comment_text a img').length) {
-            $('#comment_text a img').css( { 'width': '640px' } );
-            $('#comment_text a img').parent().lightBox( {
-            	imageLoading:  '[% c.config.dir.images %]/lightbox/lightbox-ico-loading.gif',
-            	imageBtnClose: '[% c.config.dir.images %]/lightbox/lightbox-btn-close.gif',
-            	imageBtnPrev:  '[% c.config.dir.images %]/lightbox/lightbox-btn-prev.gif',
-            	imageBtnNext:  '[% c.config.dir.images %]/lightbox/lightbox-btn-next.gif',
-            	imageBlank:    '[% c.config.dir.images %]/lightbox/lightbox-blank.gif'
-            } );
+        if ($('#comment_text img').length) {
+            $('#comment_text img').filter(function (index) {
+                return $(this).width() > 640;
+            } ).width(640);
+            /*.filter(function(index) {
+                var parentTag = $(this).parent().get(0).tagName;
+                if (parentTag != 'a') {
+                    $(this).before("<a href='" + $(this).attr('src') + "'>").after("</a>");
+                }
+                return 1;
+            } )*/
+            if $('#comment_text a img').length) {
+                $('#comment_text a img').lightBox( {
+                	imageLoading:  '[% c.config.dir.images %]/lightbox/lightbox-ico-loading.gif',
+                	imageBtnClose: '[% c.config.dir.images %]/lightbox/lightbox-btn-close.gif',
+                	imageBtnPrev:  '[% c.config.dir.images %]/lightbox/lightbox-btn-prev.gif',
+                	imageBtnNext:  '[% c.config.dir.images %]/lightbox/lightbox-btn-next.gif',
+                	imageBlank:    '[% c.config.dir.images %]/lightbox/lightbox-blank.gif'
+                } );
+            }
         }
     });
 </script>
