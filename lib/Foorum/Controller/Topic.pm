@@ -72,7 +72,10 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
 
     return $c->res->redirect('/login') unless ( $c->user_exists );
 
-    &_check_policy( $self, $c );
+    # check policy
+    if ( $c->user->{status} eq 'banned' or $c->user->{status} eq 'blocked' ) {
+        $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
+    }
 
     my $forum_code = $c->req->snippets->[0];
     my $forum      = $c->controller('Get')->forum( $c, $forum_code );
@@ -146,16 +149,6 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     );
 
     $c->res->redirect( $forum->{forum_url} . '/topic/' . $topic->topic_id );
-}
-
-sub _check_policy {
-    my ( $self, $c ) = @_;
-
-    # check policy
-    if ( $c->user->{status} eq 'banned' or $c->user->{status} eq 'blocked' ) {
-        $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
-    }
-
 }
 
 1;

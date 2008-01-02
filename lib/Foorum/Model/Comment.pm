@@ -137,7 +137,7 @@ sub create {
     my $title       = $info->{title} || $c->req->param('title');
     my $text        = $info->{text} || $c->req->param('text') || '';
 
-    # we don't use [% | html %] now because of my bad memory in TT html
+    # we don't use [% | html %] now because there is too many title around in TT
     $title = encodeHTML($title);
 
     my $comment = $c->model('DBIC')->resultset('Comment')->create(
