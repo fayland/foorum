@@ -63,7 +63,7 @@
                 return $(this).width() > 640;
             } ).width(640).filter(function(index) {
                 var parentTag = $(this).parent().get(0).tagName;
-                if (parentTag != 'a') {
+                if (parentTag != 'A') {
                     $(this).wrap("<a href='" + $(this).attr('src') + "'></a>");
                 } else if ($(this).attr('src') != $(this).parent().attr('href')) {
                     return false;
