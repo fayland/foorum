@@ -65,8 +65,10 @@
                 var parentTag = $(this).parent().get(0).tagName;
                 if (parentTag != 'a') {
                     $(this).wrap("<a href='" + $(this).attr('src') + "'></a>");
+                } else if ($(this).attr('src') != $(this).parent().attr('href')) {
+                    return false;
                 }
-                return 1;
+                return true;
             } )
             if ($('#comment_text a img').length) {
                 $('#comment_text a img').parent().lightBox( {

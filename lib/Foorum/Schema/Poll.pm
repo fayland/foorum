@@ -37,8 +37,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("poll_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2007-12-27 21:11:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gkkCSDVpgpqpOy9orQBgig
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2008-01-03 14:28:45
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kgOWF1gmtpAzVEeOsxt7WQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

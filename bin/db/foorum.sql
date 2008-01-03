@@ -88,6 +88,15 @@ CREATE TABLE IF NOT EXISTS `forum` (
   KEY `forum_id` (`forum_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `forum_settings` (
+  `forum_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `type` varchar(48) NOT NULL,
+  `value` varchar(48) NOT NULL,
+  PRIMARY KEY (`forum_id`,`type`),
+  KEY `forum_id` (`forum_id`)
+);
+
 -- --------------------------------------------------------
 
 --

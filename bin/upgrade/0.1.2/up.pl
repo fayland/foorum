@@ -54,4 +54,14 @@ while ( my ( $object_type, $object_id ) = $sth->fetchrow_array ) {
     )->update( { reply_to => $reply_to } );
 }
 
+$dbh->do(<<SQL);
+CREATE TABLE `forum_settings` (
+  `forum_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `type` varchar(48) NOT NULL,
+  `value` varchar(48) NOT NULL,
+  PRIMARY KEY (`forum_id`,`type`),
+  KEY `forum_id` (`forum_id`)
+);
+SQL
+
 1;
