@@ -80,6 +80,10 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     my $forum_code = $c->req->snippets->[0];
     my $forum      = $c->controller('Get')->forum( $c, $forum_code );
     my $forum_id   = $forum->{forum_id};
+    
+    if ( $forum->{settings}->{can_post_threads} and $forum->{settings}->{can_post_threads} eq 'N' ) {
+        $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
+    }
 
     $c->stash(
         {   template => 'comment/new.html',

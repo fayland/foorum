@@ -93,6 +93,36 @@ sub basic : Chained('forum_for_admin') Args(0) {
     $description = encodeHTML($description);
 
     # insert data into table.
+    
+    # 1, forum settings
+    my $can_post_threads = $c->req->param('can_post_threads');
+    $can_post_threads = 'Y' unless ( $can_post_threads eq 'N' );
+    my $can_post_replies = $c->req->param('can_post_replies');
+    $can_post_replies = 'Y' unless ( $can_post_replies eq 'N' );
+    # delete before create
+    $c->model('DBIC')->resultset('ForumSettings')->search(
+        {   forum_id => $forum_id,
+            type    => { 'IN', [ 'can_post_threads', 'can_post_replies' ] },
+        }
+    )->delete;
+    if ( $can_post_threads eq 'N' ) {    # don't store 'Y' because it's default
+        $c->model('DBIC')->resultset('ForumSettings')->create(
+            {   forum_id => $forum_id,
+                type    => 'can_post_threads',
+                value   => 'N',
+            }
+        );
+    }
+    if ( $can_post_replies eq 'N' ) {
+        $c->model('DBIC')->resultset('ForumSettings')->create(
+            {   forum_id => $forum_id,
+                type    => 'can_post_replies',
+                value   => 'N',
+            }
+        );
+    }
+    
+    # 2, forum table
     my $policy = ( $private == 1 ) ? 'private' : 'public';
     my @extra_update;
     push @extra_update, ( forum_code => $forum_code )
@@ -109,6 +139,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
         }
     );
 
+    # 3, user_role
     # delete before create
     $c->model('Policy')->remove_user_role(
         $c,

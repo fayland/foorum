@@ -47,8 +47,21 @@ sub get {
                 ->find( { forum_id => $forum_id } );
             return unless ($forum);
 
+            # get forum settings
+            my $settings_rs = $c->model('DBIC')->resultset('ForumSettings')->search( {
+                forum_id => $forum_id
+            } );
+            my $settings = { # default
+                can_post_threads => 'Y',
+                can_post_replies => 'Y',
+            };
+            while (my $r = $settings_rs->next) {
+                $settings->{$r->type} = $r->value;
+            }
+
             # set cache
             $forum = $forum->{_column_data};    # hash for cache
+            $forum->{settings}  = $settings;
             $forum->{forum_url} = $self->get_forum_url( $c, $forum );
             $c->cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
         }

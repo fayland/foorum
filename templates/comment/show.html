@@ -28,6 +28,7 @@
       <br>
       <div class='horizontal'></div>
        [% IF topic AND topic.closed; no_reply = 1; END %]
+       [% IF forum.settings.can_post_replies AND forum.settings.can_post_replies == 'N'; no_reply = 1; END %]
        [% UNLESS no_reply %]
        <a href='/comment/[% comment.comment_id %]/reply'><img src='[% c.config.dir.images %]/replynow.gif' width='16' height='15' align='absmiddle'> Reply</a>
        [% END %]

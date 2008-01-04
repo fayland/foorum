@@ -33,6 +33,10 @@ sub post : Local {
     if ($forum_id) {    # maybe that's a ForumCode
         my $forum = $c->controller('Get')->forum( $c, $forum_id );
         $forum_id = $forum->{forum_id};
+        
+        if ( $forum->{settings}->{can_post_replies} and $forum->{settings}->{can_post_replies} eq 'N' ) {
+            $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
+        }
     }
 
     my $reply_to = 0;
@@ -114,6 +118,11 @@ sub reply : LocalRegex('^(\d+)/reply$') {
 
     my $forum;
     $forum = $c->controller('Get')->forum( $c, $forum_id ) if ($forum_id);
+    if ( $forum ) {
+        if ( $forum->{settings}->{can_post_replies} and $forum->{settings}->{can_post_replies} eq 'N' ) {
+            $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
+        }
+    }
     if ( $object_type eq 'topic' ) {
         my $topic
             = $c->controller('Get')->topic( $c, $object_id, { forum_id => $forum_id } );
