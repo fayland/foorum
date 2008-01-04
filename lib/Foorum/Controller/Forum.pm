@@ -268,12 +268,12 @@ sub join_us : Private {
     my $forum_id = $forum->{forum_id};
 
     if ( $c->req->method eq 'POST' ) {
-        my $rs = $c->model('DBIC::UserRole')->find(
+        my $rs = $c->model('DBIC::UserRole')->search(
             {   user_id => $c->user->user_id,
                 field   => $forum_id,
             },
             { columns => ['role'], }
-        );
+        )->first;
         if ($rs) {
             if (   $rs->role eq 'user'
                 or $rs->role eq 'moderator'
