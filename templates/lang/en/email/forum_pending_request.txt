@@ -1,7 +1,9 @@
 #########[[% c.config.name %]] [% from.nickname %] wants to join [% forum.name %]#########
 Dear [% rept.nickname %],
 
+
 [% from.nickname %] wants to join [% forum.name %]. Please click below to approval or reject:
+
 
 [% base %]forum/[% forum.forum_id %]/members/pending
 
