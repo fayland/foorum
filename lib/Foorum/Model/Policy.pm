@@ -134,11 +134,11 @@ sub get_forum_admin {
     my ( $self, $c, $forum_id ) = @_;
 
     # get admin
-    my $rs = $c->model('DBIC::UserRole')->find(
+    my $rs = $c->model('DBIC::UserRole')->search(
         {   field => $forum_id,
             role  => 'admin',
         }
-    );
+    )->first;
     return unless ($rs);
     my $user = $c->model('User')->get( $c, { user_id => $rs->user_id } );
     return $user;
