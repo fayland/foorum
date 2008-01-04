@@ -5,7 +5,7 @@ use warnings;
 use base 'Catalyst::Model';
 
 sub get {
-    my ( $self, $c, $forum_code, $attr ) = @_;
+    my ( $self, $c, $forum_code ) = @_;
 
     # if $forum_code is all numberic, that's forum_id
     # or else, it's forum_code
