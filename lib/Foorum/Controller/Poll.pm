@@ -14,6 +14,11 @@ sub create : Regex('^forum/(\w+)/poll/new$') {
     my $forum      = $c->controller('Get')->forum( $c, $forum_code );
     my $forum_id   = $forum->{forum_id};
 
+    if (    $forum->{settings}->{can_post_polls}
+        and $forum->{settings}->{can_post_polls} eq 'N' ) {
+        $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
+    }
+
     $c->stash->{template} = 'poll/new.html';
     return unless ( $c->req->method eq 'POST' );
 

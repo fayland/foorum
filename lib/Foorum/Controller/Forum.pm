@@ -113,23 +113,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
         }
 
         # check announcement
-        my $ann_cookie = $c->req->cookie("ann_$forum_id");
-        unless ( $ann_cookie and $ann_cookie->value ) {
-            my $announcement = $c->model('DBIC::Comment')->find(
-                {   object_type => 'announcement',
-                    object_id   => $forum_id,
-                },
-                { columns => [ 'title', 'text' ], }
-            );
-
-            # filter format by Foorum::Filter
-            $announcement->{_column_data}->{text}
-                = filter_format( $announcement->{_column_data}->{text},
-                { format => 'ubb' } )
-                if ($announcement);
-            $c->stash->{announcement} = $announcement;
-            $c->res->cookies->{"ann_$forum_id"} = { value => 1 };
-        }
+        $c->stash->{announcement} = $c->model('Forum')->get_announcement( $c, $forum );
     }
 
     $c->cache_page('300');

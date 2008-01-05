@@ -1,10 +1,3 @@
-[% IF announcement %]
-[% c.load_once("jquery/blockUI.js") %]
-<script>
-    $.blockUI("<div class='lightbox'><h3>[% announcement.title %]</h3>[% announcement.text | replace('"', "'") %]<div style='text-align:right'><a href='javascript:$.unblockUI()'>[% c.loc('Close') %]</a></div></div>");
-</script>
-[% END %]
-
 [% title = forum.name %]
 [% IF forum.policy == 'public' %]
 [% RSS_URL = forum.forum_url _ '/rss' %]
@@ -15,11 +8,15 @@
 <div id='edit_profile_tabs' class='tabs'>
     <ul class="ui-tabs-nav">
         <li class="ui-tabs-selected"><a href='[% forum.forum_url %]'><span>Topics</span></a></li>
+        [% UNLESS poll_count == 0 AND forum.settings.can_post_polls AND forum.settings.can_post_polls == 'N' %]
         <li><a href='[% forum.forum_url %]/polls'><span>Polls ([% poll_count %])</span></a></li>
+        [% END %]
         [% UNLESS forum.settings.can_post_threads AND forum.settings.can_post_threads == 'N' %]
         <li><a href='[% forum.forum_url %]/topic/new'><span>[% c.loc("New Topic") %]</span></a></li>
         [% END %]
+        [% UNLESS forum.settings.can_post_polls AND forum.settings.can_post_polls == 'N' %]
         <li><a href='[% forum.forum_url %]/poll/new'><span>[% c.loc("New Poll") %]</span></a></li>
+        [% END %]
         <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
         [% IF c.user_exists AND roles.is_admin %]
         <li><a href='/forumadmin/[% forum.forum_id %]'><span>[% c.loc('Forum Admin') %]</span></a></li>
@@ -34,6 +31,19 @@
 [% IF pending_count AND roles.is_moderator %]
 <div class='highlight' style='font-weight: bolder'>Tips: You need approval the <a href='[% forum.forum_url %]/members/pending'>pending requests</a></div>
 [% END %]
+</td></tr>
+</table>
+</div>
+[% END %]
+
+[% IF announcement %]
+<div class="one">
+<table align="center">
+<tr>
+    <td class='title' width='100' valign="top">[ [% c.loc("Announcement") %] ]: [% announcement.title %]</td>
+</tr>
+<tr><td class='forum1'>
+    [% announcement.text %]
 </td></tr>
 </table>
 </div>

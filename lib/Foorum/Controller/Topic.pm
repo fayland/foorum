@@ -80,8 +80,9 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     my $forum_code = $c->req->snippets->[0];
     my $forum      = $c->controller('Get')->forum( $c, $forum_code );
     my $forum_id   = $forum->{forum_id};
-    
-    if ( $forum->{settings}->{can_post_threads} and $forum->{settings}->{can_post_threads} eq 'N' ) {
+
+    if (    $forum->{settings}->{can_post_threads}
+        and $forum->{settings}->{can_post_threads} eq 'N' ) {
         $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
     }
 
@@ -110,6 +111,12 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     my $title     = $c->req->param('title');
     my $formatter = $c->req->param('formatter');
     my $text      = $c->req->param('text');
+
+    # only admin has HTML rights
+    if ( $formatter eq 'html' ) {
+        my $is_admin = $c->model('Policy')->is_admin( $c, 'site' );
+        $formatter = 'plain' unless ($is_admin);
+    }
 
     # create record
     my $topic_title = encodeHTML($title);

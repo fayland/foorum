@@ -33,8 +33,9 @@ sub post : Local {
     if ($forum_id) {    # maybe that's a ForumCode
         my $forum = $c->controller('Get')->forum( $c, $forum_id );
         $forum_id = $forum->{forum_id};
-        
-        if ( $forum->{settings}->{can_post_replies} and $forum->{settings}->{can_post_replies} eq 'N' ) {
+
+        if (    $forum->{settings}->{can_post_replies}
+            and $forum->{settings}->{can_post_replies} eq 'N' ) {
             $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
         }
     }
@@ -118,8 +119,9 @@ sub reply : LocalRegex('^(\d+)/reply$') {
 
     my $forum;
     $forum = $c->controller('Get')->forum( $c, $forum_id ) if ($forum_id);
-    if ( $forum ) {
-        if ( $forum->{settings}->{can_post_replies} and $forum->{settings}->{can_post_replies} eq 'N' ) {
+    if ($forum) {
+        if (    $forum->{settings}->{can_post_replies}
+            and $forum->{settings}->{can_post_replies} eq 'N' ) {
             $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
         }
     }
@@ -149,6 +151,12 @@ sub reply : LocalRegex('^(\d+)/reply$') {
     my $title     = $c->req->param('title');
     my $formatter = $c->req->param('formatter');
     my $text      = $c->req->param('text');
+
+    # only admin has HTML rights
+    if ( $formatter eq 'html' ) {
+        my $is_admin = $c->model('Policy')->is_admin( $c, 'site' );
+        $formatter = 'plain' unless ($is_admin);
+    }
 
     my $info = {
         object_type => $object_type,

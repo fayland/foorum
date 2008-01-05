@@ -73,6 +73,7 @@ sub get_object_by_type_id {
                     $c->model('User')->get( $c, { user_id => $object->{author_id} } ),
                 url         => '/forum/' . $object->{forum_id} . "/$object_id",
                 last_update => $object->{last_update_date},
+                forum_id    => $object->{forum_id},
             };
         }
         case 'poll' {
@@ -85,6 +86,7 @@ sub get_object_by_type_id {
                 author => $c->model('User')->get( $c, { user_id => $object->author_id } ),
                 url    => '/forum/' . $object->forum_id . "/poll/$object_id",
                 last_update => '-',
+                forum_id    => $object->forum_id,
             };
         }
     }

@@ -9,7 +9,9 @@
         [% UNLESS forum.settings.can_post_threads AND forum.settings.can_post_threads == 'N' %]
         <li><a href='[% forum.forum_url %]/topic/new'><span>[% c.loc("New Topic") %]</span></a></li>
         [% END %]
+        [% UNLESS forum.settings.can_post_polls AND forum.settings.can_post_polls == 'N' %]
         <li><a href='[% forum.forum_url %]/poll/new'><span>[% c.loc("New Poll") %]</span></a></li>
+        [% END %]
         <li class="ui-tabs-selected"><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
     </ul>
     <div class="ui-tabs-container">

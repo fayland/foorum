@@ -19,7 +19,9 @@ END; %]
         [% UNLESS forum.settings.can_post_threads AND forum.settings.can_post_threads == 'N' %]
         <li class="ui-tabs-selected"><a href='[% forum.forum_url %]/topic/new'><span>[% c.loc("New Topic") %]</span></a></li>
         [% END %]
+        [% UNLESS forum.settings.can_post_polls AND forum.settings.can_post_polls == 'N' %]
         <li><a href='[% forum.forum_url %]/poll/new'><span>[% c.loc("New Poll") %]</span></a></li>
+        [% END %]
         <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
     </ul>
     <div class="ui-tabs-container">
@@ -49,7 +51,7 @@ END; %]
   [% IF c.form.error('title') %]title should be 1-80 chars.[% END %]
   </td></tr>
   <tr class='forum2'><td align="right">[% c.loc("Formatter") %]</td>
-    <td><input type='radio' name='formatter' value='ubb' checked='yes' onclick="javascript:switch_formatter()" />UBB &nbsp; <input type='radio' name='formatter' value='textile' onclick="javascript:switch_formatter()" />Textile &nbsp; <input type='radio' name='formatter' value='wiki' onclick="javascript:switch_formatter()" />Wiki &nbsp; <input type='radio' name='formatter' value='pod' onclick="javascript:switch_formatter()" />Pod &nbsp; <input type='radio' name='formatter' value='plain' onclick="javascript:switch_formatter()" />Plain &nbsp; </td>
+    <td><input type='radio' name='formatter' value='ubb' checked='yes' onclick="javascript:switch_formatter()" />UBB &nbsp; <input type='radio' name='formatter' value='textile' onclick="javascript:switch_formatter()" />Textile &nbsp; <input type='radio' name='formatter' value='wiki' onclick="javascript:switch_formatter()" />Wiki &nbsp; <input type='radio' name='formatter' value='pod' onclick="javascript:switch_formatter()" />Pod &nbsp; <input type='radio' name='formatter' value='plain' onclick="javascript:switch_formatter()" />Plain &nbsp;[% IF roles.site.admin %] <input type='radio' name='formatter' value='html' onclick="javascript:switch_formatter()" />HTML &nbsp;[% END %] </td>
   </tr>
   <tr class='forum1'>
     <td align='center' valign='middle'>

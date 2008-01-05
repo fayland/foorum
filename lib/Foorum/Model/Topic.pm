@@ -105,7 +105,7 @@ sub remove {
     $c->model('Forum')->update(
         $c,
         $forum_id,
-        {   total_topics  => \'total_topics - 1',
+        {   total_topics  => \"total_topics - 1",
             last_post_id  => $last_post_id,
             total_replies => \"total_replies - $total_replies",
         }

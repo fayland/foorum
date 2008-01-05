@@ -20,7 +20,6 @@ sub default : Private {
     my $page = get_page_from_url( $c->req->path );
     my $rows = ($rss) ? 10 : 20;
 
-    # XXX? protect private forum
     my $hit_rs = $c->model('DBIC')->resultset('Hit')->search(
         undef,
         {   rows     => $rows,
@@ -30,6 +29,7 @@ sub default : Private {
     );
 
     my @objects;
+    my %forum_policy;
     while ( my $rec = $hit_rs->next ) {
         my $object = $c->model('Object')->get_object_by_type_id(
             $c,
@@ -38,6 +38,15 @@ sub default : Private {
             }
         );
         next unless ($object);
+
+        # protect from private forum
+        my $forum_id = $object->{forum_id};
+        unless ( exists $forum_policy{$forum_id} ) {
+            my $forum = $c->model('Forum')->get( $c, $forum_id );
+            $forum_policy{$forum_id} = ($forum) ? $forum->{policy} : 'private';
+        }
+        next if ( $forum_policy{$forum_id} ne 'public' );
+
         $object->{hit_rs} = $rec;
         push @objects, $object;
     }

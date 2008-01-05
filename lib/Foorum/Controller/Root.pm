@@ -63,7 +63,7 @@ sub index : Private {
     $c->forward( 'Foorum::Controller::Forum', 'board' );
 }
 
-sub end : ActionClass('PathLogger') {
+sub end : ActionClass('+Foorum::Action::PathLogger') {
     my ( $self, $c ) = @_;
 
     # check $c->error;

@@ -72,6 +72,7 @@ sub filter_format {
         $tags{link} = $linksub;
         $text = Text::GooglewikiFormat::format( $text, \%tags );
     } elsif ( $format eq 'html' ) {
+
         # do nothing? XXX? should we linebreak HTML?
     } else {
         $text =~ s/&/&amp;/gs;    # no_html

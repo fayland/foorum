@@ -1,4 +1,4 @@
-package Catalyst::Action::PathLogger;
+package Foorum::Action::PathLogger;
 
 use strict;
 use warnings;
@@ -15,6 +15,9 @@ sub execute {
     $c->model('Log')->log_path( $c, $loadtime );
 }
 
+1;
+__END__
+
 =pod
 
 =head2 AUTHOR
@@ -22,5 +25,3 @@ sub execute {
 Fayland Lam <fayland at gmail.com>
 
 =cut
-
-1;

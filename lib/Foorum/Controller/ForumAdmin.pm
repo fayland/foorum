@@ -93,35 +93,47 @@ sub basic : Chained('forum_for_admin') Args(0) {
     $description = encodeHTML($description);
 
     # insert data into table.
-    
+
     # 1, forum settings
     my $can_post_threads = $c->req->param('can_post_threads');
     $can_post_threads = 'Y' unless ( $can_post_threads eq 'N' );
     my $can_post_replies = $c->req->param('can_post_replies');
     $can_post_replies = 'Y' unless ( $can_post_replies eq 'N' );
+    my $can_post_polls = $c->req->param('can_post_polls');
+    $can_post_polls = 'Y' unless ( $can_post_polls eq 'N' );
+
     # delete before create
     $c->model('DBIC')->resultset('ForumSettings')->search(
         {   forum_id => $forum_id,
-            type    => { 'IN', [ 'can_post_threads', 'can_post_replies' ] },
+            type =>
+                { 'IN', [ 'can_post_threads', 'can_post_replies', 'can_post_polls' ] },
         }
     )->delete;
     if ( $can_post_threads eq 'N' ) {    # don't store 'Y' because it's default
         $c->model('DBIC')->resultset('ForumSettings')->create(
             {   forum_id => $forum_id,
-                type    => 'can_post_threads',
-                value   => 'N',
+                type     => 'can_post_threads',
+                value    => 'N',
             }
         );
     }
     if ( $can_post_replies eq 'N' ) {
         $c->model('DBIC')->resultset('ForumSettings')->create(
             {   forum_id => $forum_id,
-                type    => 'can_post_replies',
-                value   => 'N',
+                type     => 'can_post_replies',
+                value    => 'N',
             }
         );
     }
-    
+    if ( $can_post_polls eq 'N' ) {
+        $c->model('DBIC')->resultset('ForumSettings')->create(
+            {   forum_id => $forum_id,
+                type     => 'can_post_polls',
+                value    => 'N',
+            }
+        );
+    }
+
     # 2, forum table
     my $policy = ( $private == 1 ) ? 'private' : 'public';
     my @extra_update;
@@ -272,11 +284,12 @@ sub announcement : Chained('forum_for_admin') Args(0) {
     my $forum    = $c->stash->{forum};
     my $forum_id = $forum->{forum_id};
 
-    my $announce = $c->model('DBIC::Comment')->find(
+    my $announce = $c->model('DBIC::Comment')->search(
         {   object_id   => $forum_id,
             object_type => 'announcement',
-        }
-    );
+        },
+        { columns => [ 'title', 'text', 'formatter' ] }
+    )->first;
 
     unless ( $c->req->method eq 'POST' ) {
         $c->stash(
@@ -296,14 +309,18 @@ sub announcement : Chained('forum_for_admin') Args(0) {
     if ( length($text) and length($title) ) {
         if ($announce) {
             $title = encodeHTML($title);
-            $announce->update(
+            $c->model('DBIC')->resultset('Comment')->search(
+                {   object_id   => $forum_id,
+                    object_type => 'announcement',
+                }
+                )->update(
                 {   text      => $text,
-                    update_on => \"NOW()",
+                    update_on => \"NOW()",            #"
                     author_id => $c->user->user_id,
                     title     => $title,
                     formatter => $formatter,
                 }
-            );
+                );
         } else {
             $c->model('Comment')->create(
                 $c,
@@ -323,6 +340,8 @@ sub announcement : Chained('forum_for_admin') Args(0) {
             }
         )->delete;
     }
+
+    $c->cache->remove("forum|announcement|forum_id=$forum_id");
 
     $c->res->redirect( $forum->{forum_url} );
 }

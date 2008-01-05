@@ -3,6 +3,7 @@ package Foorum::Model::Forum;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
+use Foorum::Formatter qw/filter_format/;
 
 sub get {
     my ( $self, $c, $forum_code ) = @_;
@@ -48,20 +49,20 @@ sub get {
             return unless ($forum);
 
             # get forum settings
-            my $settings_rs = $c->model('DBIC')->resultset('ForumSettings')->search( {
-                forum_id => $forum_id
-            } );
-            my $settings = { # default
+            my $settings_rs = $c->model('DBIC')->resultset('ForumSettings')
+                ->search( { forum_id => $forum_id } );
+            my $settings = {    # default
                 can_post_threads => 'Y',
                 can_post_replies => 'Y',
+                can_post_polls   => 'Y'
             };
-            while (my $r = $settings_rs->next) {
-                $settings->{$r->type} = $r->value;
+            while ( my $r = $settings_rs->next ) {
+                $settings->{ $r->type } = $r->value;
             }
 
             # set cache
             $forum = $forum->{_column_data};    # hash for cache
-            $forum->{settings}  = $settings;
+            $forum->{settings} = $settings;
             $forum->{forum_url} = $self->get_forum_url( $c, $forum );
             $c->cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
         }
@@ -183,7 +184,7 @@ sub merge_forums {
     my $total_members = $old_forum->total_members;
     my @extra_cols;
     if ( $new_forum->policy eq 'private' ) {
-        @extra_cols = ( 'total_members', \"total_members + $total_members" );
+        @extra_cols = ( 'total_members', \"total_members + $total_members" );    #"
     }
     $c->model('DBIC::Forum')->search( { forum_id => $to_id, } )->update(
         {   total_topics  => \"total_topics  + $total_topics",
@@ -213,6 +214,37 @@ sub merge_forums {
     $c->model('Upload')->change_for_forum( $c, $info );
 
     return 1;
+}
+
+sub get_announcement {
+    my ( $self, $c, $forum ) = @_;
+
+    my $forum_id = $forum->{forum_id};
+
+    my $memkey = "forum|announcement|forum_id=$forum_id";
+    my $memval = $c->cache->get($memkey);
+    if ( $memval and $memval->{value} ) {
+        $memval = $memval->{value};
+    } else {
+        my $rs           = $c->model('DBIC')->resultset('Comment');
+        my $announcement = $rs->search(
+            {   object_type => 'announcement',
+                object_id   => $forum_id,
+            },
+            { columns => [ 'title', 'text', 'formatter' ], }
+        )->first;
+
+        # filter format by Foorum::Filter
+        if ($announcement) {
+            $announcement = $announcement->{_column_data};
+            $announcement->{text} = filter_format( $announcement->{text},
+                { format => $announcement->{formatter} } );
+        }
+        $memval = $announcement;
+        $c->cache->set( $memkey, { value => $memval, 1 => 2 } );
+    }
+
+    return $memval;
 }
 
 1;

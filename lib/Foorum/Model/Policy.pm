@@ -153,27 +153,27 @@ sub create_user_role {
             role    => $info->{role},
         }
     );
-    
-    if ($info->{role} eq 'pending' and $info->{field} =~ /^\d+$/) {
-        my $forum_admin = $self->get_forum_admin($c, $info->{field});
-        my $requestor   = $c->model('User')->get( $c, { user_id => $info->{user_id} } );
-        
+
+    if ( $info->{role} eq 'pending' and $info->{field} =~ /^\d+$/ ) {
+        my $forum_admin = $self->get_forum_admin( $c, $info->{field} );
+        my $requestor = $c->model('User')->get( $c, { user_id => $info->{user_id} } );
+
         my $forum;
-        if ($c->stash->{forum} and $c->stash->{forum}->{forum_id} == $info->{field}) {
+        if ( $c->stash->{forum} and $c->stash->{forum}->{forum_id} == $info->{field} ) {
             $forum = $c->stash->{forum};
         } else {
-            $forum = $c->model('Forum')->get($c, $info->{field});
+            $forum = $c->model('Forum')->get( $c, $info->{field} );
         }
-        
+
         # Send Notification Email
         $c->model('Email')->create(
             $c,
             {   template => 'forum_pending_request',
                 to       => $forum_admin->{email},
                 stash    => {
-                    rept    => $forum_admin,
-                    from    => $requestor,
-                    forum   => $forum,
+                    rept  => $forum_admin,
+                    from  => $requestor,
+                    forum => $forum,
                 }
             }
         );
