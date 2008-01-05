@@ -1,9 +1,13 @@
 package Foorum::Scraper::MailMan;
 
+# directly copied from mailman-archive-to-rss
+# http://taint.org/mmrss/
+# Thanks, Adam Shand
+
 use strict;
 use warnings;
 use vars qw/$VERSION/;
-use HTML::TokeParser::Simple;
+use HTML::TokeParser;
 use LWP::Simple;
 $VERSION = '0.01';
 
@@ -21,27 +25,64 @@ sub scraper {
     unless ($html) {
         return;
     }
+    
+    my $urlbase = $url;
+    $urlbase =~ s,/[^/]+$,/,gs;
+    $self->{url_base} = $urlbase;
 
-    my $ret = $self->extract($html);
+    my $ret = $self->extract_from_thread($html);
+    
+    foreach (@$ret) {
+        my $details = get($_->{url});
+        if ($details) {
+            $_->{text} = $self->extract_from_message($details);
+        }
+    }
+    
     return $ret;
 }
 
 sub extract_from_thread {
     my ( $self, $html ) = @_;
 
-    my $ret;
+    my $stream = HTML::TokeParser->new( \$html ) or die $!;
+    
+    my @posts      = ();
+    my $nest       = 0;
+    while ( my $tag = $stream->get_tag("li", "ul", "/ul") ) {
 
-    my $p = HTML::TokeParser::Simple->new( string => $html );
-    while ( my $token = $p->get_token ) {
-        if ( my $tag = $token->get_tag ) {
-            if ( $tag eq 'li' ) {
+        $tag = $stream->get_tag('a');
+        my $url = $tag->[1]{href} || "--";
 
-                # XXX? TODO
+        # only follow Mailman-style numeric links
+        next unless ( $url =~ /(\d+|msg\d+)\.html$/ );
+        
+        $url = $self->{url_base} . $url;
+        
+        my $headline = $stream->get_trimmed_text('/a');
+        $headline =~ s/&/&amp;/g;
+        $headline =~ s/</&lt;/g;
+        $headline =~ s/>/&gt;/g;
+        $headline =~ s/^\s*\[\w+\]\s*//;
+        
+        $tag = $stream->get_tag('i');
+        my $who = $stream->get_trimmed_text('/i');
+        $who =~ s/<.*?>//g;
+        $who =~ s/\&lt;.*?\&gt;//ig;
+        $who =~ s/\&/\&amp;/g;
+        $who =~ s/</\&lt;/g;
+        $who =~ s/>/\&gt;/g;
+        
+        push(
+            @posts,
+            {   url       => $url,
+                title     => $headline,
+                who       => $who,
             }
-        }
+        );
     }
 
-    return $ret;
+    return \@posts;
 }
 
 sub extract_from_date {
@@ -52,23 +93,14 @@ sub extract_from_date {
 sub extract_from_message {
     my ( $self, $html ) = @_;
 
-    my $text;
-    my $p = HTML::TokeParser::Simple->new( string => $html );
-    while ( my $token = $p->get_token ) {
-        if ( $token->is_start_tag( 'pre' ) ) {
-            $p->{start} = 1;
-        } elsif ($p->{start}) {
-            $text .= $token->as_is();
-        }
-        last if ( $token->is_end_tag( 'pre' ) );
-    }
+    my $stream = HTML::TokeParser->new( \$html ) or die $!;
+
+    my $tag  = $stream->get_tag('pre');
+    my $text = $stream->get_text('/pre');
+
     $text = mail_body_to_abstract($text);
     return $text;
 }
-
-# directly copied from mailman-archive-to-rss
-# http://taint.org/mmrss/
-# Thanks, Adam Shand
 
 sub mail_body_to_abstract {
     my $text = shift;

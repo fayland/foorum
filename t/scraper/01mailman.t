@@ -12,7 +12,7 @@ BEGIN {
         or plan skip_all =>
         "LWP::Simple is required for this test";
     
-    plan tests => 1;
+    plan tests => 2;
 }
 
 use Foorum::Scraper::MailMan;
@@ -31,3 +31,15 @@ my $ret = $mailman->extract_from_message($html);
 
 like($ret, qr/everything is nothing/, 'extract_from_message ok');
 
+open($fh, '<', "$Bin/01mailman/thread.html");
+local $/ = undef;
+flock($fh, 2);
+$html = <$fh>;
+close($fh);
+
+$mailman->{url_base} = '';
+$ret = $mailman->extract_from_thread($html);
+is(scalar @$ret, 6, 'extract_from_thread OK');
+
+#use Data::Dumper;
+#diag(Dumper($ret));
