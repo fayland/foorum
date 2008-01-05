@@ -22,7 +22,7 @@ requires 'Cache::FileCache';
 requires 'Catalyst::Plugin::Cache';
 requires 'Catalyst::Plugin::PageCache';
 requires 'Set::Object';
-requires 'Catalyst::Plugin::Authentication';
+requires 'Catalyst::Plugin::Authentication' => '0.10004';
 requires 'Catalyst::Plugin::Authentication::Credential::Password';
 requires 'Catalyst::Authentication::Store::FromSub::Hash' => '0.06';
 requires 'Catalyst::Plugin::Session';

@@ -5,6 +5,7 @@ This file documents the revision history for Foorum.
     - use jquery.lightbox for comments photos
     - options for create threads or replies
     - send request email for private forum
+    - add require Authentication verion (thanks for viacheslav.t)
 
 0.1.1 Sun Dec 30 16:19:11 2007
     - use Perl::Critic to fix some errors, bin/misc/perlcritic.pl
