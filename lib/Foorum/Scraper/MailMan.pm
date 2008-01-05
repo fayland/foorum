@@ -56,6 +56,7 @@ sub extract_from_thread {
 
         # only follow Mailman-style numeric links
         next unless ( $url =~ /(\d+|msg\d+)\.html$/ );
+        my $msg_id = $1; $msg_id =~ s/\D+//isg;
         
         $url = $self->{url_base} . $url;
         
@@ -78,6 +79,7 @@ sub extract_from_thread {
             {   url       => $url,
                 title     => $headline,
                 who       => $who,
+                msg_id    => $msg_id,
             }
         );
     }
