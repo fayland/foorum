@@ -25,7 +25,7 @@ flock($fh, 2);
 my $html = <$fh>;
 close($fh);
 
-my $ret = $mailman->extract_from_message($html);
+my (undef, $ret) = $mailman->extract_from_message($html);
 
 #diag($ret);
 

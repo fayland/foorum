@@ -35,7 +35,7 @@ sub scraper {
     foreach (@$ret) {
         my $details = get($_->{url});
         if ($details) {
-            $_->{text} = $self->extract_from_message($details);
+            ($_->{when}, $_->{text}) = $self->extract_from_message($details);
         }
     }
     
@@ -95,11 +95,14 @@ sub extract_from_message {
 
     my $stream = HTML::TokeParser->new( \$html ) or die $!;
 
-    my $tag  = $stream->get_tag('pre');
+    my $tag  = $stream->get_tag('i');
+    my $when = $stream->get_text('/i');
+
+    $tag  = $stream->get_tag('pre');
     my $text = $stream->get_text('/pre');
 
     $text = mail_body_to_abstract($text);
-    return $text;
+    return ($when, $text);
 }
 
 sub mail_body_to_abstract {
