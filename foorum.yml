@@ -102,6 +102,7 @@ function_on:
   register: 1
   activation: 1
   create_forum: 1
+  scraper: 0
 
 site:
   domain: 'http://www.foorumbbs.com/'

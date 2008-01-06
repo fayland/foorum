@@ -7,7 +7,8 @@ use Foorum::Utils qw/get_page_from_url encodeHTML/;
 use Foorum::Formatter qw/filter_format/;
 use Foorum::ExternalUtils qw/theschwartz/;
 use Data::Page;
-use List::MoreUtils qw/uniq first_index/;
+use List::MoreUtils qw/uniq first_index part/;
+use List::Util qw/first/;
 use Scalar::Util qw/blessed/;
 
 sub get_comments_by_object {
@@ -18,31 +19,119 @@ sub get_comments_by_object {
     my $page        = $info->{page} || get_page_from_url( $c->req->path );
     my $rows        = $info->{rows} || $c->config->{per_page}->{topic} || 10;
 
+    # 'thread' or 'flat'
+    my $view_mode;
+    ($view_mode) = ( $c->req->path =~ /\/view_mode=(thread|flat)(\/|$)/ );
+
+    #$view_mode ||= ($object_type eq 'topic') ? 'thread' : 'flat';
+    $view_mode ||= 'thread';    # XXX? Temp
+
     my @comments = $self->get_all_comments_by_object( $c, $object_type, $object_id );
 
     if ( $object_type eq 'user_profile' ) {
         @comments = reverse(@comments);
     }
 
-    # when url contains /comment_id=$comment_id/
-    # we need show that page including $comment_id
-    if ( scalar @comments > $rows and $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ ) {
-        my $comment_id = $1;
-        my $first_index = first_index { $_->{comment_id} == $comment_id } @comments;
-        $page = int( $first_index / $rows ) + 1 if ($first_index);
-    }
-
     my $pager = Data::Page->new();
     $pager->current_page($page);
     $pager->entries_per_page($rows);
-    $pager->total_entries( scalar @comments );
 
-    @comments = splice( @comments, ( $page - 1 ) * $rows, $rows );
+    if ( $view_mode eq 'flat' ) {
+
+        # when url contains /comment_id=$comment_id/
+        # we need show that page including $comment_id
+        if ( scalar @comments > $rows and $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ ) {
+            my $comment_id = $1;
+            my $first_index = first_index { $_->{comment_id} == $comment_id } @comments;
+            $page = int( $first_index / $rows ) + 1 if ($first_index);
+            $pager->current_page($page);
+        }
+        $pager->total_entries( scalar @comments );
+        @comments = splice( @comments, ( $page - 1 ) * $rows, $rows );
+    } else {    # thread mode
+                # top_comments: the top level comments
+        my ( @top_comments, @result_comments );
+
+        # for topic. reply_to == 0 means the topic comments
+        #            reply_to == topic.comments[0].comment_id means top level.
+        if ( $object_type eq 'topic' ) {
+            ( my $top_comments ) = part {
+                ( $_->{reply_to} == 0 or $_->{reply_to} == $comments[0]->{comment_id} )
+                    ? 0
+                    : 1;
+            }
+            @comments;
+            @top_comments = @$top_comments;
+        } else {
+            ( my $top_comments ) = part {
+                $_->{reply_to} == 0 ? 0 : 1;
+            }
+            @comments;
+            @top_comments = @$top_comments;
+        }
+
+        # when url contains /comment_id=$comment_id/
+        # we need show that page including $comment_id
+        if ( scalar @top_comments > $rows
+            and $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ ) {
+            my $comment_id = $1;
+
+            # need to find out the top comment's comment_id
+            my $top_comment = first { $_->{comment_id} == $comment_id } @comments;
+            while (1) {
+                my $reply_to = $top_comment->{reply_to};
+                $comment_id = $top_comment->{comment_id};
+                last if ( $reply_to == 0 );
+                last
+                    if ($object_type eq 'topic'
+                    and $reply_to == $comments[0]->{comment_id} );
+                $top_comment = first { $_->{comment_id} == $reply_to } @comments;
+            }
+            my $first_index
+                = first_index { $_->{comment_id} == $comment_id } @top_comments;
+            $page = int( $first_index / $rows ) + 1 if ($first_index);
+            $pager->current_page($page);
+        }
+
+        # paged by top_comments
+        $pager->total_entries( scalar @top_comments );
+        @top_comments = splice( @top_comments, ( $page - 1 ) * $rows, $rows );
+
+        foreach (@top_comments) {
+            $_->{level} = 0;
+            push @result_comments, $_;
+            next
+                if ($object_type eq 'topic'
+                and $_->{comment_id} == $comments[0]->{comment_id} );
+
+            # get children, 10 lines below
+            $self->get_children_comments( $_->{comment_id}, 1, \@comments,
+                \@result_comments );
+        }
+        @comments = @result_comments;
+    }
 
     @comments = $self->prepare_comments_for_view( $c, @comments );
 
     $c->stash->{comments}       = \@comments;
     $c->stash->{comments_pager} = $pager;
+}
+
+sub get_children_comments {
+    my ( $self, $reply_to, $level, $comments, $result_comments ) = @_;
+
+    my ( $tmp_comments, $left_comments ) = part {
+        $_->{reply_to} == $reply_to ? 0 : 1;
+    }
+    @$comments;
+    return unless ($tmp_comments);
+
+    foreach (@$tmp_comments) {
+        $_->{level} = $level;
+        push @$result_comments, $_;
+        $self->get_children_comments( $_->{comment_id}, $level + 1, $left_comments,
+            $result_comments );
+    }
 }
 
 sub get_all_comments_by_object {
@@ -187,7 +276,55 @@ sub create {
     return $comment;
 }
 
-sub remove {
+sub remove_by_object {
+    my ( $self, $c, $object_type, $object_id ) = @_;
+
+    my $comment_rs = $c->model('DBIC::Comment')->search(
+        {   object_type => $object_type,
+            object_id   => $object_id,
+        }
+    );
+    my $delete_counts = 0;
+    while ( my $comment = $comment_rs->next ) {
+        $self->remove_one_item( $c, $comment );
+        $delete_counts++;
+    }
+
+    my $cache_key = "comment|object_type=$object_type|object_id=$object_id";
+    $c->cache->remove($cache_key);
+
+    return $delete_counts;
+}
+
+sub remove_children {
+    my ( $self, $c, $comment ) = @_;
+
+    if ( blessed $comment ) {
+        $comment = $comment->{_column_data};
+    }
+
+    my $comment_id  = $comment->{comment_id};
+    my $object_type = $comment->{object_type};
+    my $object_id   = $comment->{object_id};
+
+    my @comments = $self->get_all_comments_by_object( $c, $object_type, $object_id );
+    my @result_comments;
+    $self->get_children_comments( $comment_id, 1, \@comments, \@result_comments );
+
+    my $delete_counts = 1;
+    $self->remove_one_item( $c, $comment );
+    foreach (@result_comments) {
+        $self->remove_one_item( $c, $_ );
+        $delete_counts++;
+    }
+
+    my $cache_key = "comment|object_type=$object_type|object_id=$object_id";
+    $c->cache->remove($cache_key);
+
+    return $delete_counts;
+}
+
+sub remove_one_item {
     my ( $self, $c, $comment ) = @_;
 
     if ( blessed $comment ) {
@@ -200,10 +337,7 @@ sub remove {
     $c->model('DBIC::Comment')->search( { comment_id => $comment->{comment_id} } )
         ->delete;
 
-    my $object_type = $comment->{object_type};
-    my $object_id   = $comment->{object_id};
-    my $cache_key   = "comment|object_type=$object_type|object_id=$object_id";
-    $c->cache->remove($cache_key);
+    return 1;
 }
 
 1;

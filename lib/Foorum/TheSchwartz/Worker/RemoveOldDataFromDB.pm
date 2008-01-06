@@ -14,7 +14,7 @@ sub work {
     my $class = shift;
     my TheSchwartz::Job $job = shift;
 
-    my @args = $job->arg;
+    my ($args) = $job->arg;
 
     my $schema = schema();
 

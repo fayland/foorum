@@ -1,6 +1,6 @@
 [% FOREACH comment IN comments %]
 <a name="c[% comment.comment_id %]"></a>
-<div class='multi'>
+<div class='multi'[% IF comment.level %]style="margin-left: [% comment.level * 15 %]px"[% END %]>
 <table align='center'>
 <tr class='reply[% IF loop.count mod 2;'2';ELSE;'1';END; %]'>
     <td valign='top' width='157'>
@@ -35,7 +35,7 @@
        [% IF c.user_exists AND comment.author.user_id == c.user.user_id %]
        <a href='/comment/[% comment.comment_id %]/edit'><img src='[% c.config.dir.images %]/edit.gif' width='16' height='15' align='absmiddle'> Edit</a>
        [% END %]
-       [% IF c.user_exists AND (roles.is_moderator OR comment.author.user_id == c.user.user_id) %]
+       [% IF c.user_exists AND roles.is_moderator %]
        <a href='/comment/[% comment.comment_id %]/delete'><img src='[% c.config.dir.images %]/del.gif' width='16' height='15' align='absmiddle'> Delete</a>
        [% END %]
        <img src='[% c.config.dir.images %]/posttime.gif' width='16' height='15' align='absmiddle'> <span class='date'>[% comment.post_on %]</span>

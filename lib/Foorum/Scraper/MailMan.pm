@@ -25,20 +25,20 @@ sub scraper {
     unless ($html) {
         return;
     }
-    
+
     my $urlbase = $url;
     $urlbase =~ s,/[^/]+$,/,gs;
     $self->{url_base} = $urlbase;
 
     my $ret = $self->extract_from_thread($html);
-    
+
     foreach (@$ret) {
-        my $details = get($_->{url});
+        my $details = get( $_->{url} );
         if ($details) {
-            ($_->{when}, $_->{text}) = $self->extract_from_message($details);
+            ( $_->{when}, $_->{text} ) = $self->extract_from_message($details);
         }
     }
-    
+
     return $ret;
 }
 
@@ -46,26 +46,27 @@ sub extract_from_thread {
     my ( $self, $html ) = @_;
 
     my $stream = HTML::TokeParser->new( \$html ) or die $!;
-    
-    my @posts      = ();
-    my $nest       = 0;
-    while ( my $tag = $stream->get_tag("li", "ul", "/ul") ) {
+
+    my @posts = ();
+    my $nest  = 0;
+    while ( my $tag = $stream->get_tag( "li", "ul", "/ul" ) ) {
 
         $tag = $stream->get_tag('a');
         my $url = $tag->[1]{href} || "--";
 
         # only follow Mailman-style numeric links
         next unless ( $url =~ /(\d+|msg\d+)\.html$/ );
-        my $msg_id = $1; $msg_id =~ s/\D+//isg;
-        
+        my $msg_id = $1;
+        $msg_id =~ s/\D+//isg;
+
         $url = $self->{url_base} . $url;
-        
+
         my $headline = $stream->get_trimmed_text('/a');
         $headline =~ s/&/&amp;/g;
         $headline =~ s/</&lt;/g;
         $headline =~ s/>/&gt;/g;
         $headline =~ s/^\s*\[\w+\]\s*//;
-        
+
         $tag = $stream->get_tag('i');
         my $who = $stream->get_trimmed_text('/i');
         $who =~ s/<.*?>//g;
@@ -73,13 +74,13 @@ sub extract_from_thread {
         $who =~ s/\&/\&amp;/g;
         $who =~ s/</\&lt;/g;
         $who =~ s/>/\&gt;/g;
-        
+
         push(
             @posts,
-            {   url       => $url,
-                title     => $headline,
-                who       => $who,
-                msg_id    => $msg_id,
+            {   url    => $url,
+                title  => $headline,
+                who    => $who,
+                msg_id => $msg_id,
             }
         );
     }
@@ -100,11 +101,11 @@ sub extract_from_message {
     my $tag  = $stream->get_tag('i');
     my $when = $stream->get_text('/i');
 
-    $tag  = $stream->get_tag('pre');
+    $tag = $stream->get_tag('pre');
     my $text = $stream->get_text('/pre');
 
-    $text = mail_body_to_abstract($text);
-    return ($when, $text);
+    #$text = mail_body_to_abstract($text);
+    return ( $when, $text );
 }
 
 sub mail_body_to_abstract {

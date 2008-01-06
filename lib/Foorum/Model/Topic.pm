@@ -62,16 +62,10 @@ sub remove {
     $c->cache->remove("topic|topic_id=$topic_id");
 
     # delete comments with upload
-    my $total_replies = -1;    # since one comment is topic indeed.
-    my $comment_rs = $c->model('DBIC::Comment')->search(
-        {   object_type => 'topic',
-            object_id   => $topic_id,
-        }
-    );
-    while ( my $comment = $comment_rs->next ) {
-        $c->model('Comment')->remove( $c, $comment );
-        $total_replies++;
-    }
+    my $total_replies = $c->model('Comment')->remove_by_object( $c, 'topic', $topic_id );
+
+    # since one comment is topic indeed. so total_replies = delete_counts - 1
+    $total_replies-- if ( $total_replies > 0 );
 
     # delete star/share
     $c->model('DBIC::Star')->search(

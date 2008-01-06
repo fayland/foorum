@@ -30,8 +30,9 @@ sub post : Local {
         = $c->model('Object')->get_object_from_url( $c, $path );
     return $c->res->redirect($path) unless ( $object_id and $object_type );
 
+    my $forum;
     if ($forum_id) {    # maybe that's a ForumCode
-        my $forum = $c->controller('Get')->forum( $c, $forum_id );
+        $forum = $c->controller('Get')->forum( $c, $forum_id );
         $forum_id = $forum->{forum_id};
 
         if (    $forum->{settings}->{can_post_replies}
@@ -93,6 +94,34 @@ sub post : Local {
             formatter   => $formatter,
         }
     );
+
+    # update object after create
+    if ( $object_type eq 'topic' ) {
+
+        # update forum and topic
+        $c->model('Forum')->update(
+            $c,
+            $forum_id,
+            {   total_replies => \'total_replies + 1',    #'
+                last_post_id  => $object_id,
+            }
+        );
+        $c->model('Topic')->update(
+            $c,
+            $object_id,
+            {   total_replies    => \"total_replies + 1",
+                last_update_date => \"NOW()",
+                last_updator_id  => $c->user->user_id,
+            }
+        );
+    }
+
+    # update user stat
+    $c->model('User')->update( $c, $c->user, { replies => \"replies + 1" } );    #"
+
+    if ($forum_id) {
+        $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
+    }
 
     # go this comment
     my $comment_id = $new_comment->comment_id;
@@ -375,9 +404,12 @@ sub delete : LocalRegex('^(\d+)/delete$') {
     }
 
     # delete comment
-    $c->model('Comment')->remove( $c, $comment );
+    my $delete_counts = 0;
+    unless ( $object_type eq 'topic' and $comment->{reply_to} == 0 ) {
+        $delete_counts = $c->model('Comment')->remove_children( $c, $comment );
+    }
 
-    if ( $object_type eq 'topic' ) {
+    if ( $object_type eq 'topic' and $comment->{reply_to} != 0 ) {
 
         # update topic
         my $lastest = $c->model('DBIC')->resultset('Comment')->find(
@@ -402,14 +434,15 @@ sub delete : LocalRegex('^(\d+)/delete$') {
         $c->model('Topic')->update(
             $c,
             $object_id,
-            {   total_replies => \"total_replies - 1",    #"
+            {   total_replies => \"total_replies - $delete_counts",
                 @extra_cols,
             }
         );
 
         # update forum
         $c->model('Forum')
-            ->update( $c, $forum_id, { total_replies => \'total_replies - 1' } );    #'
+            ->update( $c, $forum_id,
+            { total_replies => \"total_replies - $delete_counts" } );
     }
 
     $c->forward(

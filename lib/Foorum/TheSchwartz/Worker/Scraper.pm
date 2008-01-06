@@ -1,0 +1,199 @@
+package Foorum::TheSchwartz::Worker::Scraper;
+
+use strict;
+use warnings;
+use TheSchwartz::Job;
+use base qw( TheSchwartz::Worker );
+use Foorum::ExternalUtils qw/schema error_log cache/;
+use Foorum::Scraper::MailMan;
+use Foorum::Utils qw/encodeHTML/;
+use POSIX qw(strftime);
+use File::Spec;
+use YAML qw/LoadFile/;
+my ( undef, $path ) = File::Spec->splitpath(__FILE__);
+my $scraper_config = LoadFile("$path/../../../../conf/scraper.yml");
+
+sub work {
+    my $class = shift;
+    my TheSchwartz::Job $job = shift;
+
+    # if not setted, just return
+    unless ($scraper_config) {
+        return $job->completed();
+    }
+
+    my ($args) = $job->arg;
+    my $schema = schema();
+    my $cache  = cache();
+    my $log_text;
+
+    my @gmtimes = gmtime( time() - 86500 );                    # check one day before
+    my $postfix = strftime( '%Y-%B/thread.html', @gmtimes );
+    my $scraper = new Foorum::Scraper::MailMan();
+
+    my @mailmans = @{ $scraper_config->{scraper}->{mailman} };
+    foreach my $mailman (@mailmans) {
+        $log_text .= "Working on $mailman->{name}\n";
+        next unless ( $mailman->{forum_id} );
+        my $forum_id = $mailman->{forum_id};
+        my $user_id  = $mailman->{user_id};
+        my $name     = $mailman->{name};
+        my $last_msg_id
+            = get_last_scraped_msg_id( $schema, $forum_id, "scraper-mailman-$name" );
+        next if ( $last_msg_id == -1 );    # non-exists
+        my $scraper_url = $mailman->{url} . $postfix;
+
+        # scraper as a hash of array
+        my $ret = $scraper->scraper($scraper_url);
+
+        # group by title
+        my %title_related;
+        foreach (@$ret) {
+            if ( exists $title_related{ $_->{title} } ) {
+                push @{ $title_related{ $_->{title} } }, $_;
+            } else {
+                $title_related{ $_->{title} } = [$_];
+            }
+        }
+
+        # start to skip/insert
+        foreach my $title ( keys %title_related ) {
+            $title =~ s/(^\s+|\s+$)//isg;
+            next unless ( length($title) );
+            $log_text .= "\n[title] $title : ";
+
+            my @populate_contents;
+            my @contents = @{ $title_related{$title} };
+            @contents = sort { $a->{msg_id} <=> $b->{msg_id} } @contents;
+            foreach my $content (@contents) {
+                my $msg_id = $content->{msg_id};
+                if ( $msg_id <= $last_msg_id ) {
+                    $log_text .= "Skip $msg_id, ";
+                } else {
+                    $log_text .= "Insert $msg_id, ";
+                    push @populate_contents, $content;
+                }
+            }
+            if ( scalar @populate_contents ) {
+
+                # get topic_id or create one
+                my ( $topic_id, $reply_to )
+                    = get_topic_or_create( $schema, $forum_id, $title, $user_id,
+                    scalar @populate_contents - 1 );
+                foreach my $content (@populate_contents) {
+                    my $text
+                        = qq~<p><strong>$content->{who}</strong> posted on <i>$content->{when}</i>:</p><pre>$content->{text}</pre>~;
+                    my $comment = $schema->resultset('Comment')->create(
+                        {   object_type => 'topic',
+                            object_id   => $topic_id,
+                            author_id   => $user_id,
+                            title       => $title,
+                            text        => $text,
+                            formatter   => 'html',
+                            post_on     => \'NOW()',      #'
+                            post_ip     => '127.0.0.1',
+                            reply_to    => $reply_to,
+                            forum_id    => $forum_id,
+                            upload_id   => 0,
+                        }
+                    );
+
+                    # if $reply_to == 0 means new topic
+                    # then we use the first comment's comment_id as reply_to
+                    $reply_to = $comment->comment_id if ( $reply_to == 0 );
+
+                    # update $last_msg_id so that no need to run again
+                    $last_msg_id = $content->{msg_id}
+                        if ( $content->{msg_id} > $last_msg_id );
+                }
+
+                # clear cache
+                my $cache_key = "comment|object_type=topic|object_id=$topic_id";
+                $cache->remove($cache_key);
+
+                # update last_msg_id
+                update_last_scraped_msg_id( $schema, "scraper-mailman-$name",
+                    $last_msg_id );
+            }
+        }
+    }
+
+    error_log( $schema, 'info', $log_text );
+    $job->completed();
+}
+
+sub get_last_scraped_msg_id {
+    my ( $schema, $forum_id, $name ) = @_;
+
+    my $count = $schema->resultset('Forum')->count( { forum_id => $forum_id } );
+    return -1 unless ($count);    # forum non-exists
+
+    $name = substr( $name, 0, 24 );
+    my $rs = $schema->resultset('Variables')->search(
+        {   type => 'log',
+            name => $name
+        }
+    )->first;
+    return $rs ? $rs->value : 0;
+}
+
+sub update_last_scraped_msg_id {
+    my ( $schema, $name, $value ) = @_;
+
+    $name = substr( $name, 0, 24 );
+    $schema->resultset('Variables')->search(
+        {   type => 'log',
+            name => $name,
+        }
+    )->delete;
+    $schema->resultset('Variables')->create(
+        {   type  => 'log',
+            name  => $name,
+            value => $value
+        }
+    );
+}
+
+sub get_topic_or_create {
+    my ( $schema, $forum_id, $title, $user_id, $replies_no ) = @_;
+
+    # trim 'Re:\s+'
+    $title =~ s/^Re\:\s+//isg;
+
+    my $topic = $schema->resultset('Topic')->search(
+        {   title    => { 'LIKE', $title },
+            forum_id => $forum_id,
+        },
+        { columns => ['topic_id'], }
+    )->first;
+    if ($topic) {
+        my $rs = $schema->resultset('Comment')->search(
+            {   object_type => 'topic',
+                object_id   => $topic->topic_id,
+            },
+            {   order_by => 'post_on',
+                rows     => 1,
+                page     => 1,
+                columns  => ['comment_id'],
+            }
+        )->first;
+        my $reply_to = $rs->comment_id;
+        return ( $topic->topic_id, $reply_to );
+    }
+
+    # or else, create one
+    my $topic_title = encodeHTML($title);
+    my $new_topic   = $schema->resultset('Topic')->create(
+        {   forum_id         => $forum_id,
+            title            => $topic_title,
+            author_id        => $user_id,
+            last_updator_id  => $user_id,
+            last_update_date => \"NOW()",       #"
+            hit              => 0,
+            total_replies    => $replies_no
+        }
+    );
+    return ( $new_topic->topic_id, 0 );
+}
+
+1;

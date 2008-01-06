@@ -18,8 +18,8 @@ bin\testfunction\db.pl source OK
 bin\testfunction\mail.pl source OK
 bin\testfunction\theschwartz.pl source OK
 bin\upgrade\0.1.2\up.pl source OK
-lib\Catalyst\Action\PathLogger.pm source OK
 lib\Catalyst\Plugin\Session\Store\DBIC.pm source OK
+lib\Foorum\Action\PathLogger.pm source OK
 lib\Foorum\Controller\Admin\BanIP.pm source OK
 lib\Foorum\Controller\Admin\Forum.pm source OK
 lib\Foorum\Controller\Admin\Log.pm source OK
@@ -76,11 +76,14 @@ lib\Foorum\Model\Visit.pm source OK
 lib\Foorum\Plugin\FoorumUtils.pm source OK
 lib\Foorum\ResultSet\Share.pm source OK
 lib\Foorum\ResultSet\Star.pm source OK
+lib\Foorum\Scraper\MailMan.pm source OK
 lib\Foorum\TheSchwartz\Worker\DailyChart.pm source OK
 lib\Foorum\TheSchwartz\Worker\DailyReport.pm source OK
 lib\Foorum\TheSchwartz\Worker\Hit.pm source OK
+lib\Foorum\TheSchwartz\Worker\RemoveObject.pm source OK
 lib\Foorum\TheSchwartz\Worker\RemoveOldDataFromDB.pm source OK
 lib\Foorum\TheSchwartz\Worker\ResizeProfilePhoto.pm source OK
+lib\Foorum\TheSchwartz\Worker\Scraper.pm source OK
 lib\Foorum\TheSchwartz\Worker\SendScheduledEmail.pm source OK
 lib\Foorum\TheSchwartz\Worker\SendStarredNofication.pm source OK
 lib\Foorum\Utils.pm source OK

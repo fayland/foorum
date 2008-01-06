@@ -71,6 +71,7 @@ sub default : Private {
         maintain     => $maintain,
         register     => $register,
         create_forum => $create_forum,
+        scraper      => $c->config->{function_on}->{scraper},    # keep it
     };
 
     # per page

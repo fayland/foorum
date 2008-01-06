@@ -16,9 +16,10 @@ if ( $has_proc_pid_file and $has_home_dir ) {
 
 use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
-use Foorum::ExternalUtils qw/theschwartz/;
+use Foorum::ExternalUtils qw/theschwartz config/;
 
 my $client = theschwartz();
+my $config = config();
 
 use Getopt::Long;
 my $debug  = 1;
@@ -42,6 +43,9 @@ if ($worker) {
     $cron->add_entry( "0 0 * * *",  \&run_worker, 'DailyReport' );          # daily
     $cron->add_entry( "0 0 * * *",  \&run_worker, 'DailyChart' );           # daily
     $cron->add_entry( "*/13 * * * *", \&run_worker, 'SendScheduledEmail' ); # sendmail
+    if ( $config->{function_on}->{scraper} ) {
+        $cron->add_entry( "10 1 * * *", \&run_worker, 'Scraper' );          # run everyday
+    }
     $cron->run();
 } else {
     print <<USAGE;

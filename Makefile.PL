@@ -11,6 +11,7 @@ requires 'Digest';
 requires 'Switch';
 requires 'DateTime';
 requires 'File::Path';
+requires 'List::Util';
 requires 'List::MoreUtils';
 requires 'Catalyst::View::TT';
 requires 'Catalyst::View::JSON';
@@ -56,10 +57,10 @@ requires 'Email::Send';
 recommends 'Email::Send::SMTP::TLS';
 
 # formatter
-recommends 'HTML::BBCode' => '2.00';
-recommends 'Text::Textile';
-requires   'URI::Find';
-requires   'Text::GooglewikiFormat' => '0.04';
+requires 'HTML::BBCode' => '2.00';
+requires 'Text::Textile';
+requires 'URI::Find';
+requires 'Text::GooglewikiFormat' => '0.04';
 
 # db debug
 recommends 'Catalyst::Model::DBIC::Schema::QueryLog';

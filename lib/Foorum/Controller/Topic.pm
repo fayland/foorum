@@ -148,13 +148,13 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     );
 
     # update user stat
-    $c->model('User')->update( $c, $c->user, { threads => \"threads + 1", } );
+    $c->model('User')->update( $c, $c->user, { threads => \"threads + 1", } );    #"
 
     # update forum
     $c->model('Forum')->update(
         $c,
         $forum_id,
-        {   total_topics => \'total_topics + 1',    #'
+        {   total_topics => \'total_topics + 1',                                  #'
             last_post_id => $topic->topic_id,
         }
     );
