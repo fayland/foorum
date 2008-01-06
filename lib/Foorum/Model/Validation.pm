@@ -49,7 +49,7 @@ sub validate_forum_code {
     for ($forum_code) {
         return 'HAS_BLANK' if (/\s/);
         return 'REGEX' unless (/[A-Za-z]+/s);
-        return 'REGEX' unless (/^[A-Za-z0-9\_]+$/s);
+        return 'REGEX' unless (/^[A-Za-z0-9\_\-]+$/s);
     }
 
     # forum_code_reserved
