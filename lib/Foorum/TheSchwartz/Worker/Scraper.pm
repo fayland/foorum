@@ -29,7 +29,7 @@ sub work {
     my $cache  = cache();
     my $log_text;
 
-    my @gmtimes = gmtime( time() - 86500 );                    # check one day before
+    my @gmtimes = gmtime( time() - 86400 );                    # check one day before
     my $year = $gmtimes[5] + 1900;
     my $month = $gmtimes[4] + 1;
     my $fullname_month = $FullName_months[$month];
@@ -60,6 +60,8 @@ sub work {
                 $title_related{ $_->{title} } = [$_];
             }
         }
+        
+        my $last_post_id = 0; # flag to update forum or not and set forum's last_post_id
 
         # start to skip/insert
         foreach my $title ( keys %title_related ) {
@@ -80,11 +82,11 @@ sub work {
                 }
             }
             if ( scalar @populate_contents ) {
-
                 # get topic_id or create one
                 my ( $topic_id, $reply_to )
                     = get_topic_or_create( $schema, $forum_id, $title, $user_id,
                     scalar @populate_contents - 1 );
+                $last_post_id = $topic_id;
                 foreach my $content (@populate_contents) {
                     my $text
                         = qq~<p><strong>$content->{who}</strong> posted on <i>$content->{when}</i>:</p><pre>$content->{text}</pre>~;
@@ -116,10 +118,13 @@ sub work {
                 my $cache_key = "comment|object_type=topic|object_id=$topic_id";
                 $cache->remove($cache_key);
 
-                # update last_msg_id
-                update_last_scraped_msg_id( $schema, "scraper-mailman-$name",
-                    $last_msg_id );
             }
+        }
+        # update last_msg_id
+        update_last_scraped_msg_id( $schema, "scraper-mailman-$name", $last_msg_id );
+        # update threads|replies count for forum
+        if ($last_post_id) {
+            update_forum( $schema, $cache, $forum_id, $last_post_id );
         }
     }
 
@@ -199,6 +204,37 @@ sub get_topic_or_create {
         }
     );
     return ( $new_topic->topic_id, 0 );
+}
+
+sub update_forum {
+    my ( $schema, $cache, $forum_id, $last_post_id ) = @_;
+    
+    my $forum = $schema->resultset('Forum')->count( { forum_id => $forum_id } );
+    return unless ($forum);
+    
+    # get all threads
+    my $threads = $schema->resultset('Comment')->count( {
+        forum_id => $forum_id,
+        object_type => 'topic',
+        reply_to => 0,
+    } );
+    my $replies = $schema->resultset('Comment')->count( {
+        forum_id => $forum_id,
+        object_type => 'topic',
+    } );
+    $replies = $replies - $threads;
+    
+    # update forum
+    $schema->resultset('Forum')->search( {
+        forum_id => $forum_id,
+    } )->update(
+        {   total_topics => $threads,                                  #'
+            total_replies => $replies,
+            last_post_id => $last_post_id || 0,
+        }
+    );
+    
+    $cache->remove("forum|forum_id=$forum_id");
 }
 
 1;
