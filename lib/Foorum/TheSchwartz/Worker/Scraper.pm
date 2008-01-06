@@ -61,7 +61,8 @@ sub work {
             }
         }
         
-        my $last_post_id = 0; # flag to update forum or not and set forum's last_post_id
+        my $is_changed   = 0; # flag to update forum or not
+        my $last_post_id = 0; # set forum's last_post_id
 
         # start to skip/insert
         foreach my $title ( keys %title_related ) {
@@ -104,6 +105,7 @@ sub work {
                             upload_id   => 0,
                         }
                     );
+                    $is_changed = 1;
 
                     # if $reply_to == 0 means new topic
                     # then we use the first comment's comment_id as reply_to
@@ -123,7 +125,7 @@ sub work {
         # update last_msg_id
         update_last_scraped_msg_id( $schema, "scraper-mailman-$name", $last_msg_id );
         # update threads|replies count for forum
-        if ($last_post_id) {
+        if ($is_changed and $last_post_id) {
             update_forum( $schema, $cache, $forum_id, $last_post_id );
         }
     }
