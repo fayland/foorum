@@ -28,10 +28,6 @@ sub get_comments_by_object {
 
     my @comments = $self->get_all_comments_by_object( $c, $object_type, $object_id );
 
-    if ( $object_type eq 'user_profile' ) {
-        @comments = reverse(@comments);
-    }
-
     my $pager = Data::Page->new();
     $pager->current_page($page);
     $pager->entries_per_page($rows);
@@ -47,6 +43,9 @@ sub get_comments_by_object {
             $pager->current_page($page);
         }
         $pager->total_entries( scalar @comments );
+        if ( $object_type eq 'user_profile' ) {
+            @comments = reverse(@comments);
+        }
         @comments = splice( @comments, ( $page - 1 ) * $rows, $rows );
     } else {    # thread mode
                 # top_comments: the top level comments
@@ -96,6 +95,9 @@ sub get_comments_by_object {
 
         # paged by top_comments
         $pager->total_entries( scalar @top_comments );
+        if ( $object_type eq 'user_profile' ) {
+            @top_comments = reverse(@top_comments);
+        }
         @top_comments = splice( @top_comments, ( $page - 1 ) * $rows, $rows );
 
         foreach (@top_comments) {
