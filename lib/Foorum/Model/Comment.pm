@@ -67,6 +67,7 @@ sub get_comments_by_object {
                 $_->{reply_to} == 0 ? 0 : 1;
             }
             @comments;
+            $top_comments ||= [];
             @top_comments = @$top_comments;
         }
 
