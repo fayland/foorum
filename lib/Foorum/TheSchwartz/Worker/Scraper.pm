@@ -13,6 +13,8 @@ use YAML qw/LoadFile/;
 my ( undef, $path ) = File::Spec->splitpath(__FILE__);
 my $scraper_config = LoadFile("$path/../../../../conf/scraper.yml");
 
+my @FullName_months = ('', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+
 sub work {
     my $class = shift;
     my TheSchwartz::Job $job = shift;
@@ -22,13 +24,16 @@ sub work {
         return $job->completed();
     }
 
-    my ($args) = $job->arg;
+    my @args = $job->arg;
     my $schema = schema();
     my $cache  = cache();
     my $log_text;
 
     my @gmtimes = gmtime( time() - 86500 );                    # check one day before
-    my $postfix = strftime( '%Y-%B/thread.html', @gmtimes );
+    my $year = $gmtimes[5] + 1900;
+    my $month = $gmtimes[4] + 1;
+    my $fullname_month = $FullName_months[$month];
+    my $postfix = "$year-$fullname_month/thread.html";
     my $scraper = new Foorum::Scraper::MailMan();
 
     my @mailmans = @{ $scraper_config->{scraper}->{mailman} };
