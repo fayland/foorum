@@ -27,6 +27,8 @@ page_cache:
   set_http_headers: 1
   debug: 1
   auto_check_user: 1
+  auto_cache:
+    - '*/rss'
 
 authentication:
   default_realm: 'members'

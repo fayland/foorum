@@ -67,12 +67,11 @@ sub default : Private {
     my $create_forum = $params{create_forum};
     $create_forum = 1 if ( $create_forum != 0 );
     $yaml->{function_on} = {
+        %{$c->config->{function_on}},  # keep some values
         activation   => $activation,
         maintain     => $maintain,
         register     => $register,
-        create_forum => $create_forum,
-        scraper      => $c->config->{function_on}->{scraper},    # keep it
-        page_cache   => $c->config->{function_on}->{page_cache}, # keep it
+        create_forum => $create_forum
     };
 
     # per page
