@@ -103,6 +103,7 @@ function_on:
   activation: 1
   create_forum: 1
   scraper: 0
+  page_cache: 1
 
 site:
   domain: 'http://www.foorumbbs.com/'

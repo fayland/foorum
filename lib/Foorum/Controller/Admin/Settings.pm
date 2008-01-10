@@ -72,6 +72,7 @@ sub default : Private {
         register     => $register,
         create_forum => $create_forum,
         scraper      => $c->config->{function_on}->{scraper},    # keep it
+        page_cache   => $c->config->{function_on}->{page_cache}, # keep it
     };
 
     # per page
