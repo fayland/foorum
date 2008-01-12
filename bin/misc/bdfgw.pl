@@ -17,7 +17,8 @@ my $project_url = 'http://code.google.com/p/foorum';
 my %tags      = %Text::GooglewikiFormat::tags;
 my @filenames = (
     'README',          'INSTALL', 'Configure', 'I18N',
-    'TroubleShooting', 'AUTHORS', 'RULES',     'HowRSS'
+    'TroubleShooting', 'AUTHORS', 'RULES',     'HowRSS',
+    'Tutorial1'
 );
 
 # replace link sub
