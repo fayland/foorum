@@ -59,8 +59,8 @@
 
 <script>
     $(function() {
-        if ($('#comment_text img').length) {
-            $('#comment_text img').filter(function (index) {
+        if ($('span.postclass img').length) {
+            $('span.postclass img').filter(function (index) {
                 return $(this).width() > 640;
             } ).width(640).filter(function(index) {
                 var parentTag = $(this).parent().get(0).tagName;
@@ -71,8 +71,8 @@
                 }
                 return true;
             } )
-            if ($('#comment_text a img').length) {
-                $('#comment_text a img').parent().lightBox( {
+            if ($('span.postclass a img').length) {
+                $('span.postclass a img').parent().lightBox( {
                 	imageLoading:  '[% c.config.dir.images %]/lightbox/lightbox-ico-loading.gif',
                 	imageBtnClose: '[% c.config.dir.images %]/lightbox/lightbox-btn-close.gif',
                 	imageBtnPrev:  '[% c.config.dir.images %]/lightbox/lightbox-btn-prev.gif',
