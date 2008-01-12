@@ -448,6 +448,7 @@ root/static/js/site/message.js
 root/static/js/site/new_post.js
 root/static/js/site/star.js
 root/static/js/utils.js
+root/upload/index.html
 t/02utils.t
 t/03externalutils.t
 t/formatter/plain.t
