@@ -6,6 +6,7 @@ bin\db\make_schema.pl source OK
 bin\deploy\dreamhost.fastcgi.pl source OK
 bin\foorum_server.pl source OK
 bin\misc\bdfgw.pl source OK
+bin\misc\css-min.pl source OK
 bin\misc\g2b.pl source OK
 bin\misc\graph.pl source OK
 bin\misc\js-min.pl source OK

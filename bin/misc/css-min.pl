@@ -14,8 +14,8 @@ my $files = File::Next::files($path);
 
 while ( defined( my $file = $files->() ) ) {
     next if ( $file !~ /\.css$/ );
-    next if ( $file =~ /(\/|\\)min(\/|\\)/ );    # skip /css/min
-    next if ( $file =~ /(\/|\\)css(\/|\\)style(\/|\\)/ );       # skip /css/style
+    next if ( $file =~ /(\/|\\)min(\/|\\)/ );                # skip /css/min
+    next if ( $file =~ /(\/|\\)css(\/|\\)style(\/|\\)/ );    # skip /css/style
 
     my $in_file  = $file;
     my $out_file = $in_file;
