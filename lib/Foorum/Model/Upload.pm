@@ -5,6 +5,7 @@ use warnings;
 use base 'Catalyst::Model';
 use File::Remove qw(remove);
 use File::Path;
+use File::Copy;
 use Foorum::Utils qw/generate_random_word/;
 use Scalar::Util ();
 
@@ -116,7 +117,13 @@ sub add_file {
     my $directory_2 = int( $upload_id / 3200 );
     my $upload_dir
         = $c->path_to( 'root', 'upload', $directory_1, $directory_2 )->stringify;
-    mkpath( [$upload_dir], 0, 0777 );    ## no critic (ProhibitLeadingZeros)
+    my @created = mkpath( [$upload_dir], 0, 0777 );    ## no critic (ProhibitLeadingZeros)
+    
+    # copy index.html to protect dir from Options Indexes
+    foreach my $dir (@created) {
+        my $indexfile =  $c->path_to( 'root', 'upload', 'index.html' )->stringify;
+        copy($indexfile, $dir);
+    }
 
     my $target = $c->path_to( 'root', 'upload', $directory_1, $directory_2, $basename )
         ->stringify;

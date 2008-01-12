@@ -11,6 +11,7 @@ requires 'Digest';
 requires 'Switch';
 requires 'DateTime';
 requires 'File::Path';
+requires 'File::Copy';
 requires 'List::Util';
 requires 'List::MoreUtils';
 requires 'Catalyst::View::TT';
