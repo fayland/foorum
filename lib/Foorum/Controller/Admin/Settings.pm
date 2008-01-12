@@ -67,7 +67,7 @@ sub default : Private {
     my $create_forum = $params{create_forum};
     $create_forum = 1 if ( $create_forum != 0 );
     $yaml->{function_on} = {
-        %{$c->config->{function_on}},  # keep some values
+        %{ $c->config->{function_on} },    # keep some values
         activation   => $activation,
         maintain     => $maintain,
         register     => $register,

@@ -81,15 +81,15 @@ sub theschwartz {
         ],
         verbose => 1,
     );
-    
+
     my $verbose = sub {
         my $msg = shift;
         $msg =~ s/\s+$//;
         if ( $msg eq 'TheSchwartz::work_once found no jobs' ) {
-    
+
             # do nothing
         } elsif ( $msg eq 'job completed' ) {
-    
+
             # add localtime()
             print STDERR 'job completed @ ' . localtime() . "\n";
         } else {
@@ -97,7 +97,7 @@ sub theschwartz {
         }
     };
     $theschwartz->set_verbose($verbose);
-    
+
     return $theschwartz;
 }
 

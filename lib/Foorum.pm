@@ -27,12 +27,12 @@ __PACKAGE__->config( 'config_file' => [ 'foorum.yml', 'foorum_local.yml' ] );
 __PACKAGE__->setup();
 
 if ( __PACKAGE__->config->{function_on}->{page_cache} ) {
-    __PACKAGE__->setup_plugins( [ 'PageCache' ] );
+    __PACKAGE__->setup_plugins( ['PageCache'] );
 } else {
     {
         no strict 'refs';    ## no critic (ProhibitNoStrict)
         my $class = __PACKAGE__;
-        *{"$class\::cache_page"} = sub {1};
+        *{"$class\::cache_page"}        = sub {1};
         *{"$class\::clear_cached_page"} = sub {1};
     }
 }
@@ -41,6 +41,7 @@ __PACKAGE__->log->levels( 'error', 'fatal' );    # for real server
 if ( __PACKAGE__->config->{debug_mode} ) {
     __PACKAGE__->log->enable( 'debug', 'info', 'warn' );    # for developer server
     {
+
         # these code are copied from Catalyst.pm setup_log
         no strict 'refs';    ## no critic (ProhibitNoStrict)
         my $class = __PACKAGE__;

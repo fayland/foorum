@@ -1,6 +1,7 @@
 bin\cron\chart.pl source OK
 bin\cron\TheSchwartz_client.pl source OK
 bin\cron\TheSchwartz_worker.pl source OK
+bin\cron\TheSchwartz_worker_scraper.pl source OK
 bin\db\make_schema.pl source OK
 bin\deploy\dreamhost.fastcgi.pl source OK
 bin\foorum_server.pl source OK
