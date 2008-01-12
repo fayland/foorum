@@ -1,6 +1,8 @@
 conf/mail.yml
+conf/scraper.yml
 foorum_local.yml
 lib/Foorum/Controller/Test.pm
+root/upload/*
 
 # Avoid version control files.
 \bRCS\b

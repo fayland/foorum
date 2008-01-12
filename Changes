@@ -1,6 +1,6 @@
 This file documents the revision history for Foorum.
 
-0.1.2 
+0.1.2 Sat Jan 12 9:39:21 2008
     - preview function
     - use jquery.lightbox for comments photos
     - options for create threads or replies
