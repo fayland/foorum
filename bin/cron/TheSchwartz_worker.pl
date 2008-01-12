@@ -16,7 +16,7 @@ if ( $has_proc_pid_file and $has_home_dir ) {
 
 use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
-use Foorum::ExternalUtils qw/theschwartz config/;
+use Foorum::ExternalUtils qw/theschwartz/;
 use Foorum::TheSchwartz::Worker::Hit;
 use Foorum::TheSchwartz::Worker::RemoveOldDataFromDB;
 use Foorum::TheSchwartz::Worker::ResizeProfilePhoto;
@@ -24,33 +24,8 @@ use Foorum::TheSchwartz::Worker::SendScheduledEmail;
 use Foorum::TheSchwartz::Worker::DailyReport;
 use Foorum::TheSchwartz::Worker::DailyChart;
 use Foorum::TheSchwartz::Worker::SendStarredNofication;
-use vars qw/$config/;
-
-BEGIN {
-    $config = config();
-    if ( $config->{function_on}->{scraper} ) {
-        my $module = 'Foorum::TheSchwartz::Worker::Scraper';
-        eval("use $module;");    ## no critic (ProhibitStringyEval)
-    }
-}
 
 my $client = theschwartz();
-
-my $verbose = sub {
-    my $msg = shift;
-    $msg =~ s/\s+$//;
-    if ( $msg eq 'TheSchwartz::work_once found no jobs' ) {
-
-        # do nothing
-    } elsif ( $msg eq 'job completed' ) {
-
-        # add localtime()
-        print STDERR 'job completed @ ' . localtime() . "\n";
-    } else {
-        print STDERR "$msg\n";
-    }
-};
-$client->set_verbose($verbose);
 
 $client->can_do('Foorum::TheSchwartz::Worker::Hit');
 $client->can_do('Foorum::TheSchwartz::Worker::RemoveOldDataFromDB');
@@ -59,9 +34,6 @@ $client->can_do('Foorum::TheSchwartz::Worker::SendScheduledEmail');
 $client->can_do('Foorum::TheSchwartz::Worker::DailyReport');
 $client->can_do('Foorum::TheSchwartz::Worker::DailyChart');
 $client->can_do('Foorum::TheSchwartz::Worker::SendStarredNofication');
-if ( $config->{function_on}->{scraper} ) {
-    $client->can_do('Foorum::TheSchwartz::Worker::Scraper');
-}
 $client->work();
 
 1;
