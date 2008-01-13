@@ -18,7 +18,7 @@ my %tags      = %Text::GooglewikiFormat::tags;
 my @filenames = (
     'README',          'INSTALL', 'Configure', 'I18N',
     'TroubleShooting', 'AUTHORS', 'RULES',     'HowRSS',
-    'Tutorial1'
+    'Tutorial1',       'Tutorial2'
 );
 
 # replace link sub
