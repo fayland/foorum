@@ -2,6 +2,7 @@ This file documents the revision history for Foorum.
 
 0.1.3
         - copy index.html to new created upload dir (protection)
+        - add requires 'Sub::Install'; # thanks for sai
 
 0.1.2 Sat Jan 12 9:39:21 2008
     - preview function

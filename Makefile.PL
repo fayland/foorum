@@ -14,6 +14,7 @@ requires 'File::Path';
 requires 'File::Copy';
 requires 'List::Util';
 requires 'List::MoreUtils';
+requires 'Sub::Install'; # thanks for sai
 requires 'Catalyst::View::TT';
 requires 'Catalyst::View::JSON';
 requires 'Catalyst::Model::DBIC::Schema';
