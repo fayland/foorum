@@ -14,13 +14,13 @@ my $trunk_dir   = abs_path("$Bin/../../../trunk");
 my $wiki_dir    = abs_path("$Bin/../../../wiki");
 my $project_url = 'http://code.google.com/p/foorum';
 
-my %tags      = %Text::GooglewikiFormat::tags;
 my @filenames = (
     'README',          'INSTALL', 'Configure', 'I18N',
     'TroubleShooting', 'AUTHORS', 'RULES',     'HowRSS',
     'Tutorial1',       'Tutorial2', 'Tutorial3'
 );
 
+my %tags      = %Text::GooglewikiFormat::tags;
 # replace link sub
 my $linksub = sub {
     my ( $link, $opts ) = @_;
