@@ -5,6 +5,11 @@ use warnings;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/encodeHTML get_page_from_url/;
 
+if (Foorum->config->{function_on}->{topic_pdf}) {
+    my $has_pdf_fromhtml = eval "use PDF::FromHTML;1;";
+    Foorum->config->{function_on}->{topic_pdf} = 0 unless ($has_pdf_fromhtml);
+}
+
 sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
     my ( $self, $c ) = @_;
 
@@ -20,6 +25,46 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
 
     # get the topic
     my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
+    
+    my $format = $c->req->param('format');
+    if ( $format eq 'pdf' ) {
+        unless ($c->config->{function_on}->{topic_pdf}) {
+            $c->detach('/print_error', [ 'Function Disabled' ] );
+        }
+        
+        # get comments
+        $c->model('Comment')->get_comments_by_object(
+            $c,
+            {   object_type => 'topic',
+                object_id   => $topic_id,
+                page        => 1,
+                rows        => 200,
+                view_mode   => 'flat',
+            }
+        );
+        
+        my $pdf_body = $c->view('TT')->render(
+            $c,
+            'topic/topic.pdf.html',
+            {   no_wrapper      => 1,
+                %{$c->stash},
+            }
+        );
+        
+        my $file = $c->path_to('root', 'upload', 'pdf', "$forum_code-$topic_id.pdf")->stringify;
+        my $url  = $c->req->base . "upload/pdf/$forum_code-$topic_id.pdf";
+        $c->stash( {
+            download_url => $url,
+            template     => 'topic/pdf_download.html',
+        } );
+
+        my $pdf = PDF::FromHTML->new( encoding => 'utf-8' );
+        $pdf->load_file(\$pdf_body);
+        $pdf->convert();
+        $pdf->write_file($file);
+
+        return 1;
+    }
 
     if ($rss) {
         my @comments

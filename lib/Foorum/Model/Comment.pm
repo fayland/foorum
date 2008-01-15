@@ -20,7 +20,7 @@ sub get_comments_by_object {
     my $rows        = $info->{rows} || $c->config->{per_page}->{topic} || 10;
 
     # 'thread' or 'flat'
-    my $view_mode;
+    my $view_mode = $info->{view_mode};
     ($view_mode) = ( $c->req->path =~ /\/view_mode=(thread|flat)(\/|$)/ );
 
     #$view_mode ||= ($object_type eq 'topic') ? 'thread' : 'flat';
