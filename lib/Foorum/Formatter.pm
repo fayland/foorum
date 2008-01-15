@@ -3,12 +3,14 @@ package Foorum::Formatter;
 use strict;
 use warnings;
 use base 'Exporter';
+use Foorum::ExternalUtils qw/config/;
 use vars qw/
-    @EXPORT_OK $VERSION
+    @EXPORT_OK $VERSION $config
     $has_text_textile $has_ubb_code $has_text_wiki $has_pod_simple $has_uri_find
     /;
 @EXPORT_OK = qw/ filter_format /;
 $VERSION   = '0.01';                # version
+$config    = config();
 
 sub filter_format {
     my ( $text, $params ) = @_;
@@ -44,6 +46,27 @@ sub filter_format {
             }
         );
         $text = $formatter->parse($text);
+        
+        # emot
+        if ( $text =~ /\:\w{2,9}\:/s ) {
+            my @emot_icon = (
+                'wink',   'sad',    'biggrin', 'cheesy',   'confused', 'cool',
+                'angry',  'sads',   'smile',   'smiled',   'unhappy',  'dozingoff',
+                'blink',  'blush',  'crazy',   'cry',      'bigsmile', 'inlove',
+                'notify', 'shifty', 'sick',    'sleeping', 'sneaky2',  'tounge',
+                'unsure', 'wacko',  'why',     'wow',      'mad',      'Oo'
+            );
+            my $emot_url = $config->{dir}->{images} . '/bbcode/emot';
+            if ($emot_url !~ /^http\:\/\//) {
+                my $domain = $config->{site}->{domain}; $domain =~ s/\/$//;
+                $emot_url = $domain . $emot_url;
+            }
+            foreach my $em (@emot_icon) {
+                next unless ( $text =~ /\:$em\:/s );
+                $text =~ s/\:$em\:/\<img src=\"$emot_url\/$em.gif\"\>/sg;
+                last unless ( $text =~ /\:\w{2,9}\:/s );
+            }
+        }
     } elsif ( $format eq 'pod' and $has_pod_simple ) {
         my $pod_format = Foorum::Formatter::Pod->new;
         $text = $pod_format->format($text);

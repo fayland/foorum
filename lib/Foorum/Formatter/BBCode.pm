@@ -19,31 +19,6 @@ sub new {
     return $self;
 }
 
-sub parse {
-    my $self = shift;
-
-    my $html = $self->next::method(@_);
-
-    # emot
-    return $html unless ( $html =~ /\:\w{2,9}\:/s );
-    my @emot_icon = (
-        'wink',   'sad',    'biggrin', 'cheesy',   'confused', 'cool',
-        'angry',  'sads',   'smile',   'smiled',   'unhappy',  'dozingoff',
-        'blink',  'blush',  'crazy',   'cry',      'bigsmile', 'inlove',
-        'notify', 'shifty', 'sick',    'sleeping', 'sneaky2',  'tounge',
-        'unsure', 'wacko',  'why',     'wow',      'mad',      'Oo'
-    );
-    my $emot_url = '/static/images/bbcode/emot';
-    foreach my $em (@emot_icon) {
-        next unless ( $html =~ /\:$em\:/s );
-        $html =~ s/\:$em\:/\<img src=\"$emot_url\/$em.gif\"\>/sg;
-        last unless ( $html =~ /\:\w{2,9}\:/s );
-    }
-    $self->{html} = $html;
-
-    return $html;
-}
-
 sub _do_BB {
     my ( $self, @buf ) = @_;
 
