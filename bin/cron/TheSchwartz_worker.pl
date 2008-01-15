@@ -16,7 +16,7 @@ if ( $has_proc_pid_file and $has_home_dir ) {
 
 use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
-use Foorum::ExternalUtils qw/theschwartz/;
+use Foorum::ExternalUtils qw/theschwartz config/;
 use Foorum::TheSchwartz::Worker::Hit;
 use Foorum::TheSchwartz::Worker::RemoveOldDataFromDB;
 use Foorum::TheSchwartz::Worker::ResizeProfilePhoto;
@@ -24,6 +24,16 @@ use Foorum::TheSchwartz::Worker::SendScheduledEmail;
 use Foorum::TheSchwartz::Worker::DailyReport;
 use Foorum::TheSchwartz::Worker::DailyChart;
 use Foorum::TheSchwartz::Worker::SendStarredNofication;
+use vars qw/$config/;
+
+BEGIN {
+    $config = config();
+    if ($config->{function_on}->{topic_pdf}) {
+        my $module = 'Foorum::TheSchwartz::Worker::Topic_ViewAsPDF';
+        eval "use $module;"; ## no critic (ProhibitStringyEval)
+        die $@ if ($@);
+    }
+}
 
 my $client = theschwartz();
 
@@ -50,6 +60,9 @@ $client->can_do('Foorum::TheSchwartz::Worker::SendScheduledEmail');
 $client->can_do('Foorum::TheSchwartz::Worker::DailyReport');
 $client->can_do('Foorum::TheSchwartz::Worker::DailyChart');
 $client->can_do('Foorum::TheSchwartz::Worker::SendStarredNofication');
+if ( $config->{function_on}->{topic_pdf} ) {
+    $client->can_do('Foorum::TheSchwartz::Worker::Topic_ViewAsPDF');
+}
 $client->work();
 
 1;

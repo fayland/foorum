@@ -3,18 +3,15 @@ package Foorum::Controller::Topic;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Foorum::Utils qw/encodeHTML get_page_from_url/;
-
-if (Foorum->config->{function_on}->{topic_pdf}) {
-    my $has_pdf_fromhtml = eval "use PDF::FromHTML;1;";
-    Foorum->config->{function_on}->{topic_pdf} = 0 unless ($has_pdf_fromhtml);
-}
+use Foorum::Utils qw/encodeHTML get_page_from_url generate_random_word/;
+use Foorum::ExternalUtils qw/theschwartz/;
 
 sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
     my ( $self, $c ) = @_;
 
     my $forum_code = $c->req->snippets->[0];
     my $topic_id   = $c->req->snippets->[2];
+
     my $page       = get_page_from_url( $c->req->path );
     $page = 1 unless ( $page and $page =~ /^\d+$/ );
     my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;    # /forum/ForumName/1/rss
@@ -23,48 +20,31 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
     my $forum = $c->controller('Get')->forum( $c, $forum_code );
     my $forum_id = $forum->{forum_id};
 
-    # get the topic
-    my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
-    
     my $format = $c->req->param('format');
     if ( $format eq 'pdf' ) {
         unless ($c->config->{function_on}->{topic_pdf}) {
             $c->detach('/print_error', [ 'Function Disabled' ] );
         }
         
-        # get comments
-        $c->model('Comment')->get_comments_by_object(
-            $c,
-            {   object_type => 'topic',
-                object_id   => $topic_id,
-                page        => 1,
-                rows        => 200,
-                view_mode   => 'flat',
-            }
+        # Build PDF in backend
+        my $random_word = generate_random_word(6);
+        my $client = theschwartz();
+        $client->insert(
+            'Foorum::TheSchwartz::Worker::Topic_ViewAsPDF',
+            [ $forum_id, $topic_id, $random_word ]
         );
-        
-        my $pdf_body = $c->view('TT')->render(
-            $c,
-            'topic/topic.pdf.html',
-            {   no_wrapper      => 1,
-                %{$c->stash},
-            }
-        );
-        
-        my $file = $c->path_to('root', 'upload', 'pdf', "$forum_code-$topic_id.pdf")->stringify;
-        my $url  = $c->req->base . "upload/pdf/$forum_code-$topic_id.pdf";
+
+        my $url  = $c->req->base . "upload/pdf/$forum_id-$topic_id-$random_word.pdf";
         $c->stash( {
             download_url => $url,
             template     => 'topic/pdf_download.html',
         } );
 
-        my $pdf = PDF::FromHTML->new( encoding => 'utf-8' );
-        $pdf->load_file(\$pdf_body);
-        $pdf->convert();
-        $pdf->write_file($file);
-
         return 1;
     }
+
+    # get the topic
+    my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
 
     if ($rss) {
         my @comments

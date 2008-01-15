@@ -5,6 +5,9 @@ use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::ExternalUtils qw/schema config base_path error_log tt2 cache/;
+use Foorum::Adaptor::User;
+
+my $user_model = new Foorum::Adaptor::User();
 
 sub work {
     my $class = shift;
@@ -32,10 +35,10 @@ sub work {
     }
     if ( scalar @user_ids ) {
         my $object = get_object( $schema, $cache, $object_type, $object_id );
-        my $from = get_user( $schema, $cache, $from_id );
+        my $from = $user_model->get( { user_id => $from_id } );
 
         foreach my $user_id (@user_ids) {
-            my $user = get_user( $schema, $cache, $user_id );
+            my $user = $user_model->get( { user_id => $user_id } );
             next unless ($user);
             next if ( $user->{user_id} == $from->{user_id} );    # skip himself
                                                                  # Send Notification Email
@@ -60,47 +63,30 @@ sub work {
     $job->completed();
 }
 
-use Object::Signature;
-
-sub get_user {
-    my ( $schema, $cache, $user_id ) = @_;
-
-    my $cache_key = 'user|' . Object::Signature::signature( { user_id => $user_id } );
-    my $cache_val = $cache->get($cache_key);
-
-    if ($cache_val) {
-        return $cache_val;
-    }
-
-    my $user = $schema->resultset('User')->find( { user_id => $user_id } );
-    return unless ($user);
-
-    $user = $user->{_column_data};
-    return $user;
-}
-
 sub get_object {
     my ( $schema, $cache, $object_type, $object_id ) = @_;
 
     if ( $object_type eq 'topic' ) {
         my $object = $schema->resultset('Topic')->find( { topic_id => $object_id, } );
         return unless ($object);
+        my $author = $user_model->get( { user_id => $object->author_id } );
         return {
             object_type => 'topic',
             object_id   => $object_id,
             title       => $object->title,
-            author      => get_user( $schema, $cache, $object->author_id ),
+            author      => $author,
             url         => '/forum/' . $object->forum_id . "/$object_id",
             last_update => $object->last_update_date,
         };
     } elsif ( $object_type eq 'poll' ) {
         my $object = $schema->resultset('Poll')->find( { poll_id => $object_id, } );
         return unless ($object);
+        my $author = $user_model->get( { user_id => $object->author_id } );
         return {
             object_type => 'poll',
             object_id   => $object_id,
             title       => $object->title,
-            author      => get_user( $schema, $cache, $object->author_id ),
+            author      => $author,
             url         => '/forum/' . $object->forum_id . "/poll/$object_id",
             last_update => '-',
         };
