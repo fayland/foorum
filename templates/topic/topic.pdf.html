@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>[% topic.title _ ' : ' _ forum.name  %]</title>
+    </head>
+    <body>
+
+<h1>[% topic.title _ ' : ' _ forum.name  %]</h1>
+
+[% FOREACH comment IN comments %]
+<hr />
+
+<h2>[% comment.title %]</h2>
+<p>
+Post by [% comment.author.nickname %] on [% comment.post_on %]
+</p>
+<p>
+[% IF comment.author.status == 'banned' %]
+ The author is banned.
+[% ELSE %]
+  [% comment.text %]
+[% END %]
+</p>
+[% END %]
+
+    </body>
+</html>
