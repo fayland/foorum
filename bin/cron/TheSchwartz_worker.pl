@@ -31,7 +31,10 @@ BEGIN {
     if ($config->{function_on}->{topic_pdf}) {
         my $module = 'Foorum::TheSchwartz::Worker::Topic_ViewAsPDF';
         eval "use $module;"; ## no critic (ProhibitStringyEval)
-        die $@ if ($@);
+        if ($@) {
+            die "can't load $module with error: $@\n",
+                "Or else, please set function_on: topic_pdf: 0 if u don't want this.\n";
+        }
     }
 }
 
