@@ -17,7 +17,7 @@ my $project_url = 'http://code.google.com/p/foorum';
 my @filenames = (
     'README',          'INSTALL', 'Configure', 'I18N',
     'TroubleShooting', 'AUTHORS', 'RULES',     'HowRSS',
-    'Tutorial1',       'Tutorial2', 'Tutorial3'
+    'Tutorial1',       'Tutorial2', 'Tutorial3', 'Tutorial4'
 );
 
 my %tags      = %Text::GooglewikiFormat::tags;
