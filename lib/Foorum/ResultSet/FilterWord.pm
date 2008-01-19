@@ -35,7 +35,7 @@ sub has_bad_word {
     my @bad_words = $self->get_data('bad_word');
     foreach my $word (@bad_words) {
         if ( $text =~ /$word/is ) {
-            return 1;
+            return $word;
         }
     }
     return 0;
