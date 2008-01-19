@@ -99,4 +99,6 @@ __PACKAGE__->might_have(
     'details' => 'Foorum::Schema::UserDetails',
     { 'foreign.user_id' => 'self.user_id' }
 );
+__PACKAGE__->resultset_class('Foorum::ResultSet::User');
+
 1;

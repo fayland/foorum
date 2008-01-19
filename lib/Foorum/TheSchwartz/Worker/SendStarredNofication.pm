@@ -5,9 +5,6 @@ use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::ExternalUtils qw/schema config base_path error_log tt2 cache/;
-use Foorum::Adaptor::User;
-
-my $user_model = new Foorum::Adaptor::User();
 
 sub work {
     my $class = shift;
@@ -21,6 +18,7 @@ sub work {
     my $cache     = cache();
     my $base_path = base_path();
     my $tt2       = tt2();
+    my $user_model = $schema->resultset('User');
 
     # if it is a starred item and settings send_starred_notification is Y
     my $starred_rs = $schema->resultset('Star')->search(
@@ -65,6 +63,8 @@ sub work {
 
 sub get_object {
     my ( $schema, $cache, $object_type, $object_id ) = @_;
+    
+    my $user_model = $schema->resultset('User');
 
     if ( $object_type eq 'topic' ) {
         my $object = $schema->resultset('Topic')->find( { topic_id => $object_id, } );

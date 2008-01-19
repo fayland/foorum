@@ -1,8 +1,22 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
-use Test::More tests => 2;
+use Test::More;
 
-use Foorum::ExternalUtils qw/schema/;
+BEGIN {
+    eval { require DBI }
+        or plan skip_all =>
+        "DBI is required for this test";
+    eval { require DBD::SQLite }
+        or plan skip_all =>
+        "DBD::SQLite is required for this test";
+    plan tests => 2;
+}
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use Foorum::TestUtils qw/schema/;
 my $schema = schema();
 
 foreach (1, 2) {

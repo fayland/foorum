@@ -9,7 +9,7 @@ use Net::IP::Match::Regexp qw( create_iprange_regexp match_ip );
 sub auto : Private {
     my ( $self, $c ) = @_;
 
-    my @cidr_ips = $c->model('BannedIP')->get($c);
+    my @cidr_ips = $c->model('DBIC::BannedIP')->get();
     if ( scalar @cidr_ips ) {
         my $regexp = create_iprange_regexp(@cidr_ips);
         if ( match_ip( $c->req->address, $regexp ) ) {

@@ -18,8 +18,6 @@ sub work {
     my $time = time() - 24 * 60 * 60;
 
     # check db
-    my $new_added_ip
-        = $schema->resultset('BannedIp')->count( { time => { '>', $time } } );
     my $new_added_user
         = $schema->resultset('User')->count( { register_time => { '>', $time } } );
     my $new_added_visits
@@ -36,7 +34,6 @@ sub work {
         ->count( { time => \"> DATE_SUB(NOW(), INTERVAL 1 DAY)", } );
 
     my $text_body = qq~
-        NewAddedIP:     $new_added_ip\n
         NewAddedUser:   $new_added_user\n
         NewAddedVisit:  $new_added_visits\n
         ScheduledEmail: $left_email\n

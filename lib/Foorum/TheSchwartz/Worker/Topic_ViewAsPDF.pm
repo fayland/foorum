@@ -6,10 +6,7 @@ use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::ExternalUtils qw/schema config base_path error_log tt2 cache/;
 use Foorum::Formatter qw/filter_format/;
-use Foorum::Adaptor::User;
 use PDF::FromHTML;
-
-my $user_model = new Foorum::Adaptor::User();
 
 sub work {
     my $class = shift;
@@ -23,6 +20,7 @@ sub work {
     my $cache     = cache();
     my $base_path = base_path();
     my $tt2       = tt2();
+    my $user_model = $schema->resultset('User');
     
     my $file ="$base_path/root/upload/pdf/$forum_id-$topic_id-$random_word.pdf";
     my $var; # tt2 vars.
