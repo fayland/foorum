@@ -73,7 +73,7 @@ sub validate_comment {
     } else {
         my $has_bad_word = $c->model('DBIC::FilterWord')->has_bad_word($title);
         if ($has_bad_word) {
-            $c->detach( '/print_error', [qq~Sorry, your input has a bad word "$word".~] );
+            $c->detach( '/print_error', [qq~Sorry, your input has a bad word.~] );
         }
     }
     unless ($text) {
@@ -81,7 +81,7 @@ sub validate_comment {
     } else {
         my $has_bad_word = $c->model('DBIC::FilterWord')->has_bad_word($text);
         if ($has_bad_word) {
-            $c->detach( '/print_error', [qq~Sorry, your input has a bad word "$word".~] );
+            $c->detach( '/print_error', [qq~Sorry, your input has a bad word.~] );
         }
     }
 }
