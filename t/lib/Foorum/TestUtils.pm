@@ -26,6 +26,7 @@ sub config {
 }
 
 sub schema {
+
     # override live cache
     $Foorum::Schema::cache = cache();
 

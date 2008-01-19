@@ -72,16 +72,18 @@ sub validate_comment {
         $c->detach( '/print_error', ['ERROR_TITLE_LENGTH'] );
     } else {
         my $bad_word = $c->model('DBIC::FilterWord')->has_bad_word($title);
-        if ($bad_word ne '0') {
-            $c->detach( '/print_error', [qq~Sorry, your input has a bad word "$bad_word".~] );
+        if ( $bad_word ne '0' ) {
+            $c->detach( '/print_error',
+                [qq~Sorry, your input has a bad word "$bad_word".~] );
         }
     }
     unless ($text) {
         $c->detach( '/print_error', ['ERROR_TEXT_REQUIRED'] );
     } else {
         my $bad_word = $c->model('DBIC::FilterWord')->has_bad_word($text);
-        if ($bad_word ne '0') {
-            $c->detach( '/print_error', [qq~Sorry, your input has a bad word "$bad_word".~] );
+        if ( $bad_word ne '0' ) {
+            $c->detach( '/print_error',
+                [qq~Sorry, your input has a bad word "$bad_word".~] );
         }
     }
 }

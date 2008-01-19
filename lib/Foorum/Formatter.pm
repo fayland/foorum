@@ -110,7 +110,7 @@ sub filter_format {
         #$text =~ s/"/&quot;/g; #"
         $text =~ s|\n|<br />\n|gs;    # linebreaks
 
-        $has_uri_find = eval "use URI::Find::UTF8; 1;"    ## no critic (ProhibitStringyEval)
+        $has_uri_find = eval "use URI::Find::UTF8; 1;"  ## no critic (ProhibitStringyEval)
             if ( not defined $has_uri_find );
         if ($has_uri_find) {
 
