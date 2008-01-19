@@ -110,12 +110,12 @@ sub filter_format {
         #$text =~ s/"/&quot;/g; #"
         $text =~ s|\n|<br />\n|gs;    # linebreaks
 
-        $has_uri_find = eval "use URI::Find; 1;"    ## no critic (ProhibitStringyEval)
+        $has_uri_find = eval "use URI::Find::UTF8; 1;"    ## no critic (ProhibitStringyEval)
             if ( not defined $has_uri_find );
         if ($has_uri_find) {
 
             # find URIs
-            my $finder = URI::Find->new(
+            my $finder = URI::Find::UTF8->new(
                 sub {
                     my ( $uri, $orig_uri ) = @_;
                     return qq|<a href="$uri" rel="nofollow">$orig_uri</a>|;
