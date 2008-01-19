@@ -9,18 +9,21 @@ use warnings;
 use Text::GooglewikiFormat;
 use FindBin qw/$Bin/;
 use Cwd qw/abs_path/;
+use File::Copy;
 
 my $trunk_dir   = abs_path("$Bin/../../../trunk");
 my $wiki_dir    = abs_path("$Bin/../../../wiki");
 my $project_url = 'http://code.google.com/p/foorum';
 
 my @filenames = (
-    'README',          'INSTALL', 'Configure', 'I18N',
-    'TroubleShooting', 'AUTHORS', 'RULES',     'HowRSS',
-    'Tutorial1',       'Tutorial2', 'Tutorial3', 'Tutorial4'
+    'README',          'INSTALL',   'Configure', 'I18N',
+    'TroubleShooting', 'AUTHORS',   'RULES',     'HowRSS',
+    'Tutorial1',       'Tutorial2', 'Tutorial3', 'Tutorial4',
+    'Tutorial5',
 );
 
-my %tags      = %Text::GooglewikiFormat::tags;
+my %tags = %Text::GooglewikiFormat::tags;
+
 # replace link sub
 my $linksub = sub {
     my ( $link, $opts ) = @_;
@@ -62,7 +65,10 @@ foreach my $filename (@filenames) {
         $indexpage .= qq~<li><a href="$filename\.html">$filename</a></li>~;
 
         # XXX? TODO
-        # text to README INSTALL
+        # text to README INSTALL AUTHOR
+        if ( $filename eq 'AUTHORS' ) {
+            copy( "$wiki_dir/$filename\.wiki", "$trunk_dir/$filename" );
+        }
     }
 }
 
@@ -84,10 +90,11 @@ sub buildhtml {
 <![endif]--> 
 </head>
 <body class="t6">
-<h1>From <a href="$wiki_url">$wiki_url</a></h1>
 <div id="wikicontent">
 $html
 </div>
+<h1>WHERE TO GO NEXT</h1>
+<p>Get the lastest version from <a href="$wiki_url">$wiki_url</a></p>
 <script src="static/prettify.js"></script>
 <script>
  prettyPrint();

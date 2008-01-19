@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
 use Test::More;
@@ -5,9 +7,8 @@ use Test::More;
 BEGIN {
 
     eval { require Text::GooglewikiFormat }
-        or plan skip_all =>
-        "Text::GooglewikiFormat is required for this test";
-    
+        or plan skip_all => "Text::GooglewikiFormat is required for this test";
+
     plan tests => 3;
 }
 
@@ -38,10 +39,10 @@ The second line of a normal paragraph.  Whee.
 such as http://www.cpan.org/
 TEXT
 
-my $html = filter_format($text, { format => 'wiki' } );
+my $html = filter_format( $text, { format => 'wiki' } );
 
-like($html, qr/ol/,   '*,* OK');
-like($html, qr/ul/,   '1,2 OK');
-like($html, qr/\<a href=/, 'absolute_links OK');
+like( $html, qr/ol/,        '*,* OK' );
+like( $html, qr/ul/,        '1,2 OK' );
+like( $html, qr/\<a href=/, 'absolute_links OK' );
 
 #diag($html);

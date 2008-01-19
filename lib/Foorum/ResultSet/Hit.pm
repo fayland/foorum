@@ -1,17 +1,20 @@
-package Foorum::Model::Hit;
+package Foorum::ResultSet::Hit;
 
 use strict;
 use warnings;
-use base 'Catalyst::Model';
+use base 'DBIx::Class::ResultSet';
 
 sub register {
-    my ( $self, $c, $object_type, $object_id, $object_hit ) = @_;
+    my ( $self, $object_type, $object_id, $object_hit ) = @_;
+
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
 
     # we update table 'hit' then use Foorum::TheSchwartz::Worker::Hit to update
     # the real table every 5 minutes
     # the status field is time(), after update in real, that will be 0
 
-    my $hit = $c->model('DBIC')->resultset('Hit')->search(
+    my $hit = $self->search(
         {   object_type => $object_type,
             object_id   => $object_id,
         }
@@ -26,9 +29,9 @@ sub register {
             }
         );
     } else {
-        $return_hit = $object_hit || 1;
+        $return_hit = $object_hit || 0;
         $return_hit++;
-        $c->model('DBIC')->resultset('Hit')->create(
+        $self->create(
             {   object_type      => $object_type,
                 object_id        => $object_id,
                 hit_new          => 1,
@@ -47,11 +50,3 @@ sub register {
 
 1;
 __END__
-
-=pod
-
-=head2 AUTHOR
-
-Fayland Lam <fayland at gmail.com>
-
-=cut

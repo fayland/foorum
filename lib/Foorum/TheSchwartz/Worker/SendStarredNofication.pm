@@ -13,11 +13,11 @@ sub work {
     my ($args) = $job->arg;
     my ( $object_type, $object_id, $from_id ) = @$args;
 
-    my $schema    = schema();
-    my $config    = config();
-    my $cache     = cache();
-    my $base_path = base_path();
-    my $tt2       = tt2();
+    my $schema     = schema();
+    my $config     = config();
+    my $cache      = cache();
+    my $base_path  = base_path();
+    my $tt2        = tt2();
     my $user_model = $schema->resultset('User');
 
     # if it is a starred item and settings send_starred_notification is Y
@@ -63,7 +63,7 @@ sub work {
 
 sub get_object {
     my ( $schema, $cache, $object_type, $object_id ) = @_;
-    
+
     my $user_model = $schema->resultset('User');
 
     if ( $object_type eq 'topic' ) {

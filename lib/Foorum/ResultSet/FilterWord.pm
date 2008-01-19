@@ -1,56 +1,52 @@
-package Foorum::Model::FilterWord;
+package Foorum::ResultSet::FilterWord;
 
 use strict;
 use warnings;
-use base 'Catalyst::Model';
+use base 'DBIx::Class::ResultSet';
 
 sub get_data {
-    my ( $self, $c, $type ) = @_;
+    my ( $self, $type ) = @_;
 
     return unless ($type);
+
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
+
     my $cache_key   = "filter_word|type=$type";
-    my $cache_value = $c->cache->get($cache_key);
+    my $cache_value = $cache->get($cache_key);
     return wantarray ? @{ $cache_value->{value} } : $cache_value->{value}
         if ($cache_value);
 
     my @value;
-    my @rs = $c->model('DBIC::FilterWord')->search( { type => $type } )->all;
+    my @rs = $self->search( { type => $type } )->all;
     push @value, $_->word foreach (@rs);
     $cache_value = { value => \@value };
-    $c->cache->set( $cache_key, $cache_value, 3600 );    # 1 hour
+    $cache->set( $cache_key, $cache_value, 3600 );    # 1 hour
 
     return wantarray ? @value : \@value;
 }
 
 # for offensive word, we just convert part of the word into '*' by default
-# for bad word, we always print_error to stop submit by default
+# for bad word, return 1 when matched
 
 sub has_bad_word {
-    my ( $self, $c, $text, $attr ) = @_;
+    my ( $self, $text ) = @_;
 
-    my $RaiseError = ( exists $attr->{RaiseError} ) ? $attr->{RaiseError} : 1;
-
-    my @bad_words = $self->get_data( $c, 'bad_word' );
+    my @bad_words = $self->get_data('bad_word');
     foreach my $word (@bad_words) {
-        if ( $text =~ /$word/ ) {
-            if ($RaiseError) {
-                $c->detach( '/print_error',
-                    [qq~Sorry, your input has a bad word "$word".~] );
-            } else {
-                return 1;
-            }
-            last;    # out foreach
+        if ( $text =~ /$word/is ) {
+            return 1;
         }
     }
     return 0;
 }
 
 sub convert_offensive_word {
-    my ( $self, $c, $text ) = @_;
+    my ( $self, $text ) = @_;
 
-    my @offensive_words = $self->get_data( $c, 'offensive_word' );
+    my @offensive_words = $self->get_data('offensive_word');
     foreach my $word (@offensive_words) {
-        if ( $text =~ /$word/ ) {
+        if ( $text =~ /$word/is ) {
             my $asterisk_word   = $word;
             my $converted_chars = 0;
             foreach my $offset ( 2 .. length($word) ) {
@@ -70,11 +66,3 @@ sub convert_offensive_word {
 
 1;
 __END__
-
-=pod
-
-=head2 AUTHOR
-
-Fayland Lam <fayland at gmail.com>
-
-=cut

@@ -90,7 +90,7 @@ sub preview : Local {
 
     return $c->res->body(' ') unless ( length($text) );
 
-    $text = $c->model('FilterWord')->convert_offensive_word( $c, $text );
+    $text = $c->model('DBIC::FilterWord')->convert_offensive_word($text);
     $text = filter_format( $text, { format => $formatter } );
 
     $c->res->body($text);

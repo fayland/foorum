@@ -12,7 +12,7 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
     my $forum_code = $c->req->snippets->[0];
     my $topic_id   = $c->req->snippets->[2];
 
-    my $page       = get_page_from_url( $c->req->path );
+    my $page = get_page_from_url( $c->req->path );
     $page = 1 unless ( $page and $page =~ /^\d+$/ );
     my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;    # /forum/ForumName/1/rss
 
@@ -22,23 +22,24 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
 
     my $format = $c->req->param('format');
     if ( $format eq 'pdf' ) {
-        unless ($c->config->{function_on}->{topic_pdf}) {
-            $c->detach('/print_error', [ 'Function Disabled' ] );
+        unless ( $c->config->{function_on}->{topic_pdf} ) {
+            $c->detach( '/print_error', ['Function Disabled'] );
         }
-        
+
         # Build PDF in backend
         my $random_word = generate_random_word(6);
-        my $client = theschwartz();
+        my $client      = theschwartz();
         $client->insert(
             'Foorum::TheSchwartz::Worker::Topic_ViewAsPDF',
             [ $forum_id, $topic_id, $random_word ]
         );
 
-        my $url  = $c->req->base . "upload/pdf/$forum_id-$topic_id-$random_word.pdf";
-        $c->stash( {
-            download_url => $url,
-            template     => 'topic/pdf_download.html',
-        } );
+        my $url = $c->req->base . "upload/pdf/$forum_id-$topic_id-$random_word.pdf";
+        $c->stash(
+            {   download_url => $url,
+                template     => 'topic/pdf_download.html',
+            }
+        );
 
         return 1;
     }
@@ -61,7 +62,7 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
         );
     } else {
         $topic->{hit}
-            = $c->model('Hit')->register( $c, 'topic', $topic_id, $topic->{hit} );
+            = $c->model('DBIC::Hit')->register( 'topic', $topic_id, $topic->{hit} );
         if ( $c->user_exists ) {
             my $query = {
                 user_id     => $c->user->user_id,
@@ -155,7 +156,7 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
             hit              => 0,
         }
     );
-    $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
+    $c->forward( '/clear_when_topic_changes', [$forum] );
 
     # clear visit
     $c->model('Visit')->make_un_visited( $c, 'topic', $topic->topic_id );

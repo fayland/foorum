@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
 use Test::More tests => 1;
@@ -12,5 +14,6 @@ $base_path =~ s/\/blib$//isg;
 
 my $real = abs_path("$RealBin/../");
 
-is($base_path, $real, 'abs_path OK');
+is( $base_path, $real, 'abs_path OK' );
+
 #diag($base_path);

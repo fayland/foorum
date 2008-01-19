@@ -120,7 +120,7 @@ sub post : Local {
     $c->model('User')->update( $c, $c->user, { replies => \"replies + 1" } );    #"
 
     if ($forum_id) {
-        $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
+        $c->forward( '/clear_when_topic_changes', [$forum] );
     }
 
     # go this comment
@@ -226,7 +226,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
     $c->model('User')->update( $c, $c->user, { replies => \"replies + 1" } );    #"
 
     if ($forum_id) {
-        $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
+        $c->forward( '/clear_when_topic_changes', [$forum] );
     }
 
     my $path = $c->model('Object')->get_url_from_object( $c, $info );
@@ -399,7 +399,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             $c->model('Topic')
                 ->remove( $c, $forum_id, $object_id, { log_text => $comment->{title} } );
             $path = $forum->{forum_url};
-            $c->model('ClearCachedPage')->clear_when_topic_changes( $c, $forum );
+            $c->forward( '/clear_when_topic_changes', [$forum] );
         }
     }
 

@@ -118,11 +118,11 @@ sub add_file {
     my $upload_dir
         = $c->path_to( 'root', 'upload', $directory_1, $directory_2 )->stringify;
     my @created = mkpath( [$upload_dir], 0, 0777 );    ## no critic (ProhibitLeadingZeros)
-    
+
     # copy index.html to protect dir from Options Indexes
     foreach my $dir (@created) {
-        my $indexfile =  $c->path_to( 'root', 'upload', 'index.html' )->stringify;
-        copy($indexfile, $dir);
+        my $indexfile = $c->path_to( 'root', 'upload', 'index.html' )->stringify;
+        copy( $indexfile, $dir );
     }
 
     my $target = $c->path_to( 'root', 'upload', $directory_1, $directory_2, $basename )

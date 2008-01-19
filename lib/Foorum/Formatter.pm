@@ -46,19 +46,23 @@ sub filter_format {
             }
         );
         $text = $formatter->parse($text);
-        
+
         # emot
         if ( $text =~ /\:\w{2,9}\:/s ) {
             my @emot_icon = (
-                'wink',   'sad',    'biggrin', 'cheesy',   'confused', 'cool',
-                'angry',  'sads',   'smile',   'smiled',   'unhappy',  'dozingoff',
-                'blink',  'blush',  'crazy',   'cry',      'bigsmile', 'inlove',
-                'notify', 'shifty', 'sick',    'sleeping', 'sneaky2',  'tounge',
-                'unsure', 'wacko',  'why',     'wow',      'mad',      'Oo'
+                'wink',     'sad',      'biggrin', 'cheesy',
+                'confused', 'cool',     'angry',   'sads',
+                'smile',    'smiled',   'unhappy', 'dozingoff',
+                'blink',    'blush',    'crazy',   'cry',
+                'bigsmile', 'inlove',   'notify',  'shifty',
+                'sick',     'sleeping', 'sneaky2', 'tounge',
+                'unsure',   'wacko',    'why',     'wow',
+                'mad',      'Oo'
             );
             my $emot_url = $config->{dir}->{images} . '/bbcode/emot';
-            if ($emot_url !~ /^http\:\/\//) {
-                my $domain = $config->{site}->{domain}; $domain =~ s/\/$//;
+            if ( $emot_url !~ /^http\:\/\// ) {
+                my $domain = $config->{site}->{domain};
+                $domain =~ s/\/$//;
                 $emot_url = $domain . $emot_url;
             }
             foreach my $em (@emot_icon) {

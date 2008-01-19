@@ -16,7 +16,7 @@ sub validate_username {
     }
 
     # username_reserved
-    my @reserved = $c->model('FilterWord')->get_data( $c, 'username_reserved' );
+    my @reserved = $c->model('DBIC::FilterWord')->get_data('username_reserved');
     return 'HAS_RESERVED' if ( grep { lc($username) eq lc($_) } @reserved );
 
     # unique
@@ -53,7 +53,7 @@ sub validate_forum_code {
     }
 
     # forum_code_reserved
-    my @reserved = $c->model('FilterWord')->get_data( $c, 'forum_code_reserved' );
+    my @reserved = $c->model('DBIC::FilterWord')->get_data('forum_code_reserved');
     return 'HAS_RESERVED' if ( grep { lc($forum_code) eq lc($_) } @reserved );
 
     # unique
@@ -71,12 +71,18 @@ sub validate_comment {
     unless ( $title and length($title) < 80 ) {
         $c->detach( '/print_error', ['ERROR_TITLE_LENGTH'] );
     } else {
-        $c->model('FilterWord')->has_bad_word( $c, $title );
+        my $has_bad_word = $c->model('DBIC::FilterWord')->has_bad_word($title);
+        if ($has_bad_word) {
+            $c->detach( '/print_error', [qq~Sorry, your input has a bad word "$word".~] );
+        }
     }
     unless ($text) {
         $c->detach( '/print_error', ['ERROR_TEXT_REQUIRED'] );
     } else {
-        $c->model('FilterWord')->has_bad_word( $c, $text );
+        my $has_bad_word = $c->model('DBIC::FilterWord')->has_bad_word($text);
+        if ($has_bad_word) {
+            $c->detach( '/print_error', [qq~Sorry, your input has a bad word "$word".~] );
+        }
     }
 }
 

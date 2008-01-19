@@ -50,7 +50,7 @@ sub lock_or_sticky_or_elite : Regex('^forum/(\w+)/topic/(\d+)/(un)?(sticky|elite
     $c->clear_cached_page("/forum/$forum_id");
     $c->clear_cached_page("/forum/$forum_code") if ($forum_code);
     if ( $action eq 'elite' ) {
-        $c->model('ClearCachedPage')->clear_when_topic_elite( $c, $forum );
+        $c->forward( '/clear_when_topic_elite', [$forum] );
     }
 
     $c->forward(

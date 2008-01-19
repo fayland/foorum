@@ -6,11 +6,11 @@ use base 'DBIx::Class::ResultSet';
 use Object::Signature();
 
 sub get {
-    my ($self, $cond) = @_;
-    
+    my ( $self, $cond ) = @_;
+
     my $schema = $self->result_source->schema;
     my $cache  = $schema->cache();
-    
+
     my $cache_key = 'user|' . Object::Signature::signature($cond);
     my $cache_val = $cache->get($cache_key);
 
@@ -18,7 +18,7 @@ sub get {
         return $cache_val;
     }
 
-    $cache_val = $self->get_from_db( $cond );
+    $cache_val = $self->get_from_db($cond);
     return unless ($cache_val);
 
     $cache->set( $cache_key, $cache_val, 7200 );    # two hours
@@ -63,37 +63,38 @@ sub get_multi {
 }
 
 sub get_from_db {
-    my ($self, $cond) = @_;
-    
+    my ( $self, $cond ) = @_;
+
     my $schema = $self->result_source->schema;
     my $cache  = $schema->cache();
-    
+
     my $user = $schema->resultset('User')->find($cond);
     return unless ($user);
 
     # user_details
-    my $user_details = $schema->resultset('UserDetails')
-        ->find( { user_id => $user->user_id } );
+    my $user_details
+        = $schema->resultset('UserDetails')->find( { user_id => $user->user_id } );
     $user_details = $user_details->{_column_data} if ($user_details);
 
     # user role
-    my @roles = $schema->resultset('UserRole')
-        ->search( { user_id => $user->user_id, } )->all;
+    my @roles
+        = $schema->resultset('UserRole')->search( { user_id => $user->user_id, } )->all;
     my $roles;
     foreach (@roles) {
         $roles->{ $_->field }->{ $_->role } = 1;
     }
 
     # user profile photo
-    my $profile_photo = $schema->resultset('UserProfilePhoto')
-        ->find( { user_id => $user->user_id, } );
+    my $profile_photo
+        = $schema->resultset('UserProfilePhoto')->find( { user_id => $user->user_id, } );
     if ($profile_photo) {
         $profile_photo = $profile_photo->{_column_data};
         if ( $profile_photo->{type} eq 'upload' ) {
-#            my $profile_photo_upload
-#                = $schema->resultset('Upload')->get( $profile_photo->{value} );
-#            $profile_photo->{upload} = $profile_photo_upload
-#                if ($profile_photo_upload);
+
+          #            my $profile_photo_upload
+          #                = $schema->resultset('Upload')->get( $profile_photo->{value} );
+          #            $profile_photo->{upload} = $profile_photo_upload
+          #                if ($profile_photo_upload);
         }
     }
 
@@ -108,7 +109,7 @@ sub delete_cache_by_user {
     my ( $self, $user ) = @_;
 
     return unless ($user);
-    
+
     my $schema = $self->result_source->schema;
     my $cache  = $schema->cache();
 
@@ -129,15 +130,15 @@ sub delete_cache_by_user {
 sub delete_cache_by_user_cond {
     my ( $self, $cond ) = @_;
 
-    my $user = $self->get( $cond );
-    $self->delete_cache_by_user( $user );
+    my $user = $self->get($cond);
+    $self->delete_cache_by_user($user);
 }
 
 # call this update will delete cache.
 sub real_update {
     my ( $self, $user, $update ) = @_;
 
-    $self->delete_cache_by_user( $user );
+    $self->delete_cache_by_user($user);
     $self->search( { user_id => $user->{user_id} } )->update($update);
 }
 
@@ -170,7 +171,7 @@ sub get_user_settings {
         'send_starred_notification' => 'Y',
         'show_email_public'         => 'Y',
     };
-    my $ret = { %$default, %$cacheval };                            # merge
+    my $ret = { %$default, %$cacheval };                           # merge
     return $ret;
 }
 

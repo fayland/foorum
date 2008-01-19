@@ -164,9 +164,9 @@ sub get_all_comments_by_object {
 
             # filter format by Foorum::Filter
             $rec->{title}
-                = $c->model('FilterWord')->convert_offensive_word( $c, $rec->{title} );
+                = $c->model('DBIC::FilterWord')->convert_offensive_word( $rec->{title} );
             $rec->{text}
-                = $c->model('FilterWord')->convert_offensive_word( $c, $rec->{text} );
+                = $c->model('DBIC::FilterWord')->convert_offensive_word( $rec->{text} );
             $rec->{text} = filter_format( $rec->{text}, { format => $rec->{formatter} } );
 
             push @comments, $rec;
@@ -210,7 +210,7 @@ sub get {
 
         # filter format by Foorum::Filter
         $comment->{text}
-            = $c->model('FilterWord')->convert_offensive_word( $c, $comment->{text} );
+            = $c->model('DBIC::FilterWord')->convert_offensive_word( $comment->{text} );
         $comment->{text}
             = filter_format( $comment->{text}, { format => $comment->{formatter} } );
     }

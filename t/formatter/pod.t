@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 use strict;
 use warnings;
 use Test::More;
@@ -5,13 +7,11 @@ use Test::More;
 BEGIN {
 
     eval { require Pod::Xhtml }
-        or plan skip_all =>
-        "Pod::Xhtml is required for this test";
+        or plan skip_all => "Pod::Xhtml is required for this test";
 
     eval { require IO::String }
-        or plan skip_all =>
-        "IO::String is required for this test";
-    
+        or plan skip_all => "IO::String is required for this test";
+
     plan tests => 3;
 }
 
@@ -76,10 +76,10 @@ under the same terms as Perl itself.
 
 TEXT
 
-my $html = filter_format($text, { format => 'pod' } );
+my $html = filter_format( $text, { format => 'pod' } );
 
-like($html, qr/h2/,   '=head1 OK');
-like($html, qr/dt/,   '=over OK');
-like($html, qr/\<a href=/, 'L<> OK');
+like( $html, qr/h2/,        '=head1 OK' );
+like( $html, qr/dt/,        '=over OK' );
+like( $html, qr/\<a href=/, 'L<> OK' );
 
 #diag($html);

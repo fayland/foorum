@@ -6,10 +6,10 @@ use base 'DBIx::Class::ResultSet';
 
 sub get {
     my ($self) = @_;
-    
+
     my $schema = $self->result_source->schema;
     my $cache  = $schema->cache();
-    
+
     my $cache_key  = 'global|banned_ip';
     my $cache_data = $cache->get($cache_key);
     return wantarray ? @{$cache_data} : $cache_data
