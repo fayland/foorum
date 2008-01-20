@@ -11,7 +11,7 @@ BEGIN {
     plan tests => 2;
 }
 
-use Foorum::ExternalUtils qw/tt2/;
+use Foorum::XUtils qw/tt2/;
 my $tt2 = tt2();
 
 my $var = {
