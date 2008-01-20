@@ -16,7 +16,7 @@ if ( $has_proc_pid_file and $has_home_dir ) {
 
 use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
-use Foorum::ExternalUtils qw/theschwartz config/;
+use Foorum::XUtils qw/theschwartz config/;
 use Foorum::TheSchwartz::Worker::Hit;
 use Foorum::TheSchwartz::Worker::RemoveOldDataFromDB;
 use Foorum::TheSchwartz::Worker::ResizeProfilePhoto;

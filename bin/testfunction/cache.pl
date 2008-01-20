@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
-use Foorum::ExternalUtils qw/cache/;
+use Foorum::XUtils qw/cache/;
 
 my $cache = cache();
 

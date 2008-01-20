@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
-use Foorum::ExternalUtils qw/schema/;
+use Foorum::SUtils qw/schema/;
 use File::Spec;
 use Image::Magick;
 use Cwd qw/abs_path/;

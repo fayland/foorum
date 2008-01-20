@@ -10,7 +10,7 @@ use DBIx::Class::Schema::Loader qw| make_schema_at dump_to_dir |;
 my $path = abs_path("$RealBin/../../lib");
 
 use lib "$Bin/../../lib";
-use Foorum::ExternalUtils qw/config/;
+use Foorum::XUtils qw/config/;
 my $config = config();
 
 make_schema_at(

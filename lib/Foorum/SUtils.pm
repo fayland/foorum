@@ -29,7 +29,7 @@ __END__
 
 =head1 NAME
 
-Foorum::ExternalUtils - Utils for cron
+Foorum::SUtils - Utils for cron
 
 =head1 FUNCTIONS
 

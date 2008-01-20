@@ -16,7 +16,8 @@ if ( $has_proc_pid_file and $has_home_dir ) {
 
 use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
-use Foorum::ExternalUtils qw/tt2 schema/;
+use Foorum::XUtils qw/tt2/;
+use Foorum::SUtils qw/schema/;
 
 my $tt2    = tt2();
 my $schema = schema();
