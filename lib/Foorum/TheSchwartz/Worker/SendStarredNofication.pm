@@ -4,10 +4,9 @@ use strict;
 use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
-use Foorum::ExternalUtils qw/schema/;
-use Foorum::XUtils qw/tt2/;
+use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
-use Foorum::XUtils qw/config base_path cache/;
+use Foorum::XUtils qw/config base_path cache tt2/;
 
 sub work {
     my $class = shift;

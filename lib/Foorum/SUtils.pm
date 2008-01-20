@@ -1,4 +1,4 @@
-package Foorum::ExternalUtils;
+package Foorum::SUtils;
 
 use strict;
 use warnings;

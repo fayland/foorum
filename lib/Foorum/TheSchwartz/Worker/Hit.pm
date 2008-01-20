@@ -5,7 +5,7 @@ use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Data::Dump qw/dump/;
-use Foorum::ExternalUtils qw/schema/;
+use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
 
 sub work {
