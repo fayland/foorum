@@ -68,4 +68,5 @@ __PACKAGE__->belongs_to(
     'forum' => 'Foorum::Schema::Forum',
     { 'foreign.forum_id' => 'self.forum_id' }
 );
+__PACKAGE__->resultset_class('Foorum::ResultSet::Topic');
 1;

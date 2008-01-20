@@ -13,7 +13,7 @@ sub default : Private {
     if ( $c->req->method ne 'POST' ) {
 
         # for fullfil
-        $c->stash->{settings} = $c->model('User')->get_user_settings( $c, $c->user );
+        $c->stash->{settings} = $c->model('DBIC::User')->get_user_settings( $c->user );
         return;
     }
 

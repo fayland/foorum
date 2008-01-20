@@ -6,15 +6,23 @@ use YAML qw/LoadFile/;    # config
 use Foorum::Schema;       # schema
 use Cache::FileCache;     # cache
 use base 'Exporter';
-use vars qw/@EXPORT_OK $config $cache/;
+use vars qw/@EXPORT_OK $config $cache $base_path/;
 @EXPORT_OK = qw/
     config
     schema
     cache
+    base_path
     /;
 
 use File::Spec;
+use Cwd qw/abs_path/;
 my ( undef, $path ) = File::Spec->splitpath(__FILE__);
+
+sub base_path {
+    return $base_path if ($base_path);
+    $base_path = abs_path("$path/../../../");
+    return $base_path;
+}
 
 sub config {
     return $config if ($config);

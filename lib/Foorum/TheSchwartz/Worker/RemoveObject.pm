@@ -4,7 +4,9 @@ use strict;
 use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
-use Foorum::ExternalUtils qw/schema error_log cache/;
+use Foorum::ExternalUtils qw/schema/;
+use Foorum::XUtils qw/cache/;
+use Foorum::Logger qw/error_log/;
 
 sub work {
     my $class = shift;
@@ -37,7 +39,8 @@ Generally we have a table 'object_remove' record the object_type+object_id.
 
 =head1 USAGE
 
-  use Foorum::ExternalUtils qw/theschwartz schema/;
+  use Foorum::ExternalUtils qw/schema/;
+  use Foorum::XUtils qw/theschwartz/;
   my $schema = schema();
   $schema->resultset('ObjectRemove')->create( { # or $c->model('DBIC')
       object_type => 'topic',

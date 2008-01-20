@@ -42,7 +42,7 @@ sub default : Private {
         # protect from private forum
         my $forum_id = $object->{forum_id};
         unless ( exists $forum_policy{$forum_id} ) {
-            my $forum = $c->model('Forum')->get( $c, $forum_id );
+            my $forum = $c->model('DBIC::Forum')->get($forum_id);
             $forum_policy{$forum_id} = ($forum) ? $forum->{policy} : 'private';
         }
         next if ( $forum_policy{$forum_id} ne 'public' );

@@ -139,7 +139,7 @@ pageTracker._trackPageview();
 </script>
 [% END %]
 
-    [% IF c.config.debug_mode AND NOT simple_wrapper %]
+    [% IF c.config.debug_mode %]
       <div class="featurebox">
         <h3>Query Log Report</h3>
         [% SET total = c.model('DBIC').querylog.time_elapsed | format('%0.6f') %]

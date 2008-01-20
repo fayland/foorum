@@ -91,10 +91,10 @@ sub get_from_db {
         $profile_photo = $profile_photo->{_column_data};
         if ( $profile_photo->{type} eq 'upload' ) {
 
-          #            my $profile_photo_upload
-          #                = $schema->resultset('Upload')->get( $profile_photo->{value} );
-          #            $profile_photo->{upload} = $profile_photo_upload
-          #                if ($profile_photo_upload);
+            my $profile_photo_upload
+                = $schema->resultset('Upload')->get( $profile_photo->{value} );
+            $profile_photo->{upload} = $profile_photo_upload
+                if ($profile_photo_upload);
         }
     }
 
@@ -135,7 +135,7 @@ sub delete_cache_by_user_cond {
 }
 
 # call this update will delete cache.
-sub real_update {
+sub update_user {
     my ( $self, $user, $update ) = @_;
 
     $self->delete_cache_by_user($user);
@@ -246,9 +246,9 @@ get_multi() is to ease a loop for many users. if cache backend is memcached, it 
 
 query db directly. return $user_obj
 
-=item real_update()
+=item update_user()
 
-  $c->model('DBIC::User')->real_update( $user_obj, { update_column => $value } );
+  $c->model('DBIC::User')->update_user( $user_obj, { update_column => $value } );
 
 the difference between $row->update of L<DBIx::Class> is that it delete cache.
 

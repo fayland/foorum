@@ -4,7 +4,10 @@ use strict;
 use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
-use Foorum::ExternalUtils qw/schema config base_path error_log tt2 cache/;
+use Foorum::ExternalUtils qw/schema/;
+use Foorum::XUtils qw/tt2/;
+use Foorum::Logger qw/error_log/;
+use Foorum::XUtils qw/config base_path cache/;
 use Foorum::Formatter qw/filter_format/;
 use PDF::FromHTML;
 

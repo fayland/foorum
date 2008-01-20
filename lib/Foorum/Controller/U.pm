@@ -52,15 +52,20 @@ sub user_profile : LocalRegex('^(\w+)$') {
     }
 
     # get comments
-    $c->model('Comment')->get_comments_by_object(
-        $c,
+    my ($view_mode)  = ( $c->req->path =~ /\/view_mode=(thread|flat)(\/|$)/ );
+    my ($comment_id) = ( $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ );
+    ( $c->stash->{comments}, $c->stash->{comments_pager} )
+        = $c->model('DBIC::Comment')->get_comments_by_object(
         {   object_type => 'user_profile',
             object_id   => $user->{user_id},
+            page        => get_page_from_url( $c->req->path ),
+            view_mode   => $view_mode,
+            comment_id  => $comment_id,
         }
-    );
+        );
 
     # get user settings
-    $user->{settings} = $c->model('User')->get_user_settings( $c, $user );
+    $user->{settings} = $c->model('DBIC::User')->get_user_settings($user);
 
     $c->stash->{whos_view_this_page} = 1;
     $c->stash->{template}            = 'u/profile.html';

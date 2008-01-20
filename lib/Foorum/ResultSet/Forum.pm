@@ -1,12 +1,15 @@
-package Foorum::Model::Forum;
+package Foorum::ResultSet::Forum;
 
 use strict;
 use warnings;
-use base 'Catalyst::Model';
+use base 'DBIx::Class::ResultSet';
 use Foorum::Formatter qw/filter_format/;
 
 sub get {
-    my ( $self, $c, $forum_code ) = @_;
+    my ( $self, $forum_code ) = @_;
+
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
 
     # if $forum_code is all numberic, that's forum_id
     # or else, it's forum_code
@@ -17,21 +20,20 @@ sub get {
         $forum_id = $forum_code;
     } else {
         my $mem_key = 'global|forum_code_to_id';
-        my $mem_val = $c->cache->get($mem_key);
+        my $mem_val = $cache->get($mem_key);
         if ( $mem_val and $mem_val->{$forum_code} ) {
             $forum_id = $mem_val->{$forum_code};
         } else {
-            $forum = $c->model('DBIC')->resultset('Forum')
-                ->search( { forum_code => $forum_code } )->first;
+            $forum = $self->search( { forum_code => $forum_code } )->first;
             return unless $forum;
             $forum_id = $forum->forum_id;
             $mem_val->{$forum_code} = $forum_id;
-            $c->cache->set( $mem_key, $mem_val, 36000 );    # 10 hours
+            $cache->set( $mem_key, $mem_val, 36000 );    # 10 hours
 
             # set cache
-            $forum = $forum->{_column_data};                # hash for cache
-            $forum->{forum_url} = $self->get_forum_url( $c, $forum );
-            $c->cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
+            $forum = $forum->{_column_data};                      # hash for cache
+            $forum->{forum_url} = $self->get_forum_url($forum);
+            $cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
         }
     }
 
@@ -39,17 +41,16 @@ sub get {
 
     unless ($forum) {    # do not get from convert forum_code to forum_id
         my $cache_key = "forum|forum_id=$forum_id";
-        my $cache_val = $c->cache->get($cache_key);
+        my $cache_val = $cache->get($cache_key);
 
         if ( $cache_val and $cache_val->{val} ) {
             $forum = $cache_val->{val};
         } else {
-            $forum = $c->model('DBIC')->resultset('Forum')
-                ->find( { forum_id => $forum_id } );
+            $forum = $self->find( { forum_id => $forum_id } );
             return unless ($forum);
 
             # get forum settings
-            my $settings_rs = $c->model('DBIC')->resultset('ForumSettings')
+            my $settings_rs = $schema->resultset('ForumSettings')
                 ->search( { forum_id => $forum_id } );
             my $settings = {    # default
                 can_post_threads => 'Y',
@@ -61,10 +62,10 @@ sub get {
             }
 
             # set cache
-            $forum = $forum->{_column_data};    # hash for cache
-            $forum->{settings} = $settings;
-            $forum->{forum_url} = $self->get_forum_url( $c, $forum );
-            $c->cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
+            $forum              = $forum->{_column_data};         # hash for cache
+            $forum->{settings}  = $settings;
+            $forum->{forum_url} = $self->get_forum_url($forum);
+            $cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
         }
     }
 
@@ -72,90 +73,95 @@ sub get {
 }
 
 sub get_forum_url {
-    my ( $self, $c, $forum ) = @_;
+    my ( $self, $forum ) = @_;
 
     my $forum_url = '/forum/' . $forum->{forum_code};
 
     return $forum_url;
 }
 
-sub update {
-    my ( $self, $c, $forum_id, $update ) = @_;
+sub update_forum {
+    my ( $self, $forum_id, $update ) = @_;
 
-    $c->model('DBIC')->resultset('Forum')->search( { forum_id => $forum_id } )
-        ->update($update);
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
 
-    $c->cache->remove("forum|forum_id=$forum_id");
+    $self->search( { forum_id => $forum_id } )->update($update);
+
+    $cache->remove("forum|forum_id=$forum_id");
 
     if ( $update->{forum_code} ) {
         my $mem_key = 'global|forum_code_to_id';
-        my $mem_val = $c->cache->get($mem_key);
+        my $mem_val = $cache->get($mem_key);
         $mem_val->{ $update->{forum_code} } = $forum_id;
-        $c->cache->set( $mem_key, $mem_val, 36000 );    # 10 hours
+        $cache->set( $mem_key, $mem_val, 36000 );    # 10 hours
     }
 }
 
 sub remove_forum {
-    my ( $self, $c, $forum_id ) = @_;
+    my ( $self, $forum_id ) = @_;
 
-    $c->model('DBIC::Forum')->search( { forum_id => $forum_id, } )->delete;
-    $c->model('Policy')->remove_user_role( $c, { field => $forum_id, } );
-    $c->model('DBIC::LogAction')->search( { forum_id => $forum_id } )->delete;
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
+
+    $self->search( { forum_id => $forum_id, } )->delete;
+    $schema->resultset('DBIC::UserRole')->remove_user_role( { field => $forum_id, } );
+    $schema->resultset('LogAction')->search( { forum_id => $forum_id } )->delete;
 
     # get all topic_ids
     my @topic_ids;
-    my $tp_rs = $c->model('DBIC::Topic')
+    my $tp_rs = $schema->resultset('DBIC::Topic')
         ->search( { forum_id => $forum_id, }, { columns => ['topic_id'], } );
     while ( my $r = $tp_rs->next ) {
         push @topic_ids, $r->topic_id;
     }
-    $c->model('DBIC::Topic')->search( { forum_id => $forum_id, } )->delete;
+    $schema->resultset('Topic')->search( { forum_id => $forum_id, } )->delete;
 
     # get all poll_ids
     my @poll_ids;
-    my $pl_rs = $c->model('DBIC::Poll')
+    my $pl_rs = $schema->resultset('Poll')
         ->search( { forum_id => $forum_id, }, { columns => ['poll_id'], } );
     while ( my $r = $pl_rs->next ) {
         push @poll_ids, $r->poll_id;
     }
-    $c->model('DBIC::Poll')->search( { forum_id => $forum_id, } )->delete;
+    $schema->resultset('Poll')->search( { forum_id => $forum_id, } )->delete;
     if ( scalar @poll_ids ) {
-        $c->model('DBIC::PollOption')->search( { poll_id => { 'IN', \@poll_ids }, } )
+        $schema->resultset('PollOption')->search( { poll_id => { 'IN', \@poll_ids }, } )
             ->delete;
-        $c->model('DBIC::PollResult')->search( { poll_id => { 'IN', \@poll_ids }, } )
+        $schema->resultset('PollResult')->search( { poll_id => { 'IN', \@poll_ids }, } )
             ->delete;
     }
 
     # comment and star/share
     if ( scalar @topic_ids ) {
-        $c->model('DBIC::Comment')->search(
+        $schema->resultset('Comment')->search(
             {   object_type => 'topic',
                 object_id   => { 'IN', \@topic_ids },
             }
         )->delete;
-        $c->model('DBIC::Star')->search(
+        $schema->resultset('Star')->search(
             {   object_type => 'topic',
                 object_id   => { 'IN', \@topic_ids },
             }
         )->delete;
-        $c->model('DBIC::Share')->search(
+        $schema->resultset('Share')->search(
             {   object_type => 'topic',
                 object_id   => { 'IN', \@topic_ids },
             }
         )->delete;
     }
     if ( scalar @poll_ids ) {
-        $c->model('DBIC::Comment')->search(
+        $schema->resultset('Comment')->search(
             {   object_type => 'poll',
                 object_id   => { 'IN', \@poll_ids },
             }
         )->delete;
-        $c->model('DBIC::Star')->search(
+        $schema->resultset('Star')->search(
             {   object_type => 'poll',
                 object_id   => { 'IN', \@poll_ids },
             }
         )->delete;
-        $c->model('DBIC::Share')->search(
+        $schema->resultset('Share')->search(
             {   object_type => 'poll',
                 object_id   => { 'IN', \@poll_ids },
             }
@@ -163,20 +169,23 @@ sub remove_forum {
     }
 
     # for upload
-    $c->model('Upload')->remove_for_forum( $c, $forum_id );
+    $schema->resultset('Upload')->remove_for_forum($forum_id);
 }
 
 sub merge_forums {
-    my ( $self, $c, $info ) = @_;
+    my ( $self, $info ) = @_;
+
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
 
     my $from_id = $info->{from_id} or return 0;
     my $to_id   = $info->{to_id}   or return 0;
 
-    my $old_forum = $c->model('DBIC::Forum')->find( { forum_id => $from_id } );
+    my $old_forum = $self->find( { forum_id => $from_id } );
     return unless ($old_forum);
-    my $new_forum = $c->model('DBIC::Forum')->find( { forum_id => $to_id } );
+    my $new_forum = $self->find( { forum_id => $to_id } );
     return unless ($new_forum);
-    $c->model('DBIC::Forum')->search( { forum_id => $from_id, } )->delete;
+    $self->search( { forum_id => $from_id, } )->delete;
 
     # update new
     my $total_topics  = $old_forum->total_topics;
@@ -186,47 +195,51 @@ sub merge_forums {
     if ( $new_forum->policy eq 'private' ) {
         @extra_cols = ( 'total_members', \"total_members + $total_members" );    #"
     }
-    $c->model('DBIC::Forum')->search( { forum_id => $to_id, } )->update(
+    $self->search( { forum_id => $to_id, } )->update(
         {   total_topics  => \"total_topics  + $total_topics",
             total_replies => \"total_replies + $total_replies",
             @extra_cols,
         }
     );
-    $c->model('Policy')->remove_user_role( $c, { field => $from_id, } );
+
+    $schema->resultset('DBIC::UserRole')->remove_user_role( { field => $from_id, } );
 
     # topics
-    $c->model('DBIC::Topic')->search( { forum_id => $from_id, } )
+    $schema->resultset('Topic')->search( { forum_id => $from_id, } )
         ->update( { forum_id => $to_id, } );
 
     # FIXME!!!
     # need delete all topic_id cache object
-    # $c->cache->remove("topic|topic_id=$topic_id");
+    # $=cache->remove("topic|topic_id=$topic_id");
 
     # polls
-    $c->model('DBIC::Poll')->search( { forum_id => $from_id, } )
+    $schema->resultset('Poll')->search( { forum_id => $from_id, } )
         ->update( { forum_id => $to_id, } );
 
     # comment
-    $c->model('DBIC::Comment')->search( { forum_id => $from_id, } )
+    $schema->resultset('Comment')->search( { forum_id => $from_id, } )
         ->update( { forum_id => $to_id, } );
 
     # for upload
-    $c->model('Upload')->change_for_forum( $c, $info );
+    $schema->resultset('Upload')->change_for_forum($info);
 
     return 1;
 }
 
 sub get_announcement {
-    my ( $self, $c, $forum ) = @_;
+    my ( $self, $forum ) = @_;
+
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
 
     my $forum_id = $forum->{forum_id};
 
     my $memkey = "forum|announcement|forum_id=$forum_id";
-    my $memval = $c->cache->get($memkey);
+    my $memval = $cache->get($memkey);
     if ( $memval and $memval->{value} ) {
         $memval = $memval->{value};
     } else {
-        my $rs           = $c->model('DBIC')->resultset('Comment');
+        my $rs           = $schema->resultset('Comment');
         my $announcement = $rs->search(
             {   object_type => 'announcement',
                 object_id   => $forum_id,
@@ -241,7 +254,7 @@ sub get_announcement {
                 { format => $announcement->{formatter} } );
         }
         $memval = $announcement;
-        $c->cache->set( $memkey, { value => $memval, 1 => 2 } );
+        $cache->set( $memkey, { value => $memval, 1 => 2 } );
     }
 
     return $memval;
@@ -249,11 +262,3 @@ sub get_announcement {
 
 1;
 __END__
-
-=pod
-
-=head2 AUTHOR
-
-Fayland Lam <fayland at gmail.com>
-
-=cut

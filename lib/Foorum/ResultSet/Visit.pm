@@ -1,24 +1,24 @@
-package Foorum::Model::Visit;
+package Foorum::ResultSet::Visit;
 
 use strict;
 use warnings;
-use base 'Catalyst::Model';
+use base 'DBIx::Class::ResultSet';
 
 sub make_visited {
-    my ( $self, $c, $object_type, $object_id ) = @_;
+    my ( $self, $object_type, $object_id, $user_id ) = @_;
 
-    return unless ( $c->user_exists );
+    return unless ($user_id);
     return
         if (
-        $c->model('DBIC::Visit')->count(
-            {   user_id     => $c->user->user_id,
+        $self->count(
+            {   user_id     => $user_id,
                 object_type => $object_type,
                 object_id   => $object_id
             }
         )
         );
-    $c->model('DBIC::Visit')->create(
-        {   user_id     => $c->user->user_id,
+    $self->create(
+        {   user_id     => $user_id,
             object_type => $object_type,
             object_id   => $object_id,
             time        => time(),
@@ -27,14 +27,14 @@ sub make_visited {
 }
 
 sub make_un_visited {
-    my ( $self, $c, $object_type, $object_id ) = @_;
+    my ( $self, $object_type, $object_id, $user_id ) = @_;
 
     my @extra_cols;
-    if ( $c->user_exists ) {
-        @extra_cols = ( user_id => { '!=', $c->user->user_id } );
+    if ($user_id) {
+        @extra_cols = ( user_id => { '!=', $user_id } );
     }
 
-    $c->model('DBIC::Visit')->search(
+    $self->search(
         {   object_type => $object_type,
             object_id   => $object_id,
             @extra_cols,
@@ -43,12 +43,12 @@ sub make_un_visited {
 }
 
 sub is_visited {
-    my ( $self, $c, $object_type, $object_id ) = @_;
+    my ( $self, $object_type, $object_id, $user_id ) = @_;
 
-    return {} unless ( $c->user_exists );
+    return {} unless ($user_id);
     my $visit;
-    my @visits = $c->model('DBIC::Visit')->search(
-        {   user_id     => $c->user->user_id,
+    my @visits = $self->search(
+        {   user_id     => $user_id,
             object_type => $object_type,
             object_id   => $object_id,
         },
@@ -63,11 +63,3 @@ sub is_visited {
 
 1;
 __END__
-
-=pod
-
-=head2 AUTHOR
-
-Fayland Lam <fayland at gmail.com>
-
-=cut

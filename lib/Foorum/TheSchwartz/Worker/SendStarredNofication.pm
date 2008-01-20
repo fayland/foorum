@@ -4,7 +4,10 @@ use strict;
 use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
-use Foorum::ExternalUtils qw/schema config base_path error_log tt2 cache/;
+use Foorum::ExternalUtils qw/schema/;
+use Foorum::XUtils qw/tt2/;
+use Foorum::Logger qw/error_log/;
+use Foorum::XUtils qw/config base_path cache/;
 
 sub work {
     my $class = shift;
@@ -40,18 +43,16 @@ sub work {
             next unless ($user);
             next if ( $user->{user_id} == $from->{user_id} );    # skip himself
                                                                  # Send Notification Email
-            send_mail(
-                $schema, $tt2,
-                $base_path,
+
+            # Send Notification Email
+            $schema->resultset('ScheduledEmail')->create_email(
                 {   template => 'starred_notification',
                     to       => $user->{email},
                     lang     => $user->{lang},
                     stash    => {
-                        c      => { config => $config, },
                         rept   => $user,
                         from   => $from,
                         object => $object,
-                        base   => $config->{site}->{domain},
                     }
                 }
             );
@@ -91,72 +92,6 @@ sub get_object {
             last_update => '-',
         };
     }
-}
-
-sub send_mail {
-    my ( $schema, $tt2, $base_path, $opts ) = @_;
-
-    my $lang = $opts->{lang};
-
-    # find the template for TT use
-    my $template_prefix;
-    my $template_name = $opts->{template};
-    my $file_prefix   = "$base_path/templates/lang/$lang/email/$template_name";
-    if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
-        $template_prefix = "lang/$lang/email/$template_name";
-    } elsif ( $lang ne 'en' ) {
-
-        # try to use lang=en for default
-        $file_prefix = "$base_path/templates/lang/en/email/$template_name";
-        if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
-            $template_prefix = "lang/en/email/$template_name";
-        }
-    }
-    unless ($template_prefix) {
-        error_log( $schema, 'error',
-            "Template not found in Email.pm notification with params: $template_name" );
-        return 0;
-    }
-
-    # prepare the tt2
-    my ( $plain_body, $html_body );
-
-    my $stash  = $opts->{stash};
-    my $config = $stash->{c}->{config};
-
-    # prepare TXT format
-    if ( -e $file_prefix . '.txt' ) {
-        $tt2->process( $template_prefix . '.txt', $stash, \$plain_body );
-    }
-    if ( -e $file_prefix . '.html' ) {
-        $tt2->process( $template_prefix . '.html', $stash, \$html_body );
-    }
-
-    # get the subject from $plain_body or $html_body
-    # the format is ########Title Subject#########
-    my $subject;
-    if ( $plain_body and $plain_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg ) {
-        $subject = $1;
-    }
-    if ( $html_body and $html_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg ) {
-        $subject = $1;
-    }
-    $subject ||= 'Notification From ' . $config->{name};
-
-    my $to         = $opts->{to};
-    my $from       = $opts->{from} || $config->{mail}->{from_email};
-    my $email_type = $opts->{email_type} || $opts->{template};
-    $schema->resultset('ScheduledEmail')->create(
-        {   email_type => $email_type,
-            from_email => $from,
-            to_email   => $to,
-            subject    => $subject,
-            plain_body => $plain_body,
-            html_body  => $html_body,
-            time       => \'NOW()',
-            processed  => 'N',
-        }
-    );
 }
 
 1;

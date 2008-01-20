@@ -78,7 +78,8 @@ sub buildhtml {
     my ( $filename, $html ) = @_;
 
     my $wiki_url = "$project_url/wiki/$filename";
-    $wiki_url = 'http://code.google.com/p/foorum/w/list' if ( $filename eq 'index' );
+    $wiki_url = 'http://code.google.com/p/foorum/w/list'
+        if ( $filename eq 'index' );
 
     $html = <<HTML;
 <html>

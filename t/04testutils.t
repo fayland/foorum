@@ -3,9 +3,10 @@
 use strict;
 use warnings;
 use Test::More tests => 1;
-use FindBin qw/$RealBin/;
+use FindBin qw/$RealBin $Bin/;
 use Cwd qw/abs_path/;
-use Foorum::ExternalUtils qw/base_path/;
+use lib "$Bin/lib";
+use Foorum::TestUtils qw/base_path/;
 
 my $base_path = base_path();
 

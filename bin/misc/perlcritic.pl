@@ -11,7 +11,7 @@ my $path = abs_path("$RealBin/../..");
 my $files  = File::Next::files($path);
 my $critic = Perl::Critic->new();
 
-open( my $fh, '>', 'critic.txt' );
+open( my $fh, '>', "$RealBin/critic.txt" );
 flock( $fh, 2 );
 
 while ( defined( my $file = $files->() ) ) {

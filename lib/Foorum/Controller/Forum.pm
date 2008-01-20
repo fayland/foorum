@@ -19,10 +19,10 @@ sub board : Path {
     # get last_post and the author
     foreach (@forums) {
         next unless $_->last_post_id;
-        $_->{last_post} = $c->model('Topic')->get( $c, $_->last_post_id );
+        $_->{last_post} = $c->model('DBIC::Topic')->get( $_->last_post_id );
         next unless $_->{last_post};
-        $_->{last_post}->{updator} = $c->model('User')
-            ->get( $c, { user_id => $_->{last_post}->{last_updator_id} } );
+        $_->{last_post}->{updator} = $c->model('DBIC::User')
+            ->get( { user_id => $_->{last_post}->{last_updator_id} } );
     }
 
     $c->cache_page('300');
@@ -113,7 +113,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
         }
 
         # check announcement
-        $c->stash->{announcement} = $c->model('Forum')->get_announcement( $c, $forum );
+        $c->stash->{announcement} = $c->model('DBIC::Forum')->get_announcement($forum);
     }
 
     $c->cache_page('300');
@@ -121,7 +121,8 @@ sub forum_list : Regex('^forum/(\w+)$') {
     if ( $c->user_exists ) {
         my @all_topic_ids = map { $_->topic_id } @topics;
         $c->stash->{is_visited}
-            = $c->model('Visit')->is_visited( $c, 'topic', \@all_topic_ids )
+            = $c->model('DBIC::Visit')
+            ->is_visited( 'topic', \@all_topic_ids, $c->user->user_id )
             if ( scalar @all_topic_ids );
     }
 
@@ -230,7 +231,7 @@ sub action_log : LocalRegex('^(\w+)/action_log(/(\w+))?$') {
         $unique_user_ids{ $_->user_id } = 1;
     }
     if ( scalar @all_user_ids ) {
-        my $authors = $c->model('User')->get_multi( $c, 'user_id', \@all_user_ids );
+        my $authors = $c->model('DBIC::User')->get_multi( 'user_id', \@all_user_ids );
         foreach (@actions) {
             $_->{operator} = $authors->{ $_->user_id };
         }
@@ -270,13 +271,37 @@ sub join_us : Private {
                 $c->detach( '/print_error', ["ERROR_USER_$role"] );
             }
         } else {
-            $c->model('Policy')->create_user_role(
-                $c,
+            $c->model('DBIC::UserRole')->create_user_role(
                 {   user_id => $c->user->user_id,
                     field   => $forum_id,
                     role    => 'pending',
                 }
             );
+
+            my $forum_admin = $c->model('Policy')->get_forum_admin( $c, $forum_id );
+            my $requestor
+                = $c->model('DBIC::User')->get( { user_id => $c->user->user_id } );
+
+            my $forum;
+            if ( $c->stash->{forum} and $c->stash->{forum}->{forum_id} == $forum_id ) {
+                $forum = $c->stash->{forum};
+            } else {
+                $forum = $c->model('DBIC::Forum')->get($forum_id);
+            }
+
+            # Send Notification Email
+            $c->model('DBIC::ScheduledEmail')->create_email(
+                {   template => 'forum_pending_request',
+                    to       => $forum_admin->{email},
+                    lang     => $c->stash->{lang},
+                    stash    => {
+                        rept  => $forum_admin,
+                        from  => $requestor,
+                        forum => $forum,
+                    }
+                }
+            );
+
             $c->detach( '/print_message',
                 ['Successfully Requested. You need wait for admin\'s approval'] );
         }
@@ -328,7 +353,7 @@ sub create : Local {
     my $admin_user;
     if ($is_admin) {
         my $admin = $c->req->param('admin');
-        $admin_user = $c->model('User')->get( $c, { username => $admin } );
+        $admin_user = $c->model('DBIC::User')->get( { username => $admin } );
         unless ($admin_user) {
             return $c->set_invalid_form( admin => 'ADMIN_NONEXISTENCE' );
         }
@@ -344,7 +369,7 @@ sub create : Local {
         next if ( $_ eq $admin_user->{username} );    # avoid the same man
         last
             if ( scalar @moderator_users > 2 );       # only allow 3 moderators at most
-        my $moderator_user = $c->model('User')->get( $c, { username => $_ } );
+        my $moderator_user = $c->model('DBIC::User')->get( { username => $_ } );
         unless ($moderator_user) {
             $c->stash->{non_existence_user} = $_;
             return $c->set_invalid_form( moderators => 'ADMIN_NONEXISTENCE' );
@@ -364,16 +389,14 @@ sub create : Local {
             total_members => $total_members,
         }
     );
-    $c->model('Policy')->create_user_role(
-        $c,
+    $c->model('DBIC::UserRole')->create_user_role(
         {   user_id => $admin_user->{user_id},
             role    => 'admin',
             field   => $forum->forum_id,
         }
     );
     foreach (@moderator_users) {
-        $c->model('Policy')->create_user_role(
-            $c,
+        $c->model('DBIC::UserRole')->create_user_role(
             {   user_id => $_->{user_id},
                 role    => 'moderator',
                 field   => $forum->forum_id,

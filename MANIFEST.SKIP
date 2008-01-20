@@ -3,6 +3,7 @@ conf/scraper.yml
 foorum_local.yml
 lib/Foorum/Controller/Test.pm
 root/upload/\d+
+root/upload/pdf/\d+
 
 # Avoid version control files.
 \bRCS\b

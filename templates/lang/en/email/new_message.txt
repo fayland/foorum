@@ -1,13 +1,13 @@
-#########[[% c.config.name %]] You Have A New Message From [% from.nickname %]#########
+#########[[% config.name %]] You Have A New Message From [% from.nickname %]#########
 Dear [% rept.nickname %],
 
 [% from.nickname %] sends you a message. Please click below to have a check!
 
-[% base %]message/[% message.message_id %]
+[% config.site.domain %]message/[% message.message_id %]
 
 [% message.title %]
 
 Thanks.
 
 Best Regards,
-Yours, [% c.config.name %]
+Yours, [% config.name %]

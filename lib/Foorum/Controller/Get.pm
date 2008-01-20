@@ -11,7 +11,7 @@ use base 'Catalyst::Controller';
 sub forum : Private {
     my ( $self, $c, $forum_code, $attr ) = @_;
 
-    my $forum = $c->model('Forum')->get( $c, $forum_code, $attr );
+    my $forum = $c->model('DBIC::Forum')->get( $forum_code, $attr );
 
     # print error if the forum_id is non-exist
     $c->detach( '/print_error', ['Non-existent forum'] ) unless ($forum);
@@ -50,7 +50,7 @@ sub forum : Private {
 sub topic : Private {
     my ( $self, $c, $topic_id, $attrs ) = @_;
 
-    my $topic = $c->model('Topic')->get( $c, $topic_id, $attrs );
+    my $topic = $c->model('DBIC::Topic')->get( $topic_id, $attrs );
 
     # print error if the topic is non-existent
     $c->detach( '/print_error', ['Non-existent topic'] ) unless ($topic);
@@ -74,9 +74,9 @@ sub user : Private {
 
     my $user;
     if ( $user_sig =~ /^\d+$/ ) {    # that's user_id
-        $user = $c->model('User')->get( $c, { user_id => $user_sig } );
+        $user = $c->model('DBIC::User')->get( { user_id => $user_sig } );
     } else {
-        $user = $c->model('User')->get( $c, { username => $user_sig } );
+        $user = $c->model('DBIC::User')->get( { username => $user_sig } );
     }
 
     $c->detach( '/print_error', ['ERROR_USER_NON_EXSIT'] ) unless ($user);
@@ -92,7 +92,7 @@ sub user : Private {
 sub comment : Private {
     my ( $self, $c, $comment_id, $attrs ) = @_;
 
-    my $comment = $c->model('Comment')->get( $c, $comment_id, $attrs );
+    my $comment = $c->model('DBIC::Comment')->get( $comment_id, $attrs );
 
     # print error if the comment is non-exist
     $c->detach( '/print_error', ['Non-existent comment'] ) unless ($comment);
@@ -106,7 +106,7 @@ sub comment : Private {
 
     if ( $attrs->{with_author} ) {
         $comment->{author}
-            = $c->model('User')->get( $c, { user_id => $comment->{author_id} } );
+            = $c->model('DBIC::User')->get( { user_id => $comment->{author_id} } );
     }
 
     $c->stash->{comment} = $comment;
@@ -124,7 +124,7 @@ Foorum::Controller::Get
 
 Usually we write something like follows:
 
-  my $user = $c->model('User')->get($c, { username => $username } );
+  my $user = $c->model('DBIC::User')->get( { username => $username } );
   $c->detach( '/print_error', ['ERROR_USER_NON_EXSIT'] ) unless ($user);
   if ( $user->{status} eq 'banned' or $user->{status} eq 'blocked' ) {
       $c->detach( '/print_error', ['ERROR_ACCOUNT_CLOSED_STATUS'] );

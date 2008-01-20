@@ -46,7 +46,7 @@ sub compose : Local {
     return if ( $c->form->has_error );
 
     # check user exist
-    my $rept = $c->model('User')->get( $c, { username => $to } );
+    my $rept = $c->model('DBIC::User')->get( { username => $to } );
     unless ($rept) {
         $c->set_invalid_form( to => 'USER_NONEXIST' );
         return;
@@ -70,13 +70,13 @@ sub compose : Local {
             user_id    => $rept->{user_id},
         }
     );
-    $c->cache->delete( 'global|message_unread_cnt|user_id=' . $rept->{user_id} );
+    $c->cache->remove( 'global|message_unread_cnt|user_id=' . $rept->{user_id} );
 
     # Send Notification Email
-    $c->model('Email')->create(
-        $c,
+    $c->model('DBIC::ScheduledEmail')->create_email(
         {   template => 'new_message',
             to       => $rept->{email},
+            lang     => $c->stash->{lang},
             stash    => {
                 rept    => $rept,
                 from    => $c->user,
@@ -110,7 +110,8 @@ sub inbox : Local {
     my @all_message_ids;
     push @all_message_ids, $_->message_id foreach (@messages);
     $c->stash->{unread}
-        = $c->model('Message')->are_messages_unread( $c, \@all_message_ids )
+        = $c->model('DBIC::Message')
+        ->are_messages_unread( $c->user->user_id, \@all_message_ids )
         if ( scalar @all_message_ids );
 
     $c->stash->{template} = 'message/inbox.html';
@@ -160,7 +161,7 @@ sub message : LocalRegex('^(\d+)$') {
             user_id    => $c->user->user_id,
         }
     )->delete;
-    $c->cache->delete( 'global|message_unread_cnt|user_id=' . $c->user->{user_id} );
+    $c->cache->remove( 'global|message_unread_cnt|user_id=' . $c->user->{user_id} );
 
     $c->stash->{template} = 'message/message.html';
 }
@@ -185,7 +186,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             user_id    => $c->user->user_id,
         }
     )->delete;
-    $c->cache->delete( 'global|message_unread_cnt|user_id=' . $c->user->{user_id} );
+    $c->cache->remove( 'global|message_unread_cnt|user_id=' . $c->user->{user_id} );
 
     # both inbox and outbox.
     # we set 'from_status' as 'deleted' when from_id delete it
@@ -193,14 +194,14 @@ sub delete : LocalRegex('^(\d+)/delete$') {
     # if both 'from_status' and 'to_status' eq 'deleted', we remove it from db
     if ( $c->user->user_id == $message->from_id ) {    # outbox
         if ( $message->to_status eq 'deleted' ) {
-            $c->model('Message')->remove_from_db( $c, $message_id );
+            $c->model('DBIC::Message')->remove_from_db($message_id);
         } else {
             $message->update( { from_status => 'deleted' } );
         }
         $c->res->redirect('/message/outbox');
     } elsif ( $c->user->user_id == $message->to_id ) {    # inbox
         if ( $message->from_status eq 'deleted' ) {
-            $c->model('Message')->remove_from_db( $c, $message_id );
+            $c->model('DBIC::Message')->remove_from_db($message_id);
         } else {
             $message->update( { to_status => 'deleted' } );
         }

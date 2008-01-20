@@ -72,4 +72,5 @@ __PACKAGE__->might_have(
     'upload' => 'Foorum::Schema::Upload',
     { 'foreign.upload_id' => 'self.upload_id' }
 );
+__PACKAGE__->resultset_class('Foorum::ResultSet::Comment');
 1;

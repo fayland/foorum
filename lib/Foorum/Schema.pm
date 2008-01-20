@@ -16,37 +16,22 @@ __PACKAGE__->load_classes;
 use vars qw/$VERSION/;
 $VERSION = '0.01';
 
-# XXX?
-# Need rework later.
+use Foorum::XUtils ();
 
-use YAML qw/LoadFile/;    # config
-use vars qw/$config $cache/;
-
-use File::Spec;
-use Cwd qw/abs_path/;
-my ( undef, $path ) = File::Spec->splitpath(__FILE__);
-
+sub base_path {
+    return Foorum::XUtils::base_path();
+}
 sub config {
-    return $config if ($config);
-
-    $config = LoadFile("$path/../../foorum.yml");
-    my $extra_config = LoadFile("$path/../../foorum_local.yml");
-    $config = { %$config, %$extra_config };
-    return $config;
+    return Foorum::XUtils::config();
 }
 sub cache {
-    return $cache if ($cache);
-    $config = config() unless ($config);
-
-    my %params = %{ $config->{cache}{backends}{default} };
-    my $class  = delete $params{class};
-
-    eval("use $class;");    ## no critic (ProhibitStringyEval)
-    unless ($@) {
-        $cache = $class->new( \%params );
-    }
-
-    return $cache;
+    return Foorum::XUtils::cache();
+}
+sub theschwartz {
+    return Foorum::XUtils::theschwartz();
+}
+sub tt2 {
+    return Foorum::XUtils::tt2();
 }
 
 sub connect {

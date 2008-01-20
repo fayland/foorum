@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/generate_random_word/;
-use Foorum::ExternalUtils qw/theschwartz/;
+use Foorum::XUtils qw/theschwartz/;
 use Digest ();
 use Locale::Country::Multilingual;
 use vars qw/$lcm/;
@@ -78,8 +78,7 @@ sub edit : Local {
     unless ( $lcm->code2country( $c->req->param('country') ) ) {
         $c->req->param( 'country', '' );
     }
-    $c->model('User')->update(
-        $c,
+    $c->model('DBIC::User')->update_user(
         $c->user,
         {   nickname => $c->req->param('nickname') || $c->user->username,
             gender   => $c->req->param('gender')   || 'NA',
@@ -101,7 +100,7 @@ sub edit : Local {
     );
 
     # clear user cache too
-    $c->model('User')->delete_cache_by_user( $c, $c->user );
+    $c->model('DBIC::User')->delete_cache_by_user( $c->user );
 
     $c->res->redirect( '/u/' . $c->user->username );
 }
@@ -138,7 +137,7 @@ sub change_password : Local {
     $d->add($new_password);
     my $new_computed = $d->digest;
 
-    $c->model('User')->update( $c, $c->user, { password => $new_computed, } );
+    $c->model('DBIC::User')->update_user( $c->user, { password => $new_computed, } );
 
     $c->detach(
         '/print_message',
@@ -162,7 +161,7 @@ sub forget_password : Local {
     my $username = $c->req->param('username');
     my $email    = $c->req->param('email');
 
-    my $user = $c->model('User')->get( $c, { username => $username } );
+    my $user = $c->model('DBIC::User')->get( { username => $username } );
     return $c->stash->{ERROR_NOT_SUCH_USER} = 1 unless ($user);
     return $c->stash->{ERROR_NOT_MATCH} = 1 if ( $user->{email} ne $email );
 
@@ -173,17 +172,17 @@ sub forget_password : Local {
     my $computed = $d->digest;
 
     # send email
-    $c->model('Email')->create(
-        $c,
+    $c->model('DBIC::ScheduledEmail')->create_email(
         {   template => 'forget_password',
             to       => $email,
+            lang     => $c->stash->{lang},
             stash    => {
                 username => $username,
                 password => $random_password
             }
         }
     );
-    $c->model('User')->update( $c, $user, { password => $computed } );
+    $c->model('DBIC::User')->update_user( $user, { password => $computed } );
     $c->detach(
         '/print_message',
         [   {   msg => 'Your Password is Sent to Your Email, Please have a check',
@@ -226,10 +225,11 @@ sub change_email : Local {
     if ( $c->config->{mail}->{on} and $c->config->{register}->{activation} ) {
 
         # send activation code
-        $c->model('Email')->send_activation( $c, $c->user, $email );
+        $c->model('DBIC::ScheduledEmail')
+            ->send_activation( $c->user, $email, { lang => $c->stash->{lang} } );
         $c->res->redirect( '/register/activation/' . $c->user->username );
     } else {
-        $c->model('User')->update( $c, $c->user, { email => $email, } );
+        $c->model('DBIC::User')->update_user( $c->user, { email => $email, } );
         $c->res->redirect('/profile/edit');
     }
 }
@@ -267,7 +267,7 @@ sub change_username : Local {
         return;
     }
 
-    $c->model('User')->update( $c, $c->user, { username => $new_username, } );
+    $c->model('DBIC::User')->update_user( $c->user, { username => $new_username, } );
     $c->session->{__user} = $new_username;
 
     $c->res->redirect("/u/$new_username");
@@ -292,16 +292,17 @@ sub profile_photo : Local {
 
         # delete old upload
         if ($old_upload_id) {
-            $c->model('Upload')
-                ->remove_by_upload( $c, $c->user->{profile_photo}->{upload} );
+            $c->model('DBIC::Upload')
+                ->remove_by_upload( $c->user->{profile_photo}->{upload} );
             $new_upload_id = 0;
         }
 
         # add new upload
         if ($new_upload) {
-            $new_upload_id = $c->model('Upload')->add_file( $c, $new_upload );
-            unless ($new_upload_id) {
-                return $c->set_invalid_form( upload => $c->stash->{upload_error} );
+            $new_upload_id = $c->model('DBIC::Upload')
+                ->add_file( $new_upload, { user_id => $c->user->user_id } );
+            unless ( $new_upload_id =~ /^\d+$/ ) {
+                return $c->set_invalid_form( upload => $new_upload_id );
             }
 
             my $client = theschwartz();
@@ -322,7 +323,7 @@ sub profile_photo : Local {
         }
     );
 
-    $c->model('User')->delete_cache_by_user( $c, $c->user );
+    $c->model('DBIC::User')->delete_cache_by_user( $c->user );
 
     $c->res->redirect( '/u/' . $c->user->{username} );
 }

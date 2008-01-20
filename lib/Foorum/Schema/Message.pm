@@ -58,4 +58,5 @@ __PACKAGE__->has_one(
     'recipient' => 'Foorum::Schema::User',
     { 'foreign.user_id' => 'self.to_id' }
 );
+__PACKAGE__->resultset_class('Foorum::ResultSet::Message');
 1;

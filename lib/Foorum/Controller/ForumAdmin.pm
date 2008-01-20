@@ -80,7 +80,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
         next if ( $_ eq $admin_username );    # avoid the same man
         last
             if ( scalar @moderator_users > 2 );    # only allow 3 moderators at most
-        my $moderator_user = $c->model('User')->get( $c, { username => $_ } );
+        my $moderator_user = $c->model('DBIC::User')->get( { username => $_ } );
         unless ($moderator_user) {
             $c->stash->{non_existence_user} = $_;
             return $c->set_invalid_form( moderators => 'ADMIN_NONEXISTENCE' );
@@ -139,8 +139,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
     my @extra_update;
     push @extra_update, ( forum_code => $forum_code )
         if ( $c->stash->{is_site_admin} );
-    $c->model('Forum')->update(
-        $c,
+    $c->model('DBIC::Forum')->update_forum(
         $forum_id,
         {   name        => $name,
             description => $description,
@@ -153,15 +152,13 @@ sub basic : Chained('forum_for_admin') Args(0) {
 
     # 3, user_role
     # delete before create
-    $c->model('Policy')->remove_user_role(
-        $c,
+    $c->model('DBIC::UserRole')->remove_user_role(
         {   role  => 'moderator',
             field => $forum->{forum_id},
         }
     );
     foreach (@moderator_users) {
-        $c->model('Policy')->create_user_role(
-            $c,
+        $c->model('DBIC::UserRole')->create_user_role(
             {   user_id => $_->{user_id},
                 role    => 'moderator',
                 field   => $forum->{forum_id},
@@ -169,7 +166,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
         );
     }
 
-    my $forum_url = $c->model('Forum')->get_forum_url( $c, $forum );
+    my $forum_url = $c->model('DBIC::Forum')->get_forum_url($forum);
     $c->res->redirect($forum_url);
 }
 
@@ -322,14 +319,16 @@ sub announcement : Chained('forum_for_admin') Args(0) {
                 }
                 );
         } else {
-            $c->model('Comment')->create(
-                $c,
+            $c->model('DBIC::Comment')->create_comment(
                 {   object_type => 'announcement',
                     object_id   => $forum_id,
                     forum_id    => $forum_id,
                     title       => $title,
                     text        => $text,
                     formatter   => $formatter,
+                    user_id     => $c->user->user_id,
+                    post_ip     => $c->req->address,
+                    lang        => $c->stash->{lang},
                 }
             );
         }
@@ -373,12 +372,12 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
     return $c->res->body('no record available') unless ($rs);
 
     if ( $from eq 'user' and ( $to eq 'rejected' or $to eq 'blocked' ) ) {
-        $c->model('Forum')
-            ->update( $c, $forum_id, { total_members => \"total_members - 1" } );
+        $c->model('DBIC::Forum')
+            ->update_forum( $forum_id, { total_members => \"total_members - 1" } );
     } elsif ( ( $from eq 'rejected' or $from eq 'blocked' or $from eq 'pending' )
         and $to eq 'user' ) {
-        $c->model('Forum')
-            ->update( $c, $forum_id, { total_members => \"total_members + 1" } );
+        $c->model('DBIC::Forum')
+            ->update_forum( $forum_id, { total_members => \"total_members + 1" } );
     }
 
     my $where = {
@@ -387,7 +386,7 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
         role    => $from,
     };
     $c->model('DBIC::UserRole')->search($where)->update( { role => $to } );
-    $c->model('Policy')->clear_cached_policy( $c, $where );
+    $c->model('DBIC::UserRole')->clear_cached_policy($where);
 
     $c->res->body('OK');
 }

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/encodeHTML get_page_from_url generate_random_word/;
-use Foorum::ExternalUtils qw/theschwartz/;
+use Foorum::XUtils qw/theschwartz/;
 
 sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
     my ( $self, $c ) = @_;
@@ -48,8 +48,8 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
     my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
 
     if ($rss) {
-        my @comments
-            = $c->model('Comment')->get_all_comments_by_object( $c, 'topic', $topic_id );
+        my @comments = $c->model('DBIC::Comment')
+            ->get_all_comments_by_object( 'topic', $topic_id );
 
         # get last 20 items
         @comments = reverse(@comments);
@@ -77,17 +77,22 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
             $c->stash->{is_shared} = $c->model('DBIC')->resultset('Share')->count($query);
 
             # 'visit'
-            $c->model('Visit')->make_visited( $c, 'topic', $topic_id );
+            $c->model('DBIC::Visit')
+                ->make_visited( 'topic', $topic_id, $c->user->user_id );
         }
 
         # get comments
-        $c->model('Comment')->get_comments_by_object(
-            $c,
+        my ($view_mode)  = ( $c->req->path =~ /\/view_mode=(thread|flat)(\/|$)/ );
+        my ($comment_id) = ( $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ );
+        ( $c->stash->{comments}, $c->stash->{comments_pager} )
+            = $c->model('DBIC::Comment')->get_comments_by_object(
             {   object_type => 'topic',
                 object_id   => $topic_id,
                 page        => $page,
+                view_mode   => $view_mode,
+                comment_id  => $comment_id,
             }
-        );
+            );
         $c->stash->{whos_view_this_page} = 1;
         $c->stash->{template}            = 'topic/index.html';
     }
@@ -128,9 +133,11 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     my $upload_id = 0;
     if ($upload) {
         $upload_id
-            = $c->model('Upload')->add_file( $c, $upload, { forum_id => $forum_id } );
-        unless ($upload_id) {
-            return $c->set_invalid_form( upload => $c->stash->{upload_error} );
+            = $c->model('DBIC::Upload')
+            ->add_file( $upload,
+            { forum_id => $forum_id, user_id => $c->user->user_id } );
+        unless ( $upload_id =~ /^\d+$/ ) {
+            return $c->set_invalid_form( upload => $upload_id );
         }
     }
 
@@ -146,8 +153,7 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
 
     # create record
     my $topic_title = encodeHTML($title);
-    my $topic       = $c->model('Topic')->create(
-        $c,
+    my $topic       = $c->model('DBIC::Topic')->create_topic(
         {   forum_id         => $forum_id,
             title            => $topic_title,
             author_id        => $c->user->user_id,
@@ -159,10 +165,10 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     $c->forward( '/clear_when_topic_changes', [$forum] );
 
     # clear visit
-    $c->model('Visit')->make_un_visited( $c, 'topic', $topic->topic_id );
+    $c->model('DBIC::Visit')
+        ->make_un_visited( 'topic', $topic->topic_id, $c->user->user_id );
 
-    my $comment = $c->model('Comment')->create(
-        $c,
+    my $comment = $c->model('DBIC::Comment')->create_comment(
         {   object_type => 'topic',
             object_id   => $topic->topic_id,
             forum_id    => $forum_id,
@@ -170,17 +176,19 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
             title       => $title,
             text        => $text,
             formatter   => $formatter,
+            user_id     => $c->user->user_id,
+            post_ip     => $c->req->address,
+            lang        => $c->stash->{lang},
         }
     );
 
     # update user stat
-    $c->model('User')->update( $c, $c->user, { threads => \"threads + 1", } );    #"
+    $c->model('DBIC::User')->update_user( $c->user, { threads => \"threads + 1", } );   #"
 
     # update forum
-    $c->model('Forum')->update(
-        $c,
+    $c->model('DBIC::Forum')->update_forum(
         $forum_id,
-        {   total_topics => \'total_topics + 1',                                  #'
+        {   total_topics => \'total_topics + 1',                                        #'
             last_post_id => $topic->topic_id,
         }
     );

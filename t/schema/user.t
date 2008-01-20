@@ -14,7 +14,7 @@ BEGIN {
 
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Foorum::TestUtils qw/schema/;
+use Foorum::TestUtils qw/schema base_path/;
 my $schema = schema();
 
 my $user_res = $schema->resultset('User');
@@ -33,17 +33,26 @@ is( $users->{2}->{user_id}, 2, 'get_multi users.2.user_id OK' );
 my $settings = $user_res->get_user_settings($user);
 is( $settings->{show_email_public}, 'N', 'get_user_settings show_email_public OK' );
 
-# test real_update
+# test update_user
 my $org_email = $user->{email};
-$user_res->real_update( $user, { email => 'a@a.com' } );
+$user_res->update_user( $user, { email => 'a@a.com' } );
 
 # test get_from_db
 $user = $user_res->get_from_db( { user_id => 1 } );
-is( $user->{email}, 'a@a.com', 'real_update OK' );
+is( $user->{email}, 'a@a.com', 'update_user OK' );
 
 # data recover back
-$user_res->real_update( $user, { email => $org_email } );
+$user_res->update_user( $user, { email => $org_email } );
 $user = $user_res->get( { user_id => 1 } );
-is( $user->{email}, $org_email, 'real_update 2 OK' );
+is( $user->{email}, $org_email, 'update_user 2 OK' );
+
+# Keep Database the same from original
+use File::Copy ();
+
+END {
+    my $base_path = base_path();
+    File::Copy::copy( "$base_path/t/lib/Foorum/backup.db",
+        "$base_path/t/lib/Foorum/test.db" );
+}
 
 1;

@@ -118,7 +118,7 @@ sub end : ActionClass('+Foorum::Action::PathLogger') {
         and $c->user_exists
         and $c->req->path !~ /^message(\/|$)/ ) {
         $c->stash->{message_unread}
-            = $c->model('Message')->get_unread_cnt( $c, $c->user->{user_id} );
+            = $c->model('DBIC::Message')->get_unread_cnt( $c->user->{user_id} );
     }
     $c->forward( $c->view('TT') );
 

@@ -113,7 +113,7 @@ sub get_forum_moderators {
 
     my $roles;
     foreach (@users) {
-        my $user = $c->model('User')->get( $c, { user_id => $_->user_id, } );
+        my $user = $c->model('DBIC::User')->get( { user_id => $_->user_id, } );
         next unless ($user);
         if ( $_->role eq 'admin' ) {
             $roles->{ $_->field }->{'admin'} = {    # for cache
@@ -140,86 +140,8 @@ sub get_forum_admin {
         }
     )->first;
     return unless ($rs);
-    my $user = $c->model('User')->get( $c, { user_id => $rs->user_id } );
+    my $user = $c->model('DBIC::User')->get( { user_id => $rs->user_id } );
     return $user;
-}
-
-sub create_user_role {
-    my ( $self, $c, $info ) = @_;
-
-    $c->model('DBIC::UserRole')->create(
-        {   user_id => $info->{user_id},
-            field   => $info->{field},
-            role    => $info->{role},
-        }
-    );
-
-    if ( $info->{role} eq 'pending' and $info->{field} =~ /^\d+$/ ) {
-        my $forum_admin = $self->get_forum_admin( $c, $info->{field} );
-        my $requestor = $c->model('User')->get( $c, { user_id => $info->{user_id} } );
-
-        my $forum;
-        if ( $c->stash->{forum} and $c->stash->{forum}->{forum_id} == $info->{field} ) {
-            $forum = $c->stash->{forum};
-        } else {
-            $forum = $c->model('Forum')->get( $c, $info->{field} );
-        }
-
-        # Send Notification Email
-        $c->model('Email')->create(
-            $c,
-            {   template => 'forum_pending_request',
-                to       => $forum_admin->{email},
-                stash    => {
-                    rept  => $forum_admin,
-                    from  => $requestor,
-                    forum => $forum,
-                }
-            }
-        );
-    }
-
-    clear_cached_policy( $self, $c, $info );
-}
-
-sub remove_user_role {
-    my ( $self, $c, $info ) = @_;
-
-    my @wheres;
-    push @wheres, ( user_id => $info->{user_id} ) if ( $info->{user_id} );
-    push @wheres, ( field   => $info->{field} )   if ( $info->{field} );
-    push @wheres, ( role    => $info->{role} )    if ( $info->{role} );
-
-    return unless ( scalar @wheres );
-
-    $c->model('DBIC::UserRole')->search( { @wheres, } )->delete;
-
-    clear_cached_policy( $self, $c, $info );
-}
-
-sub clear_cached_policy {
-    my ( $self, $c, $info ) = @_;
-
-    if ( $info->{user_id} ) {
-
-        # clear user cache too
-        $c->model('User')
-            ->delete_cache_by_user_cond( $c, { user_id => $info->{user_id} } );
-    }
-
-    # field_id != 'site'
-    if ($info->{field} =~ /^\d+$/
-        and (  not $info->{role}
-            or $info->{role} eq 'admin'
-            or $info->{role} eq 'moderator' )
-        ) {
-        $info->{forum_id} = $info->{field};
-    }
-
-    if ( $info->{forum_id} ) {
-        $c->cache->remove("policy|user_role|forum_id=$info->{forum_id}");
-    }
-
 }
 
 1;

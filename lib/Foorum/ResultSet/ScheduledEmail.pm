@@ -1,17 +1,22 @@
-package Foorum::Model::Email;
+package Foorum::ResultSet::ScheduledEmail;
 
 use strict;
 use warnings;
-use base 'Catalyst::Model';
+use base 'DBIx::Class::ResultSet';
 use Foorum::Utils qw/generate_random_word/;
-use Foorum::ExternalUtils qw/theschwartz/;
+use Foorum::Logger qw/error_log/;
 
 sub send_activation {
-    my ( $self, $c, $user, $new_email ) = @_;
+    my ( $self, $user, $new_email, $opts ) = @_;
+
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
+    my $tt2    = $schema->tt2();
+    my $config = $schema->config();
+    my $lang   = $opts->{lang};
 
     my $activation_code;
-    my $rs = $c->model('DBIC')->resultset('UserActivation')
-        ->find( { user_id => $user->user_id, } );
+    my $rs = $schema->resultset('UserActivation')->find( { user_id => $user->user_id, } );
     if ($rs) {
         $activation_code = $rs->activation_code;
     } else {
@@ -20,7 +25,7 @@ sub send_activation {
         if ($new_email) {
             @extra_insert = ( 'new_email', $new_email );
         }
-        $c->model('DBIC')->resultset('UserActivation')->create(
+        $schema->resultset('UserActivation')->create(
             {   user_id         => $user->user_id,
                 activation_code => $activation_code,
                 @extra_insert,
@@ -28,74 +33,73 @@ sub send_activation {
         );
     }
 
-    my $email_body = $c->view('TT')->render(
-        $c,
-        'lang/' . $c->stash->{lang} . '/email/activation.html',
-        {   no_wrapper      => 1,
-            username        => $user->username,
-            activation_code => $activation_code,
-            new_email       => $new_email,
-        }
-    );
+    my $vars = {
+        username        => $user->username,
+        activation_code => $activation_code,
+        new_email       => $new_email,
+        config          => $config,
+    };
 
-    $c->model('DBIC')->resultset('ScheduledEmail')->create(
+    my $email_body;
+    $tt2->process( "lang/$lang/email/activation.html", $vars, \$email_body );
+
+    $self->resultset('ScheduledEmail')->create(
         {   email_type => 'activation',
-            from_email => $c->config->{mail}->{from_email},
+            from_email => $config->{mail}->{from_email},
             to_email   => $user->email,
-            subject    => 'Your Activation Code In ' . $c->config->{name},
+            subject    => 'Your Activation Code In ' . $config->{name},
             plain_body => $email_body,
-            time       => \'NOW()',                                          #'
+            time       => \'NOW()',                                       #'
             processed  => 'N',
         }
     );
-    my $client = theschwartz();
+    my $client = $schema->theschwartz();
     $client->insert('Foorum::TheSchwartz::Worker::SendScheduledEmail');
 }
 
-sub create {
-    my ( $self, $c, $opts ) = @_;
+sub create_email {
+    my ( $self, $opts ) = @_;
+
+    my $schema    = $self->result_source->schema;
+    my $cache     = $schema->cache();
+    my $tt2       = $schema->tt2();
+    my $config    = $schema->config();
+    my $base_path = $schema->base_path();
+    my $lang      = $opts->{lang};
 
     # find the template for TT use
     my $template_prefix;
     my $template_name = $opts->{template};
-    my $file_prefix
-        = $c->path_to( 'templates', 'lang', $c->stash->{lang}, 'email', $template_name )
-        ->stringify;
+    my $file_prefix   = "$base_path/templates/lang/$lang/email/$template_name";
     if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
-        $template_prefix = 'lang/' . $c->stash->{lang} . '/email/' . $template_name;
-    } elsif ( $c->stash->{lang} ne 'en' ) {
+        $template_prefix = "lang/$lang/email/$template_name";
+    } elsif ( $lang ne 'en' ) {
 
         # try to use lang=en for default
-        $file_prefix = $c->path_to( 'templates', 'lang', 'en', 'email', $template_name )
-            ->stringify;
+        $file_prefix = "$base_path/templates/lang/en/email/$template_name";
         if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
             $template_prefix = 'lang/en/email/' . $template_name;
         }
     }
     unless ($template_prefix) {
-        $c->model('Log')
-            ->log_error( $c, 'error',
+        error_log( $schema, 'error',
             "Template not found in Email.pm notification with params: $template_name" );
         return 0;
     }
 
     # prepare the tt2
     my ( $plain_body, $html_body );
-    my $stash = {
-        c          => $c,              # add $c to tt2
-        base       => $c->req->base,
-        no_wrapper => 1,
-    };
 
     # we will set 'base' in cron manually, so we put %$stash before %{$opts->{stash}}
-    $stash = { %$stash, %{ $opts->{stash} } };
+    my $stash = $opts->{stash};
+    $stash->{config} = $config;
 
     # prepare TXT format
     if ( -e $file_prefix . '.txt' ) {
-        $plain_body = $c->view('TT')->render( $c, $template_prefix . '.txt', $stash );
+        $tt2->process( $template_prefix . '.txt', $stash, \$plain_body );
     }
     if ( -e $file_prefix . '.html' ) {
-        $html_body = $c->view('TT')->render( $c, $template_prefix . '.html', $stash );
+        $tt2->process( $template_prefix . '.html', $stash, \$html_body );
     }
 
     # get the subject from $plain_body or $html_body
@@ -107,12 +111,12 @@ sub create {
     if ( $html_body and $html_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg ) {
         $subject = $1;
     }
-    $subject ||= 'Notification From ' . $c->config->{name};
+    $subject ||= 'Notification From ' . $config->{name};
 
     my $to         = $opts->{to};
-    my $from       = $opts->{from} || $c->config->{mail}->{from_email};
+    my $from       = $opts->{from} || $config->{mail}->{from_email};
     my $email_type = $opts->{email_type} || $opts->{template};
-    $c->model('DBIC')->resultset('ScheduledEmail')->create(
+    $self->create(
         {   email_type => $email_type,
             from_email => $from,
             to_email   => $to,
@@ -124,7 +128,7 @@ sub create {
         }
     );
 
-    my $client = theschwartz();
+    my $client = $schema->theschwartz();
     $client->insert('Foorum::TheSchwartz::Worker::SendScheduledEmail');
 
     return 1;
@@ -132,11 +136,3 @@ sub create {
 
 1;
 __END__
-
-=pod
-
-=head2 AUTHOR
-
-Fayland Lam <fayland at gmail.com>
-
-=cut

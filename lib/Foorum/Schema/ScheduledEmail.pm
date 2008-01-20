@@ -70,4 +70,5 @@ __PACKAGE__->set_primary_key("email_id");
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
+__PACKAGE__->resultset_class('Foorum::ResultSet::ScheduledEmail');
 1;

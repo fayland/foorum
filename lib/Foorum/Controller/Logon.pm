@@ -22,7 +22,7 @@ sub login : Global {
     my $email    = $c->req->param('email');
     my $password = $c->req->param('password');
     if ( not $username and $email ) {
-        my $user = $c->model('User')->get( $c, { email => $email } );
+        my $user = $c->model('DBIC::User')->get( { email => $email } );
         if ($user) {
             $username = $user->{username};
         } else {
@@ -67,8 +67,7 @@ sub login : Global {
             }
 
             # login_times++
-            $c->model('User')->update(
-                $c,
+            $c->model('DBIC::User')->update_user(
                 $c->user,
                 {   login_times   => \'login_times + 1',
                     last_login_on => \'NOW()',

@@ -35,7 +35,7 @@ sub lock_or_sticky_or_elite : Regex('^forum/(\w+)/topic/(\d+)/(un)?(sticky|elite
         $update_col = 'elite';
     }
 
-    $c->model('Topic')->update( $c, $topic_id, { $update_col => $status, } );
+    $c->model('DBIC::Topic')->update_topic( $topic_id, { $update_col => $status, } );
 
     $c->model('Log')->log_action(
         $c,
@@ -80,9 +80,9 @@ sub ban_or_unban_topic : Regex('^forum/(\w+)/topic/(\d+)/(un)?ban$') {
     }
 
     if ($is_un) {
-        $c->model('Topic')->update( $c, $topic_id, { status => 'healthy' } );
+        $c->model('DBIC::Topic')->update_topic( $topic_id, { status => 'healthy' } );
     } else {
-        $c->model('Topic')->update( $c, $topic_id, { status => 'banned' } );
+        $c->model('DBIC::Topic')->update_topic( $topic_id, { status => 'banned' } );
     }
 
     $c->forward(

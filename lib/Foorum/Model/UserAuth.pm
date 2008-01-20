@@ -18,7 +18,7 @@ sub auth {
         return;
     }
 
-    my $user = $c->model('User')->get( $c, $where );
+    my $user = $c->model('DBIC::User')->get($where);
     return $user;
 }
 

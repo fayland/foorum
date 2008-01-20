@@ -75,7 +75,8 @@ sub default : Private {
     if ( $c->config->{mail}->{on} and $c->config->{function_on}->{activation} ) {
 
         # send activation code
-        $c->model('Email')->send_activation( $c, $user );
+        $c->model('DBIC::ScheduledEmail')
+            ->send_activation( $user, 0, { lang => $c->stash->{lang} } );
         $c->res->redirect("/register/activation/$username");    # to activation
     } else {
         $c->login( $username, $password );
@@ -107,14 +108,15 @@ sub activation : Local {
     );
     return unless ( $username and $activation_code );
 
-    my $user = $c->model('User')->get( $c, { username => $username } );
+    my $user = $c->model('DBIC::User')->get( { username => $username } );
     $c->detach( '/print_error', ['ERROR_USER_NON_EXIST'] ) unless ($user);
 
     my $activation_rs = $c->model('DBIC')->resultset('UserActivation')
         ->find( { user_id => $user->{user_id} } );
     unless ($activation_rs) {
         if ( $user->{status} eq 'unverified' ) {    # new account
-            $c->model('Email')->send_activation( $c, $user );
+            $c->model('DBIC::ScheduledEmail')
+                ->send_activation( $user, 0, { lang => $c->stash->{lang} } );
             return $c->res->redirect( '/register/activation/' . $user->{username} );
         } else {
             return $c->res->redirect('/profile/edit');
@@ -127,8 +129,8 @@ sub activation : Local {
         if ( $activation_rs->new_email ) {
             @extra_update = ( 'email', $activation_rs->new_email );
         }
-        $c->model('User')->update(
-            $c, $user,
+        $c->model('DBIC::User')->update_user(
+            $user,
             {   status => 'verified',
                 @extra_update,
             }

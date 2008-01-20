@@ -1,32 +1,35 @@
-package Foorum::Model::Comment;
+package Foorum::ResultSet::Comment;
 
 use strict;
 use warnings;
-use base 'Catalyst::Model';
+use base 'DBIx::Class::ResultSet';
 use Foorum::Utils qw/get_page_from_url encodeHTML/;
 use Foorum::Formatter qw/filter_format/;
-use Foorum::ExternalUtils qw/theschwartz/;
 use Data::Page;
 use List::MoreUtils qw/uniq first_index part/;
 use List::Util qw/first/;
 use Scalar::Util qw/blessed/;
 
 sub get_comments_by_object {
-    my ( $self, $c, $info ) = @_;
+    my ( $self, $info ) = @_;
 
-    my $object_type = $info->{object_type};
-    my $object_id   = $info->{object_id};
-    my $page        = $info->{page} || get_page_from_url( $c->req->path );
-    my $rows        = $info->{rows} || $c->config->{per_page}->{topic} || 10;
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
+    my $config = $schema->config();
+
+    my $object_type         = $info->{object_type};
+    my $object_id           = $info->{object_id};
+    my $page                = $info->{page} || 1;
+    my $rows                = $info->{rows} || $config->{per_page}->{topic} || 10;
+    my $selected_comment_id = $info->{comment_id};
 
     # 'thread' or 'flat'
     my $view_mode = $info->{view_mode};
-    ($view_mode) = ( $c->req->path =~ /\/view_mode=(thread|flat)(\/|$)/ );
 
     #$view_mode ||= ($object_type eq 'topic') ? 'thread' : 'flat';
     $view_mode ||= 'thread';    # XXX? Temp
 
-    my @comments = $self->get_all_comments_by_object( $c, $object_type, $object_id );
+    my @comments = $self->get_all_comments_by_object( $object_type, $object_id );
 
     my $pager = Data::Page->new();
     $pager->current_page($page);
@@ -36,9 +39,9 @@ sub get_comments_by_object {
 
         # when url contains /comment_id=$comment_id/
         # we need show that page including $comment_id
-        if ( scalar @comments > $rows and $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ ) {
-            my $comment_id = $1;
-            my $first_index = first_index { $_->{comment_id} == $comment_id } @comments;
+        if ( scalar @comments > $rows and $selected_comment_id ) {
+            my $first_index
+                = first_index { $_->{comment_id} == $selected_comment_id } @comments;
             $page = int( $first_index / $rows ) + 1 if ($first_index);
             $pager->current_page($page);
         }
@@ -73,14 +76,14 @@ sub get_comments_by_object {
         # when url contains /comment_id=$comment_id/
         # we need show that page including $comment_id
         if ( scalar @top_comments > $rows
-            and $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ ) {
-            my $comment_id = $1;
+            and $selected_comment_id ) {
 
             # need to find out the top comment's comment_id
-            my $top_comment = first { $_->{comment_id} == $comment_id } @comments;
+            my $top_comment
+                = first { $_->{comment_id} == $selected_comment_id } @comments;
             while (1) {
                 my $reply_to = $top_comment->{reply_to};
-                $comment_id = $top_comment->{comment_id};
+                $selected_comment_id = $top_comment->{comment_id};
                 last if ( $reply_to == 0 );
                 last
                     if ($object_type eq 'topic'
@@ -88,7 +91,7 @@ sub get_comments_by_object {
                 $top_comment = first { $_->{comment_id} == $reply_to } @comments;
             }
             my $first_index
-                = first_index { $_->{comment_id} == $comment_id } @top_comments;
+                = first_index { $_->{comment_id} == $selected_comment_id } @top_comments;
             $page = int( $first_index / $rows ) + 1 if ($first_index);
             $pager->current_page($page);
         }
@@ -114,10 +117,9 @@ sub get_comments_by_object {
         @comments = @result_comments;
     }
 
-    @comments = $self->prepare_comments_for_view( $c, @comments );
+    @comments = $self->prepare_comments_for_view(@comments);
 
-    $c->stash->{comments}       = \@comments;
-    $c->stash->{comments_pager} = $pager;
+    return ( \@comments, $pager );
 }
 
 sub get_children_comments {
@@ -138,17 +140,19 @@ sub get_children_comments {
 }
 
 sub get_all_comments_by_object {
-    my ( $self, $c, $object_type, $object_id ) = @_;
+    my ( $self, $object_type, $object_id ) = @_;
+
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
 
     my $cache_key   = "comment|object_type=$object_type|object_id=$object_id";
-    my $cache_value = $c->cache->get($cache_key);
+    my $cache_value = $cache->get($cache_key);
 
     my @comments;
     if ($cache_value) {
-        $c->log->debug("Cache: get comments $cache_key");
         @comments = @{ $cache_value->{comments} };
     } else {
-        my $it = $c->model('DBIC')->resultset('Comment')->search(
+        my $it = $self->search(
             {   object_type => $object_type,
                 object_id   => $object_id,
             },
@@ -163,17 +167,16 @@ sub get_all_comments_by_object {
             $rec->{upload} = $upload->{_column_data} if ($upload);
 
             # filter format by Foorum::Filter
-            $rec->{title}
-                = $c->model('DBIC::FilterWord')->convert_offensive_word( $rec->{title} );
-            $rec->{text}
-                = $c->model('DBIC::FilterWord')->convert_offensive_word( $rec->{text} );
+            $rec->{title} = $schema->resultset('FilterWord')
+                ->convert_offensive_word( $rec->{title} );
+            $rec->{text} = $schema->resultset('FilterWord')
+                ->convert_offensive_word( $rec->{text} );
             $rec->{text} = filter_format( $rec->{text}, { format => $rec->{formatter} } );
 
             push @comments, $rec;
         }
         $cache_value = { comments => \@comments };
-        $c->cache->set( $cache_key, $cache_value, 3600 );    # 1 hour
-        $c->log->debug("Cache: set comments $cache_key");
+        $cache->set( $cache_key, $cache_value, 3600 );    # 1 hour
     }
 
     return wantarray ? @comments : \@comments;
@@ -181,7 +184,9 @@ sub get_all_comments_by_object {
 
 # add author and others
 sub prepare_comments_for_view {
-    my ( $self, $c, @comments ) = @_;
+    my ( $self, @comments ) = @_;
+
+    my $schema = $self->result_source->schema;
 
     my @all_user_ids;
     foreach (@comments) {
@@ -189,7 +194,7 @@ sub prepare_comments_for_view {
     }
     if ( scalar @all_user_ids ) {
         @all_user_ids = uniq @all_user_ids;
-        my $authors = $c->model('User')->get_multi( $c, 'user_id', \@all_user_ids );
+        my $authors = $schema->resultset('User')->get_multi( 'user_id', \@all_user_ids );
         foreach (@comments) {
             $_->{author} = $authors->{ $_->{author_id} };
         }
@@ -199,18 +204,20 @@ sub prepare_comments_for_view {
 }
 
 sub get {
-    my ( $self, $c, $comment_id, $attrs ) = @_;
+    my ( $self, $comment_id, $attrs ) = @_;
 
-    my $comment
-        = $c->model('DBIC')->resultset('Comment')->find( { comment_id => $comment_id, } );
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
+
+    my $comment = $self->find( { comment_id => $comment_id, } );
     return unless ($comment);
 
     $comment = $comment->{_column_data};
     if ( $attrs->{with_text} ) {
 
         # filter format by Foorum::Filter
-        $comment->{text}
-            = $c->model('DBIC::FilterWord')->convert_offensive_word( $comment->{text} );
+        $comment->{text} = $schema->resultset('FilterWord')
+            ->convert_offensive_word( $comment->{text} );
         $comment->{text}
             = filter_format( $comment->{text}, { format => $comment->{formatter} } );
     }
@@ -218,29 +225,35 @@ sub get {
     return $comment;
 }
 
-sub create {
-    my ( $self, $c, $info ) = @_;
+sub create_comment {
+    my ( $self, $info ) = @_;
+
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
 
     my $object_type = $info->{object_type};
     my $object_id   = $info->{object_id};
+    my $user_id     = $info->{user_id};
+    my $post_ip     = $info->{post_ip};
     my $forum_id    = $info->{forum_id} || 0;
     my $reply_to    = $info->{reply_to} || 0;
     my $formatter   = $info->{formatter} || 'ubb';
-    my $title       = $info->{title} || $c->req->param('title');
-    my $text        = $info->{text} || $c->req->param('text') || '';
+    my $title       = $info->{title};
+    my $text        = $info->{text} || '';
+    my $lang        = $info->{lang} || 'en';
 
     # we don't use [% | html %] now because there is too many title around in TT
     $title = encodeHTML($title);
 
-    my $comment = $c->model('DBIC')->resultset('Comment')->create(
+    my $comment = $self->create(
         {   object_type => $object_type,
             object_id   => $object_id,
-            author_id   => $c->user->user_id,
+            author_id   => $user_id,
             title       => $title,
             text        => $text,
             formatter   => $formatter,
             post_on     => \'NOW()',                  #'
-            post_ip     => $c->req->address,
+            post_ip     => $post_ip,
             reply_to    => $reply_to,
             forum_id    => $forum_id,
             upload_id   => $info->{upload_id} || 0,
@@ -248,20 +261,21 @@ sub create {
     );
 
     my $cache_key = "comment|object_type=$object_type|object_id=$object_id";
-    $c->cache->remove($cache_key);
+    $cache->remove($cache_key);
 
     # Email Sent
     if ( $object_type eq 'user_profile' ) {
-        my $rept = $c->model('User')->get( $c, { user_id => $object_id } );
+        my $rept = $schema->resultset('User')->get( { user_id => $object_id } );
+        my $from = $schema->resultset('User')->get( { user_id => $user_id } );
 
         # Send Notification Email
-        $c->model('Email')->create(
-            $c,
+        $schema->resultset('Email')->create_email(
             {   template => 'new_comment',
                 to       => $rept->{email},
+                lang     => $lang,
                 stash    => {
                     rept    => $rept,
-                    from    => $c->user,
+                    from    => $from,
                     comment => $comment,
                 }
             }
@@ -269,38 +283,42 @@ sub create {
     } else {
 
         # Send Update Notification for Starred Item
-        my $client = theschwartz();
-        $client->insert(
-            'Foorum::TheSchwartz::Worker::SendStarredNofication',
-            [ $object_type, $object_id, $c->user->{user_id} ]
-        );
+        my $client = $schema->theschwartz();
+        $client->insert( 'Foorum::TheSchwartz::Worker::SendStarredNofication',
+            [ $object_type, $object_id, $user_id ] );
     }
 
     return $comment;
 }
 
 sub remove_by_object {
-    my ( $self, $c, $object_type, $object_id ) = @_;
+    my ( $self, $object_type, $object_id ) = @_;
 
-    my $comment_rs = $c->model('DBIC::Comment')->search(
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
+
+    my $comment_rs = $self->search(
         {   object_type => $object_type,
             object_id   => $object_id,
         }
     );
     my $delete_counts = 0;
     while ( my $comment = $comment_rs->next ) {
-        $self->remove_one_item( $c, $comment );
+        $self->remove_one_item($comment);
         $delete_counts++;
     }
 
     my $cache_key = "comment|object_type=$object_type|object_id=$object_id";
-    $c->cache->remove($cache_key);
+    $cache->remove($cache_key);
 
     return $delete_counts;
 }
 
 sub remove_children {
-    my ( $self, $c, $comment ) = @_;
+    my ( $self, $comment ) = @_;
+
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
 
     if ( blessed $comment ) {
         $comment = $comment->{_column_data};
@@ -310,46 +328,40 @@ sub remove_children {
     my $object_type = $comment->{object_type};
     my $object_id   = $comment->{object_id};
 
-    my @comments = $self->get_all_comments_by_object( $c, $object_type, $object_id );
+    my @comments = $self->get_all_comments_by_object( $object_type, $object_id );
     my @result_comments;
     $self->get_children_comments( $comment_id, 1, \@comments, \@result_comments );
 
     my $delete_counts = 1;
-    $self->remove_one_item( $c, $comment );
+    $self->remove_one_item($comment);
     foreach (@result_comments) {
-        $self->remove_one_item( $c, $_ );
+        $self->remove_one_item($_);
         $delete_counts++;
     }
 
     my $cache_key = "comment|object_type=$object_type|object_id=$object_id";
-    $c->cache->remove($cache_key);
+    $cache->remove($cache_key);
 
     return $delete_counts;
 }
 
 sub remove_one_item {
-    my ( $self, $c, $comment ) = @_;
+    my ( $self, $comment ) = @_;
+
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
 
     if ( blessed $comment ) {
         $comment = $comment->{_column_data};
     }
 
     if ( $comment->{upload_id} ) {
-        $c->model('Upload')->remove_file_by_upload_id( $c, $comment->{upload_id} );
+        $schema->resultset('Upload')->remove_file_by_upload_id( $comment->{upload_id} );
     }
-    $c->model('DBIC::Comment')->search( { comment_id => $comment->{comment_id} } )
-        ->delete;
+    $self->search( { comment_id => $comment->{comment_id} } )->delete;
 
     return 1;
 }
 
 1;
 __END__
-
-=pod
-
-=head2 AUTHOR
-
-Fayland Lam <fayland at gmail.com>
-
-=cut

@@ -55,7 +55,7 @@ sub edit : Local {
     } else {
         return;
     }
-    my $user = $c->model('User')->get( $c, {@query_cols} );
+    my $user = $c->model('DBIC::User')->get( {@query_cols} );
     return $c->stash->{error} = 'NO_RECORD' unless ($user);
 
     unless ( $c->req->method eq 'POST' ) {
@@ -81,7 +81,7 @@ sub edit : Local {
                 push @update_cols, ( $key, $query->{$key} );
             }
         }
-        $c->model('User')->update( $c, $user, {@update_cols} );
+        $c->model('DBIC::User')->update_user( $user, {@update_cols} );
 
         # update session
         if ( $c->user->user_id == $c->req->param('user_id') ) {
@@ -97,7 +97,7 @@ sub ban : Local {
     my $username = $c->req->param('username');
     my $user = $c->controller('Get')->user( $c, $username );
 
-    $c->model('User')->update( $c, $user, { status => 'banned' } );
+    $c->model('DBIC::User')->update_user( $user, { status => 'banned' } );
 
     $c->model('Log')->log_action(
         $c,

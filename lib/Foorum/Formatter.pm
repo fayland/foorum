@@ -3,14 +3,13 @@ package Foorum::Formatter;
 use strict;
 use warnings;
 use base 'Exporter';
-use Foorum::ExternalUtils qw/config/;
+use Foorum::XUtils qw/config/;
 use vars qw/
-    @EXPORT_OK $VERSION $config
+    @EXPORT_OK $VERSION
     $has_text_textile $has_ubb_code $has_text_wiki $has_pod_simple $has_uri_find
     /;
 @EXPORT_OK = qw/ filter_format /;
 $VERSION   = '0.01';                # version
-$config    = config();
 
 sub filter_format {
     my ( $text, $params ) = @_;
@@ -59,12 +58,8 @@ sub filter_format {
                 'unsure',   'wacko',    'why',     'wow',
                 'mad',      'Oo'
             );
+            my $config   = config();
             my $emot_url = $config->{dir}->{images} . '/bbcode/emot';
-            if ( $emot_url !~ /^http\:\/\// ) {
-                my $domain = $config->{site}->{domain};
-                $domain =~ s/\/$//;
-                $emot_url = $domain . $emot_url;
-            }
             foreach my $em (@emot_icon) {
                 next unless ( $text =~ /\:$em\:/s );
                 $text =~ s/\:$em\:/\<img src=\"$emot_url\/$em.gif\"\>/sg;

@@ -32,9 +32,9 @@ sub remove : Local {
     my $forum_id = $c->req->param('forum_id');
 
     # get the forum information
-    # my $forum = $c->model('Forum')->get($c, $forum_code);
+    # my $forum = $c->model('DBIC::Forum')->get($forum_code);
 
-    $c->model('Forum')->remove_forum( $c, $forum_id );
+    $c->model('DBIC::Forum')->remove_forum($forum_id);
     $c->forward( '/print_message', ['OK'] );
 }
 
@@ -47,8 +47,8 @@ sub merge_forums : Local {
     $c->stash->{template} = 'admin/forum/merge_forums.html';
     return unless ( $from_id and $to_id );
 
-    my $message = $c->model('Forum')
-        ->merge_forums( $c, { from_id => $from_id, to_id => $to_id } );
+    my $message = $c->model('DBIC::Forum')
+        ->merge_forums( { from_id => $from_id, to_id => $to_id } );
     $c->stash->{message} = ($message) ? 'OK' : 'FAIL';
 }
 

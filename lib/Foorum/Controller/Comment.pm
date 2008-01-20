@@ -51,7 +51,7 @@ sub post : Local {
 
         # for topic. only the first comment (topic) is reply_to == 0.
         # get the first comment for reply_to
-        my $rs = $c->model('DBIC::Comment')->search(
+        my @rs = $c->model('DBIC::Comment')->search(
             {   object_type => 'topic',
                 object_id   => $object_id,
             },
@@ -60,8 +60,8 @@ sub post : Local {
                 page     => 1,
                 columns  => ['comment_id'],
             }
-        )->first;
-        $reply_to = $rs->comment_id;
+        )->all;    # I'm confused that why ->first is not working at all. YYY?
+        $reply_to = $rs[0]->comment_id;
     }
 
     # execute validation.
@@ -71,9 +71,11 @@ sub post : Local {
     my $upload_id = 0;
     if ($upload) {
         $upload_id
-            = $c->model('Upload')->add_file( $c, $upload, { forum_id => $forum_id } );
-        unless ($upload_id) {
-            $c->detach( '/print_error', [ $c->stash->{upload_error} ] );
+            = $c->model('DBIC::Upload')
+            ->add_file( $upload,
+            { forum_id => $forum_id, user_id => $c->user->user_id } );
+        unless ( $upload_id =~ /^\d+$/ ) {
+            $c->detach( '/print_error', [$upload_id] );
         }
     }
 
@@ -82,8 +84,7 @@ sub post : Local {
     my $text      = $c->req->param('text');
 
     # create record
-    my $new_comment = $c->model('Comment')->create(
-        $c,
+    my $new_comment = $c->model('DBIC::Comment')->create_comment(
         {   object_type => $object_type,
             object_id   => $object_id,
             forum_id    => $forum_id,
@@ -92,6 +93,9 @@ sub post : Local {
             title       => $title,
             text        => $text,
             formatter   => $formatter,
+            user_id     => $c->user->user_id,
+            post_ip     => $c->req->address,
+            lang        => $c->stash->{lang},
         }
     );
 
@@ -99,15 +103,13 @@ sub post : Local {
     if ( $object_type eq 'topic' ) {
 
         # update forum and topic
-        $c->model('Forum')->update(
-            $c,
+        $c->model('DBIC::Forum')->update_forum(
             $forum_id,
             {   total_replies => \'total_replies + 1',    #'
                 last_post_id  => $object_id,
             }
         );
-        $c->model('Topic')->update(
-            $c,
+        $c->model('DBIC::Topic')->update_topic(
             $object_id,
             {   total_replies    => \"total_replies + 1",
                 last_update_date => \"NOW()",
@@ -117,7 +119,7 @@ sub post : Local {
     }
 
     # update user stat
-    $c->model('User')->update( $c, $c->user, { replies => \"replies + 1" } );    #"
+    $c->model('DBIC::User')->update_user( $c->user, { replies => \"replies + 1" } );    #"
 
     if ($forum_id) {
         $c->forward( '/clear_when_topic_changes', [$forum] );
@@ -170,10 +172,12 @@ sub reply : LocalRegex('^(\d+)/reply$') {
     my $upload    = $c->req->upload('upload');
     my $upload_id = 0;
     if ($upload) {
-        $upload_id = $c->model('Upload')
-            ->add_file( $c, $upload, { forum_id => $comment->{forum_id} } );
-        unless ($upload_id) {
-            return $c->set_invalid_form( upload => $c->stash->{upload_error} );
+        $upload_id
+            = $c->model('DBIC::Upload')
+            ->add_file( $upload,
+            { forum_id => $comment->{forum_id}, user_id => $c->user->user_id } );
+        unless ( $upload_id =~ /^\d+$/ ) {
+            return $c->set_invalid_form( upload => $upload_id );
         }
     }
 
@@ -196,24 +200,25 @@ sub reply : LocalRegex('^(\d+)/reply$') {
         title       => $title,
         text        => $text,
         formatter   => $formatter,
+        user_id     => $c->user->user_id,
+        post_ip     => $c->req->address,
+        lang        => $c->stash->{lang},
     };
 
     # create record
-    my $new_comment = $c->model('Comment')->create( $c, $info );
+    my $new_comment = $c->model('DBIC::Comment')->create_comment($info);
 
     # update object after create
     if ( $object_type eq 'topic' ) {
 
         # update forum and topic
-        $c->model('Forum')->update(
-            $c,
+        $c->model('DBIC::Forum')->update_forum(
             $forum_id,
             {   total_replies => \'total_replies + 1',    #'
                 last_post_id  => $object_id,
             }
         );
-        $c->model('Topic')->update(
-            $c,
+        $c->model('DBIC::Topic')->update_topic(
             $object_id,
             {   total_replies    => \"total_replies + 1",
                 last_update_date => \"NOW()",
@@ -223,7 +228,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
     }
 
     # update user stat
-    $c->model('User')->update( $c, $c->user, { replies => \"replies + 1" } );    #"
+    $c->model('DBIC::User')->update_user( $c->user, { replies => \"replies + 1" } );    #"
 
     if ($forum_id) {
         $c->forward( '/clear_when_topic_changes', [$forum] );
@@ -280,16 +285,18 @@ sub edit : LocalRegex('^(\d+)/edit$') {
 
         # delete old upload
         if ($old_upload) {
-            $c->model('Upload')->remove_by_upload( $c, $old_upload );
+            $c->model('DBIC::Upload')->remove_by_upload($old_upload);
             $upload_id = 0;
         }
 
         # add new upload
         if ($new_upload) {
-            $upload_id = $c->model('Upload')
-                ->add_file( $c, $new_upload, { forum_id => $comment->{forum_id} } );
-            unless ($upload_id) {
-                return $c->set_invalid_form( upload => $c->stash->{upload_error} );
+            $upload_id
+                = $c->model('DBIC::Upload')
+                ->add_file( $new_upload,
+                { forum_id => $comment->{forum_id}, user_id => $c->user->user_id } );
+            unless ( $upload_id =~ /^\d+$/ ) {
+                return $c->set_invalid_form( upload => $upload_id );
             }
         }
     }
@@ -396,8 +403,9 @@ sub delete : LocalRegex('^(\d+)/delete$') {
                 );
             }
 
-            $c->model('Topic')
-                ->remove( $c, $forum_id, $object_id, { log_text => $comment->{title} } );
+            $c->model('DBIC::Topic')
+                ->remove( $forum_id, $object_id,
+                { log_text => $comment->{title}, operateor_id => $c->user->user_id } );
             $path = $forum->{forum_url};
             $c->forward( '/clear_when_topic_changes', [$forum] );
         }
@@ -406,7 +414,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
     # delete comment
     my $delete_counts = 0;
     unless ( $object_type eq 'topic' and $comment->{reply_to} == 0 ) {
-        $delete_counts = $c->model('Comment')->remove_children( $c, $comment );
+        $delete_counts = $c->model('DBIC::Comment')->remove_children($comment);
     }
 
     if ( $object_type eq 'topic' and $comment->{reply_to} != 0 ) {
@@ -431,8 +439,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
                 last_update_date => '',
             );
         }
-        $c->model('Topic')->update(
-            $c,
+        $c->model('DBIC::Topic')->update_topic(
             $object_id,
             {   total_replies => \"total_replies - $delete_counts",
                 @extra_cols,
@@ -440,8 +447,8 @@ sub delete : LocalRegex('^(\d+)/delete$') {
         );
 
         # update forum
-        $c->model('Forum')
-            ->update( $c, $forum_id,
+        $c->model('DBIC::Forum')
+            ->update_forum( $forum_id,
             { total_replies => \"total_replies - $delete_counts" } );
     }
 
