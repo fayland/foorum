@@ -31,7 +31,8 @@ sub get {
             $cache->set( $mem_key, $mem_val, 36000 );    # 10 hours
 
             # set cache
-            $forum = $forum->{_column_data};                      # hash for cache
+            $forum              = $forum->{_column_data};         # hash for cache
+            $forum->{settings}  = $self->get_forum_settings($forum);
             $forum->{forum_url} = $self->get_forum_url($forum);
             $cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
         }
@@ -49,21 +50,9 @@ sub get {
             $forum = $self->find( { forum_id => $forum_id } );
             return unless ($forum);
 
-            # get forum settings
-            my $settings_rs = $schema->resultset('ForumSettings')
-                ->search( { forum_id => $forum_id } );
-            my $settings = {    # default
-                can_post_threads => 'Y',
-                can_post_replies => 'Y',
-                can_post_polls   => 'Y'
-            };
-            while ( my $r = $settings_rs->next ) {
-                $settings->{ $r->type } = $r->value;
-            }
-
             # set cache
             $forum              = $forum->{_column_data};         # hash for cache
-            $forum->{settings}  = $settings;
+            $forum->{settings}  = $self->get_forum_settings($forum);
             $forum->{forum_url} = $self->get_forum_url($forum);
             $cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
         }
@@ -78,6 +67,26 @@ sub get_forum_url {
     my $forum_url = '/forum/' . $forum->{forum_code};
 
     return $forum_url;
+}
+sub get_forum_settings {
+    my ($self, $forum) = @_;
+    
+    my $schema = $self->result_source->schema;
+    my $forum_id = $forum->{forum_id};
+    
+    # get forum settings
+    my $settings_rs = $schema->resultset('ForumSettings')
+        ->search( { forum_id => $forum_id } );
+    my $settings = {    # default
+        can_post_threads => 'Y',
+        can_post_replies => 'Y',
+        can_post_polls   => 'Y'
+    };
+    while ( my $r = $settings_rs->next ) {
+        $settings->{ $r->type } = $r->value;
+    }
+    
+    return $settings;
 }
 
 sub update_forum {
@@ -105,12 +114,12 @@ sub remove_forum {
     my $cache  = $schema->cache();
 
     $self->search( { forum_id => $forum_id, } )->delete;
-    $schema->resultset('DBIC::UserRole')->remove_user_role( { field => $forum_id, } );
+    $schema->resultset('UserRole')->remove_user_role( { field => $forum_id, } );
     $schema->resultset('LogAction')->search( { forum_id => $forum_id } )->delete;
 
     # get all topic_ids
     my @topic_ids;
-    my $tp_rs = $schema->resultset('DBIC::Topic')
+    my $tp_rs = $schema->resultset('Topic')
         ->search( { forum_id => $forum_id, }, { columns => ['topic_id'], } );
     while ( my $r = $tp_rs->next ) {
         push @topic_ids, $r->topic_id;
@@ -202,7 +211,7 @@ sub merge_forums {
         }
     );
 
-    $schema->resultset('DBIC::UserRole')->remove_user_role( { field => $from_id, } );
+    $schema->resultset('UserRole')->remove_user_role( { field => $from_id, } );
 
     # topics
     $schema->resultset('Topic')->search( { forum_id => $from_id, } )
