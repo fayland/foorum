@@ -241,6 +241,7 @@ sub create_comment {
     my $title       = $info->{title};
     my $text        = $info->{text} || '';
     my $lang        = $info->{lang} || 'en';
+    my $post_on     = $info->{post_on} || \'NOW()';
 
     # we don't use [% | html %] now because there is too many title around in TT
     $title = encodeHTML($title);
@@ -252,7 +253,7 @@ sub create_comment {
             title       => $title,
             text        => $text,
             formatter   => $formatter,
-            post_on     => \'NOW()',                  #'
+            post_on     => $post_on,
             post_ip     => $post_ip,
             reply_to    => $reply_to,
             forum_id    => $forum_id,
