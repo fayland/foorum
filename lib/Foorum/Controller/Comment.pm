@@ -405,7 +405,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
 
             $c->model('DBIC::Topic')
                 ->remove( $forum_id, $object_id,
-                { log_text => $comment->{title}, operateor_id => $c->user->user_id } );
+                { log_text => $comment->{title}, operator_id => $c->user->user_id } );
             $path = $forum->{forum_url};
             $c->forward( '/clear_when_topic_changes', [$forum] );
         }
@@ -424,7 +424,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             {   object_type => 'topic',
                 object_id   => $object_id,
             },
-            { order_by => 'post_on DESC', }
+            { order_by => \'post_on DESC', }
         );
 
         my @extra_cols;

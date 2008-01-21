@@ -101,7 +101,7 @@ sub members : Local {
     my $page = get_page_from_url( $c->req->path );
     my $rs   = $c->model('DBIC')->resultset('User')->search(
         undef,
-        {   order_by => 'register_time DESC',
+        {   order_by => \'register_time DESC',
             columns  => [
                 'user_id', 'username', 'nickname', 'register_time', 'gender', 'status'
             ],

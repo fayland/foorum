@@ -98,7 +98,7 @@ sub inbox : Local {
         },
         {   columns  => [ 'message_id', 'title', 'post_on', ],
             prefetch => ['sender'],
-            order_by => 'post_on DESC',
+            order_by => \'post_on DESC',
             rows     => $c->config->{per_page}->{message},
             page     => $page,
         }
@@ -127,7 +127,7 @@ sub outbox : Local {
         },
         {   columns  => [ 'message_id', 'title', 'post_on', ],
             prefetch => ['recipient'],
-            order_by => 'post_on DESC',
+            order_by => \'post_on DESC',
             rows     => $c->config->{per_page}->{message},
             page     => $page,
         }

@@ -24,7 +24,7 @@ sub default : Private {
         undef,
         {   rows     => $rows,
             page     => $page,
-            order_by => "hit_${type} DESC, hit_id DESC",
+            order_by => \"hit_${type} DESC, hit_id DESC",
         }
     );
 

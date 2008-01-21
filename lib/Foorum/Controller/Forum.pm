@@ -60,7 +60,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
             'me.status' => { '!=', 'banned' },
             @extra_cols,
         },
-        {   order_by => 'sticky DESC, last_update_date DESC',
+        {   order_by => \'sticky DESC, last_update_date DESC',
             rows     => $rows,
             page     => $page,
             prefetch => [ 'author', 'last_updator' ],
@@ -215,7 +215,7 @@ sub action_log : LocalRegex('^(\w+)/action_log(/(\w+))?$') {
     my $page = get_page_from_url( $c->req->path );
     my $rs   = $c->model('DBIC')->resultset('LogAction')->search(
         { forum_id => $forum_id, },
-        {   order_by => 'time DESC',
+        {   order_by => \'time DESC',
             page     => $page,
             rows     => 20,
         }

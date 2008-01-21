@@ -91,13 +91,13 @@ sub remove {
     )->delete;
 
     # log action
-    my $user_id = $info->{operateor_id};
+    my $user_id = $info->{operator_id} || 0;
     $schema->resultset('LogAction')->create(
         {   user_id     => $user_id,
             action      => 'delete',
             object_type => 'topic',
             object_id   => $topic_id,
-            time        => \'NOW()',
+            time        => $info->{SQLite_NOW} || \'NOW()', # when use SQLite in test
             text        => $info->{log_text} || '',
             forum_id    => $forum_id,
         }
@@ -105,7 +105,7 @@ sub remove {
 
     # update last
     my $lastest = $self->search( { forum_id => $forum_id },
-        { order_by => 'last_update_date DESC', } )->first;
+        { order_by => \'last_update_date DESC', columns => ['topic_id'] } )->first;
     my $last_post_id = $lastest ? $lastest->topic_id : 0;
     $schema->resultset('Forum')->update_forum(
         $forum_id,

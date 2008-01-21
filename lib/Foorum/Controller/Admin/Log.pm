@@ -26,7 +26,7 @@ sub error_log : Local {
         {@extra_cols},
         {   rows     => 20,
             page     => $page,
-            order_by => 'error_id DESC',
+            order_by => \'error_id DESC',
         }
     );
     my $pager  = $rs->pager;
@@ -49,7 +49,7 @@ sub path_log : Local {
         undef,
         {   rows     => 20,
             page     => $page,
-            order_by => 'path_id DESC',
+            order_by => \'path_id DESC',
         }
     );
     my $pager = $rs->pager;
