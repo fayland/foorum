@@ -71,7 +71,7 @@ sub default : Private {
 
             # filter format by Foorum::Filter
             $_->{text}
-                = $c->model('$c, FilterWord')->convert_offensive_word( $_->{text} );
+                = $c->model('DBIC::FilterWord')->convert_offensive_word( $_->{text} );
             $_->{text} = filter_format( $_->{text}, { format => $rs->formatter } );
         }
         $c->stash->{objects} = \@objects;
