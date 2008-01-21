@@ -55,7 +55,7 @@ sub cache {
 sub tt2 {
 
     return $tt2 if ($tt2);
-    $config = config() unless ($config);
+    $config    = config()    unless ($config);
     $base_path = base_path() unless ($base_path);
 
     $tt2 = Template->new(

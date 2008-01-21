@@ -7,6 +7,7 @@ use Test::More 'no_plan';
 BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
+
     #plan tests           => 18;
 }
 
@@ -21,7 +22,7 @@ my $comment_res = $schema->resultset('Comment');
 
 # test create_comment
 sub create_comment {
-    my ($comment_id, $reply_to) = @_;
+    my ( $comment_id, $reply_to ) = @_;
     $comment_res->create(
         {   comment_id  => $comment_id,
             object_type => 'test',
@@ -34,58 +35,60 @@ sub create_comment {
             formatter   => 'wiki',
             author_id   => 1,
             post_ip     => '127.0.0.1',
-            post_on     => \'CURRENT_TIMESTAMP', # For SQLite
+            post_on => \'CURRENT_TIMESTAMP',    # For SQLite
         }
     );
 }
-&create_comment(1, 0);
+&create_comment( 1, 0 );
 my $cache_key = "comment|object_type=test|object_id=22";
 $cache->remove($cache_key);
 
 # test get
-my $comment = $comment_res->get(1, { with_text => 1 } );
-isn't($comment, undef, 'get OK');
-is($comment->{object_type}, 'test', 'get object_type OK');
-is($comment->{title}, '1 - 0 &lt;title&gt;', 'get encodeHTML title OK');
-is($comment->{text}, '<p>1 x 0 x <a href="http://www.foorumbbs.com/" rel="nofollow">http://www.foorumbbs.com/</a></p>');
+my $comment = $comment_res->get( 1, { with_text => 1 } );
+isn't( $comment, undef, 'get OK' );
+is( $comment->{object_type}, 'test', 'get object_type OK' );
+is( $comment->{title}, '1 - 0 &lt;title&gt;', 'get encodeHTML title OK' );
+is( $comment->{text},
+    '<p>1 x 0 x <a href="http://www.foorumbbs.com/" rel="nofollow">http://www.foorumbbs.com/</a></p>'
+);
 
 # test remove_one_item
 my $ok = $comment_res->remove_one_item($comment);
-is($ok, 1, 'remove_one_item return value OK');
+is( $ok, 1, 'remove_one_item return value OK' );
 
 my $count = $comment_res->count( { comment_id => 1 } );
-is($count, 0, 'delete confirmed');
+is( $count, 0, 'delete confirmed' );
 
 # test get_all_comments_by_object
-&create_comment(1, 0);
-&create_comment(2, 1);
-&create_comment(3, 1);
-&create_comment(4, 2);
+&create_comment( 1, 0 );
+&create_comment( 2, 1 );
+&create_comment( 3, 1 );
+&create_comment( 4, 2 );
 $cache->remove($cache_key);
 
-my @comments = $comment_res->get_all_comments_by_object('test', 22);
-is(scalar @comments, 4, 'get_all_comments_by_object OK');
-is($comments[0]->{comment_id}, 1, 'comments[0]->{comment_id} == 1');
-is($comments[1]->{comment_id}, 2, 'comments[1]->{comment_id} == 2');
-is($comments[2]->{comment_id}, 3, 'comments[2]->{comment_id} == 3');
-is($comments[3]->{comment_id}, 4, 'comments[3]->{comment_id} == 4');
+my @comments = $comment_res->get_all_comments_by_object( 'test', 22 );
+is( scalar @comments,           4, 'get_all_comments_by_object OK' );
+is( $comments[0]->{comment_id}, 1, 'comments[0]->{comment_id} == 1' );
+is( $comments[1]->{comment_id}, 2, 'comments[1]->{comment_id} == 2' );
+is( $comments[2]->{comment_id}, 3, 'comments[2]->{comment_id} == 3' );
+is( $comments[3]->{comment_id}, 4, 'comments[3]->{comment_id} == 4' );
 
 # test get_children_comments
 my @result_comments;
 $comment_res->get_children_comments( 1, 1, \@comments, \@result_comments );
-is(scalar @result_comments, 3, 'get_children_comments OK');
-is($result_comments[0]->{comment_id}, 2, 'get_children_comments first node OK');
-is($result_comments[0]->{level}, 1, 'get_children_comments level 1 OK');
-is($result_comments[1]->{comment_id}, 4, 'get_children_comments second node OK');
-is($result_comments[1]->{level}, 2, 'get_children_comments level 2 OK');
-is($result_comments[2]->{comment_id}, 3, 'get_children_comments third node OK');
-is($result_comments[2]->{level}, 1, 'get_children_comments level 1 OK');
+is( scalar @result_comments,           3, 'get_children_comments OK' );
+is( $result_comments[0]->{comment_id}, 2, 'get_children_comments first node OK' );
+is( $result_comments[0]->{level},      1, 'get_children_comments level 1 OK' );
+is( $result_comments[1]->{comment_id}, 4, 'get_children_comments second node OK' );
+is( $result_comments[1]->{level},      2, 'get_children_comments level 2 OK' );
+is( $result_comments[2]->{comment_id}, 3, 'get_children_comments third node OK' );
+is( $result_comments[2]->{level},      1, 'get_children_comments level 1 OK' );
 
 # test remove_children
-my $deleted_count = $comment_res->remove_children($comments[1]);
-is($deleted_count, 2, 'remove_children OK');
+my $deleted_count = $comment_res->remove_children( $comments[1] );
+is( $deleted_count, 2, 'remove_children OK' );
 $count = $comment_res->count( { object_type => 'test', object_id => 22 } );
-is($count, 2, 'after remove_children, count OK');
+is( $count, 2, 'after remove_children, count OK' );
 
 =pod
 

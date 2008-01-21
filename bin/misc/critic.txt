@@ -52,7 +52,6 @@ lib\Foorum\Controller\Topic.pm source OK
 lib\Foorum\Controller\TopicAction.pm source OK
 lib\Foorum\Controller\U.pm source OK
 lib\Foorum\Controller\Utils.pm source OK
-lib\Foorum\ExternalUtils.pm source OK
 lib\Foorum\Formatter\BBCode.pm source OK
 lib\Foorum\Formatter\Pod.pm source OK
 lib\Foorum\Formatter.pm source OK
@@ -80,6 +79,7 @@ lib\Foorum\ResultSet\User.pm source OK
 lib\Foorum\ResultSet\UserRole.pm source OK
 lib\Foorum\ResultSet\Visit.pm source OK
 lib\Foorum\Scraper\MailMan.pm source OK
+lib\Foorum\SUtils.pm source OK
 lib\Foorum\TheSchwartz\Worker\DailyChart.pm source OK
 lib\Foorum\TheSchwartz\Worker\DailyReport.pm source OK
 lib\Foorum\TheSchwartz\Worker\Hit.pm source OK
@@ -96,7 +96,7 @@ lib\Foorum\View\TT.pm source OK
 lib\Foorum\XUtils.pm source OK
 lib\Foorum.pm source OK
 t\02utils.t source OK
-t\03externalutils.t source OK
+t\03xutils.t source OK
 t\04testutils.t source OK
 t\formatter\plain.t source OK
 t\formatter\pod.t source OK
@@ -105,10 +105,13 @@ t\formatter\ubb.t source OK
 t\formatter\wiki.t source OK
 t\lib\Foorum\TestUtils.pm source OK
 t\schema\banned_ip.t source OK
+t\schema\comment.t source OK
 t\schema\filter_word.t source OK
+t\schema\forum.t source OK
 t\schema\hit.t source OK
 t\schema\message.t source OK
 t\schema\star.t source OK
+t\schema\topic.t source OK
 t\schema\upload.t source OK
 t\schema\user.t source OK
 t\schema\visit.t source OK

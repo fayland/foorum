@@ -31,7 +31,7 @@ sub get {
             $cache->set( $mem_key, $mem_val, 36000 );    # 10 hours
 
             # set cache
-            $forum              = $forum->{_column_data};         # hash for cache
+            $forum              = $forum->{_column_data};              # hash for cache
             $forum->{settings}  = $self->get_forum_settings($forum);
             $forum->{forum_url} = $self->get_forum_url($forum);
             $cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
@@ -51,7 +51,7 @@ sub get {
             return unless ($forum);
 
             # set cache
-            $forum              = $forum->{_column_data};         # hash for cache
+            $forum              = $forum->{_column_data};              # hash for cache
             $forum->{settings}  = $self->get_forum_settings($forum);
             $forum->{forum_url} = $self->get_forum_url($forum);
             $cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
@@ -68,15 +68,16 @@ sub get_forum_url {
 
     return $forum_url;
 }
+
 sub get_forum_settings {
-    my ($self, $forum) = @_;
-    
-    my $schema = $self->result_source->schema;
+    my ( $self, $forum ) = @_;
+
+    my $schema   = $self->result_source->schema;
     my $forum_id = $forum->{forum_id};
-    
+
     # get forum settings
-    my $settings_rs = $schema->resultset('ForumSettings')
-        ->search( { forum_id => $forum_id } );
+    my $settings_rs
+        = $schema->resultset('ForumSettings')->search( { forum_id => $forum_id } );
     my $settings = {    # default
         can_post_threads => 'Y',
         can_post_replies => 'Y',
@@ -85,7 +86,7 @@ sub get_forum_settings {
     while ( my $r = $settings_rs->next ) {
         $settings->{ $r->type } = $r->value;
     }
-    
+
     return $settings;
 }
 
