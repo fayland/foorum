@@ -5,8 +5,6 @@ use warnings;
 use Test::More;
 
 BEGIN {
-    eval { require DBI }
-        or plan skip_all => "DBI is required for this test";
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
     plan tests           => 2;
