@@ -415,9 +415,23 @@ For get_comment_by_object and remove_children using.
 
 just get the @comments from table. no other action. with upload and text filtered.
 
+=item get($comment_id, $attrs)
+
+get one comment. attrs:
+
+    with_text => 1, # get the $comment->{text} filtered.
+
 =item remove_by_object($object_type, $object_id)
 
 remove all comments belong to one certain object.
+
+=item remove_children($comment)
+
+check the CONCEPT above.
+
+=item remove_one_item($comment)
+
+remove one comment with upload and others.
 
 =back
 
