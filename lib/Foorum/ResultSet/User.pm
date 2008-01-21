@@ -184,7 +184,7 @@ __END__
 
 Foorum::ResultSet::User - User object
 
-=head1 FUNC
+=head1 FUNCTION
 
 =over 4
 

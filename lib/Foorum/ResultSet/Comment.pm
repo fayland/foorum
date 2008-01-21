@@ -366,3 +366,63 @@ sub remove_one_item {
 
 1;
 __END__
+
+=pod
+
+=head1 NAME
+
+Foorum::ResultSet::Comment - Foorum Comment System
+
+=head1 SYNOPSIS
+
+        # get comments
+        my ($view_mode)  = ( $c->req->path =~ /\/view_mode=(thread|flat)(\/|$)/ );
+        my ($comment_id) = ( $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ );
+        ( $c->stash->{comments}, $c->stash->{comments_pager} )
+            = $c->model('DBIC::Comment')->get_comments_by_object(
+            {   object_type => 'topic',
+                object_id   => $topic_id,
+                page        => $page,
+                view_mode   => $view_mode,
+                comment_id  => $comment_id,
+            }
+            );
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item get_comments_by_object
+
+Usually it's used in Topic or User page, to show the comments up. opts:
+
+    object_type => 'topic',     # or 'user_profile'
+    object_type => $topic_id,   # or $user_id,
+    page        => $page,       # show which page
+    rows        => 20,          # optional, default as c.config.per_page.topic || 10;
+    view_mode   => 'flat',      # flat or thread
+    comment_id  => $comment_id, # for URL like /topic/$topic_id/comment_id=12/
+                                # go comment_id=12's page
+
+=item get_children_comments
+
+That's mainly for thread mode. when comment_id=2's reply_to=1, that means comment_id=2 is the child of comment_id=1.
+meanwhile comment_id=3's reply_to=2, when we get children of comment_id=1, that's included too.
+
+For get_comment_by_object and remove_children using.
+
+=item get_all_comments_by_object($object_type, $object_id)
+
+just get the @comments from table. no other action. with upload and text filtered.
+
+=item remove_by_object($object_type, $object_id)
+
+remove all comments belong to one certain object.
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
