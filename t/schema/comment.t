@@ -2,13 +2,13 @@
 
 use strict;
 use warnings;
-use Test::More 'no_plan';
+use Test::More;
 
 BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
 
-    #plan tests           => 18;
+    plan tests           => 20;
 }
 
 use FindBin;

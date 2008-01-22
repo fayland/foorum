@@ -4,18 +4,13 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Digest ();
-use Net::IP::Match::Regexp qw( create_iprange_regexp match_ip );
 
 sub auto : Private {
     my ( $self, $c ) = @_;
 
-    my @cidr_ips = $c->model('DBIC::BannedIP')->get();
-    if ( scalar @cidr_ips ) {
-        my $regexp = create_iprange_regexp(@cidr_ips);
-        if ( match_ip( $c->req->address, $regexp ) ) {
-            $c->forward( '/print_error', ['IP banned'] );
-            return 0;
-        }
+    if ( $c->model('DBIC::BannedIp')->is_ip_banned($c->req->address) ) {
+        $c->forward( '/print_error', ['IP banned'] );
+        return 0;
     }
 
     return 1;

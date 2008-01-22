@@ -7,7 +7,7 @@ use Test::More;
 BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
-    plan tests           => 2;
+    plan tests           => 3;
 }
 
 use FindBin;
@@ -35,6 +35,10 @@ my @ips = $banned_ip_res->get();
 
 ok( grep { $_ eq '192.168.0.0/24' } @ips, "get '192.168.0.0/24'" );
 ok( grep { $_ eq '192.168.1.0/24' } @ips, "get '192.168.1.0/24'" );
+
+# test is_ip_banned
+my $flag = $banned_ip_res->is_ip_banned('192.168.0.1');
+is($flag, 1, 'is_ip_banned OK');
 
 #remove
 $banned_ip_res->search(
