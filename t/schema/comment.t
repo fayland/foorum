@@ -8,7 +8,7 @@ BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
 
-    plan tests           => 20;
+    plan tests => 20;
 }
 
 use FindBin;

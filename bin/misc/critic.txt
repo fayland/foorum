@@ -95,6 +95,7 @@ lib\Foorum\View\JSON.pm source OK
 lib\Foorum\View\TT.pm source OK
 lib\Foorum\XUtils.pm source OK
 lib\Foorum.pm source OK
+t\01yaml.t source OK
 t\02utils.t source OK
 t\03xutils.t source OK
 t\04testutils.t source OK

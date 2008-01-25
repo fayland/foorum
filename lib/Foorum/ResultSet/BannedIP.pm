@@ -26,8 +26,8 @@ sub get {
 }
 
 sub is_ip_banned {
-    my ($self, $ip) = @_;
-    
+    my ( $self, $ip ) = @_;
+
     my @cidr_ips = $self->get();
     if ( scalar @cidr_ips ) {
         my $regexp = create_iprange_regexp(@cidr_ips);
@@ -35,7 +35,7 @@ sub is_ip_banned {
             return 1;
         }
     }
-    
+
     return 0;
 }
 

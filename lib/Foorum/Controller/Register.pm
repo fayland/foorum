@@ -8,7 +8,7 @@ use Digest ();
 sub auto : Private {
     my ( $self, $c ) = @_;
 
-    if ( $c->model('DBIC::BannedIp')->is_ip_banned($c->req->address) ) {
+    if ( $c->model('DBIC::BannedIp')->is_ip_banned( $c->req->address ) ) {
         $c->forward( '/print_error', ['IP banned'] );
         return 0;
     }
