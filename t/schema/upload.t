@@ -15,6 +15,7 @@ use lib "$FindBin::Bin/../lib";
 use Foorum::TestUtils qw/schema cache base_path/;
 use File::Path;
 use File::Copy ();
+use File::Remove qw/remove/;
 
 my $schema    = schema();
 my $cache     = cache();
@@ -26,6 +27,10 @@ my $upload_id   = 1;
 my $directory_1 = int( $upload_id / 3200 / 3200 );
 my $directory_2 = int( $upload_id / 3200 );
 my $upload_dir  = "$base_path/root/upload/$directory_1/$directory_2";
+my @created;
+unless ( -e $upload_dir ) {
+    @created = mkpath( [$upload_dir], 0, 0777 );    ## no critic (ProhibitLeadingZeros)
+}
 my $dest_file   = "$upload_dir/test.txt";
 
 # create data, TODO. add_file need use $upload based on Catalyst::Request::Upload
@@ -82,6 +87,10 @@ END {
     my $base_path = base_path();
     File::Copy::copy( "$base_path/t/lib/Foorum/backup.db",
         "$base_path/t/lib/Foorum/test.db" );
+
+    if (scalar @created) {
+        remove \1, @created; 
+    }
 }
 
 1;
