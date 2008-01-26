@@ -1,29 +1,29 @@
-package Foorum::ResultSet::UserRole;
+package Foorum::ResultSet::UserForum;
 
 use strict;
 use warnings;
 use base 'DBIx::Class::ResultSet';
 
-sub create_user_role {
+sub create_user_forum {
     my ( $self, $info ) = @_;
 
     $self->create(
-        {   user_id => $info->{user_id},
-            field   => $info->{field},
-            role    => $info->{role},
+        {   user_id  => $info->{user_id},
+            forum_id => $info->{forum_id},
+            status   => $info->{status},
         }
     );
 
     $self->clear_cached_policy($info);
 }
 
-sub remove_user_role {
+sub remove_user_forum {
     my ( $self, $info ) = @_;
 
     my @wheres;
     push @wheres, ( user_id => $info->{user_id} ) if ( $info->{user_id} );
-    push @wheres, ( field   => $info->{field} )   if ( $info->{field} );
-    push @wheres, ( role    => $info->{role} )    if ( $info->{role} );
+    push @wheres, ( forum_id => $info->{forum_id} )   if ( $info->{forum_id} );
+    push @wheres, ( status  => $info->{status} )    if ( $info->{status} );
 
     return unless ( scalar @wheres );
 
@@ -39,19 +39,9 @@ sub clear_cached_policy {
     my $cache  = $schema->cache();
 
     if ( $info->{user_id} ) {
-
         # clear user cache too
         $schema->resultset('User')
             ->delete_cache_by_user_cond( { user_id => $info->{user_id} } );
-    }
-
-    # field_id != 'site'
-    if ($info->{field} =~ /^\d+$/
-        and (  not $info->{role}
-            or $info->{role} eq 'admin'
-            or $info->{role} eq 'moderator' )
-        ) {
-        $info->{forum_id} = $info->{field};
     }
 
     if ( $info->{forum_id} ) {

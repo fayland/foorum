@@ -105,9 +105,9 @@ sub get_forum_moderators {
         return $mem_val if ($mem_val);
     }
 
-    my @users = $c->model('DBIC')->resultset('UserRole')->search(
-        {   role  => [ 'admin', 'moderator' ],
-            field => $forum_id,
+    my @users = $c->model('DBIC')->resultset('UserForum')->search(
+        {   status => [ 'admin', 'moderator' ],
+            forum_id => $forum_id,
         }
     )->all;
 
@@ -115,13 +115,13 @@ sub get_forum_moderators {
     foreach (@users) {
         my $user = $c->model('DBIC::User')->get( { user_id => $_->user_id, } );
         next unless ($user);
-        if ( $_->role eq 'admin' ) {
-            $roles->{ $_->field }->{'admin'} = {    # for cache
+        if ( $_->status eq 'admin' ) {
+            $roles->{ $_->forum_id }->{'admin'} = {    # for cache
                 username => $user->{username},
                 nickname => $user->{nickname}
             };
-        } elsif ( $_->role eq 'moderator' ) {
-            push @{ $roles->{ $_->field }->{'moderator'} }, $user;
+        } elsif ( $_->status eq 'moderator' ) {
+            push @{ $roles->{ $_->forum_id }->{'moderator'} }, $user;
         }
     }
 
@@ -134,9 +134,9 @@ sub get_forum_admin {
     my ( $self, $c, $forum_id ) = @_;
 
     # get admin
-    my $rs = $c->model('DBIC::UserRole')->search(
-        {   field => $forum_id,
-            role  => 'admin',
+    my $rs = $c->model('DBIC::UserForum')->search(
+        {   forum_id => $forum_id,
+            status  => 'admin',
         }
     )->first;
     return unless ($rs);

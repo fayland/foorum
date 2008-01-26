@@ -24,6 +24,7 @@ my $schema = schema();
 # we add a new table 'user_forum'
 
 my $dbh = $schema->storage->dbh;
+$dbh->do('DROP TABLE `user_forum`;');
 my $sql = <<'SQL';
 CREATE TABLE `user_forum` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -31,10 +32,29 @@ CREATE TABLE `user_forum` (
   `status` ENUM( 'admin', 'moderator', 'user', 'blocked', 'pending', 'rejected' ) NOT NULL DEFAULT 'user',
   `time` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`,`forum_id`)
-)
+);
 SQL
 my $sth = $dbh->prepare($sql);
 $sth->execute();
+
+print "Create Table OK\n";
+
+# populate data from user_role to user_forum
+my $rs = $schema->resultset('UserRole')->search( {
+    field => { '!=', 'site' }
+} );
+while (my $r = $rs->next) {
+    $schema->resultset('UserForum')->create( {
+        forum_id => $r->field,
+        status   => $r->role,
+        user_id  => $r->user_id,
+    });
+    print "Migrate For " . $r->user_id . '-' . $r->field . '-' . $r->role . "\n";
+}
+
+$schema->resultset('UserRole')->search( {
+    field => { '!=', 'site' }
+} )->delete;
 
 print "Done\n";
 

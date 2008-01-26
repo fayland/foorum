@@ -152,16 +152,16 @@ sub basic : Chained('forum_for_admin') Args(0) {
 
     # 3, user_role
     # delete before create
-    $c->model('DBIC::UserRole')->remove_user_role(
-        {   role  => 'moderator',
-            field => $forum->{forum_id},
+    $c->model('DBIC::UserForum')->search(
+        {   status => 'moderator',
+            forum_id => $forum->{forum_id},
         }
-    );
+    )->delete;
     foreach (@moderator_users) {
-        $c->model('DBIC::UserRole')->create_user_role(
+        $c->model('DBIC::UserForum')->create_user_forum(
             {   user_id => $_->{user_id},
-                role    => 'moderator',
-                field   => $forum->{forum_id},
+                status  => 'moderator',
+                forum_id => $forum->{forum_id},
             }
         );
     }
@@ -363,10 +363,10 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
         return $c->res->body('Illegal request');
     }
 
-    my $rs = $c->model('DBIC::UserRole')->count(
-        {   field   => $forum_id,
+    my $rs = $c->model('DBIC::UserForum')->count(
+        {   forum_id => $forum_id,
             user_id => $user_id,
-            role    => $from,
+            status  => $from,
         }
     );
     return $c->res->body('no record available') unless ($rs);
@@ -381,12 +381,12 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
     }
 
     my $where = {
-        field   => $forum_id,
+        forum_id => $forum_id,
         user_id => $user_id,
-        role    => $from,
+        status    => $from,
     };
-    $c->model('DBIC::UserRole')->search($where)->update( { role => $to } );
-    $c->model('DBIC::UserRole')->clear_cached_policy($where);
+    $c->model('DBIC::UserForum')->search($where)->update( { status => $to } );
+    $c->model('DBIC::UserForum')->clear_cached_policy($where);
 
     $c->res->body('OK');
 }

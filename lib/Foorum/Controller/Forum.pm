@@ -104,9 +104,9 @@ sub forum_list : Regex('^forum/(\w+)$') {
 
         # for private forum
         if ( $forum->{policy} eq 'private' ) {
-            my $pending_count = $c->model('DBIC::UserRole')->count(
-                {   field => $forum_id,
-                    role  => 'pending',
+            my $pending_count = $c->model('DBIC::UserForum')->count(
+                {   forum_id => $forum_id,
+                    status   => 'pending',
                 }
             );
             $c->stash( { pending_count => $pending_count, } );
@@ -161,13 +161,13 @@ sub members : LocalRegex('^(\w+)/members(/(\w+))?$') {
 
     my ( @query_cols, @attr_cols );
     if ( $member_type eq 'user' ) {
-        @query_cols = ( 'role', [ 'admin', 'moderator', 'user' ] );
-        @attr_cols = ( 'order_by' => 'role ASC' );
+        @query_cols = ( 'status', [ 'admin', 'moderator', 'user' ] );
+        @attr_cols  = ( 'order_by' => 'status ASC' );
     } else {
-        @query_cols = ( 'role', $member_type );
+        @query_cols = ( 'status', $member_type );
     }
-    my $rs = $c->model('DBIC::UserRole')->search(
-        { @query_cols, field => $forum_id, },
+    my $rs = $c->model('DBIC::UserForum')->search(
+        { @query_cols, forum_id => $forum_id, },
         {   @attr_cols,
             rows => 20,
             page => $page,
@@ -253,28 +253,28 @@ sub join_us : Private {
     my $forum_id = $forum->{forum_id};
 
     if ( $c->req->method eq 'POST' ) {
-        my $rs = $c->model('DBIC::UserRole')->search(
-            {   user_id => $c->user->user_id,
-                field   => $forum_id,
+        my $rs = $c->model('DBIC::UserForum')->search(
+            {   user_id   => $c->user->user_id,
+                forum_id  => $forum_id,
             },
-            { columns => ['role'], }
+            { columns => ['status'], }
         )->first;
         if ($rs) {
-            if (   $rs->role eq 'user'
-                or $rs->role eq 'moderator'
-                or $rs->role eq 'admin' ) {
+            if (   $rs->status eq 'user'
+                or $rs->status eq 'moderator'
+                or $rs->status eq 'admin' ) {
                 return $c->res->redirect( $forum->{forum_url} );
-            } elsif ( $rs->role eq 'blocked'
-                or $rs->role eq 'pending'
-                or $rs->role eq 'rejected' ) {
-                my $role = uc( $rs->role );
-                $c->detach( '/print_error', ["ERROR_USER_$role"] );
+            } elsif ( $rs->status eq 'blocked'
+                or $rs->status eq 'pending'
+                or $rs->status eq 'rejected' ) {
+                my $status = uc( $rs->status );
+                $c->detach( '/print_error', ["ERROR_USER_$status"] );
             }
         } else {
-            $c->model('DBIC::UserRole')->create_user_role(
-                {   user_id => $c->user->user_id,
-                    field   => $forum_id,
-                    role    => 'pending',
+            $c->model('DBIC::UserForum')->create_user_forum(
+                {   user_id  => $c->user->user_id,
+                    forum_id => $forum_id,
+                    status   => 'pending',
                 }
             );
 
@@ -389,17 +389,17 @@ sub create : Local {
             total_members => $total_members,
         }
     );
-    $c->model('DBIC::UserRole')->create_user_role(
+    $c->model('DBIC::UserForum')->create_user_forum(
         {   user_id => $admin_user->{user_id},
-            role    => 'admin',
-            field   => $forum->forum_id,
+            status  => 'admin',
+            forum_id => $forum->forum_id,
         }
     );
     foreach (@moderator_users) {
-        $c->model('DBIC::UserRole')->create_user_role(
+        $c->model('DBIC::UserForum')->create_user_forum(
             {   user_id => $_->{user_id},
-                role    => 'moderator',
-                field   => $forum->forum_id,
+                status  => 'moderator',
+                forum_id => $forum->forum_id,
             }
         );
     }

@@ -26,5 +26,4 @@ __PACKAGE__->belongs_to(
     'user' => 'Foorum::Schema::User',
     { 'foreign.user_id' => 'self.user_id' }
 );
-__PACKAGE__->resultset_class('Foorum::ResultSet::UserRole');
 1;

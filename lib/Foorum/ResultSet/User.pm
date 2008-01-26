@@ -83,6 +83,10 @@ sub get_from_db {
     foreach (@roles) {
         $roles->{ $_->field }->{ $_->role } = 1;
     }
+    my @forum_roles = $schema->resultset('UserForum')->search( { user_id => $user->user_id } )->all;
+    foreach (@forum_roles) {
+        $roles->{ $_->forum_id }->{ $_->status } = 1;
+    }
 
     # user profile photo
     my $profile_photo

@@ -115,8 +115,10 @@ sub remove_forum {
     my $cache  = $schema->cache();
 
     $self->search( { forum_id => $forum_id, } )->delete;
-    $schema->resultset('UserRole')->remove_user_role( { field => $forum_id, } );
     $schema->resultset('LogAction')->search( { forum_id => $forum_id } )->delete;
+    
+    # remove user_forum
+    $schema->resultset('UserForum')->search( { forum_id => $forum_id } )->delete;
 
     # get all topic_ids
     my @topic_ids;
@@ -212,7 +214,8 @@ sub merge_forums {
         }
     );
 
-    $schema->resultset('UserRole')->remove_user_role( { field => $from_id, } );
+    # remove user_forum
+    $schema->resultset('UserForum')->search( { forum_id => $from_id } )->delete;
 
     # topics
     $schema->resultset('Topic')->search( { forum_id => $from_id, } )
