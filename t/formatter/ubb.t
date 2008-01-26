@@ -13,11 +13,11 @@ TEXT
 
 my $html = filter_format( $text, { format => 'ubb' } );
 
-like( $html, qr/inlove.gif/, 'emot convert OK' );
-like( $html, qr/\<a href/,   '[url] convert OK' );
-like( $html, qr/\<b\>/,      '[b] convert OK' );
-like( $html, qr/14pt/,       '[size] OK');
-like( $html, qr/font-family\s*\:\s*Arial/, '[font] OK');
+like( $html, qr/inlove.gif/,               'emot convert OK' );
+like( $html, qr/\<a href/,                 '[url] convert OK' );
+like( $html, qr/\<b\>/,                    '[b] convert OK' );
+like( $html, qr/14pt/,                     '[size] OK' );
+like( $html, qr/font-family\s*\:\s*Arial/, '[font] OK' );
 
 #diag($html);
 
@@ -26,7 +26,10 @@ $text = <<TEXT;
 [url=http://search.cpan.org/perldoc?CatalystX::Foorum]CatalystX::Foorum[/url]
 TEXT
 $html = filter_format( $text, { format => 'ubb' } );
-is($html, '<p><a href="http://search.cpan.org/perldoc?CatalystX::Foorum">CatalystX::Foorum</a></p>', 'CPAN URL OK');
+is( $html,
+    '<p><a href="http://search.cpan.org/perldoc?CatalystX::Foorum">CatalystX::Foorum</a></p>',
+    'CPAN URL OK'
+);
 
 #diag($html);
 

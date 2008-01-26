@@ -1,7 +1,6 @@
 bin\cron\chart.pl source OK
 bin\cron\TheSchwartz_client.pl source OK
 bin\cron\TheSchwartz_worker.pl source OK
-bin\cron\TheSchwartz_worker_scraper.pl source OK
 bin\db\make_schema.pl source OK
 bin\deploy\dreamhost.fastcgi.pl source OK
 bin\foorum_server.pl source OK
@@ -90,11 +89,14 @@ lib\Foorum\TheSchwartz\Worker\Scraper.pm source OK
 lib\Foorum\TheSchwartz\Worker\SendScheduledEmail.pm source OK
 lib\Foorum\TheSchwartz\Worker\SendStarredNofication.pm source OK
 lib\Foorum\TheSchwartz\Worker\Topic_ViewAsPDF.pm source OK
+lib\Foorum\TheSchwartz\Worker\ValidateForumData.pm source OK
 lib\Foorum\Utils.pm source OK
 lib\Foorum\View\JSON.pm source OK
 lib\Foorum\View\TT.pm source OK
 lib\Foorum\XUtils.pm source OK
 lib\Foorum.pm source OK
+lib\HTML\BBCode\Strict\Tag.pm source OK
+lib\HTML\BBCode\Strict.pm: "return" statement with explicit "undef" at line 359, column 9. See page 199 of PBP.
 t\01yaml.t source OK
 t\02utils.t source OK
 t\03xutils.t source OK

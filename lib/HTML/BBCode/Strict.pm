@@ -9,8 +9,7 @@ use Class::C3;
 
 use HTML::BBCode::Strict::Tag;
 
-__PACKAGE__->mk_accessors(
-    qw/ conf tags iseof current_tag text content bbcode error / );
+__PACKAGE__->mk_accessors(qw/ conf tags iseof current_tag text content bbcode error /);
 
 =head1 NAME
 
@@ -124,149 +123,149 @@ TODO
 
 our $default_tags = {
     'b' => {
-        tags_can_be_inside  => [ qw/ i u s / ],
-        has_closing_tag => 1,
-        pattern => sub { "<b>$_[0]</b>" }
+        tags_can_be_inside => [qw/ i u s /],
+        has_closing_tag    => 1,
+        pattern            => sub {"<b>$_[0]</b>"}
     },
     'i' => {
-        tags_can_be_inside  => [ qw/ b u s / ],
-        has_closing_tag => 1,
-        pattern => sub {
+        tags_can_be_inside => [qw/ b u s /],
+        has_closing_tag    => 1,
+        pattern            => sub {
             "<i>$_[0]</i>";
-          }
+            }
     },
     'u' => {
-        tags_can_be_inside  => [ qw/ b i s / ],
-        has_closing_tag => 1,
-        pattern => sub {
+        tags_can_be_inside => [qw/ b i s /],
+        has_closing_tag    => 1,
+        pattern            => sub {
             qq#<span style="text-decoration:underline">$_[0]</span>#;
-          }
+            }
     },
     's' => {
-        tags_can_be_inside  => [ qw/ b u i / ],
-        has_closing_tag => 1,
-        pattern => sub {
+        tags_can_be_inside => [qw/ b u i /],
+        has_closing_tag    => 1,
+        pattern            => sub {
             "<s>$_[0]</s>";
-          }
+            }
     },
     'color' => {
-        tags_can_be_inside       => [ qw/ b u i s / ],
-        has_closing_tag      => 1,
-        arg_required => 1,
-        pattern      => sub {
+        tags_can_be_inside => [qw/ b u i s /],
+        has_closing_tag    => 1,
+        arg_required       => 1,
+        pattern            => sub {
             qq#<span class="color:$_[1]">$_[0]</span>#;
-          }
+            }
     },
     'hr'  => { pattern => '<hr />' },
     'url' => {
-        has_closing_tag      => 1,
-        tags_can_be_inside       => [ qw/ img / ],
-        arg_required => 0,
-        pattern      => sub {
-            if ( $_[ 1 ] ) {
+        has_closing_tag    => 1,
+        tags_can_be_inside => [qw/ img /],
+        arg_required       => 0,
+        pattern            => sub {
+            if ( $_[1] ) {
                 qq#<a href="$_[1]">$_[0]</a>#;
             } else {
                 qq#<a href="$_[0]">$_[0]</a>#;
             }
-          }
+            }
     },
     'img' => {
-        has_closing_tag      => 1,
-        arg_required => 0,
-        pattern      => sub {
+        has_closing_tag => 1,
+        arg_required    => 0,
+        pattern         => sub {
             qq#<img src="$_[0]" alt="" />#;
-          }
+            }
     },
     'code' => {
-        has_closing_tag      => 1,
+        has_closing_tag        => 1,
         ignore_all_inside_tags => 1,
-        pattern      => sub {
+        pattern                => sub {
             qq#<pre><code>$_[0]</code></pre>#;
-          }
-      },
+            }
+    },
     'left' => {
-        has_closing_tag      => 1,
-        tags_can_be_inside      => [qw/ b i s u /],
-        pattern      => sub {
+        has_closing_tag    => 1,
+        tags_can_be_inside => [qw/ b i s u /],
+        pattern            => sub {
             qq#<div style="text-align:left">$_[0]</div>#;
-          }
-      },
+            }
+    },
     'center' => {
-        has_closing_tag      => 1,
-        tags_can_be_inside      => [qw/ b i s u /],
-        pattern      => sub {
+        has_closing_tag    => 1,
+        tags_can_be_inside => [qw/ b i s u /],
+        pattern            => sub {
             qq#<div style="text-align:center">$_[0]</div>#;
-          }
-      },
+            }
+    },
     'right' => {
-        has_closing_tag      => 1,
-        tags_can_be_inside      => [qw/ b i s u /],
-        pattern      => sub {
+        has_closing_tag    => 1,
+        tags_can_be_inside => [qw/ b i s u /],
+        pattern            => sub {
             qq#<div style="text-align:right">$_[0]</div>#;
-          }
-      },
+            }
+    },
     'float' => {
-        has_closing_tag      => 1,
-        arg_required => 1,
-        tags_can_be_inside      => [qw/ b i s u img /],
-        pattern      => sub {
+        has_closing_tag    => 1,
+        arg_required       => 1,
+        tags_can_be_inside => [qw/ b i s u img /],
+        pattern            => sub {
             if ( $_[1] eq 'left' ) {
                 qq#<div style="float:left">$_[0]</div>#;
             } elsif ( $_[1] eq 'right' ) {
                 qq#<div style="float:right">$_[0]</div>#;
             }
-          }
-      },
+            }
+    },
     'clear' => {
-        pattern      => sub {
+        pattern => sub {
             qq#<div style="clear:both">$_[0]</div>#;
-          }
-      },
+            }
+    },
     'sub' => {
-        has_closing_tag      => 1,
-        tags_can_be_inside      => [qw/ b i s u /],
-        pattern      => sub {
+        has_closing_tag    => 1,
+        tags_can_be_inside => [qw/ b i s u /],
+        pattern            => sub {
             qq#<sub>$_[0]</sub>#;
-          }
-      },
+            }
+    },
     'sup' => {
-        has_closing_tag      => 1,
-        tags_can_be_inside      => [qw/ b i s u /],
-        pattern      => sub {
+        has_closing_tag    => 1,
+        tags_can_be_inside => [qw/ b i s u /],
+        pattern            => sub {
             qq#<sup>$_[0]</sup>#;
-          }
-      },
+            }
+    },
     'abbr' => {
-        has_closing_tag      => 1,
-        arg_required => 1,
-        pattern      => sub {
+        has_closing_tag => 1,
+        arg_required    => 1,
+        pattern         => sub {
             qq#<abbr title="$_[1]">$_[0]</abbr>#;
-          }
-      },
+            }
+    },
     'acronym' => {
-        has_closing_tag      => 1,
-        arg_required => 1,
-        pattern      => sub {
+        has_closing_tag => 1,
+        arg_required    => 1,
+        pattern         => sub {
             qq#<acronym title="$_[1]">$_[0]</acronym>#;
-          }
-      },
+            }
+    },
     'quote' => {
-        has_closing_tag      => 1,
-        tags_can_be_inside      => [qw/ b i s u /],
-        arg_required => 0,
-        pattern      => sub {
+        has_closing_tag    => 1,
+        tags_can_be_inside => [qw/ b i s u /],
+        arg_required       => 0,
+        pattern            => sub {
             if ( $_[1] ) {
                 qq#<blockquote>$_[1]:<br />$_[0]</blockquote>#;
             } else {
                 qq#<blockquote>$_[0]</blockquote>#;
             }
-          }
-      },
+            }
+    },
     'list' => {
-        has_closing_tag => 1,
+        has_closing_tag    => 1,
         tags_can_be_inside => [qw/ * b i s u /],
-        arg_required => 0,
-        pattern => sub {
+        arg_required       => 0,
+        pattern            => sub {
             $_[0] =~ s/<li>(.*?)(?=\n?<li>|$)/<li>$1<\/li>/osg;
 
             if ( !$_[1] ) {
@@ -280,16 +279,14 @@ our $default_tags = {
             }
         },
     },
-    '*' => {
-        pattern => '<li>'
-    }
+    '*' => { pattern => '<li>' }
 };
 
 sub new {
     my ( $class, $conf, $tags ) = @_;
 
     $conf ||= {};
-    
+
     my $merched_tags = _merge_hashes( $default_tags, $tags );
 
     return bless {
@@ -299,7 +296,7 @@ sub new {
 }
 
 sub preprocess {
-    my ( $s ) = @_;
+    my ($s) = @_;
 
     my $bbcode = $s->bbcode;
 
@@ -307,27 +304,27 @@ sub preprocess {
     $bbcode =~ s/</&lt;/gos;
     $bbcode =~ s/>/&gt;/gos;
 
-    $s->bbcode( $bbcode );
+    $s->bbcode($bbcode);
 }
 
 sub postprocess {
-    my ( $s ) = @_;
+    my ($s) = @_;
 
     my $html = $s->content;
 
     $html =~ s/^\s+//os;
     $html =~ s/\s+$//os;
 
-    $s->content( '<p>' . $html . '</p>');
+    $s->content( '<p>' . $html . '</p>' );
 }
 
 sub parse {
     my ( $s, $bbcode ) = @_;
 
-    $s->bbcode( $bbcode );
-    $s->content( '' );
-    $s->iseof( 0 );
-    $s->error( '' );
+    $s->bbcode($bbcode);
+    $s->content('');
+    $s->iseof(0);
+    $s->error('');
 
     $s->check_config();
 
@@ -342,11 +339,12 @@ sub parse {
 
         if ( $s->text ) {
             my $text = $s->text;
+
             # some magic from Template::Plugin::PwithBR
             $text =~ s/\x0D\x0A/\n/g;
-            $text =~ tr/\x0D\x0A/\n\n/; 
+            $text =~ tr/\x0D\x0A/\n\n/;
             $text =~ s/(?:\r?\n){2,}/<\/p><p>/gs;
-            $s->push_content( $text );
+            $s->push_content($text);
         } else {
             $s->push_content( $s->current_tag->as_html );
         }
@@ -371,12 +369,12 @@ sub push_content {
     if ( $s->content ) {
         $s->content( $s->content . $content );
     } else {
-        $s->content( $content );
+        $s->content($content);
     }
 }
 
 sub parse_start {
-    my ( $s ) = @_;
+    my ($s) = @_;
 
     return if $s->error;
 
@@ -388,25 +386,23 @@ sub parse_start {
             $s->get_next_token();
 
             if ( $s->iseof ) {
-                $s->error( 'Unexpected end of file' );
+                $s->error('Unexpected end of file');
                 return;
             }
 
-            if (
-                   $s->text
+            if (   $s->text
                 || $tag->ignore_all_inside_tags
                 || $tag->can_be_inside( $s->current_tag )
                 || (   $s->current_tag->isclosed
                     && $s->current_tag->name eq $tag->name )
-              )
-            {
-                $s->parse_end( $tag );
-                $s->current_tag( $tag );
+                ) {
+                $s->parse_end($tag);
+                $s->current_tag($tag);
             } else {
-                $s->error( 'Tag '
-                      . $s->current_tag->name
-                      . ' cannot be inside tag '
-                      . $tag->name );
+                $s->error('Tag '
+                        . $s->current_tag->name
+                        . ' cannot be inside tag '
+                        . $tag->name );
             }
         }
     } else {
@@ -425,8 +421,7 @@ sub parse_end {
             || (   $s->current_tag
                 && !$s->current_tag->isclosed
                 && $s->current_tag->name ne $end->name )
-          )
-        {
+            ) {
             if ( $s->text ) {
                 $end->push_content( $s->text );
 
@@ -437,23 +432,21 @@ sub parse_end {
                 if ( $tag->isclosed ) {
                     $s->error( 'Unexpected closing tag: ' . $tag->name );
                 } else {
-                    if ( $end->can_be_inside( $tag ) ) {
+                    if ( $end->can_be_inside($tag) ) {
                         if ( $s->current_tag->has_closing_tag ) {
                             $s->parse_start();
                             return if $s->error;
-                            $end->push_content( $s->text
-                                  || $s->current_tag->as_html );
+                            $end->push_content( $s->text || $s->current_tag->as_html );
                             $s->get_next_token();
                         } else {
-                            $end->push_content( $s->text
-                                  || $s->current_tag->as_html );
+                            $end->push_content( $s->text || $s->current_tag->as_html );
                             $s->get_next_token();
                         }
                     } else {
-                        $s->error( 'Tag '
-                              . $s->current_tag->name
-                              . ' cannot be inside tag '
-                              . $end->name );
+                        $s->error('Tag '
+                                . $s->current_tag->name
+                                . ' cannot be inside tag '
+                                . $end->name );
                     }
                 }
             }
@@ -463,8 +456,7 @@ sub parse_end {
             if ( $s->text ) {
                 $end->push_content( $s->text );
             } elsif ( $s->current_tag->isclosed
-                && $s->current_tag->name eq $end->name )
-            {
+                && $s->current_tag->name eq $end->name ) {
                 return;
             } else {
                 $end->push_content( $s->current_tag->as_tag );
@@ -476,32 +468,31 @@ sub parse_end {
 }
 
 sub get_next_token {
-    my ( $s ) = @_;
+    my ($s) = @_;
 
     my $bbcode = $s->bbcode;
 
-    $s->current_tag( '' );
-    $s->text( '' );
+    $s->current_tag('');
+    $s->text('');
 
     if ( !$bbcode ) {
-        $s->iseof( 1 );
+        $s->iseof(1);
     } else {
         if ( $bbcode =~ s/^\[(\/)?([a-z\*]+)(=(.+?))?\]//so ) {
             my $tag;
             if ( ( my $name ) = grep { $_ eq $2 } keys %{ $s->tags } ) {
-                $tag = $s->tags->{ $name };
+                $tag = $s->tags->{$name};
 
-                if ( $1 && !$tag->{ has_closing_tag } ) {
-                    $s->error( "Tag '$2' doesn't support closing" );
-                } elsif ( !$1 && $tag->{ arg_required } && !$4) {
-                    $s->error( "Tag '$2' requires an argument" );
-                } elsif ( !$1 && $4 && !defined $tag->{ arg_required } ) {
-                    $s->error( "Tag '$2' doesn't have argument" );
+                if ( $1 && !$tag->{has_closing_tag} ) {
+                    $s->error("Tag '$2' doesn't support closing");
+                } elsif ( !$1 && $tag->{arg_required} && !$4 ) {
+                    $s->error("Tag '$2' requires an argument");
+                } elsif ( !$1 && $4 && !defined $tag->{arg_required} ) {
+                    $s->error("Tag '$2' doesn't have argument");
                 } else {
                     $s->current_tag(
                         HTML::BBCode::Strict::Tag->new(
-                            {
-                                name => $2,
+                            {   name     => $2,
                                 isclosed => $1 ? 1 : 0,
                                 arg => $4 || '',
                                 %$tag
@@ -513,12 +504,12 @@ sub get_next_token {
                 $s->error( 'Wrong tag: ' . $2 );
             }
         } elsif ( $bbcode =~ s/^(.+?)(?=\[|$)//so ) {
-            $s->text( $1 );
+            $s->text($1);
         }
     }
 
     if ( $s->current_tag || $s->text ) {
-        $s->bbcode( $bbcode );
+        $s->bbcode($bbcode);
     }
 }
 
@@ -527,21 +518,20 @@ sub _merge_hashes {
     my ( $lefthash, $righthash ) = @_;
 
     return $lefthash unless defined $righthash;
-    
+
     my %merged = %$lefthash;
     for my $key ( keys %$righthash ) {
-        my $right_ref = ( ref $righthash->{ $key } || '' ) eq 'HASH';
-        my $left_ref  = ( ( exists $lefthash->{ $key } && ref $lefthash->{ $key } ) || '' ) eq 'HASH';
+        my $right_ref = ( ref $righthash->{$key} || '' ) eq 'HASH';
+        my $left_ref
+            = ( ( exists $lefthash->{$key} && ref $lefthash->{$key} ) || '' ) eq 'HASH';
 
-        if( $right_ref and $left_ref ) {
-            $merged{ $key } = _merge_hashes(
-                $lefthash->{ $key }, $righthash->{ $key }
-            );
+        if ( $right_ref and $left_ref ) {
+            $merged{$key} = _merge_hashes( $lefthash->{$key}, $righthash->{$key} );
         } else {
-            $merged{ $key } = $righthash->{ $key };
+            $merged{$key} = $righthash->{$key};
         }
     }
-    
+
     return \%merged;
 }
 
@@ -600,4 +590,4 @@ under the same terms as Perl itself.
 
 =cut
 
-1; # End of HTML::BBCode::Strict
+1;    # End of HTML::BBCode::Strict

@@ -5,12 +5,9 @@ use warnings;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
-use File::Spec;
+use Foorum::XUtils qw/base_path/;
 use Image::Magick;
-use Cwd qw/abs_path/;
-use File::Copy;
-
-my ( undef, $path ) = File::Spec->splitpath(__FILE__);
+use File::Copy ();
 
 sub work {
     my $class = shift;
@@ -18,7 +15,8 @@ sub work {
 
     my @args = $job->arg;
 
-    my $schema = schema();
+    my $schema    = schema();
+    my $base_path = base_path();
 
     # get upload from db
     my $upload_id = shift @args;
@@ -34,7 +32,7 @@ sub work {
     my $directory_1 = int( $upload_id / 3200 / 3200 );
     my $directory_2 = int( $upload_id / 3200 );
     my $file        = abs_path(
-        "$path/../../../../root/upload/$directory_1/$directory_2/" . $upload->filename );
+        "$base_path/root/upload/$directory_1/$directory_2/" . $upload->filename );
 
     # resize photo
     my $p = new Image::Magick;
@@ -48,7 +46,7 @@ sub work {
     my $tmp_file = $file . '.tmp';
     $p->Write($tmp_file);
 
-    move( $tmp_file, $file );
+    File::Copy::move( $tmp_file, $file );
 
     # update db
     $schema->resultset('UserProfilePhoto')->search(

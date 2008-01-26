@@ -150,26 +150,6 @@ function hyperlink() {
     }
 }
 
-function email() {
-    if (helpstat) {
-        alert("Email 标记\r\n\r\n插入 Email 超级链接\r\n\r\n用法1: [email]email@163.com[/email]\r\n\r\n用法2: [email=email@163.com]小张[/email]");
-    } else if (basic) {
-        AddText("[email][/email]");
-    } else {
-        txt2 = prompt("链接显示的文字.\r\n\r\n如果为空，那么将只显示你的 Email 地址","");
-        if (txt2!=null) {
-            txt=prompt("Email 地址.","name\@domain.com");
-            if (txt!=null) {
-                 if (txt2 == "") {
-                    AddText("[email]" + txt + "[/email]");
-                 } else {
-                    AddText=("[email=" + txt + "]" + txt2 + "[/email]");
-                 }
-            }
-        }
-    }
-}
-
 function image() {
     if (helpstat) {
         alert("图片标记\r\n\r\n插入图片\r\n\r\n用法： [img]http:\/\/www.1313s.com\/baby.jpg[/img]");

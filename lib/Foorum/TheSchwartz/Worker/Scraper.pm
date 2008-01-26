@@ -223,27 +223,9 @@ sub update_forum {
     my $forum = $schema->resultset('Forum')->count( { forum_id => $forum_id } );
     return unless ($forum);
 
-    # get all threads
-    my $threads = $schema->resultset('Comment')->count(
-        {   forum_id    => $forum_id,
-            object_type => 'topic',
-            reply_to    => 0,
-        }
-    );
-    my $replies = $schema->resultset('Comment')->count(
-        {   forum_id    => $forum_id,
-            object_type => 'topic',
-        }
-    );
-    $replies = $replies - $threads;
-
     # update forum
-    $schema->resultset('Forum')->search( { forum_id => $forum_id, } )->update(
-        {   total_topics  => $threads,             #'
-            total_replies => $replies,
-            last_post_id  => $last_post_id || 0,
-        }
-    );
+    $schema->resultset('Forum')->search( { forum_id => $forum_id, } )
+        ->update( { last_post_id => $last_post_id || 0, } );
 
     $cache->remove("forum|forum_id=$forum_id");
 }

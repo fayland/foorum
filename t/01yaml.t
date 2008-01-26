@@ -9,7 +9,7 @@ BEGIN {
 
     $@ and plan skip_all => "Test::YAML::Valid is required for this test";
 
-    plan tests => 12;
+    plan tests => 14;
 }
 
 use Foorum::XUtils qw/base_path/;
@@ -36,6 +36,14 @@ ok( -e "$base_path/conf/examples/mail/sendmail.yml",
 yaml_file_ok(
     "$base_path/conf/examples/mail/sendmail.yml",
     'conf/examples/mail/sendmail.yml validates'
+);
+
+ok( -e "$base_path/conf/examples/theschwartz.yml",
+    'conf/examples/theschwartz.yml exists'
+);
+yaml_file_ok(
+    "$base_path/conf/examples/theschwartz.yml",
+    'conf/examples/theschwartz.yml validates'
 );
 
 ok( -e "$base_path/conf/examples/mail/SMTP.yml", 'conf/examples/mail/SMTP.yml exists' );

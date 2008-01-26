@@ -6,7 +6,7 @@ use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
-use Foorum::XUtils qw/config/;
+use Foorum::XUtils qw/config base_path/;
 
 sub work {
     my $class = shift;
@@ -41,10 +41,14 @@ sub work {
 use MIME::Entity;
 use Email::Send;
 use YAML qw/LoadFile/;
-use File::Spec;
 
-my ( undef, $path ) = File::Spec->splitpath(__FILE__);
-my $config = LoadFile("$path/../../../../conf/mail.yml");
+my $base_path = base_path();
+my $config;
+if (-e "$base_path/conf/mail.yml") {
+    $config = LoadFile("$base_path/conf/mail.yml");
+} else {
+    $config = LoadFile("$base_path/conf/examples/mail/sendmail.yml");
+}
 
 if ( $config->{mailer} eq 'Sendmail' ) {
     if ( -e '/usr/sbin/sendmail' ) {

@@ -31,7 +31,7 @@ my @created;
 unless ( -e $upload_dir ) {
     @created = mkpath( [$upload_dir], 0, 0777 );    ## no critic (ProhibitLeadingZeros)
 }
-my $dest_file   = "$upload_dir/test.txt";
+my $dest_file = "$upload_dir/test.txt";
 
 # create data, TODO. add_file need use $upload based on Catalyst::Request::Upload
 sub create_data {
@@ -88,8 +88,8 @@ END {
     File::Copy::copy( "$base_path/t/lib/Foorum/backup.db",
         "$base_path/t/lib/Foorum/test.db" );
 
-    if (scalar @created) {
-        remove \1, @created; 
+    if ( scalar @created ) {
+        remove \1, @created;
     }
 }
 

@@ -16,13 +16,13 @@ if ( $has_proc_pid_file and $has_home_dir ) {
 
 use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
-use Foorum::XUtils qw/theschwartz config/;
+use Foorum::XUtils qw/theschwartz config base_path/;
 
 my $client = theschwartz();
 my $config = config();
 
 use Getopt::Long;
-my $debug  = 1;
+my $debug  = 0;
 my $daemon = 0;
 my $worker;
 
@@ -38,14 +38,26 @@ if ($worker) {
 
     use Schedule::Cron;
     my $cron = new Schedule::Cron( sub { return 1; } );
-    $cron->add_entry( "*/5 * * * *", \&run_worker, 'Hit' );    # run every 5 minutes
-    $cron->add_entry( "10 3 * * *", \&run_worker, 'RemoveOldDataFromDB' );  # run everyday
-    $cron->add_entry( "0 0 * * *",  \&run_worker, 'DailyReport' );          # daily
-    $cron->add_entry( "0 0 * * *",  \&run_worker, 'DailyChart' );           # daily
-    $cron->add_entry( "*/13 * * * *", \&run_worker, 'SendScheduledEmail' ); # sendmail
-    if ( $config->{function_on}->{scraper} ) {
-        $cron->add_entry( "10 1 * * *", \&run_worker, 'Scraper' );          # run everyday
+
+    # load entry from theschwartz.yml or examples/theschwartz.yml
+    use YAML qw/LoadFile/;
+    my $base_path = base_path();
+    my $theschwartz_config;
+    if ( -e "$base_path/conf/theschwartz.yml" ) {
+        $theschwartz_config = LoadFile("$base_path/conf/theschwartz.yml");
+    } else {
+        $theschwartz_config = LoadFile("$base_path/conf/examples/theschwartz.yml");
     }
+
+    foreach my $one (@$theschwartz_config) {
+        my $worker = $one->{worker};
+
+        # skip some
+        next if ( $worker eq 'Scraper' and not $config->{function_on}->{scraper} );
+
+        $cron->add_entry( $one->{time}, \&run_worker, $worker );
+    }
+
     $cron->run();
 } else {
     print <<USAGE;

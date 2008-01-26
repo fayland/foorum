@@ -35,7 +35,7 @@ sub create_comment {
             formatter   => 'plain',
             author_id   => 1,
             post_ip     => '127.0.0.1',
-            post_on => \'CURRENT_TIMESTAMP',    # For SQLite
+            post_on     => \'CURRENT_TIMESTAMP',                            # For SQLite
         }
     );
 }
@@ -46,9 +46,9 @@ $cache->remove($cache_key);
 # test get
 my $comment = $comment_res->get( 1, { with_text => 1 } );
 isn't( $comment, undef, 'get OK' );
-is( $comment->{object_type}, 'test', 'get object_type OK' );
-is( $comment->{title}, '1 - 0 &lt;title&gt;', 'get encodeHTML title OK' );
-is( $comment->{text},  '1 x 0 x foorumbbs' );
+is( $comment->{object_type}, 'test',                'get object_type OK' );
+is( $comment->{title},       '1 - 0 &lt;title&gt;', 'get encodeHTML title OK' );
+is( $comment->{text},        '1 x 0 x foorumbbs' );
 
 # test remove_one_item
 my $ok = $comment_res->remove_one_item($comment);

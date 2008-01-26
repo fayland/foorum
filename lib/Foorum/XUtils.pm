@@ -31,7 +31,7 @@ sub config {
     return $config if ($config);
 
     $config = LoadFile("$path/../../foorum.yml");
-    if (-e "$path/../../foorum_local.yml") {
+    if ( -e "$path/../../foorum_local.yml" ) {
         my $extra_config = LoadFile("$path/../../foorum_local.yml");
         $config = { %$config, %$extra_config };
     }

@@ -16,29 +16,11 @@ if ( $has_proc_pid_file and $has_home_dir ) {
 
 use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
-use Foorum::XUtils qw/theschwartz config/;
-use Foorum::TheSchwartz::Worker::Hit;
-use Foorum::TheSchwartz::Worker::RemoveOldDataFromDB;
-use Foorum::TheSchwartz::Worker::ResizeProfilePhoto;
-use Foorum::TheSchwartz::Worker::SendScheduledEmail;
-use Foorum::TheSchwartz::Worker::DailyReport;
-use Foorum::TheSchwartz::Worker::DailyChart;
-use Foorum::TheSchwartz::Worker::SendStarredNofication;
-use vars qw/$config/;
+use Foorum::XUtils qw/theschwartz config base_path/;
 
-BEGIN {
-    $config = config();
-    if ( $config->{function_on}->{topic_pdf} ) {
-        my $module = 'Foorum::TheSchwartz::Worker::Topic_ViewAsPDF';
-        eval "use $module;";    ## no critic (ProhibitStringyEval)
-        if ($@) {
-            die "can't load $module with error: $@\n",
-                "Or else, please set function_on: topic_pdf: 0 if u don't want this.\n";
-        }
-    }
-}
-
-my $client = theschwartz();
+my $client    = theschwartz();
+my $config    = config();
+my $base_path = base_path();
 
 my $verbose = sub {
     my $msg = shift;
@@ -56,16 +38,34 @@ my $verbose = sub {
 };
 $client->set_verbose($verbose);
 
-$client->can_do('Foorum::TheSchwartz::Worker::Hit');
-$client->can_do('Foorum::TheSchwartz::Worker::RemoveOldDataFromDB');
-$client->can_do('Foorum::TheSchwartz::Worker::ResizeProfilePhoto');
-$client->can_do('Foorum::TheSchwartz::Worker::SendScheduledEmail');
-$client->can_do('Foorum::TheSchwartz::Worker::DailyReport');
-$client->can_do('Foorum::TheSchwartz::Worker::DailyChart');
-$client->can_do('Foorum::TheSchwartz::Worker::SendStarredNofication');
-if ( $config->{function_on}->{topic_pdf} ) {
-    $client->can_do('Foorum::TheSchwartz::Worker::Topic_ViewAsPDF');
+# load entry from theschwartz.yml or examples/theschwartz.yml
+use YAML qw/LoadFile/;
+my $theschwartz_config;
+if ( -e "$base_path/conf/theschwartz.yml" ) {
+    $theschwartz_config = LoadFile("$base_path/conf/theschwartz.yml");
+} else {
+    $theschwartz_config = LoadFile("$base_path/conf/examples/theschwartz.yml");
 }
+
+foreach my $one (
+    @$theschwartz_config,    'ResizeProfilePhoto',
+    'SendStarredNofication', 'Topic_ViewAsPDF'
+    ) {
+    my $worker = ( ref $one eq 'HASH' ) ? $one->{worker} : $one; # for above 'Rxxx' scalar
+
+    # skip some
+    next if ( $worker eq 'Scraper'         and not $config->{function_on}->{scraper} );
+    next if ( $worker eq 'Topic_ViewAsPDF' and not $config->{function_on}->{topic_pdf} );
+
+    my $module = "Foorum::TheSchwartz::Worker::$worker";
+    eval "use $module;";    ## no critic (ProhibitStringyEval)
+    if ($@) {
+        die "can't load $module with error: $@\n";
+    }
+
+    $client->can_do($module);
+}
+
 $client->work();
 
 1;

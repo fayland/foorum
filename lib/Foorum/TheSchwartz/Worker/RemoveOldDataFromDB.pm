@@ -6,10 +6,11 @@ use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
-use File::Spec;
+use Foorum::XUtils qw/base_path/;
 use YAML qw/LoadFile/;
-my ( undef, $path ) = File::Spec->splitpath(__FILE__);
-my $cron_config = LoadFile("$path/../../../../conf/cron.yml");
+
+my $base_path   = base_path();
+my $cron_config = LoadFile("$base_path/conf/cron.yml");
 
 sub work {
     my $class = shift;
