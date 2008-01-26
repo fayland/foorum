@@ -29,8 +29,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("upload_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2008-01-26 14:37:08
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:STcbR5AsjbjOr0znFyEXRw
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2008-01-26 14:47:26
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BlEiavUqSQKrKeyCMj9XAQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

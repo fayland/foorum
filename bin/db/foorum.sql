@@ -440,6 +440,7 @@ CREATE TABLE IF NOT EXISTS `user_activation` (
 CREATE TABLE IF NOT EXISTS `user_forum` (
   `user_id` int(11) unsigned NOT NULL DEFAULT '0',
   `forum_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `status` ENUM( 'admin', 'moderator', 'user', 'blocked', 'pending', 'rejected' ) NOT NULL DEFAULT 'user',
   `time` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`,`forum_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
