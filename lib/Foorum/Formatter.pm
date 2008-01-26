@@ -39,11 +39,7 @@ sub filter_format {
         $formatter->charset('utf-8');
         $text = $formatter->process($text);
     } elsif ( $format eq 'ubb' and $has_ubb_code ) {
-        my $formatter = Foorum::Formatter::BBCode->new(
-            {   stripscripts => 1,
-                linebreaks   => 1,
-            }
-        );
+        my $formatter = Foorum::Formatter::BBCode->new();
         $text = $formatter->parse($text);
 
         # emot
