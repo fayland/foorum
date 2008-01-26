@@ -31,7 +31,7 @@ sub board : Path {
     my @forum_ids;
     push @forum_ids, $_->forum_id foreach (@forums);
     if ( scalar @forum_ids ) {
-        my $roles = $c->model('Policy')->get_forum_moderators( $c, \@forum_ids );
+        my $roles = $c->model('DBIC::UserForum')->get_forum_moderators( \@forum_ids );
         $c->stash->{forum_roles} = $roles;
     }
 
@@ -97,7 +97,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
     # above is for RSS, left is for HTML
 
     # get all moderators
-    $c->stash->{forum_roles} = $c->model('Policy')->get_forum_moderators( $c, $forum_id );
+    $c->stash->{forum_roles} = $c->model('DBIC::UserForum')->get_forum_moderators( $forum_id );
 
     # for page 1 and normal mode
     if ( $page == 1 and not $is_elite ) {
@@ -278,7 +278,7 @@ sub join_us : Private {
                 }
             );
 
-            my $forum_admin = $c->model('Policy')->get_forum_admin( $c, $forum_id );
+            my $forum_admin = $c->model('DBIC::UserForum')->get_forum_admin( $forum_id );
             my $requestor
                 = $c->model('DBIC::User')->get( { user_id => $c->user->user_id } );
 

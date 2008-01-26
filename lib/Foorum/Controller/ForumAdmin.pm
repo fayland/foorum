@@ -34,7 +34,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
 
     $c->stash->{is_site_admin} = $c->model('Policy')->is_admin( $c, 'site' );
 
-    my $role = $c->model('Policy')->get_forum_moderators( $c, $forum_id );
+    my $role = $c->model('DBIC::UserForum')->get_forum_moderators( $forum_id );
     unless ( $c->req->method eq 'POST' ) {
 
         # get all moderators
