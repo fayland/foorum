@@ -69,7 +69,6 @@ sub filter_format {
         $text =~ s/&/&amp;/gs;
         $text =~ s/>/&gt;/gs;
         $text =~ s/</&lt;/gs;
-        my %tags = %Text::GooglewikiFormat::tags;
 
         # replace link sub
         my $linksub = sub {
@@ -87,6 +86,7 @@ sub filter_format {
                 return $ori_text;
             }
         };
+        my %tags = %Text::GooglewikiFormat::tags;
         $tags{link} = $linksub;
         $text = Text::GooglewikiFormat::format( $text, \%tags );
     } elsif ( $format eq 'html' ) {

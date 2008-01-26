@@ -7,6 +7,7 @@ This file documents the revision history for Foorum.
         - new t/lib/Foorum/TestUtils.pm and schema/*.t
         - use URI::Find::UTF8 instead of URI::Find
         - more Model/ modules to ResultSet/ (Visit, Message, Upload etc.) with more test cases.
+        - use HTML::BBCode::Strict by vti
 
 0.1.2 Sat Jan 12 9:39:21 2008
         - preview function
