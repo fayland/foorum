@@ -28,8 +28,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("forum_id", "type");
 
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2008-01-03 14:28:45
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fBHZfjUiq84ctFtRB+moOw
+# Created by DBIx::Class::Schema::Loader v0.04004 @ 2008-01-26 14:37:08
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0eu2f20AgM67J1UY4XYKwQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

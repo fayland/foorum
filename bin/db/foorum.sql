@@ -434,6 +434,19 @@ CREATE TABLE IF NOT EXISTS `user_activation` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user_forum`
+--
+
+CREATE TABLE IF NOT EXISTS `user_forum` (
+  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `forum_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `time` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`user_id`,`forum_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_details`
 --
 
