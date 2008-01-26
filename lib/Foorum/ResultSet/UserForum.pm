@@ -11,6 +11,7 @@ sub create_user_forum {
         {   user_id  => $info->{user_id},
             forum_id => $info->{forum_id},
             status   => $info->{status},
+            time     => time(),
         }
     );
 
