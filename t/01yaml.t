@@ -16,6 +16,9 @@ use Foorum::XUtils qw/base_path/;
 
 my $base_path = base_path();
 
+# XXX? since make test copy files to blib
+$base_path =~ s/\/blib$//isg;
+
 ok( -e "$base_path/foorum.yml", 'foorum.yml exists' );
 yaml_file_ok( "$base_path/foorum.yml", 'foorum.yml validates' );
 
