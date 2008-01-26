@@ -12,7 +12,7 @@ BEGIN {
 
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Foorum::TestUtils qw/schema cache/;
+use Foorum::TestUtils qw/schema cache base_path/;
 my $schema = schema();
 my $cache  = cache();
 
@@ -69,5 +69,15 @@ $filter_word_res->search(
 $cache->remove("filter_word|type=username_reserved");
 $cache->remove("filter_word|type=bad_word");
 $cache->remove("filter_word|type=offensive_word");
+
+END {
+
+    # Keep Database the same from original
+    use File::Copy ();
+
+    my $base_path = base_path();
+    File::Copy::copy( "$base_path/t/lib/Foorum/backup.db",
+        "$base_path/t/lib/Foorum/test.db" );
+}
 
 1;

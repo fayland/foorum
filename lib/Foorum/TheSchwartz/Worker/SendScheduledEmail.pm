@@ -44,7 +44,7 @@ use YAML qw/LoadFile/;
 
 my $base_path = base_path();
 my $config;
-if (-e "$base_path/conf/mail.yml") {
+if ( -e "$base_path/conf/mail.yml" ) {
     $config = LoadFile("$base_path/conf/mail.yml");
 } else {
     $config = LoadFile("$base_path/conf/examples/mail/sendmail.yml");

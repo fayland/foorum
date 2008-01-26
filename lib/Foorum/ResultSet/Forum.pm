@@ -116,7 +116,7 @@ sub remove_forum {
 
     $self->search( { forum_id => $forum_id, } )->delete;
     $schema->resultset('LogAction')->search( { forum_id => $forum_id } )->delete;
-    
+
     # remove user_forum
     $schema->resultset('UserForum')->search( { forum_id => $forum_id } )->delete;
 

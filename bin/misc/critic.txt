@@ -19,6 +19,7 @@ bin\testfunction\db.pl source OK
 bin\testfunction\mail.pl source OK
 bin\testfunction\theschwartz.pl source OK
 bin\upgrade\0.1.2\up.pl source OK
+bin\upgrade\0.1.3\up.pl source OK
 lib\Catalyst\Plugin\Session\Store\DBIC.pm source OK
 lib\Foorum\Action\PathLogger.pm source OK
 lib\Foorum\Controller\Admin\BanIP.pm source OK
@@ -75,7 +76,7 @@ lib\Foorum\ResultSet\Star.pm source OK
 lib\Foorum\ResultSet\Topic.pm source OK
 lib\Foorum\ResultSet\Upload.pm source OK
 lib\Foorum\ResultSet\User.pm source OK
-lib\Foorum\ResultSet\UserRole.pm source OK
+lib\Foorum\ResultSet\UserForum.pm source OK
 lib\Foorum\ResultSet\Visit.pm source OK
 lib\Foorum\Scraper\MailMan.pm source OK
 lib\Foorum\SUtils.pm source OK
@@ -117,6 +118,7 @@ t\schema\star.t source OK
 t\schema\topic.t source OK
 t\schema\upload.t source OK
 t\schema\user.t source OK
+t\schema\user_forum.t source OK
 t\schema\visit.t source OK
 t\scraper\01mailman.t source OK
 t\template\01wrapper.t source OK

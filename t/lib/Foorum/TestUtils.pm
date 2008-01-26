@@ -38,7 +38,14 @@ sub config {
 sub schema {
 
     # override live cache
-    $Foorum::Schema::cache = cache();
+    no warnings "all";
+    *Foorum::Schema::cache = sub {
+        Cache::FileCache->new(
+            {   namespace          => 'FoorumTest',
+                default_expires_in => 300,
+            }
+        );
+    };
 
     # create the database
     my $db_file = "$path/test.db";

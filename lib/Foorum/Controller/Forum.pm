@@ -97,7 +97,8 @@ sub forum_list : Regex('^forum/(\w+)$') {
     # above is for RSS, left is for HTML
 
     # get all moderators
-    $c->stash->{forum_roles} = $c->model('DBIC::UserForum')->get_forum_moderators( $forum_id );
+    $c->stash->{forum_roles}
+        = $c->model('DBIC::UserForum')->get_forum_moderators($forum_id);
 
     # for page 1 and normal mode
     if ( $page == 1 and not $is_elite ) {
@@ -162,7 +163,7 @@ sub members : LocalRegex('^(\w+)/members(/(\w+))?$') {
     my ( @query_cols, @attr_cols );
     if ( $member_type eq 'user' ) {
         @query_cols = ( 'status', [ 'admin', 'moderator', 'user' ] );
-        @attr_cols  = ( 'order_by' => 'status ASC' );
+        @attr_cols = ( 'order_by' => 'status ASC' );
     } else {
         @query_cols = ( 'status', $member_type );
     }
@@ -254,8 +255,8 @@ sub join_us : Private {
 
     if ( $c->req->method eq 'POST' ) {
         my $rs = $c->model('DBIC::UserForum')->search(
-            {   user_id   => $c->user->user_id,
-                forum_id  => $forum_id,
+            {   user_id  => $c->user->user_id,
+                forum_id => $forum_id,
             },
             { columns => ['status'], }
         )->first;
@@ -278,7 +279,7 @@ sub join_us : Private {
                 }
             );
 
-            my $forum_admin = $c->model('DBIC::UserForum')->get_forum_admin( $forum_id );
+            my $forum_admin = $c->model('DBIC::UserForum')->get_forum_admin($forum_id);
             my $requestor
                 = $c->model('DBIC::User')->get( { user_id => $c->user->user_id } );
 
@@ -390,15 +391,15 @@ sub create : Local {
         }
     );
     $c->model('DBIC::UserForum')->create_user_forum(
-        {   user_id => $admin_user->{user_id},
-            status  => 'admin',
+        {   user_id  => $admin_user->{user_id},
+            status   => 'admin',
             forum_id => $forum->forum_id,
         }
     );
     foreach (@moderator_users) {
         $c->model('DBIC::UserForum')->create_user_forum(
-            {   user_id => $_->{user_id},
-                status  => 'moderator',
+            {   user_id  => $_->{user_id},
+                status   => 'moderator',
                 forum_id => $forum->forum_id,
             }
         );

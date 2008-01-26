@@ -22,9 +22,9 @@ sub remove_user_forum {
     my ( $self, $info ) = @_;
 
     my @wheres;
-    push @wheres, ( user_id => $info->{user_id} ) if ( $info->{user_id} );
-    push @wheres, ( forum_id => $info->{forum_id} )   if ( $info->{forum_id} );
-    push @wheres, ( status  => $info->{status} )    if ( $info->{status} );
+    push @wheres, ( user_id  => $info->{user_id} )  if ( $info->{user_id} );
+    push @wheres, ( forum_id => $info->{forum_id} ) if ( $info->{forum_id} );
+    push @wheres, ( status   => $info->{status} )   if ( $info->{status} );
 
     return unless ( scalar @wheres );
 
@@ -40,6 +40,7 @@ sub clear_cached_policy {
     my $cache  = $schema->cache();
 
     if ( $info->{user_id} ) {
+
         # clear user cache too
         $schema->resultset('User')
             ->delete_cache_by_user_cond( { user_id => $info->{user_id} } );
@@ -68,7 +69,7 @@ sub get_forum_moderators {
     }
 
     my @users = $self->search(
-        {   status => [ 'admin', 'moderator' ],
+        {   status   => [ 'admin', 'moderator' ],
             forum_id => $forum_id,
         }
     )->all;
@@ -100,7 +101,7 @@ sub get_forum_admin {
     # get admin
     my $rs = $self->search(
         {   forum_id => $forum_id,
-            status  => 'admin',
+            status   => 'admin',
         }
     )->first;
     return unless ($rs);

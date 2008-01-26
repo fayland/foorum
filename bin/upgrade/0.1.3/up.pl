@@ -40,21 +40,18 @@ $sth->execute();
 print "Create Table OK\n";
 
 # populate data from user_role to user_forum
-my $rs = $schema->resultset('UserRole')->search( {
-    field => { '!=', 'site' }
-} );
-while (my $r = $rs->next) {
-    $schema->resultset('UserForum')->create( {
-        forum_id => $r->field,
-        status   => $r->role,
-        user_id  => $r->user_id,
-    });
+my $rs = $schema->resultset('UserRole')->search( { field => { '!=', 'site' } } );
+while ( my $r = $rs->next ) {
+    $schema->resultset('UserForum')->create(
+        {   forum_id => $r->field,
+            status   => $r->role,
+            user_id  => $r->user_id,
+        }
+    );
     print "Migrate For " . $r->user_id . '-' . $r->field . '-' . $r->role . "\n";
 }
 
-$schema->resultset('UserRole')->search( {
-    field => { '!=', 'site' }
-} )->delete;
+$schema->resultset('UserRole')->search( { field => { '!=', 'site' } } )->delete;
 
 print "Done\n";
 

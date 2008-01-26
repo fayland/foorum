@@ -34,7 +34,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
 
     $c->stash->{is_site_admin} = $c->model('Policy')->is_admin( $c, 'site' );
 
-    my $role = $c->model('DBIC::UserForum')->get_forum_moderators( $forum_id );
+    my $role = $c->model('DBIC::UserForum')->get_forum_moderators($forum_id);
     unless ( $c->req->method eq 'POST' ) {
 
         # get all moderators
@@ -153,14 +153,14 @@ sub basic : Chained('forum_for_admin') Args(0) {
     # 3, user_role
     # delete before create
     $c->model('DBIC::UserForum')->search(
-        {   status => 'moderator',
+        {   status   => 'moderator',
             forum_id => $forum->{forum_id},
         }
     )->delete;
     foreach (@moderator_users) {
         $c->model('DBIC::UserForum')->create_user_forum(
-            {   user_id => $_->{user_id},
-                status  => 'moderator',
+            {   user_id  => $_->{user_id},
+                status   => 'moderator',
                 forum_id => $forum->{forum_id},
             }
         );
@@ -365,8 +365,8 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
 
     my $rs = $c->model('DBIC::UserForum')->count(
         {   forum_id => $forum_id,
-            user_id => $user_id,
-            status  => $from,
+            user_id  => $user_id,
+            status   => $from,
         }
     );
     return $c->res->body('no record available') unless ($rs);
@@ -382,8 +382,8 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
 
     my $where = {
         forum_id => $forum_id,
-        user_id => $user_id,
-        status    => $from,
+        user_id  => $user_id,
+        status   => $from,
     };
     $c->model('DBIC::UserForum')->search($where)->update( { status => $to } );
     $c->model('DBIC::UserForum')->clear_cached_policy($where);
