@@ -40,6 +40,12 @@ sub board : Path {
     $c->stash->{template}            = 'forum/board.html';
 }
 
+sub forum : PathPart('forum') Chained('/') CaptureArgs(1) {
+    my ( $self, $c, $forum_code ) = @_;
+
+    my $forum = $c->controller('Get')->forum( $c, $forum_code );
+}
+
 sub forum_list : Regex('^forum/(\w+)$') {
     my ( $self, $c ) = @_;
 
@@ -143,15 +149,97 @@ sub forum_list : Regex('^forum/(\w+)$') {
     $c->stash->{template}            = 'forum/forum.html';
 }
 
-sub members : LocalRegex('^(\w+)/members(/(\w+))?$') {
+sub join : Chained('forum') Arg(0) {
+    my ( $self, $c ) = @_;
+    
+    return $c->res->redirect('/login') unless ($c->user_exists);
+
+    my $forum    = $c->stash->{forum};
+    my $forum_id = $forum->{forum_id};
+    my $forum_code = $forum->{forum_code};
+    
+    if ($forum->{policy} eq 'private') {
+        # check if already requested
+        if ( $c->req->method eq 'POST' ) {
+            my $rs = $c->model('DBIC::UserForum')->search(
+                {   user_id  => $c->user->user_id,
+                    forum_id => $forum_id,
+                },
+                { columns => ['status'], }
+            )->first;
+            if ($rs) {
+                if (   $rs->status eq 'user'
+                    or $rs->status eq 'moderator'
+                    or $rs->status eq 'admin' ) {
+                    return $c->res->redirect( $forum->{forum_url} );
+                } elsif ( $rs->status eq 'blocked'
+                    or $rs->status eq 'pending'
+                    or $rs->status eq 'rejected' ) {
+                    my $status = uc( $rs->status );
+                    $c->detach( '/print_error', ["ERROR_USER_$status"] );
+                }
+            } else {
+                $c->model('DBIC::UserForum')->create_user_forum(
+                    {   user_id  => $c->user->user_id,
+                        forum_id => $forum_id,
+                        status   => 'pending',
+                    }
+                );
+    
+                my $forum_admin = $c->model('DBIC::UserForum')->get_forum_admin($forum_id);
+                my $requestor
+                    = $c->model('DBIC::User')->get( { user_id => $c->user->user_id } );
+    
+                my $forum;
+                if ( $c->stash->{forum} and $c->stash->{forum}->{forum_id} == $forum_id ) {
+                    $forum = $c->stash->{forum};
+                } else {
+                    $forum = $c->model('DBIC::Forum')->get($forum_id);
+                }
+    
+                # Send Notification Email
+                $c->model('DBIC::ScheduledEmail')->create_email(
+                    {   template => 'forum_pending_request',
+                        to       => $forum_admin->{email},
+                        lang     => $c->stash->{lang},
+                        stash    => {
+                            rept  => $forum_admin,
+                            from  => $requestor,
+                            forum => $forum,
+                        }
+                    }
+                );
+    
+                $c->detach( '/print_message',
+                    ['Successfully Requested. You need wait for admin\'s approval'] );
+            }
+        } else {
+            $c->stash(
+                {   simple_wrapper => 1,
+                    template       => 'forum/join_us.html',
+                }
+            );
+        }
+    } else {
+        $c->model('DBIC::UserForum')->create_user_forum(
+            {   user_id  => $c->user->user_id,
+                forum_id => $forum_id,
+                status   => 'user',
+            }
+        );
+        $c->res->redirect( $forum->{forum_url});
+    }
+}
+
+sub members : Chained('forum') Args(0) {
     my ( $self, $c ) = @_;
 
-    my $forum_code  = $c->req->snippets->[0];
-    my $member_type = $c->req->snippets->[2];
-    my $forum       = $c->controller('Get')->forum( $c, $forum_code );
-    $forum_code = $forum->{forum_code};
+    my $forum    = $c->stash->{forum};
     my $forum_id = $forum->{forum_id};
+    my $forum_code = $forum->{forum_code};
 
+    my ($member_type) = ($c->req->path =~ /members\/(\w+)/);
+    $member_type ||= 'user';
     if (    $member_type ne 'pending'
         and $member_type ne 'blocked'
         and $member_type ne 'rejected' ) {
@@ -204,14 +292,12 @@ sub members : LocalRegex('^(\w+)/members(/(\w+))?$') {
     );
 }
 
-sub action_log : LocalRegex('^(\w+)/action_log(/(\w+))?$') {
+sub action_log : Chained('forum') Args(0) {
     my ( $self, $c ) = @_;
 
-    my $forum_code = $c->req->snippets->[0];
-    my $log_type   = $c->req->snippets->[2];
-    my $forum      = $c->controller('Get')->forum( $c, $forum_code );
-    $forum_code = $forum->{forum_code};
+    my $forum    = $c->stash->{forum};
     my $forum_id = $forum->{forum_id};
+    my $forum_code = $forum->{forum_code};
 
     my $page = get_page_from_url( $c->req->path );
     my $rs   = $c->model('DBIC')->resultset('LogAction')->search(
@@ -244,75 +330,6 @@ sub action_log : LocalRegex('^(\w+)/action_log(/(\w+))?$') {
             logs     => \@actions,
         }
     );
-}
-
-sub join_us : Private {
-    my ( $self, $c, $forum ) = @_;
-
-    return $c->res->redirect('/login') unless ( $c->user_exists );
-
-    my $forum_id = $forum->{forum_id};
-
-    if ( $c->req->method eq 'POST' ) {
-        my $rs = $c->model('DBIC::UserForum')->search(
-            {   user_id  => $c->user->user_id,
-                forum_id => $forum_id,
-            },
-            { columns => ['status'], }
-        )->first;
-        if ($rs) {
-            if (   $rs->status eq 'user'
-                or $rs->status eq 'moderator'
-                or $rs->status eq 'admin' ) {
-                return $c->res->redirect( $forum->{forum_url} );
-            } elsif ( $rs->status eq 'blocked'
-                or $rs->status eq 'pending'
-                or $rs->status eq 'rejected' ) {
-                my $status = uc( $rs->status );
-                $c->detach( '/print_error', ["ERROR_USER_$status"] );
-            }
-        } else {
-            $c->model('DBIC::UserForum')->create_user_forum(
-                {   user_id  => $c->user->user_id,
-                    forum_id => $forum_id,
-                    status   => 'pending',
-                }
-            );
-
-            my $forum_admin = $c->model('DBIC::UserForum')->get_forum_admin($forum_id);
-            my $requestor
-                = $c->model('DBIC::User')->get( { user_id => $c->user->user_id } );
-
-            my $forum;
-            if ( $c->stash->{forum} and $c->stash->{forum}->{forum_id} == $forum_id ) {
-                $forum = $c->stash->{forum};
-            } else {
-                $forum = $c->model('DBIC::Forum')->get($forum_id);
-            }
-
-            # Send Notification Email
-            $c->model('DBIC::ScheduledEmail')->create_email(
-                {   template => 'forum_pending_request',
-                    to       => $forum_admin->{email},
-                    lang     => $c->stash->{lang},
-                    stash    => {
-                        rept  => $forum_admin,
-                        from  => $requestor,
-                        forum => $forum,
-                    }
-                }
-            );
-
-            $c->detach( '/print_message',
-                ['Successfully Requested. You need wait for admin\'s approval'] );
-        }
-    } else {
-        $c->stash(
-            {   simple_wrapper => 1,
-                template       => 'forum/join_us.html',
-            }
-        );
-    }
 }
 
 sub create : Local {
