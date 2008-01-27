@@ -43,7 +43,7 @@ sub send_activation {
     my $email_body;
     $tt2->process( "lang/$lang/email/activation.html", $vars, \$email_body );
 
-    $self->resultset('ScheduledEmail')->create(
+    $self->create(
         {   email_type => 'activation',
             from_email => $config->{mail}->{from_email},
             to_email   => $user->email,
