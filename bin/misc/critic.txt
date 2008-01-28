@@ -97,7 +97,7 @@ lib\Foorum\View\TT.pm source OK
 lib\Foorum\XUtils.pm source OK
 lib\Foorum.pm source OK
 lib\HTML\BBCode\Strict\Tag.pm source OK
-lib\HTML\BBCode\Strict.pm: "return" statement with explicit "undef" at line 359, column 9. See page 199 of PBP.
+lib\HTML\BBCode\Strict.pm: "return" statement with explicit "undef" at line 360, column 9. See page 199 of PBP.
 t\01yaml.t source OK
 t\02utils.t source OK
 t\03xutils.t source OK
