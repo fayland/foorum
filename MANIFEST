@@ -26,6 +26,7 @@ bin/testfunction/mail.pl
 bin/testfunction/theschwartz.pl
 bin/upgrade/0.1.1/foorum.sql
 bin/upgrade/0.1.2/up.pl
+bin/upgrade/0.1.3/up.pl
 Changes
 conf/cron.yml
 conf/examples/mail/Gmail.yml
@@ -121,7 +122,7 @@ lib/Foorum/ResultSet/Star.pm
 lib/Foorum/ResultSet/Topic.pm
 lib/Foorum/ResultSet/Upload.pm
 lib/Foorum/ResultSet/User.pm
-lib/Foorum/ResultSet/UserRole.pm
+lib/Foorum/ResultSet/UserForum.pm
 lib/Foorum/ResultSet/Visit.pm
 lib/Foorum/Schema.pm
 lib/Foorum/Schema/BannedIp.pm
@@ -148,6 +149,7 @@ lib/Foorum/Schema/Upload.pm
 lib/Foorum/Schema/User.pm
 lib/Foorum/Schema/UserActivation.pm
 lib/Foorum/Schema/UserDetails.pm
+lib/Foorum/Schema/UserForum.pm
 lib/Foorum/Schema/UserProfilePhoto.pm
 lib/Foorum/Schema/UserRole.pm
 lib/Foorum/Schema/UserSettings.pm
@@ -430,7 +432,6 @@ root/static/js/min/jquery.ui/ui.slider.js
 root/static/js/min/jquery.ui/ui.sortable.js
 root/static/js/min/jquery.ui/ui.tablesorter.js
 root/static/js/min/jquery.ui/ui.tabs.js
-root/static/js/min/jquery/autosave.js
 root/static/js/min/jquery/blockUI.js
 root/static/js/min/jquery/cookie.js
 root/static/js/min/jquery/corner.js
@@ -483,6 +484,7 @@ t/schema/topic.t
 t/schema/upload.t
 t/schema/upload/test.txt
 t/schema/user.t
+t/schema/user_forum.t
 t/schema/visit.t
 t/scraper/01mailman.t
 t/scraper/01mailman/001126.html
