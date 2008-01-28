@@ -10,17 +10,10 @@ use vars qw/@EXPORT_OK/;
     generate_random_word
     get_page_from_url
     datetime_to_tt2_acceptable
+    truncate_text
     /;
 
-=pod
-
-=item encodeHTML/decodeHTML
-
-Convert any '<', '>' or '&' characters to the HTML equivalents, '&lt;', '&gt;' and '&amp;', respectively. 
-
-encodeHTML is the same as TT filter 'html'
-
-=cut
+use Encode ();
 
 sub encodeHTML {
     my $text = shift;
@@ -44,14 +37,6 @@ sub decodeHTML {
     return $text;
 }
 
-=pod
-
-=item is_color($color)
-
-make sure color is ^\#[0-9a-zA-Z]{6}$
-
-=cut
-
 sub is_color {
     my $color = shift;
     if ( $color =~ /^\#[0-9a-zA-Z]{6}$/ ) {
@@ -60,16 +45,6 @@ sub is_color {
         return 0;
     }
 }
-
-=pod
-
-=item generate_random_word($len)
-
-return a random word (length is $len), char is random ('A' .. 'Z', 'a' .. 'z', 0 .. 9)
-
-!#@!$#$^%$ bad English
-
-=cut
 
 sub generate_random_word {
     my $len = shift;
@@ -85,14 +60,6 @@ sub generate_random_word {
     return $random_word;
 }
 
-=pod
-
-=item get_page_from_url
-
-since we always use /page=(\d+)/ as in sub/pager.html
-
-=cut
-
 sub get_page_from_url {
     my ($url) = @_;
 
@@ -102,14 +69,6 @@ sub get_page_from_url {
     }
     return $page;
 }
-
-=pod
-
-=item datetime_to_tt2_acceptable
-
-convert MySQL DateTime format to TT2 date.format
-
-=cut
 
 sub datetime_to_tt2_acceptable {
     my ($datetime) = @_;
@@ -123,10 +82,61 @@ sub datetime_to_tt2_acceptable {
     return $ret;
 }
 
+sub truncate_text {
+    my ($text, $len) = @_;
+    
+    return $text if (length($text) <= $len);
+    
+    $text = Encode::decode('utf-8', $text);
+    $text = substr($text, 0, $len);
+    $text = Encode::encode('utf-8', $text);
+    $text .= ' ...';
+
+    return $text;
+}
+
 1;
 __END__
 
 =pod
+
+=head1 NAME
+
+Foorum::Utils - some common functions
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item encodeHTML/decodeHTML
+
+Convert any '<', '>' or '&' characters to the HTML equivalents, '&lt;', '&gt;' and '&amp;', respectively. 
+
+encodeHTML is the same as TT filter 'html'
+
+=item is_color($color)
+
+make sure color is ^\#[0-9a-zA-Z]{6}$
+
+=item generate_random_word($len)
+
+return a random word (length is $len), char is random ('A' .. 'Z', 'a' .. 'z', 0 .. 9)
+
+!#@!$#$^%$ bad English
+
+=item get_page_from_url
+
+since we always use /page=(\d+)/ as in sub/pager.html
+
+=item datetime_to_tt2_acceptable
+
+convert MySQL DateTime format to TT2 date.format
+
+=item truncate_text
+
+truncate text using Encode utf8
+
+=back
 
 =head2 AUTHOR
 
