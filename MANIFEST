@@ -432,6 +432,7 @@ root/static/js/min/jquery.ui/ui.slider.js
 root/static/js/min/jquery.ui/ui.sortable.js
 root/static/js/min/jquery.ui/ui.tablesorter.js
 root/static/js/min/jquery.ui/ui.tabs.js
+root/static/js/min/jquery/autosave.js
 root/static/js/min/jquery/blockUI.js
 root/static/js/min/jquery/cookie.js
 root/static/js/min/jquery/corner.js
@@ -440,6 +441,7 @@ root/static/js/min/jquery/flot.js
 root/static/js/min/jquery/form.js
 root/static/js/min/jquery/history_remote.js
 root/static/js/min/jquery/iepnghack.js
+root/static/js/min/jquery/jquery.lightbox-0.4.js
 root/static/js/min/jquery/localisation.js
 root/static/js/min/jquery/validate.js
 root/static/js/min/jquery/validate/messages_cn.js
