@@ -17,10 +17,10 @@ is( $base_path, $real, 'base_path OK' );
 
 my $schema = schema();
 my $scache = $schema->cache();
-isa_ok($schema, 'Foorum::Schema', 'schema() ISA Foorum::Schema');
-isa_ok($scache, 'Cache::FileCache', 'schema->cache() ISA Cache::FileCache');
+isa_ok( $schema, 'Foorum::Schema',   'schema() ISA Foorum::Schema' );
+isa_ok( $scache, 'Cache::FileCache', 'schema->cache() ISA Cache::FileCache' );
 
 my $cache = cache();
-isa_ok($cache, 'Cache::FileCache', 'cache() ISA Cache::FileCache');
+isa_ok( $cache, 'Cache::FileCache', 'cache() ISA Cache::FileCache' );
 
 #diag($base_path);

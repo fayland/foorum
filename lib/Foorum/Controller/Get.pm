@@ -38,7 +38,7 @@ sub forum : Private {
             } elsif ( $c->model('Policy')->is_rejected( $c, $forum_id ) ) {
                 $c->detach( '/print_error', ['ERROR_USER_REJECTED'] );
             } else {
-                $c->detach( '/forum/join' );
+                $c->detach('/forum/join');
             }
         }
     }

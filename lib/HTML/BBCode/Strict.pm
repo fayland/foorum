@@ -157,6 +157,7 @@ our $default_tags = {
             }
     },
     'hr'  => { pattern => '<hr />' },
+    'br'  => { pattern => '<br />' },
     'url' => {
         has_closing_tag    => 1,
         tags_can_be_inside => [qw/ img /],

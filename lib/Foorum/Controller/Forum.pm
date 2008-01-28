@@ -151,14 +151,15 @@ sub forum_list : Regex('^forum/(\w+)$') {
 
 sub join : Chained('forum') Arg(0) {
     my ( $self, $c ) = @_;
-    
-    return $c->res->redirect('/login') unless ($c->user_exists);
 
-    my $forum    = $c->stash->{forum};
-    my $forum_id = $forum->{forum_id};
+    return $c->res->redirect('/login') unless ( $c->user_exists );
+
+    my $forum      = $c->stash->{forum};
+    my $forum_id   = $forum->{forum_id};
     my $forum_code = $forum->{forum_code};
-    
-    if ($forum->{policy} eq 'private') {
+
+    if ( $forum->{policy} eq 'private' ) {
+
         # check if already requested
         if ( $c->req->method eq 'POST' ) {
             my $rs = $c->model('DBIC::UserForum')->search(
@@ -185,18 +186,20 @@ sub join : Chained('forum') Arg(0) {
                         status   => 'pending',
                     }
                 );
-    
-                my $forum_admin = $c->model('DBIC::UserForum')->get_forum_admin($forum_id);
+
+                my $forum_admin
+                    = $c->model('DBIC::UserForum')->get_forum_admin($forum_id);
                 my $requestor
                     = $c->model('DBIC::User')->get( { user_id => $c->user->user_id } );
-    
+
                 my $forum;
-                if ( $c->stash->{forum} and $c->stash->{forum}->{forum_id} == $forum_id ) {
+                if ( $c->stash->{forum} and $c->stash->{forum}->{forum_id} == $forum_id )
+                {
                     $forum = $c->stash->{forum};
                 } else {
                     $forum = $c->model('DBIC::Forum')->get($forum_id);
                 }
-    
+
                 # Send Notification Email
                 $c->model('DBIC::ScheduledEmail')->create_email(
                     {   template => 'forum_pending_request',
@@ -209,7 +212,7 @@ sub join : Chained('forum') Arg(0) {
                         }
                     }
                 );
-    
+
                 $c->detach( '/print_message',
                     ['Successfully Requested. You need wait for admin\'s approval'] );
             }
@@ -227,18 +230,18 @@ sub join : Chained('forum') Arg(0) {
                 status   => 'user',
             }
         );
-        $c->res->redirect( $forum->{forum_url});
+        $c->res->redirect( $forum->{forum_url} );
     }
 }
 
 sub members : Chained('forum') Args(0) {
     my ( $self, $c ) = @_;
 
-    my $forum    = $c->stash->{forum};
-    my $forum_id = $forum->{forum_id};
+    my $forum      = $c->stash->{forum};
+    my $forum_id   = $forum->{forum_id};
     my $forum_code = $forum->{forum_code};
 
-    my ($member_type) = ($c->req->path =~ /members\/(\w+)/);
+    my ($member_type) = ( $c->req->path =~ /members\/(\w+)/ );
     $member_type ||= 'user';
     if (    $member_type ne 'pending'
         and $member_type ne 'blocked'
@@ -295,8 +298,8 @@ sub members : Chained('forum') Args(0) {
 sub action_log : Chained('forum') Args(0) {
     my ( $self, $c ) = @_;
 
-    my $forum    = $c->stash->{forum};
-    my $forum_id = $forum->{forum_id};
+    my $forum      = $c->stash->{forum};
+    my $forum_id   = $forum->{forum_id};
     my $forum_code = $forum->{forum_code};
 
     my $page = get_page_from_url( $c->req->path );
