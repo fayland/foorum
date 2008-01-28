@@ -37,21 +37,6 @@ if ( __PACKAGE__->config->{function_on}->{page_cache} ) {
     }
 }
 
-__PACKAGE__->log->levels( 'error', 'fatal' );    # for real server
-if ( __PACKAGE__->config->{debug_mode} ) {
-    __PACKAGE__->log->enable( 'debug', 'info', 'warn' );    # for developer server
-    {
-
-        # these code are copied from Catalyst.pm setup_log
-        no strict 'refs';    ## no critic (ProhibitNoStrict)
-        my $class = __PACKAGE__;
-        *{"$class\::debug"} = sub {1};
-    }
-
-    #my @extra_plugins = qw/ StackTrace /;
-    #__PACKAGE__->setup_plugins( [@extra_plugins] );
-}
-
 {
     use Sub::Install;
 
