@@ -83,13 +83,13 @@ sub datetime_to_tt2_acceptable {
 }
 
 sub truncate_text {
-    my ($text, $len) = @_;
-    
-    return $text if (length($text) <= $len);
-    
-    $text = Encode::decode('utf-8', $text);
-    $text = substr($text, 0, $len);
-    $text = Encode::encode('utf-8', $text);
+    my ( $text, $len ) = @_;
+
+    return $text if ( length($text) <= $len );
+
+    $text = Encode::decode( 'utf-8', $text );
+    $text = substr( $text, 0, $len );
+    $text = Encode::encode( 'utf-8', $text );
     $text .= ' ...';
 
     return $text;
