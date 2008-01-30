@@ -23,7 +23,7 @@ sub filter_format {
     }
     if ( $format eq 'ubb' and not defined $has_ubb_code ) {
         $has_ubb_code
-            = eval "use Foorum::Formatter::BBCode; 1;"; ## no critic (ProhibitStringyEval)
+            = eval "use Foorum::Formatter::BBCode2; 1;"; ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'wiki' and not defined $has_text_wiki ) {
         $has_text_wiki
@@ -39,7 +39,7 @@ sub filter_format {
         $formatter->charset('utf-8');
         $text = $formatter->process($text);
     } elsif ( $format eq 'ubb' and $has_ubb_code ) {
-        my $formatter = Foorum::Formatter::BBCode->new();
+        my $formatter = Foorum::Formatter::BBCode2->new();
         $text = $formatter->parse($text);
 
         # emot
