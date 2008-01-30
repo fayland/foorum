@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 6;
+use Test::More tests => 7;
 
 use Foorum::Formatter qw/filter_format/;
 
@@ -35,5 +35,9 @@ TEXT
     );
 
 }
+
+# test breakline
+my $html = filter_format( "a\nb\n", { format => 'ubb' } );
+is($html, "a<br />\nb<br />\n", 'breakline OK');
 
 1;
