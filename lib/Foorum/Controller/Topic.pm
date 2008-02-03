@@ -93,8 +93,14 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
                 comment_id  => $comment_id,
             }
             );
-        $c->stash->{whos_view_this_page} = 1;
-        $c->stash->{template}            = 'topic/index.html';
+        
+        # print or normal show
+        if ($c->req->path =~ /\/print(\/|$)/) {
+            $c->stash->{template} = 'topic/print.html';
+        } else {
+            $c->stash->{whos_view_this_page} = 1;
+            $c->stash->{template}            = 'topic/index.html';
+        }
     }
 }
 
