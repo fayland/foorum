@@ -47,6 +47,9 @@ requires 'Locale::Country::Multilingual' => '0.03'; # for tw lang
 requires 'Net::IP::Match::Regexp';
 requires 'Net::CIDR::Lite';
 
+# search
+requires 'Sphinx::Search';
+
 # cron
 requires 'TheSchwartz';
 requires 'Schedule::Cron';

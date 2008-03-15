@@ -1,0 +1,35 @@
+[% title = c.loc('Search') %]
+
+<div class='one'>
+<form method='GET'>
+<table align='center'>
+    <tr>
+        <td colspan='2' class='title'>Search on [% forum.name %]</td>
+    </tr>
+    <tr class='misc1'>
+        <td align='right'>Title contains: </td><td><input type='text' name='title' /> (Required)
+            [% IF error_title %]<div class='highlight'>[% error_title %]</div>[% END %]
+            </td>
+    </tr>
+    <tr class='misc2'>
+        <td align='right'>Author is:</td><td><input type='text' name='author' /> username please
+            [% IF error_author %]<div class='highlight'>[% error_author %]</div>[% END %]
+            </td>
+    </tr>
+    <tr class='misc1'>
+        <td align='right'>Date</td><td>
+            <select name='date'>
+                <option value='0'>Whenever</option>
+                <option value='2'>Last 2 days</option>
+                <option value='7'>Last 7 days</option>
+                <option value='30'>Last 30 days</option>
+                <option value='999'>More than 30 days</option>
+            </select>
+        </td>
+    </tr>
+    <tr class='misc2'>
+        <td>&nbsp;</td><td><input type='submit' /></td>
+    </tr>
+</table>
+</form>
+</div>
