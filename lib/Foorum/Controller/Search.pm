@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
+use Foorum::Logger qw/error_log/;
+use Data::Page;
 use Sphinx::Search;
 
 sub auto : Private {
@@ -67,16 +69,53 @@ sub forum : Local {
     }
     
     my $page = get_page_from_url($c->req->path);
+    my $per_page = 20;
     $sphinx->SetSortMode(SPH_SORT_ATTR_DESC, 'date_added');
     $sphinx->SetMatchMode(SPH_MATCH_ANY);
-    #$sphinx->SetLimits( ($page - 1) * 20, 20, 400); # MAX is 400
-    #$sphinx->SetFilter( 'forum_id', [$forum_id] );
+    $sphinx->SetLimits( ($page - 1) * $per_page, $per_page, 20 * $per_page); # MAX is 20 pages
+    $sphinx->SetFilter( 'forum_id', [$forum_id] );
     
     $title = $sphinx->EscapeString($title);
     my $ret = $sphinx->Query("\@title $title");
     
+    # deal with error of Sphinx
+    unless ($ret) {
+        my $err = $sphinx->GetLastError;
+        error_log( $c->model('DBIC'), 'fatal', $err );
+        
+        $c->detach('/print_error', [ 'Search is not going well, we will fix it ASAP.' ] );
+    }
+    
     use Data::Dumper;
-    $c->res->body(Dumper(\$ret));
+    return $c->res->body(Dumper(\$ret));
+    
+    my @matches = @{$ret->{matches}};
+    my @topic_ids;
+    foreach my $r (@matches) {
+        # $r is something like
+#        {
+#         'author_id' => 1,
+#         'forum_id' => 1,
+#         'date_added' => 1200814358,
+#         'weight' => 1,
+#         'object_id' => 25,
+#         'doc' => 108
+#        },
+        # while the doc is $comment_id and object_id is $topic_id
+        push @topic_ids, $r->{object_id};
+    }
+    
+    # pager
+    my $total = $ret->{total_found};
+    my $pager = Data::Page->new();
+    $pager->total_entries($total);
+    $pager->entries_per_page($per_page);
+    $pager->current_page($page);
+    $c->stash( {
+        pager => $pager
+    } );
+    
+    
 }
 
 1;
