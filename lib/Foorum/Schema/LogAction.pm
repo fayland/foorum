@@ -2,7 +2,7 @@ package Foorum::Schema::LogAction;
 
 use strict;
 use warnings;
-
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components("Core");
@@ -44,10 +44,4 @@ __PACKAGE__->add_columns(
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
 );
 
-
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2008-01-26 14:47:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OhbdHdBGSBy3ERVcUn5Xwg
-
-
-# You can replace this text with custom content, and it will be preserved on regeneration
 1;

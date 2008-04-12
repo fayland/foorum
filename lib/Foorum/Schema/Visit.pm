@@ -2,10 +2,10 @@ package Foorum::Schema::Visit;
 
 use strict;
 use warnings;
-
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class';
 
-__PACKAGE__->load_components("Core");
+__PACKAGE__->load_components(qw/ResultSetManager Core/);
 __PACKAGE__->table("visit");
 __PACKAGE__->add_columns(
   "user_id",
@@ -19,11 +19,61 @@ __PACKAGE__->add_columns(
 );
 __PACKAGE__->set_primary_key("user_id", "object_type", "object_id");
 
+sub make_visited : ResultSet {
+    my ( $self, $object_type, $object_id, $user_id ) = @_;
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2008-01-26 14:47:26
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+5DdpIcvxiMAT9tJsWrw+Q
+    return unless ($user_id);
+    return
+        if (
+        $self->count(
+            {   user_id     => $user_id,
+                object_type => $object_type,
+                object_id   => $object_id
+            }
+        )
+        );
+    $self->create(
+        {   user_id     => $user_id,
+            object_type => $object_type,
+            object_id   => $object_id,
+            time        => time(),
+        }
+    );
+}
 
+sub make_un_visited : ResultSet {
+    my ( $self, $object_type, $object_id, $user_id ) = @_;
 
-# You can replace this text with custom content, and it will be preserved on regeneration
-__PACKAGE__->resultset_class('Foorum::ResultSet::Visit');
+    my @extra_cols;
+    if ($user_id) {
+        @extra_cols = ( user_id => { '!=', $user_id } );
+    }
+
+    $self->search(
+        {   object_type => $object_type,
+            object_id   => $object_id,
+            @extra_cols,
+        }
+    )->delete;
+}
+
+sub is_visited : ResultSet {
+    my ( $self, $object_type, $object_id, $user_id ) = @_;
+
+    return {} unless ($user_id);
+    my $visit;
+    my @visits = $self->search(
+        {   user_id     => $user_id,
+            object_type => $object_type,
+            object_id   => $object_id,
+        },
+        { columns => ['object_id'], }
+    )->all;
+    foreach (@visits) {
+        $visit->{$object_type}->{ $_->object_id } = 1;
+    }
+
+    return $visit;
+}
+
 1;

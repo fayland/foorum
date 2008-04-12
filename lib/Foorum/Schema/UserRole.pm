@@ -2,7 +2,7 @@ package Foorum::Schema::UserRole;
 
 use strict;
 use warnings;
-
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components("Core");
@@ -16,12 +16,6 @@ __PACKAGE__->add_columns(
   { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 32 },
 );
 
-
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2008-01-26 14:47:26
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hq4ZranIn7tDcntUq6YBVw
-
-
-# You can replace this text with custom content, and it will be preserved on regeneration
 __PACKAGE__->belongs_to(
     'user' => 'Foorum::Schema::User',
     { 'foreign.user_id' => 'self.user_id' }

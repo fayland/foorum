@@ -2,7 +2,7 @@ package Foorum::Schema::PollResult;
 
 use strict;
 use warnings;
-
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components("Core");
@@ -23,12 +23,6 @@ __PACKAGE__->add_columns(
   },
 );
 
-
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2008-01-26 14:47:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iDcp6hE5DzeNwqMocYpLhQ
-
-
-# You can replace this text with custom content, and it will be preserved on regeneration
 __PACKAGE__->belongs_to(
     'poll' => 'Foorum::Schema::Poll',
     { 'foreign.poll_id' => 'self.poll_id' }

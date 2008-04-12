@@ -2,10 +2,10 @@ package Foorum::Schema::Share;
 
 use strict;
 use warnings;
-
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class';
 
-__PACKAGE__->load_components("Core");
+__PACKAGE__->load_components(qw/ResultSetManager Core/);
 __PACKAGE__->table("share");
 __PACKAGE__->add_columns(
   "user_id",
@@ -19,12 +19,18 @@ __PACKAGE__->add_columns(
 );
 __PACKAGE__->set_primary_key("user_id", "object_id", "object_type");
 
+sub del_or_create : ResultSet {
+    my ( $self, $cond ) = @_;
 
-# Created by DBIx::Class::Schema::Loader v0.04004 @ 2008-01-26 14:47:26
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Sf1jdI7FHcv0ennbNbUuiw
-
-
-# You can replace this text with custom content, and it will be preserved on regeneration
-__PACKAGE__->resultset_class('Foorum::ResultSet::Share');
+    my $count = $self->count($cond);
+    if ($count) {
+        $self->search($cond)->delete;
+        return 0;
+    } else {
+        $cond->{time} = time();
+        $self->create($cond);
+        return 1;
+    }
+}
 
 1;
