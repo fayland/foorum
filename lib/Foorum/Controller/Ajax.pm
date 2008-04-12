@@ -2,6 +2,7 @@ package Foorum::Controller::Ajax;
 
 use strict;
 use warnings;
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 use Foorum::Formatter qw/filter_format/;
 

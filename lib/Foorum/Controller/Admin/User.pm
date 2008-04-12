@@ -2,6 +2,7 @@ package Foorum::Controller::Admin::User;
 
 use strict;
 use warnings;
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 

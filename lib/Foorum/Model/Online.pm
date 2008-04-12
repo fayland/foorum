@@ -2,6 +2,7 @@ package Foorum::Model::Online;
 
 use strict;
 use warnings;
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Model';
 
 sub get_data {

@@ -2,6 +2,9 @@ package Foorum;
 
 our $VERSION = '0.1.5';
 
+1;
+__END__
+
 =head1 NAME
 
 Foorum::Version - The Foorum project-wide version number
@@ -24,5 +27,3 @@ module provides a central location for the project's release number.
 This idea was taken from L<SVK> and inspired by L<Parley> directly
 
 =cut
-
-1;

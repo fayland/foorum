@@ -2,6 +2,7 @@ package Foorum::Controller::Topic;
 
 use strict;
 use warnings;
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/encodeHTML get_page_from_url generate_random_word/;
 use Foorum::XUtils qw/theschwartz/;

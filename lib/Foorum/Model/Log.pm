@@ -2,6 +2,7 @@ package Foorum::Model::Log;
 
 use strict;
 use warnings;
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Model';
 use Foorum::Logger qw/error_log/;
 

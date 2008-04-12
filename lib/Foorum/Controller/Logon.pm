@@ -2,6 +2,7 @@ package Foorum::Controller::Logon;
 
 use strict;
 use warnings;
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 
 sub login : Global {
