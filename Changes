@@ -1,5 +1,8 @@
 This file documents the revision history for Foorum.
 
+0.15
+        - Sphinx::Search improvements
+
 0.1.4 Sat Apr 12 14:26:00
         - $topic->url/print
         - Sphinx::Search support (EXPERIMENTAL)

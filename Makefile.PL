@@ -51,7 +51,7 @@ requires 'Net::IP::Match::Regexp';
 requires 'Net::CIDR::Lite';
 
 # search
-#requires 'Sphinx::Search';
+requires 'Sphinx::Search';
 
 # cron
 requires 'TheSchwartz';

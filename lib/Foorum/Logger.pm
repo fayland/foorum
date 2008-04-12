@@ -2,9 +2,7 @@ package Foorum::Logger;
 
 use strict;
 use warnings;
-
 use Foorum::Version;  our $VERSION = $Foorum::VERSION;
-
 use base qw/Exporter/;
 use vars qw/@EXPORT_OK/;
 @EXPORT_OK = qw/ error_log /;

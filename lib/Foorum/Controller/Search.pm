@@ -2,16 +2,14 @@ package Foorum::Controller::Search;
 
 use strict;
 use warnings;
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
-
-=pod
-
 use Foorum::Utils qw/get_page_from_url/;
 use Foorum::Logger qw/error_log/;
 use Data::Page;
 use Sphinx::Search;
 
-sub auto : Private {
+sub begin : Private {
     my ( $self, $c ) = @_;
 
     my $sphinx = Sphinx::Search->new();
@@ -106,8 +104,6 @@ sub forum : Local {
     
     
 }
-
-=cut
 
 1;
 __END__
