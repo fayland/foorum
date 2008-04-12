@@ -1,8 +1,8 @@
 This file documents the revision history for Foorum.
 
-0.1.4
+0.1.4 Sat Apr 12 14:26:00
         - $topic->url/print
-        - Sphinx::Search support
+        - Sphinx::Search support (EXPERIMENTAL)
 
 0.1.3 Mon Jan 28 9:17:21 2008
         - copy index.html to new created upload dir (protection)

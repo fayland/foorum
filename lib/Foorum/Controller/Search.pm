@@ -3,6 +3,9 @@ package Foorum::Controller::Search;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+
+=pod
+
 use Foorum::Utils qw/get_page_from_url/;
 use Foorum::Logger qw/error_log/;
 use Data::Page;
@@ -10,20 +13,6 @@ use Sphinx::Search;
 
 sub auto : Private {
     my ( $self, $c ) = @_;
-
-=pod
-
-    # make sure Sphinx is on
-    eval {
-        require Sphinx::Search;
-        Sphinx::Search->import();
-    };
-    if ($@) {
-        $c->forward('/print_error', [ 'Function Disabled' ] );
-        return 0;
-    }
-
-=cut
 
     my $sphinx = Sphinx::Search->new();
     $sphinx->SetServer( 'localhost', 3312 );
@@ -117,6 +106,8 @@ sub forum : Local {
     
     
 }
+
+=cut
 
 1;
 __END__

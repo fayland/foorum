@@ -57,7 +57,6 @@ requires:
   Net::IP::Match::Regexp: 0
   Schedule::Cron: 0
   Set::Object: 0
-  Sphinx::Search: 0
   Sub::Install: 0
   Switch: 0
   Template: 0
