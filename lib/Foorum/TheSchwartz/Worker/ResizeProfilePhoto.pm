@@ -2,6 +2,7 @@ package Foorum::TheSchwartz::Worker::ResizeProfilePhoto;
 
 use strict;
 use warnings;
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;

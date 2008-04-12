@@ -6,10 +6,11 @@ package Foorum::Scraper::MailMan;
 
 use strict;
 use warnings;
-use vars qw/$VERSION/;
+
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+
 use HTML::TokeParser;
 use LWP::Simple;
-$VERSION = '0.01';
 
 sub new {
     my $class = shift;

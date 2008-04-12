@@ -3,6 +3,8 @@ package Foorum::Formatter::Pod;
 use strict;
 use warnings;
 
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+
 # most are copied from L<Angerwhale::Format::Pod>, Thank you, Jonathan Rockway
 
 use IO::String;

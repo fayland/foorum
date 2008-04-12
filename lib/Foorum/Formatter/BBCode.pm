@@ -3,6 +3,8 @@ package Foorum::Formatter::BBCode;
 use strict;
 use warnings;
 
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+
 #use base 'HTML::BBCode::Strict';
 #use Class::C3;              # for next::method();
 use HTML::BBCode::Strict;
