@@ -19,6 +19,7 @@ bin/misc/perlcritic.pl
 bin/misc/perltidy.pl
 bin/misc/pod2html.pl
 bin/setup.pl
+bin/setup/sphinx.pl
 bin/testfunction/cache.pl
 bin/testfunction/config.pl
 bin/testfunction/db.pl
@@ -33,6 +34,7 @@ conf/examples/mail/Gmail.yml
 conf/examples/mail/sendmail.yml
 conf/examples/mail/SMTP.yml
 conf/examples/scraper.yml
+conf/examples/sphinx.conf
 conf/examples/theschwartz.yml
 docs/AUTHORS.html
 docs/Configure.html
@@ -57,6 +59,7 @@ inc/Module/Install.pm
 inc/Module/Install/AutoInstall.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
+inc/Module/Install/Catalyst.pm
 inc/Module/Install/Fetch.pm
 inc/Module/Install/Include.pm
 inc/Module/Install/Makefile.pm
@@ -98,6 +101,7 @@ lib/Foorum/Controller/U.pm
 lib/Foorum/Controller/Utils.pm
 lib/Foorum/Formatter.pm
 lib/Foorum/Formatter/BBCode.pm
+lib/Foorum/Formatter/BBCode2.pm
 lib/Foorum/Formatter/Pod.pm
 lib/Foorum/I18N/cn.po
 lib/Foorum/I18N/tw.po
@@ -169,6 +173,7 @@ lib/Foorum/TheSchwartz/Worker/SendStarredNofication.pm
 lib/Foorum/TheSchwartz/Worker/Topic_ViewAsPDF.pm
 lib/Foorum/TheSchwartz/Worker/ValidateForumData.pm
 lib/Foorum/Utils.pm
+lib/Foorum/Version.pm
 lib/Foorum/View/JSON.pm
 lib/Foorum/View/TT.pm
 lib/Foorum/XUtils.pm
@@ -375,6 +380,7 @@ root/static/images/site/new.gif
 root/static/images/site/s/delicious.gif
 root/static/images/site/s/digg.gif
 root/static/images/site/s/pdf.gif
+root/static/images/site/s/print.gif
 root/static/images/site/t/share.gif
 root/static/images/site/t/star_off.gif
 root/static/images/site/t/star_on.gif
@@ -569,6 +575,7 @@ templates/poll/view_polls.html
 templates/register/activation.html
 templates/register/import_contacts.html
 templates/register/index.html
+templates/search/forum.html
 templates/search/index.html
 templates/settings/index.html
 templates/simple/error.html
@@ -586,6 +593,7 @@ templates/style/style.json
 templates/sub/pager.html
 templates/topic/index.html
 templates/topic/pdf_download.html
+templates/topic/print.html
 templates/topic/topic.pdf.html
 templates/topic/topic.rss.html
 templates/u/profile.html

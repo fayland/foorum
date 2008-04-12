@@ -2,6 +2,9 @@ package Foorum::Utils;
 
 use strict;
 use warnings;
+
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+
 use base 'Exporter';
 use vars qw/@EXPORT_OK/;
 @EXPORT_OK = qw/

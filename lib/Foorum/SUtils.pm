@@ -2,6 +2,9 @@ package Foorum::SUtils;
 
 use strict;
 use warnings;
+
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+
 use Foorum::Schema;    # schema
 use base qw/Exporter/;
 use vars qw/@EXPORT_OK $schema/;

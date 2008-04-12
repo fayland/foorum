@@ -1,0 +1,73 @@
+---
+abstract: 'Foorum - forum system based on Catalyst'
+author:
+  - 'Fayland Lam<fayland@gmail.com>'
+distribution_type: module
+generated_by: 'Module::Install version 0.71'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.3.html
+  version: 1.3
+name: Foorum
+no_index:
+  directory:
+    - inc
+    - t
+recommends:
+  Catalyst::Model::DBIC::Schema::QueryLog: 0
+  Email::Send::SMTP::TLS: 0
+  File::HomeDir: 0
+  Proc::PID::File: 0
+requires:
+  Cache::FileCache: 0
+  Catalyst: 5.64
+  Catalyst::Authentication::Store::FromSub::Hash: 0.06
+  Catalyst::Model::DBIC::Schema: 0
+  Catalyst::Plugin::Authentication: 0.10004
+  Catalyst::Plugin::Authentication::Credential::Password: 0
+  Catalyst::Plugin::Cache: 0
+  Catalyst::Plugin::Captcha: 0
+  Catalyst::Plugin::Config::YAML: 0
+  Catalyst::Plugin::FormValidator::Simple: 0
+  Catalyst::Plugin::I18N: 0
+  Catalyst::Plugin::PageCache: 0
+  Catalyst::Plugin::Session: 0
+  Catalyst::Plugin::Session::DynamicExpiry: 0
+  Catalyst::Plugin::Session::State::Cookie: 0
+  Catalyst::Plugin::Session::Store::DBIC: 0
+  Catalyst::Plugin::Session::Store::Delegate: 0
+  Catalyst::Plugin::Static::Simple: 0
+  Catalyst::View::JSON: 0
+  Catalyst::View::TT: 0
+  DBIx::Class: 0
+  DateTime: 0
+  Digest: 0
+  Email::Send: 0
+  File::Copy: 0
+  File::Path: 0
+  File::Remove: 0
+  HTML::BBCode: 2.00
+  HTML::Email::Obfuscate: 0
+  I18N::LangTags: 0
+  List::MoreUtils: 0
+  List::Util: 0
+  Locale::Country::Multilingual: 0.03
+  MIME::Entity: 0
+  Net::CIDR::Lite: 0
+  Net::IP::Match::Regexp: 0
+  Schedule::Cron: 0
+  Set::Object: 0
+  Sphinx::Search: 0
+  Sub::Install: 0
+  Switch: 0
+  Template: 0
+  Template::Plugin::Date: 0
+  Template::Plugin::FillInForm: 0
+  Template::Plugin::Math: 0
+  Template::Plugin::String::Compare: 0
+  Text::GooglewikiFormat: 0.04
+  Text::Textile: 0
+  TheSchwartz: 0
+  URI::Find::UTF8: 0
+  YAML: 0
+version: 0.1.4

@@ -1,7 +1,10 @@
 use inc::Module::Install;
 
-name 'Foorum';
-all_from 'lib/Foorum.pm';
+name            ('Foorum');
+author          ('Fayland Lam<fayland@gmail.com>');
+abstract        ('Foorum - forum system based on Catalyst');
+license         ('perl');
+version_from    ('lib/Foorum/Version.pm');
 
 requires 'Template::Plugin::Math'; # Template 2.19 don't contain this one.
 requires 'Template';
@@ -62,7 +65,7 @@ requires 'Email::Send';
 recommends 'Email::Send::SMTP::TLS';
 
 # formatter
-#requires 'HTML::BBCode' => '2.00'; # we have HTML::BBCode::Strict NOW
+requires 'HTML::BBCode' => '2.00';
 requires 'Text::Textile';
 requires 'URI::Find::UTF8';
 requires 'Text::GooglewikiFormat' => '0.04';

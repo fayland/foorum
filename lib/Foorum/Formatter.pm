@@ -2,14 +2,16 @@ package Foorum::Formatter;
 
 use strict;
 use warnings;
+
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+
 use base 'Exporter';
 use Foorum::XUtils qw/config/;
 use vars qw/
-    @EXPORT_OK $VERSION
+    @EXPORT_OK
     $has_text_textile $has_ubb_code $has_text_wiki $has_pod_simple $has_uri_find
     /;
 @EXPORT_OK = qw/ filter_format /;
-$VERSION   = '0.01';                # version
 
 sub filter_format {
     my ( $text, $params ) = @_;

@@ -13,8 +13,7 @@ __PACKAGE__->load_classes;
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
-use vars qw/$VERSION/;
-$VERSION = '0.01';
+use Foorum::Version;  our $VERSION = $Foorum::VERSION;
 
 use Foorum::XUtils ();
 

@@ -1,9 +1,11 @@
 conf/mail.yml
 conf/scraper.yml
+conf/sphinx.conf
 foorum_local.yml
 lib/Foorum/Controller/Test.pm
 root/upload/\d+
 root/upload/pdf/\d+
+data/sphinx/
 
 # Avoid version control files.
 \bRCS\b
