@@ -42,7 +42,6 @@ requires 'I18N::LangTags'; # for I18N::LangTags::Detect
 requires 'Catalyst::Plugin::I18N';
 requires 'Template::Plugin::FillInForm';
 requires 'Template::Plugin::Date';
-requires 'Template::Plugin::String::Compare';
 requires 'File::Remove';
 requires 'HTML::Email::Obfuscate';
 requires 'Locale::Country::Multilingual' => '0.03'; # for tw lang
