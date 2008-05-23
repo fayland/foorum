@@ -1,4 +1,4 @@
-[% USE date %]
+[% PROCESS sub/date.html %]
 [% WRAPPER 'message/bar.html' %]
 
 <div class='one'> 
@@ -8,7 +8,7 @@
 <td>
     [% c.loc('From') %]: <a href='/u/[% message.sender.username %]'>[% message.sender.nickname %]</a><br />
     [% c.loc('To') %]:   <a href='/u/[% message.recipient.username %]'>[% message.recipient.nickname %]</a><br />
-    [% c.loc('Post on') %]&nbsp;<span class='date'>[% date.format(message.post_on, format =>'%Y-%m-%d %I:%M:%S') %]</span>
+    [% c.loc('Post on') %]&nbsp;<span class='date'>[% date_format(message.post_on) %]</span>
 </td>
 <td>
     <strong>[% message.title %]</strong><br />

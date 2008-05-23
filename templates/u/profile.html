@@ -1,4 +1,4 @@
-[% USE date %]
+[% PROCESS sub/date.html %]
 
 <table border='0' width='100%'>
     <tr>
@@ -22,8 +22,8 @@
 	[% END %]
 	<tr class='misc1'><td align='right'>[% c.loc("Threads:") %]</td><td>[% user.threads %]</td></tr>
 	<tr class='misc2'><td align='right'>[% c.loc("Replies:") %]</td><td>[% user.replies %]</td></tr>
-	<tr class='misc2'><td align='right'>[% c.loc("Register on") %]</label></td><td>[% date.format(user.register_time, format =>'%Y-%m-%d %I:%M:%S') %]</td></tr>
-	<tr class='misc1'><td align='right'>Last Logon On:</td><td>[% date.format(user.last_login_on, format =>'%Y-%m-%d %I:%M:%S') %]</td></tr>
+	<tr class='misc2'><td align='right'>[% c.loc("Register on") %]</label></td><td>[% date_format(user.register_time) %]</td></tr>
+	<tr class='misc1'><td align='right'>Last Logon On:</td><td>[% date_format(user.last_login_on) %]</td></tr>
 	[% IF user.details.homepage %]
 	<tr class='misc2'><td align='right'>[% c.loc('Homepage') %]</td><td><a href='[% user.details.homepage %]' target='_blank' rel="nofollow">[% user.details.homepage %] <img src="[% c.config.dir.images %]/site/new-window-icon.gif" /></a></td></tr>
 	[% END %]
@@ -116,7 +116,7 @@
 	</td>
 	<td class='forum2' width='40'><span class='highlight'>[% t.total_replies %]</span></td>
 	<td class='forum2' width='40'><span class='highlight'>[% t.hit %]</span></td>
-	<td class='forum2' width='200' align='left'><a href='/u/[% t.last_updator.username %]'>[% t.last_updator.nickname %]</a> | <span class='date'>[% t.last_update_date %]</span></td>
+	<td class='forum2' width='200' align='left'><a href='/u/[% t.last_updator.username %]'>[% t.last_updator.nickname %]</a> | <span class='date'>[% date_format(t.last_update_date) %]</span></td>
 	</tr>
 </table>
 </div>

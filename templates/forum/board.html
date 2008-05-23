@@ -1,4 +1,5 @@
 [% USE date %]
+[% PROCESS sub/date.html %]
 
 [% RSS_URL = '/site/recent/rss' %]
 
@@ -64,7 +65,7 @@
         [% IF f.policy == 'private' %]
         Private
         [% ELSE %]
-        <a href='/forum/[% f.forum_code _ '/topic/' _ f.last_post.topic_id %]' title="[% f.last_post.title.replace('"', '\"') %]">[% f.last_post.title | truncate(28) %]</a><br /><a href='/u/[% f.last_post.updator.username %]'>[% f.last_post.updator.nickname %]</a><br /><span class='date'>[% date.format(f.last_post.last_update_date, format =>'%Y-%m-%d %I:%M:%S') %]</span>
+        <a href='/forum/[% f.forum_code _ '/topic/' _ f.last_post.topic_id %]' title="[% f.last_post.title.replace('"', '\"') %]">[% f.last_post.title | truncate(28) %]</a><br /><a href='/u/[% f.last_post.updator.username %]'>[% f.last_post.updator.nickname %]</a><br /><span class='date'>[% date_format(f.last_post.last_update_date) %]</span>
         [% END %]
     </td>
 	</tr>

@@ -1,4 +1,4 @@
-[% USE date %]
+[% PROCESS sub/date.html %]
 <html>
     <head>
         <title>[% topic.title %]</title>
@@ -12,7 +12,7 @@
 
 <h2>[% comment.title %]</h2>
 <p>
-Post by [% comment.author.nickname %] on [% date.format(comment.post_on, format =>'%Y-%m-%d %I:%M:%S') %]
+Post by [% comment.author.nickname %] on [% date_format(comment.post_on) %]
 </p>
 <p>
 [% IF comment.author.status == 'banned' %]

@@ -1,4 +1,4 @@
-[% USE date %]
+[% PROCESS sub/date.html %]
 
 [% FOREACH comment IN comments %]
 <a name="c[% comment.comment_id %]"></a>
@@ -40,7 +40,7 @@
        [% IF c.user_exists AND roles.is_moderator %]
        <a href='/comment/[% comment.comment_id %]/delete'><img src='[% c.config.dir.images %]/del.gif' width='16' height='15' align='absmiddle'> Delete</a>
        [% END %]
-       <img src='[% c.config.dir.images %]/posttime.gif' width='16' height='15' align='absmiddle'> <span class='date'>[% date.format(comment.post_on, format =>'%Y-%m-%d %I:%M:%S') %]</span>
+       <img src='[% c.config.dir.images %]/posttime.gif' width='16' height='15' align='absmiddle'> <span class='date'>[% date_format(comment.post_on) %]</span>
     </td>
 </tr>
 </table>

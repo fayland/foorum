@@ -1,4 +1,5 @@
 [% USE date %]
+[% PROCESS sub/date.html %]
 [% url_prefix = c.req.base _ forum.forum_url _ '/topic/' _ topic.topic_id %]
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -16,7 +17,7 @@
 <link>[% url_prefix _ '/comment_id=' _ comment.comment_id _ '/#c' _ comment.comment_id %]</link>
 <description><![CDATA[[% comment.text %]]]></description>
 <guid isPermaLink="true">[% url_prefix _ '/comment_id=' _ comment.comment_id _ '/#c' _ comment.comment_id %]</guid>
-<pubDate>[% date.format(comment.post_on, format =>'%Y-%m-%dT%I:%M:%S') %]</pubDate>
+<pubDate>[% date_format(comment.post_on, '%Y-%m-%dT%I:%M:%S') %]</pubDate>
 </item>
 [% END %]
 

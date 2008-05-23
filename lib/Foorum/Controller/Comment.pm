@@ -437,8 +437,8 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             );
         } else {
             @extra_cols = (
-                last_updator_id  => '',
-                last_update_date => '',
+                last_updator_id  => 0,
+                last_update_date => 0,
             );
         }
         $c->model('DBIC::Topic')->update_topic(

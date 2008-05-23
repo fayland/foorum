@@ -1,3 +1,4 @@
+[% PROCESS sub/date.html %]
 [% title = topic.title _ ' : ' _ forum.name %]
 
 [% topic.url  = forum.forum_url _ '/topic/' _ topic.topic_id %]
@@ -11,7 +12,7 @@
 [% FOREACH comment IN comments %]
 <a name="c[% comment.comment_id %]"></a>
 <div [% IF comment.level %]style="margin-left: [% comment.level * 30 %]px"[% END %]>
-    <div><b>[% comment.title %]</b> Posted By <a href="/u/[% comment.author.username %]">[% comment.author.nickname %]</a> on <span class='date'>[% date.format(comment.post_on, format =>'%Y-%m-%d %I:%M:%S') %]</span></div>
+    <div><b>[% comment.title %]</b> Posted By <a href="/u/[% comment.author.username %]">[% comment.author.nickname %]</a> on <span class='date'>[% date_format(comment.post_on) %]</span></div>
 	<span class="postclass textbody" id='comment_text' style="padding: 2em;">
 	  [% IF comment.author.status == 'banned' %]
 	    The author is banned.
