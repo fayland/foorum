@@ -35,7 +35,6 @@ sub create_comment {
             formatter   => 'plain',
             author_id   => 1,
             post_ip     => '127.0.0.1',
-            post_on     => \'CURRENT_TIMESTAMP',                            # For SQLite
         }
     );
 }

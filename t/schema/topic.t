@@ -26,7 +26,6 @@ my $create = {
     closed           => 0,
     author_id        => 1,
     last_updator_id  => 1,
-    last_update_date => \'CURRENT_TIMESTAMP',    # For SQLite
 };
 
 # test create topic
@@ -71,7 +70,6 @@ $topic_res->remove(
     1, 1,
     {   operator_id => 2,
         log_text    => 'delete for test',
-        SQLite_NOW  => \'CURRENT_TIMESTAMP'
     }
 );
 
