@@ -313,7 +313,7 @@ sub announcement : Chained('forum_for_admin') Args(0) {
                 }
                 )->update(
                 {   text      => $text,
-                    update_on => \"NOW()",            #"
+                    update_on => time(),
                     author_id => $c->user->user_id,
                     title     => $title,
                     formatter => $formatter,

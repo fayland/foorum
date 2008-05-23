@@ -31,12 +31,12 @@ sub work {
     # for table 'log_path'
     my $days_ago = $cron_config->{remove_db_old_data}->{log_path} || 30;
     my $log_path_status = $schema->resultset('LogPath')
-        ->search( { time => \"< DATE_SUB(NOW(), INTERVAL $days_ago DAY)", } )->delete;
+        ->search( { time => { '<', $days_ago * 86400 }, } )->delete;
 
     # for table 'log_error'
     $days_ago = $cron_config->{remove_db_old_data}->{log_error} || 30;
     my $log_error_status = $schema->resultset('LogError')
-        ->search( { time => \"< DATE_SUB(NOW(), INTERVAL $days_ago DAY)", } )->delete;
+        ->search( { time => { '<', $days_ago * 86400 }, } )->delete;
 
     # for table 'banned_ip'
     $days_ago = $cron_config->{remove_db_old_data}->{banned_ip} || 604800;

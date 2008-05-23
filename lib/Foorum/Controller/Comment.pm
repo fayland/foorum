@@ -113,7 +113,7 @@ sub post : Local {
         $c->model('DBIC::Topic')->update_topic(
             $object_id,
             {   total_replies    => \"total_replies + 1",
-                last_update_date => \"NOW()",
+                last_update_date => time(),
                 last_updator_id  => $c->user->user_id,
             }
         );
@@ -222,7 +222,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
         $c->model('DBIC::Topic')->update_topic(
             $object_id,
             {   total_replies    => \"total_replies + 1",
-                last_update_date => \"NOW()",
+                last_update_date => time(),
                 last_updator_id  => $c->user->user_id,
             }
         );
@@ -390,10 +390,11 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             # u can only delete 5 topics one day
             my $most_deletion_per_day = $c->config->{per_day}->{most_deletion_topic}
                 || 5;
+            my $one_day_ago = time() - 86400;
             my $deleted_count = $c->model('DBIC')->resultset('LogAction')->count(
                 {   forum_id => $forum_id,
                     action   => 'delete',
-                    time     => \"> DATE_SUB(NOW(), INTERVAL 1 DAY)",    #"
+                    time     => { '>', $one_day_ago }
                 }
             );
             if ( $deleted_count >= $most_deletion_per_day ) {

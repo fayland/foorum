@@ -106,7 +106,7 @@ sub work {
                             title       => $title,
                             text        => $text,
                             formatter   => 'html',
-                            post_on     => \'NOW()',      #'
+                            post_on     => time(),
                             post_ip     => '127.0.0.1',
                             reply_to    => $reply_to,
                             forum_id    => $forum_id,
@@ -210,7 +210,7 @@ sub get_topic_or_create {
             title            => $topic_title,
             author_id        => $user_id,
             last_updator_id  => $user_id,
-            last_update_date => \"NOW()",       #"
+            last_update_date => time(),
             hit              => 0,
             total_replies    => $replies_no
         }

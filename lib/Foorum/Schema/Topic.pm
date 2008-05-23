@@ -156,7 +156,7 @@ sub remove : ResultSet  {
             action      => 'delete',
             object_type => 'topic',
             object_id   => $topic_id,
-            time        => $info->{SQLite_NOW} || \'NOW()',    # when use SQLite in test
+            time        => time(),
             text        => $info->{log_text} || '',
             forum_id    => $forum_id,
         }

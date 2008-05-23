@@ -18,7 +18,7 @@ sub work {
     my $config = config();
     my $schema = schema();
 
-    my $time = time() - 24 * 60 * 60;
+    my $time = time() - 86400;
 
     # check db
     my $new_added_user
@@ -28,13 +28,13 @@ sub work {
     my $left_email = $schema->resultset('ScheduledEmail')->count( { processed => 'N' } );
     my $sent_email = $schema->resultset('ScheduledEmail')->count(
         {   processed => 'Y',
-            time      => \"> DATE_SUB(NOW(), INTERVAL 1 DAY)",
+            time      => { '>', $time },
         }
     );
     my $log_error_count = $schema->resultset('LogError')
-        ->count( { time => \"> DATE_SUB(NOW(), INTERVAL 1 DAY)", } );
+        ->count( { time => { '>', $time }, } );
     my $log_path_count = $schema->resultset('LogPath')
-        ->count( { time => \"> DATE_SUB(NOW(), INTERVAL 1 DAY)", } );
+        ->count( { time => { '>', $time }, } );
 
     my $text_body = qq~
         NewAddedUser:   $new_added_user\n
@@ -51,7 +51,7 @@ sub work {
             to_email   => $config->{mail}->{daily_report_email},
             subject    => '[Foorum] Daily Report @ ' . scalar( localtime() ),
             plain_body => $text_body,
-            time       => \'NOW()',
+            time       => time(),
             processed  => 'N',
         }
     );
