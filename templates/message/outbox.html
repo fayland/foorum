@@ -1,3 +1,4 @@
+[% USE date %]
 [% WRAPPER 'message/bar.html' %]
 
 <div class='one'> 
@@ -12,7 +13,7 @@
 <tr align='center' class="[% IF loop.count % 2 %]misc1[% ELSE %]misc2[% END %]">
     <td><a href='/u/[% message.recipient.username %]'>[% message.recipient.nickname %]</a></td>
     <td align='left'><a href='/message/[% message.message_id %]'>[% message.title %]</a></td>
-    <td><span class='date'>[% message.post_on %]</span></td>
+    <td><span class='date'>[% date.format(message.post_on, format =>'%Y-%m-%d %I:%M:%S') %]</span></td>
     <td><a href='/message/[% message.message_id %]/delete'>[% c.loc('Delete') %]</a></td>
 </tr>
 [% END %]

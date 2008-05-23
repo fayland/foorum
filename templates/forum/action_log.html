@@ -1,3 +1,5 @@
+[% USE date %]
+
 [% title = 'Action Logs Of ' _ forum.name %]
 
 [% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
@@ -35,7 +37,7 @@
 	    [% log.text %]
 	    [% END %]
 	</td>
-	<td class='forum1'><span class='date'>[% log.time %]</span></td>
+	<td class='forum1'><span class='date'>[% date.format(log.time, format =>'%Y-%m-%d %I:%M:%S') %]</span></td>
 </tr>
 [% END %]
 <tr class='forum1'>

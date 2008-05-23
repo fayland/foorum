@@ -1,3 +1,5 @@
+[% USE date %]
+
 [% FOREACH comment IN comments %]
 <a name="c[% comment.comment_id %]"></a>
 <div class='multi'[% IF comment.level %]style="margin-left: [% comment.level * 15 %]px"[% END %]>
@@ -38,7 +40,7 @@
        [% IF c.user_exists AND roles.is_moderator %]
        <a href='/comment/[% comment.comment_id %]/delete'><img src='[% c.config.dir.images %]/del.gif' width='16' height='15' align='absmiddle'> Delete</a>
        [% END %]
-       <img src='[% c.config.dir.images %]/posttime.gif' width='16' height='15' align='absmiddle'> <span class='date'>[% comment.post_on %]</span>
+       <img src='[% c.config.dir.images %]/posttime.gif' width='16' height='15' align='absmiddle'> <span class='date'>[% date.format(comment.post_on, format =>'%Y-%m-%d %I:%M:%S') %]</span>
     </td>
 </tr>
 </table>

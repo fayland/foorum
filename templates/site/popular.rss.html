@@ -16,7 +16,7 @@
 <link>[% base _ obj.url %]</link>
 <description><![CDATA[[% obj.text %]]]></description>
 <guid isPermaLink="true">[% base _ obj.url %]</guid>
-<pubDate>[% obj.last_update.replace('\s+', 'T') %]</pubDate>
+<pubDate>[% date.format(obj.last_update, format =>'%Y-%m-%dT%I:%M:%S') %]</pubDate>
 </item>
 [% END %]
 

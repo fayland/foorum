@@ -1,3 +1,4 @@
+[% USE date %]
 <td align='left'>[ [% object.object_type | ucfirst %] ] <a href='[% object.url %]'>[% object.title %]</a></td>
 <td><a href='/u/[% object.author.username %]'>[% object.author.nickname %]</a></td>
-<td><span class='date'>[% object.last_update %]</span></td>
+<td><span class='date'>[% date.format(object.last_update, format =>'%Y-%m-%d %I:%M:%S') %]</span></td>

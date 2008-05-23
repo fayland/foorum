@@ -16,7 +16,7 @@
 <link>[% url_prefix _ '/comment_id=' _ comment.comment_id _ '/#c' _ comment.comment_id %]</link>
 <description><![CDATA[[% comment.text %]]]></description>
 <guid isPermaLink="true">[% url_prefix _ '/comment_id=' _ comment.comment_id _ '/#c' _ comment.comment_id %]</guid>
-<pubDate>[% comment.post_on.replace('\s+', 'T') %]</pubDate>
+<pubDate>[% date.format(comment.post_on, format =>'%Y-%m-%dT%I:%M:%S') %]</pubDate>
 </item>
 [% END %]
 

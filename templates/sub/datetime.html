@@ -1,0 +1,11 @@
+[% USE date %]
+
+[% BLOCK format_date(intime);
+
+    IF intime == '-' OR intime <= 0;
+        intime;
+    ELSE;
+        date.format(intime, format =>'%Y-%m-%d %I:%M:%S');
+    END;
+
+END; %]
