@@ -165,7 +165,7 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
             title            => $topic_title,
             author_id        => $c->user->user_id,
             last_updator_id  => $c->user->user_id,
-            last_update_date => \'NOW()',
+            last_update_date => time(),
             hit              => 0,
         }
     );

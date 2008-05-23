@@ -58,7 +58,7 @@ sub compose : Local {
             to_id       => $rept->{user_id},
             title       => $c->req->param('title'),
             text        => $c->req->param('text'),
-            post_on     => \"NOW()",
+            post_on     => time(),
             post_ip     => $c->req->address,
             from_status => 'open',
             to_status   => 'open',

@@ -51,10 +51,10 @@ __PACKAGE__->add_columns(
   },
   "last_login_on",
   {
-    data_type => "DATETIME",
-    default_value => undef,
+    data_type => "INT",
+    default_value => 0,
     is_nullable => 1,
-    size => 19,
+    size => 11,
   },
   "last_login_ip",
   {

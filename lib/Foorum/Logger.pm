@@ -14,7 +14,7 @@ sub error_log {
     $schema->resultset('LogError')->create(
         {   level => $level || 'debug',
             text => $text,
-            time => \'NOW()',    #'
+            time => time(),
         }
     );
 }

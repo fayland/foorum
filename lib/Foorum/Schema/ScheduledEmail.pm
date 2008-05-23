@@ -56,10 +56,10 @@ __PACKAGE__->add_columns(
   },
   "time",
   {
-    data_type => "TIMESTAMP",
-    default_value => "CURRENT_TIMESTAMP",
+    data_type => 'INT',
+    default_value => 0,
     is_nullable => 0,
-    size => 14,
+    size => 11,
   },
 );
 __PACKAGE__->set_primary_key("email_id");
@@ -110,7 +110,7 @@ sub send_activation : ResultSet {
             to_email   => $user->email,
             subject    => 'Your Activation Code In ' . $config->{name},
             plain_body => $email_body,
-            time       => \'NOW()',                                       #'
+            time       => time(),
             processed  => 'N',
         }
     );
@@ -184,7 +184,7 @@ sub create_email : ResultSet {
             subject    => $subject,
             plain_body => $plain_body,
             html_body  => $html_body,
-            time       => \'NOW()',
+            time       => time(),
             processed  => 'N',
         }
     );

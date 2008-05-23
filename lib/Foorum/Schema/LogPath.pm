@@ -37,10 +37,10 @@ __PACKAGE__->add_columns(
   },
   "time",
   {
-    data_type => "TIMESTAMP",
-    default_value => "CURRENT_TIMESTAMP",
+    data_type => "INT",
+    default_value => 0,
     is_nullable => 0,
-    size => 14,
+    size => 11,
   },
   "loadtime",
   { data_type => "DOUBLE", default_value => 0, is_nullable => 0, size => 64 },

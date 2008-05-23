@@ -30,10 +30,10 @@ __PACKAGE__->add_columns(
   },
   "post_on",
   {
-    data_type => "DATETIME",
-    default_value => undef,
+    data_type => "INT",
+    default_value => 0,
     is_nullable => 0,
-    size => 19,
+    size => 11,
   },
   "post_ip",
   { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 32 },

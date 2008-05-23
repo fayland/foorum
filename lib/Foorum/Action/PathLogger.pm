@@ -46,6 +46,7 @@ sub log_path {
             path       => $path,
             get        => $get,
             post       => $post,
+            time       => time(),
             loadtime   => $loadtime,
         }
     );

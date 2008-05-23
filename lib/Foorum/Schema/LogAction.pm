@@ -28,10 +28,10 @@ __PACKAGE__->add_columns(
   { data_type => "INT", default_value => undef, is_nullable => 1, size => 11 },
   "time",
   {
-    data_type => "TIMESTAMP",
-    default_value => "CURRENT_TIMESTAMP",
+    data_type => 'INT',
+    default_value => 0,
     is_nullable => 0,
-    size => 14,
+    size => 11,
   },
   "text",
   {

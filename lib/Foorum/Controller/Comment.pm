@@ -313,7 +313,7 @@ sub edit : LocalRegex('^(\d+)/edit$') {
         {   title     => $title,
             text      => $text,
             formatter => $formatter,
-            update_on => \'NOW()',           #'
+            update_on => time(),
             post_ip   => $c->req->address,
             upload_id => $upload_id,
         }

@@ -21,17 +21,17 @@ __PACKAGE__->add_columns(
   },
   "post_on",
   {
-    data_type => "DATETIME",
-    default_value => undef,
-    is_nullable => 1,
-    size => 19,
+    data_type => 'INT',
+    default_value => 0,
+    is_nullable => 0,
+    size => 11,
   },
   "update_on",
   {
-    data_type => "DATETIME",
-    default_value => undef,
+    data_type => 'INT',
+    default_value => 0,
     is_nullable => 1,
-    size => 19,
+    size => 11,
   },
   "post_ip",
   { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 32 },
@@ -307,7 +307,6 @@ sub create_comment : ResultSet {
     my $title       = $info->{title};
     my $text        = $info->{text} || '';
     my $lang        = $info->{lang} || 'en';
-    my $post_on     = $info->{post_on} || \'NOW()';
 
     # we don't use [% | html %] now because there is too many title around in TT
     $title = encodeHTML($title);
@@ -319,7 +318,7 @@ sub create_comment : ResultSet {
             title       => $title,
             text        => $text,
             formatter   => $formatter,
-            post_on     => $post_on,
+            post_on     => time(),
             post_ip     => $post_ip,
             reply_to    => $reply_to,
             forum_id    => $forum_id,

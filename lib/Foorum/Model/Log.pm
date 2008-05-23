@@ -16,7 +16,7 @@ sub log_action {
             action      => $info->{action} || 'kiss',
             object_type => $info->{object_type} || 'ass',
             object_id   => $info->{object_id} || 0,         # times
-            time        => \'NOW()',
+            time        => time(),
             text        => $info->{text} || '',
             forum_id    => $info->{forum_id} || 0,
         }
