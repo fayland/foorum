@@ -1,4 +1,4 @@
-[% USE date %]
+[% PROCESS sub/date.html %]
 [% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
 
 <div id='edit_profile_tabs' class='tabs'>
@@ -23,7 +23,7 @@
 <td><a href="/u/[% user.username %]">[% user.nickname%]</a></td>
 <td>[% IF user.gender != 'NA' %]<img src='[% c.config.dir.images %]/site/gender_[% user.gender %].gif' width='20' height='14' align='absmiddle' /></span>[% ELSE %]N/A[% END %]</td>
 <td>[% user.status | ucfirst %]</td>
-<td>[% date.format(user.register_time, format =>'%Y-%m-%d %I:%M') %]</td>
+<td>[% date_format(user.register_time) %]</td>
 
 </tr>
 [% END %]

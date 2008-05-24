@@ -1,4 +1,4 @@
-[% USE date %]
+[% PROCESS sub/date.html %]
 [% IF user %]
  [% IF user.gender != 'NA' %]<span style='float:right'><img src='[% c.config.dir.images %]/site/gender_[% user.gender %].gif' width='20' height='14' align='absmiddle' /></span>[% END %]
  <a href='/u/[% user.username %]'>[% user.nickname %]</a><br />
@@ -8,7 +8,7 @@
  <br /><br />
  [% c.loc('Threads:') %] [% user.threads %]<br />
  [% c.loc('Replies:') %] [% user.replies %]<br />
- [% c.loc('Register on') %]: [% date.format(user.register_time, format =>'%Y-%m-%d') %]<br />
+ [% c.loc('Register on') %]: [% date_format(user.register_time) %]<br />
  <a href='/help/user_status'>[% c.loc('Status:') %]</a> [% user.status | ucfirst %]<br />
 [% ELSE %]
  Anonymous

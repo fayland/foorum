@@ -1,4 +1,4 @@
-[% USE date %]
+[% PROCESS sub/date.html %]
 
 [% title = 'Action Logs Of ' _ forum.name %]
 
@@ -37,7 +37,7 @@
 	    [% log.text %]
 	    [% END %]
 	</td>
-	<td class='forum1'><span class='date'>[% date.format(log.time, format =>'%Y-%m-%d %I:%M:%S') %]</span></td>
+	<td class='forum1'><span class='date'>[% date_format(log.time) %]</span></td>
 </tr>
 [% END %]
 <tr class='forum1'>
