@@ -1,4 +1,4 @@
-[% USE date %]
+[% PROCESS sub/date.html %]
 
 [% WRAPPER 'admin/bar.html' %]
 
@@ -19,7 +19,7 @@
     <td>[% path.path %]</td>
     <td>[% path.get %]</td>
     <td><textarea cols='30'>[% path.post %]</textarea></td>
-    <td>[% date.format(path.time, format =>'%Y-%m-%d %I:%M:%S') %]</td>
+    <td>[% date_format(path.time) %]</td>
     <td>[% path.loadtime %]</td>
 </tr>
 [% END %]
