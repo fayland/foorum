@@ -7,7 +7,7 @@ use base 'DBIx::Class::ResultSet';
 
 use Object::Signature();
 
-sub get : ResultSet {
+sub get {
     my ( $self, $cond ) = @_;
 
     my $schema = $self->result_source->schema;
@@ -27,7 +27,7 @@ sub get : ResultSet {
     return $cache_val;
 }
 
-sub get_multi : ResultSet {
+sub get_multi {
     my ( $self, $key, $val ) = @_;
 
     my $schema = $self->result_source->schema;
@@ -64,7 +64,7 @@ sub get_multi : ResultSet {
     return \%return_users;
 }
 
-sub get_from_db : ResultSet {
+sub get_from_db {
     my ( $self, $cond ) = @_;
 
     my $schema = $self->result_source->schema;
@@ -112,7 +112,7 @@ sub get_from_db : ResultSet {
     return $user;
 }
 
-sub delete_cache_by_user : ResultSet {
+sub delete_cache_by_user {
     my ( $self, $user ) = @_;
 
     return unless ($user);
@@ -134,7 +134,7 @@ sub delete_cache_by_user : ResultSet {
     return 1;
 }
 
-sub delete_cache_by_user_cond : ResultSet {
+sub delete_cache_by_user_cond {
     my ( $self, $cond ) = @_;
 
     my $user = $self->get($cond);
@@ -142,7 +142,7 @@ sub delete_cache_by_user_cond : ResultSet {
 }
 
 # call this update will delete cache.
-sub update_user : ResultSet {
+sub update_user {
     my ( $self, $user, $update ) = @_;
 
     $self->delete_cache_by_user($user);
@@ -151,7 +151,7 @@ sub update_user : ResultSet {
 
 # get user_settings
 # we don't merge it into sub get_from_db is because it's not used so frequently
-sub get_user_settings : ResultSet {
+sub get_user_settings {
     my ( $self, $user ) = @_;
 
     my $schema = $self->result_source->schema;
