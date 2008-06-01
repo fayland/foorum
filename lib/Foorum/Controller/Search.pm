@@ -52,12 +52,12 @@ sub forum : Local {
     # XXX? TODO
     if ($date) {
         
-        # $sphinx->SetFilterRange('birthday_days', $from_days, $to_days);
+        # $sphinx->SetFilterRange('', $from_days, $to_days);
     }
     
     my $page = get_page_from_url($c->req->path);
     my $per_page = 20;
-    $sphinx->SetSortMode(SPH_SORT_ATTR_DESC, 'date_added');
+    $sphinx->SetSortMode(SPH_SORT_ATTR_DESC, 'post_on');
     $sphinx->SetMatchMode(SPH_MATCH_ANY);
     $sphinx->SetLimits( ($page - 1) * $per_page, $per_page, 20 * $per_page); # MAX is 20 pages
     $sphinx->SetFilter( 'forum_id', [$forum_id] );
