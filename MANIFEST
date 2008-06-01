@@ -28,6 +28,7 @@ bin/testfunction/theschwartz.pl
 bin/upgrade/0.1.1/foorum.sql
 bin/upgrade/0.1.2/up.pl
 bin/upgrade/0.1.3/up.pl
+bin/upgrade/0.1.5/up.pl
 Changes
 conf/cron.yml
 conf/examples/mail/Gmail.yml
@@ -114,6 +115,19 @@ lib/Foorum/Model/Policy.pm
 lib/Foorum/Model/UserAuth.pm
 lib/Foorum/Model/Validation.pm
 lib/Foorum/Plugin/FoorumUtils.pm
+lib/Foorum/ResultSet/BannedIp.pm
+lib/Foorum/ResultSet/Comment.pm
+lib/Foorum/ResultSet/FilterWord.pm
+lib/Foorum/ResultSet/Forum.pm
+lib/Foorum/ResultSet/Hit.pm
+lib/Foorum/ResultSet/Message.pm
+lib/Foorum/ResultSet/Share.pm
+lib/Foorum/ResultSet/Star.pm
+lib/Foorum/ResultSet/Topic.pm
+lib/Foorum/ResultSet/Upload.pm
+lib/Foorum/ResultSet/User.pm
+lib/Foorum/ResultSet/UserForum.pm
+lib/Foorum/ResultSet/Visit.pm
 lib/Foorum/Schema.pm
 lib/Foorum/Schema/BannedIp.pm
 lib/Foorum/Schema/Comment.pm
@@ -576,6 +590,7 @@ templates/site/user.html
 templates/site/whos_view_this_page.html
 templates/style/style.css
 templates/style/style.json
+templates/sub/date.html
 templates/sub/pager.html
 templates/topic/index.html
 templates/topic/pdf_download.html

@@ -57,16 +57,16 @@ requires:
   Net::IP::Match::Regexp: 0
   Schedule::Cron: 0
   Set::Object: 0
+  Sphinx::Search: 0
   Sub::Install: 0
   Switch: 0
   Template: 0
   Template::Plugin::Date: 0
   Template::Plugin::FillInForm: 0
   Template::Plugin::Math: 0
-  Template::Plugin::String::Compare: 0
   Text::GooglewikiFormat: 0.04
   Text::Textile: 0
   TheSchwartz: 0
   URI::Find::UTF8: 0
   YAML: 0
-version: 0.1.4
+version: 0.1.5
