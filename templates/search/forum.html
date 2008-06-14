@@ -33,3 +33,21 @@
 </table>
 </form>
 </div>
+
+<div class='clear'></div>
+
+[% IF topics.size == 0 %]
+<div class='message' style='clear:both'>No Result. please try another.</div>
+[% ELSE %]
+<div class='one'>
+	<table align='center'>
+		<tr class='title'><td>Title</td><td>Author</td></tr>
+		[% FOREACH topic IN topics %]
+		<tr class='misc[% IF loop.count MOD 2; '1'; ELSE; '2'; END; %]'>
+			<td><a href='/forum/[% topic.forum_id %]/topic/[% topic.topic_id %]'>[% topic.title %]</a></td>
+			<td><a href='/u/[% topic.author.username %]'>[% topic.author.nickname %]</a></td>
+		</tr>
+		[% END %]
+	</table>
+</div>
+[% END %]

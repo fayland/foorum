@@ -38,6 +38,8 @@ sub forum : Local {
     my $title = $c->req->param('title');
     my $author = $c->req->param('author');
     my $date   = $c->req->param('date');
+    # date value would be 2, 7, 30, 999
+    $date = 0 if ($date != 2 and $date != 7 and $date != 30 and $date != 999);
     return unless ($title or $author or $date);
     
     unless (length($title)) {
@@ -51,13 +53,18 @@ sub forum : Local {
     }
     # XXX? TODO
     if ($date) {
-        
-        # $sphinx->SetFilterRange('', $from_days, $to_days);
+        # date value would be 2, 7, 30, 999
+        my $now = time();
+        if ($date == 999) { # more than 30 days
+            $sphinx->SetFilterRange('last_update_date', $now - 30 * 86400, $now, 1);
+        } else {
+        	  $sphinx->SetFilterRange('last_update_date', $now - $date * 86400, $now);
+        }
     }
     
     my $page = get_page_from_url($c->req->path);
     my $per_page = 20;
-    $sphinx->SetSortMode(SPH_SORT_ATTR_DESC, 'post_on');
+    $sphinx->SetSortMode(SPH_SORT_ATTR_DESC, 'last_update_date');
     $sphinx->SetMatchMode(SPH_MATCH_ANY);
     $sphinx->SetLimits( ($page - 1) * $per_page, $per_page, 20 * $per_page); # MAX is 20 pages
     $sphinx->SetFilter( 'forum_id', [$forum_id] );
@@ -77,20 +84,13 @@ sub forum : Local {
     return $c->res->body(Dumper(\$ret));
     
     my @matches = @{$ret->{matches}};
-    my @topic_ids;
+    my @topics;
     foreach my $r (@matches) {
-        # $r is something like
-#        {
-#         'author_id' => 1,
-#         'forum_id' => 1,
-#         'date_added' => 1200814358,
-#         'weight' => 1,
-#         'object_id' => 25,
-#         'doc' => 108
-#        },
-        # while the doc is $comment_id and object_id is $topic_id
-        push @topic_ids, $r->{object_id};
+        my $topic_id = $r->{doc};
+        my $topic = $c->model('DBIC')->resultset('Topic')->get($topic_id, { with_author => 1 } );
+        push @topics, $topic;
     }
+    $c->stash->{topics} = \@topics;
     
     # pager
     my $total = $ret->{total_found};
