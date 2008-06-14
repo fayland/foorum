@@ -34,13 +34,13 @@
 </form>
 </div>
 
-<div class='clear'></div>
+<div style='clear:both'></div>
 
-[% IF topics.size == 0 %]
-<div class='message' style='clear:both'>No Result. please try another.</div>
-[% ELSE %]
 <div class='one'>
 	<table align='center'>
+[% IF topics.size == 0 %]
+<tr><td class='misc1'>No Result. please try another.</td></tr>
+[% ELSE %]
 		<tr class='title'><td>Title</td><td>Author</td></tr>
 		[% FOREACH topic IN topics %]
 		<tr class='misc[% IF loop.count MOD 2; '1'; ELSE; '2'; END; %]'>
@@ -48,6 +48,6 @@
 			<td><a href='/u/[% topic.author.username %]'>[% topic.author.nickname %]</a></td>
 		</tr>
 		[% END %]
+[% END %]
 	</table>
 </div>
-[% END %]
