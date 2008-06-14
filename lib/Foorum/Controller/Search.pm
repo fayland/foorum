@@ -79,10 +79,7 @@ sub forum : Local {
         
         $c->detach('/print_error', [ 'Search is not going well, we will fix it ASAP.' ] );
     }
-    
-    use Data::Dumper;
-    return $c->res->body(Dumper(\$ret));
-    
+
     my @matches = @{$ret->{matches}};
     my @topics;
     foreach my $r (@matches) {
