@@ -43,9 +43,6 @@ sub forum : Local {
     $date = 0 if ( $date and $date != 2 and $date != 7 and $date != 30 and $date != 999 );
     return unless ( $title or $author or $date );
 
-    unless ( length($title) ) {
-        return $c->stash->{error_title} = 'Title is required';
-    }
     my $author_id;
     if ($author) {
         my $user = $c->model('DBIC::User')->get( { username => $author } );
@@ -63,7 +60,7 @@ sub forum : Local {
         page      => $page,
         per_page  => $per_page,
     };
-    my $ret = $c->stash->{search}->query( 'forum', $params );
+    my $ret = $c->stash->{search}->query( 'topic', $params );
     my $err = $ret->{error};
     if ($err) {
         error_log( $c->model('DBIC'), 'fatal', $err );

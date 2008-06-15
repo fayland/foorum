@@ -96,3 +96,28 @@ sub send_email {
 }
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::TheSchwartz::Worker::SendScheduledEmail - Send email in cron job
+
+=head1 SYNOPSIS
+
+  # check bin/cron/TheSchwartz_client.pl and bin/cron/TheSchwartz_worker.pl for usage
+
+=head1 DESCRIPTION
+
+It's not so quick to send email in Catalyst App, so that Catalyst App just insert data into scheduled_email table and this module handles the sending part!
+
+=head1 SEE ALSO
+
+L<TheSchwartz>
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut

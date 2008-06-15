@@ -65,10 +65,11 @@ static:
 captcha:
   session_name: captcha_string
   new:
-    width: 80
-    height: 30
+    width: 50
+    height: 20
     lines: 1
     gd_font: giant
+    rndmax: 4
   create:
     - normal
     - rect

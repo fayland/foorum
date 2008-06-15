@@ -6,8 +6,7 @@ use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
-use Foorum::Logger qw/error_log/;
-use Foorum::XUtils qw/config base_path cache tt2/;
+use Foorum::XUtils qw/config base_path cache/;
 
 sub work {
     my $class = shift;
@@ -20,7 +19,6 @@ sub work {
     my $config     = config();
     my $cache      = cache();
     my $base_path  = base_path();
-    my $tt2        = tt2();
     my $user_model = $schema->resultset('User');
 
     # if it is a starred item and settings send_starred_notification is Y
@@ -95,3 +93,30 @@ sub get_object {
 }
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::TheSchwartz::Worker::SendStarredNofication - Send notification when starred object gets update
+
+=head1 SYNOPSIS
+
+  # check bin/cron/TheSchwartz_client.pl and bin/cron/TheSchwartz_worker.pl for usage
+
+=head1 DESCRIPTION
+
+When one topic updated, we must send mails to those people who starred the topic.
+If the count of those people are huge like 1000 or more, it's too slow to handle in Catalyst App.
+So that's what this module for.
+
+=head1 SEE ALSO
+
+L<TheSchwartz>
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut

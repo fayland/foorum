@@ -42,8 +42,27 @@ sub work {
         ScheduledEmail: $left_email\n
         SentEmail:      $sent_email\n
         LogErrorCount:  $log_error_count\n
-        LogPathCount:   $log_path_count\n
-    ~;
+        LogPathCount:   $log_path_count\n~;
+
+    # all fatal errors in path_error
+    my $rs = $schema->resultset('LogError')->search(
+        {   time  => { '>', $time },
+            level => 'fatal',
+        },
+        {   rows    => 10,
+            page    => 1,
+            columns => [ 'text', 'time' ]
+        }
+    );
+    if ( my $total = $rs->pager->total_entries ) {
+        $text_body .= qq~ATTENTION!!!!!!! $total FATAL ISSUE\n~;
+        while ( my $error = $rs->next ) {
+            my $text = $error->text;
+            my $time = $error->time;
+            $time = scalar( localtime($time) );
+            $text_body .= qq~On $time\n$text\n\n~;
+        }
+    }
 
     $schema->resultset('ScheduledEmail')->create(
         {   email_type => 'daily_report',
@@ -60,3 +79,46 @@ sub work {
 }
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::TheSchwartz::Worker::DailyReport - send a daily report to Administrator
+
+=head1 SYNOPSIS
+
+  # check bin/cron/TheSchwartz_client.pl and bin/cron/TheSchwartz_worker.pl for usage
+
+=head1 DESCRIPTION
+
+Send a daily report incluing:
+
+= over 4
+
+=item How many users joined last 24 hours
+
+=item How many visits last 24 hours
+
+=item How many email scheduled to send now
+
+=item How many email is sent last 24 hours
+
+=item How many records in log_error last 24 hours.
+
+=item How many records in log_path last 24 hours
+
+=item All 'fatal' error in log_error
+
+=back
+
+=head1 SEE ALSO
+
+L<TheSchwartz>
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut

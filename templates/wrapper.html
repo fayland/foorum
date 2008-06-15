@@ -85,6 +85,9 @@
     [% ELSE %]
      <a href='/register'>[% c.loc("Register") %]</a>  | <a href='/login'>[% c.loc("Log in") %]</a> | <a href='/profile/forget_password'>[% c.loc("Forget password?") %]</a>
     [% END %]
+    [% IF forum %]
+    | <a href="/search/forum/[% forum.forum_id %]">[% c.loc("Search") %]</a>
+    [% END %]
 
     [% IF c.user_exists %]
     <br />

@@ -25,7 +25,7 @@ sub query {
     }
 }
 
-sub forum {
+sub topic {
     my ( $self, $params ) = @_;
 
     my $forum_id  = $params->{'forum_id'};
@@ -55,6 +55,8 @@ sub forum {
         }
     }
     if ($title) {
+
+        #$title = $schema->storage->dbh->quote($title);
         $where->{title} = { 'LIKE', '%' . $title . '%' };
     }
 
@@ -73,7 +75,45 @@ sub forum {
         matches => \@topic_ids,
         pager   => $rs->pager,
     };
+}
 
+sub user {
+    my ( $self, $params ) = @_;
+
+    my $name     = $params->{name};
+    my $gender   = $params->{gender};
+    my $country  = $params->{country};
+    my $page     = $params->{'page'} || 1;
+    my $per_page = $params->{per_page} || 20;
+    my $schema   = $self->{schema};
+
+    my ( $where, $attr );
+    $attr->{rows}    = $per_page;
+    $attr->{page}    = $page;
+    $attr->{columns} = ['user_id'];
+
+    # prepare $where from $params
+    if ($name) {
+        $name = $schema->storage->dbh->quote($name);    # escape title
+        $where->{nickname} = { 'LIKE', '%' . $name . '%' };
+    }
+    if ( $gender eq 'F' or $gender eq 'M' ) {
+        $where->{gender} = $gender;
+    }
+    if ($country) {
+        $where->{country} = $country;
+    }
+
+    my $rs = $schema->resultset('User')->search( $where, $attr );
+    my @user_ids;
+    while ( my $r = $rs->next ) {
+        push @user_ids, $r->user_id;
+    }
+
+    return {
+        matches => \@user_ids,
+        pager   => $rs->pager,
+    };
 }
 
 1;
@@ -88,11 +128,15 @@ Foorum::Search::Database - search Foorum by DBI
 =head1 SYNOPSIS
 
   use Foorum::Search::Database;
-  # TODO
+  
+  my $search = new Foorum::Search::Database;
+  my $ret = $search->query('topic', { author_id => 1, title => 'test', page => 2, per_page => 20 } );
+  # $ret would be something like:
+  # { matches => \@topic_ids, pager => $instance_of_date_page }
 
 =head1 DESCRIPTION
 
-This module implements DBI for Foorum Search.
+This module implements DBI for Foorum Search.  so generally you should check L<Foorum::Search> instead.
 
 =head1 SEE ALSO
 

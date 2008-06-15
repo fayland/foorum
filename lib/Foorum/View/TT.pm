@@ -62,7 +62,15 @@ __END__
 
 =pod
 
-=head2 AUTHOR
+=head1 NAME
+
+Foorum::View::TT - Template for Foorum
+
+=head1 SEE ALSO
+
+L<Catalyst::View::TT>
+
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 

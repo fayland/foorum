@@ -9,7 +9,15 @@ __END__
 
 =pod
 
-=head2 AUTHOR
+=head1 NAME
+
+Foorum::View::JSON - JSON for Foorum
+
+=head1 SEE ALSO
+
+L<Catalyst::View::JSON>
+
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 

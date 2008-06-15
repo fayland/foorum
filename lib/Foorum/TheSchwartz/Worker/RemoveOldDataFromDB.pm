@@ -63,3 +63,40 @@ LOG
 }
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::TheSchwartz::Worker::RemoveOldDataFromDB - remove data from database to keep it small
+
+=head1 SYNOPSIS
+
+  # check bin/cron/TheSchwartz_client.pl and bin/cron/TheSchwartz_worker.pl for usage
+
+=head1 DESCRIPTION
+
+Remove old/useless data to keep database as small as possible. Things removed are:
+
+=over 4
+
+=item records in visit table more than 30 days
+
+=item log_path and log_error more than 30 days
+
+=item banned_ip more than 1 week
+
+=item session more than 30 days
+
+=back
+
+=head1 SEE ALSO
+
+L<TheSchwartz>
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut

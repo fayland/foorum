@@ -26,9 +26,11 @@ sub new {
 sub query {
     my ( $self, $type, $params ) = @_;
 
-    if ( $self->{use_sphinx} ) {
+    # if Sphinx searchd is on and Foorum::Search::Sphinx implemented the $type
+    if ( $self->{use_sphinx} and $self->{sphinx}->can($type) ) {
         return $self->{sphinx}->query( $type, $params );
-    } else {
+    } elsif ( $self->{db}->can($type) )
+    {    # if Foorum::Search::Database implemented the $type
         return $self->{db}->query( $type, $params );
     }
 }
@@ -45,7 +47,11 @@ Foorum::Search - search Foorum
 =head1 SYNOPSIS
 
   use Foorum::Search;
-  # TODO
+  
+  my $search = new Foorum::Search;
+  my $ret = $search->query('topic', { author_id => 1, title => 'test', page => 2, per_page => 20 } );
+  # this ->query would use Foorum::Search::Sphinx when 'searchd' is available.
+  # or else, use Foorum::Search::Database to get the results.
 
 =head1 DESCRIPTION
 

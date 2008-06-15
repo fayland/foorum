@@ -69,3 +69,28 @@ sub work {
 sub max_retries {3}
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::TheSchwartz::Worker::ResizeProfilePhoto - resize profile photo in cron job
+
+=head1 SYNOPSIS
+
+  # check bin/cron/TheSchwartz_client.pl and bin/cron/TheSchwartz_worker.pl for usage
+
+=head1 DESCRIPTION
+
+Since L<Image::Magick> is a bit heavy to load into httpd, we move use Image::Magick; in this cron job.
+
+=head1 SEE ALSO
+
+L<TheSchwartz>
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut

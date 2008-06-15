@@ -11,5 +11,3 @@
   worker: ValidateForumData
 - time: '*/13 * * * *'
   worker: SendScheduledEmail
-- time: 10 1 * * *
-  worker: Scraper

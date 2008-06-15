@@ -34,7 +34,7 @@ sub query {
     }
 }
 
-sub forum {
+sub topic {
     my ( $self, $params ) = @_;
 
     my $forum_id  = $params->{'forum_id'};
@@ -105,11 +105,16 @@ Foorum::Search::Sphinx - search Foorum by Sphinx
 =head1 SYNOPSIS
 
   use Foorum::Search::Sphinx;
-  # TODO
+  
+  my $search = new Foorum::Search::Sphinx;
+  my $ret = $search->query('topic', { author_id => 1, title => 'test', page => 2, per_page => 20 } );
+  # $ret would be something like:
+  # 1, error, $ret is { error => $error }
+  # 2, { matches => \@topic_ids, total => 30 }
 
 =head1 DESCRIPTION
 
-This module implements Sphinx for Foorum Search.
+This module implements Sphinx for Foorum Search. so generally you should check L<Foorum::Search> instead.
 
 =head1 SEE ALSO
 

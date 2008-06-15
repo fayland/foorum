@@ -57,7 +57,23 @@ __END__
 
 =pod
 
-=head2 AUTHOR
+=head1 NAME
+
+Foorum::Action::PathLogger - Log every request into log_path table
+
+=head1 SYNOPSIS
+
+  sub end : ActionClass('+Foorum::Action::PathLogger') {
+
+=head1 DESCRIPTION
+
+log request.
+
+=head1 SEE ALSO
+
+L<Catalyst::Action>
+
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 
