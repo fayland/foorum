@@ -128,7 +128,7 @@ __END__
 
 Foorum::Formatter - format content for Foorum
 
-=head1 DESCRIPTION
+=head1 SYNOPSIS
 
   use Foorum::Formatter qw/filter_format/;
   
