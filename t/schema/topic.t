@@ -20,12 +20,12 @@ my $cache  = cache();
 my $topic_res = $schema->resultset('Topic');
 
 my $create = {
-    topic_id         => 1,
-    forum_id         => 1,
-    title            => 'test title',
-    closed           => 0,
-    author_id        => 1,
-    last_updator_id  => 1,
+    topic_id        => 1,
+    forum_id        => 1,
+    title           => 'test title',
+    closed          => 0,
+    author_id       => 1,
+    last_updator_id => 1,
 };
 
 # test create topic

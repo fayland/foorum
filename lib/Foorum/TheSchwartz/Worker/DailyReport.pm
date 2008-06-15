@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::DailyReport;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
@@ -31,10 +31,10 @@ sub work {
             time      => { '>', $time },
         }
     );
-    my $log_error_count = $schema->resultset('LogError')
-        ->count( { time => { '>', $time }, } );
-    my $log_path_count = $schema->resultset('LogPath')
-        ->count( { time => { '>', $time }, } );
+    my $log_error_count
+        = $schema->resultset('LogError')->count( { time => { '>', $time }, } );
+    my $log_path_count
+        = $schema->resultset('LogPath')->count( { time => { '>', $time }, } );
 
     my $text_body = qq~
         NewAddedUser:   $new_added_user\n

@@ -1,9 +1,10 @@
 This file documents the revision history for Foorum.
 
-0.1.5
+0.1.5 Sun Jun 15 15:37:00
         - Sphinx::Search improvements
         - change DATETIME to INT(11) for tables.
         - because 'mark ResultSetManager as deprecated and undocument it' in DBIx-Class, we switch back to ResultSet/*.pm
+        - Foorum::Search with Database or Sphinx backend
 
 0.1.4 Sat Apr 12 14:26:00
         - $topic->url/print

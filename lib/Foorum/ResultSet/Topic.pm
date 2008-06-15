@@ -2,10 +2,10 @@ package Foorum::ResultSet::Topic;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class::ResultSet';
 
-sub get  {
+sub get {
     my ( $self, $topic_id, $attrs ) = @_;
 
     my $schema = $self->result_source->schema;
@@ -32,7 +32,7 @@ sub get  {
     return $topic;
 }
 
-sub create_topic  {
+sub create_topic {
     my ( $self, $create ) = @_;
 
     my $schema = $self->result_source->schema;
@@ -51,7 +51,7 @@ sub create_topic  {
     return $topic;
 }
 
-sub update_topic  {
+sub update_topic {
     my ( $self, $topic_id, $update ) = @_;
 
     my $schema = $self->result_source->schema;
@@ -62,7 +62,7 @@ sub update_topic  {
     $cache->remove("topic|topic_id=$topic_id");
 }
 
-sub remove  {
+sub remove {
     my ( $self, $forum_id, $topic_id, $info ) = @_;
 
     my $schema = $self->result_source->schema;

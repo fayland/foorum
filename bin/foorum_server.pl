@@ -28,16 +28,16 @@ my $restart_directory = undef;
 my @argv = @ARGV;
 
 GetOptions(
-    'debug|d'             => \$debug,
-    'fork'                => \$fork,
-    'help|?'              => \$help,
-    'host=s'              => \$host,
-    'port=s'              => \$port,
-    'keepalive|k'         => \$keepalive,
-    'restart|r'           => \$restart,
-    'restartdelay|rd=s'   => \$restart_delay,
-    'restartregex|rr=s'   => \$restart_regex,
-    'restartdirectory=s'  => \$restart_directory,
+    'debug|d'            => \$debug,
+    'fork'               => \$fork,
+    'help|?'             => \$help,
+    'host=s'             => \$host,
+    'port=s'             => \$port,
+    'keepalive|k'        => \$keepalive,
+    'restart|r'          => \$restart,
+    'restartdelay|rd=s'  => \$restart_delay,
+    'restartregex|rr=s'  => \$restart_regex,
+    'restartdirectory=s' => \$restart_directory,
 );
 
 pod2usage(1) if $help;
@@ -45,7 +45,7 @@ pod2usage(1) if $help;
 if ( $restart && $ENV{CATALYST_ENGINE} eq 'HTTP' ) {
     $ENV{CATALYST_ENGINE} = 'HTTP::Restarter';
 }
-if ( $debug ) {
+if ($debug) {
     $ENV{CATALYST_DEBUG} = 1;
 }
 
@@ -53,15 +53,17 @@ if ( $debug ) {
 # variables can be set at runtime.
 require Foorum;
 
-Foorum->run( $port, $host, {
-    argv              => \@argv,
-    'fork'            => $fork,
-    keepalive         => $keepalive,
-    restart           => $restart,
-    restart_delay     => $restart_delay,
-    restart_regex     => qr/$restart_regex/,
-    restart_directory => $restart_directory,
-} );
+Foorum->run(
+    $port, $host,
+    {   argv              => \@argv,
+        'fork'            => $fork,
+        keepalive         => $keepalive,
+        restart           => $restart,
+        restart_delay     => $restart_delay,
+        restart_regex     => qr/$restart_regex/,
+        restart_directory => $restart_directory,
+    }
+);
 
 1;
 

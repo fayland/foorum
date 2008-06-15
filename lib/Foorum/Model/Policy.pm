@@ -2,7 +2,7 @@ package Foorum::Model::Policy;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Model';
 
 sub fill_user_role {

@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::RemoveOldDataFromDB;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use TheSchwartz::Job;
 use base qw( TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
@@ -30,8 +30,9 @@ sub work {
 
     # for table 'log_path'
     my $days_ago = $cron_config->{remove_db_old_data}->{log_path} || 30;
-    my $log_path_status = $schema->resultset('LogPath')
-        ->search( { time => { '<', $days_ago * 86400 }, } )->delete;
+    my $log_path_status
+        = $schema->resultset('LogPath')->search( { time => { '<', $days_ago * 86400 }, } )
+        ->delete;
 
     # for table 'log_error'
     $days_ago = $cron_config->{remove_db_old_data}->{log_error} || 30;

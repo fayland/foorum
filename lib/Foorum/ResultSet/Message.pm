@@ -2,7 +2,7 @@ package Foorum::ResultSet::Message;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class::ResultSet';
 
 sub remove_from_db {

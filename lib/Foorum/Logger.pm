@@ -2,7 +2,7 @@ package Foorum::Logger;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base qw/Exporter/;
 use vars qw/@EXPORT_OK/;
 @EXPORT_OK = qw/ error_log /;
@@ -13,8 +13,8 @@ sub error_log {
     return unless ($text);
     $schema->resultset('LogError')->create(
         {   level => $level || 'debug',
-            text => $text,
-            time => time(),
+            text  => $text,
+            time  => time(),
         }
     );
 }

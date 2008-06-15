@@ -2,35 +2,35 @@ package Foorum::Search;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 
 use Foorum::Search::Sphinx;
 use Foorum::Search::Database;
 
 sub new {
-	my $class = shift;
-	my $self = { @_ };
-	
-	my $sphinx = new Foorum::Search::Sphinx;
-	if ($sphinx->can_search()) {
-		$self->{use_sphinx} = 1;
-		$self->{sphinx} = $sphinx;
-	} else {
-		$self->{use_db} = 1;
-		$self->{db} = new Foorum::Search::Database;
-	}
-	
-	return bless $self => $class;
+    my $class = shift;
+    my $self  = {@_};
+
+    my $sphinx = new Foorum::Search::Sphinx;
+    if ( $sphinx->can_search() ) {
+        $self->{use_sphinx} = 1;
+        $self->{sphinx}     = $sphinx;
+    } else {
+        $self->{use_db} = 1;
+        $self->{db}     = new Foorum::Search::Database;
+    }
+
+    return bless $self => $class;
 }
 
 sub query {
-	my ($self, $type, $params) = @_;
-	
-	if ($self->{use_sphinx}) {
-		return $self->{sphinx}->query($type, $params);
-	} else {
-		return $self->{db}->query($type, $params);
-	}
+    my ( $self, $type, $params ) = @_;
+
+    if ( $self->{use_sphinx} ) {
+        return $self->{sphinx}->query( $type, $params );
+    } else {
+        return $self->{db}->query( $type, $params );
+    }
 }
 
 1;

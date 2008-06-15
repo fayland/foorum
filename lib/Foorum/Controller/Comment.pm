@@ -2,7 +2,7 @@ package Foorum::Controller::Comment;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/encodeHTML/;
 
@@ -390,7 +390,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             # u can only delete 5 topics one day
             my $most_deletion_per_day = $c->config->{per_day}->{most_deletion_topic}
                 || 5;
-            my $one_day_ago = time() - 86400;
+            my $one_day_ago   = time() - 86400;
             my $deleted_count = $c->model('DBIC')->resultset('LogAction')->count(
                 {   forum_id => $forum_id,
                     action   => 'delete',

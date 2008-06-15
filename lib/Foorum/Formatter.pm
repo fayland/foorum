@@ -2,7 +2,7 @@ package Foorum::Formatter;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Exporter';
 use Foorum::XUtils qw/config/;
 use vars qw/

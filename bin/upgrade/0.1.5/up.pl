@@ -26,22 +26,21 @@ my $schema = schema();
 my $dbh = $schema->storage->dbh;
 
 my %changes = (
-    comment => ['post_on', 'update_on'],
-    log_action => ['time'],
-    log_error  => ['time'],
-    log_path   => ['time'],
-    message    => ['post_on'],
+    comment         => [ 'post_on', 'update_on' ],
+    log_action      => ['time'],
+    log_error       => ['time'],
+    log_path        => ['time'],
+    message         => ['post_on'],
     scheduled_email => ['time'],
-    topic => ['last_update_date'],
-    user  => ['last_login_on'],
+    topic           => ['last_update_date'],
+    user            => ['last_login_on'],
 );
-
 
 # create a temp column then update as UNIX_TIMESTAMP
 # then drop old column and rename temp column
-foreach my $table (keys %changes) {
+foreach my $table ( keys %changes ) {
     print "Working on $table\n";
-    my @columns = @{$changes{$table}};
+    my @columns = @{ $changes{$table} };
     foreach my $old_col (@columns) {
         my $new_col = "${old_col}_tmp";
 

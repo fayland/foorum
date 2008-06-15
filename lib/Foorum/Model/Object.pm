@@ -2,7 +2,7 @@ package Foorum::Model::Object;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Model';
 use Switch;
 

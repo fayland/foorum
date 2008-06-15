@@ -3,7 +3,7 @@ package Foorum::Formatter::BBCode2;
 use strict;
 use warnings;
 
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 
 use base 'HTML::BBCode';    # > 2.00
 use Class::C3;              # for next::method();

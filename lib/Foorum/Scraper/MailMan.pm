@@ -7,7 +7,7 @@ package Foorum::Scraper::MailMan;
 use strict;
 use warnings;
 
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 
 use HTML::TokeParser;
 use LWP::Simple;

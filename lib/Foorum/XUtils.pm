@@ -3,7 +3,7 @@ package Foorum::XUtils;
 use strict;
 use warnings;
 
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 
 use YAML qw/LoadFile/;    # config
 use TheSchwartz;          # theschwartz

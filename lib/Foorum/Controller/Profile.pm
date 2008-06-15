@@ -2,7 +2,7 @@ package Foorum::Controller::Profile;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/generate_random_word/;
 use Foorum::XUtils qw/theschwartz/;

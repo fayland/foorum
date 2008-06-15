@@ -2,7 +2,7 @@ package Foorum::Controller::Topic;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/encodeHTML get_page_from_url generate_random_word/;
 use Foorum::XUtils qw/theschwartz/;
@@ -94,9 +94,9 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
                 comment_id  => $comment_id,
             }
             );
-        
+
         # print or normal show
-        if ($c->req->path =~ /\/print(\/|$)/) {
+        if ( $c->req->path =~ /\/print(\/|$)/ ) {
             $c->stash->{template} = 'topic/print.html';
         } else {
             $c->stash->{whos_view_this_page} = 1;

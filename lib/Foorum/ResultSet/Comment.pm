@@ -2,7 +2,7 @@ package Foorum::ResultSet::Comment;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class::ResultSet';
 
 use Foorum::Utils qw/get_page_from_url encodeHTML/;
