@@ -32,7 +32,7 @@ __END__
 
 =head1 NAME
 
-Foorum::SUtils - Utils for cron
+Foorum::SUtils - Foorum::Schema for pl
 
 =head1 FUNCTIONS
 
