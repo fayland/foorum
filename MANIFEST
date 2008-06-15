@@ -121,6 +121,7 @@ lib/Foorum/ResultSet/FilterWord.pm
 lib/Foorum/ResultSet/Forum.pm
 lib/Foorum/ResultSet/Hit.pm
 lib/Foorum/ResultSet/Message.pm
+lib/Foorum/ResultSet/ScheduledEmail.pm
 lib/Foorum/ResultSet/Share.pm
 lib/Foorum/ResultSet/Star.pm
 lib/Foorum/ResultSet/Topic.pm
@@ -160,6 +161,9 @@ lib/Foorum/Schema/UserSettings.pm
 lib/Foorum/Schema/Variables.pm
 lib/Foorum/Schema/Visit.pm
 lib/Foorum/Scraper/MailMan.pm
+lib/Foorum/Search.pm
+lib/Foorum/Search/Database.pm
+lib/Foorum/Search/Sphinx.pm
 lib/Foorum/SUtils.pm
 lib/Foorum/TheSchwartz/Worker/DailyChart.pm
 lib/Foorum/TheSchwartz/Worker/DailyReport.pm
@@ -177,8 +181,6 @@ lib/Foorum/Version.pm
 lib/Foorum/View/JSON.pm
 lib/Foorum/View/TT.pm
 lib/Foorum/XUtils.pm
-lib/HTML/BBCode/Strict.pm
-lib/HTML/BBCode/Strict/Tag.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
