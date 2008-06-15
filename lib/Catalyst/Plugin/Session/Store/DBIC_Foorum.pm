@@ -1,4 +1,4 @@
-package Catalyst::Plugin::Session::Store::DBIC;
+package Catalyst::Plugin::Session::Store::DBIC_Foorum;
 
 use strict;
 use warnings;

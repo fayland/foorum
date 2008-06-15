@@ -10,7 +10,7 @@ use Catalyst qw/
     Cache
     Session::DynamicExpiry
     Session
-    Session::Store::DBIC
+    Session::Store::DBIC_Foorum
     Session::State::Cookie
     I18N
     FormValidator::Simple
