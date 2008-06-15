@@ -1,6 +1,6 @@
 This file documents the revision history for Foorum.
 
-0.1.6
+0.1.6 Mon Jun 16 7:29:00
         - fix login Captcha bug
         - TheSchwartz cron job: resend activation email
         - better document

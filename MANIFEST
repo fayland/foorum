@@ -30,6 +30,7 @@ bin/upgrade/0.1.2/up.pl
 bin/upgrade/0.1.3/up.pl
 bin/upgrade/0.1.5/up.pl
 Changes
+Changes2
 conf/cron.yml
 conf/examples/mail/Gmail.yml
 conf/examples/mail/sendmail.yml
@@ -68,7 +69,7 @@ inc/Module/Install/Metadata.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 INSTALL
-lib/Catalyst/Plugin/Session/Store/DBIC.pm
+lib/Catalyst/Plugin/Session/Store/DBIC_Foorum.pm
 lib/Foorum.pm
 lib/Foorum/Action/PathLogger.pm
 lib/Foorum/Controller/Admin.pm
@@ -170,6 +171,7 @@ lib/Foorum/TheSchwartz/Worker/DailyReport.pm
 lib/Foorum/TheSchwartz/Worker/Hit.pm
 lib/Foorum/TheSchwartz/Worker/RemoveObject.pm
 lib/Foorum/TheSchwartz/Worker/RemoveOldDataFromDB.pm
+lib/Foorum/TheSchwartz/Worker/ResendActivation.pm
 lib/Foorum/TheSchwartz/Worker/ResizeProfilePhoto.pm
 lib/Foorum/TheSchwartz/Worker/Scraper.pm
 lib/Foorum/TheSchwartz/Worker/SendScheduledEmail.pm
@@ -501,6 +503,8 @@ t/scraper/01mailman/001126.html
 t/scraper/01mailman/001128.html
 t/scraper/01mailman/date.html
 t/scraper/01mailman/thread.html
+t/search/01main.t
+t/search/02database.t
 t/template/01wrapper.t
 templates/admin/ban_ip/default.html
 templates/admin/bar.html
