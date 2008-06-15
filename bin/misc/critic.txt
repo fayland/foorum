@@ -99,7 +99,6 @@ lib\Foorum\TheSchwartz\Worker\Topic_ViewAsPDF.pm source OK
 lib\Foorum\TheSchwartz\Worker\ValidateForumData.pm source OK
 lib\Foorum\Utils.pm source OK
 lib\Foorum\Version.pm: Package declaration must match filename at line 1, column 1. Correct the filename or package statement.
-lib\Foorum\Version.pm: Code before strictures are enabled at line 3, column 1. See page 429 of PBP.
 lib\Foorum\View\JSON.pm source OK
 lib\Foorum\View\TT.pm source OK
 lib\Foorum\XUtils.pm source OK
