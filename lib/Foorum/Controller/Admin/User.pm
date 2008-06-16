@@ -62,7 +62,7 @@ sub edit : Local {
     unless ( $c->req->method eq 'POST' ) {
         return $c->stash->{user} = $user;
     } else {
-        my @columns = $user->columns;
+        my @columns = $c->model('DBIC::User')->result_source->columns;
         my @update_cols;
         my $query = $c->req->params;
         foreach my $key ( keys %$query ) {
