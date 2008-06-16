@@ -82,7 +82,7 @@ sub user : Private {
 
     $c->detach( '/print_error', ['ERROR_USER_NON_EXSIT'] ) unless ($user);
 
-    if ( $user->{status} eq 'banned' or $user->{status} eq 'blocked' ) {
+    if ( $user->{status} eq 'banned' or $user->{status} eq 'blocked' or $user->{status} eq 'terminated' ) {
         $c->detach( '/print_error', ['ERROR_ACCOUNT_CLOSED_STATUS'] );
     }
 

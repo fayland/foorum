@@ -57,7 +57,8 @@ sub login : Global {
             }
 
             if (   $c->user->get('status') eq 'banned'
-                or $c->user->get('status') eq 'blocked' ) {
+                or $c->user->get('status') eq 'blocked'
+                or $c->user->get('status') eq 'terminated' ) {
                 $c->logout;
                 $c->detach( '/print_error', ['ERROR_ACCOUNT_CLOSED_STATUS'] );
             }
