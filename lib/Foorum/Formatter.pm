@@ -22,8 +22,8 @@ sub filter_format {
             = eval "use Text::Textile; 1;";    ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'ubb' and not defined $has_ubb_code ) {
-        $has_ubb_code = eval
-            "use Foorum::Formatter::BBCode2; 1;";    ## no critic (ProhibitStringyEval)
+        $has_ubb_code =    ## no critic no critic no critic no critic no critic no critic
+            eval "use Foorum::Formatter::BBCode2; 1;";  ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'wiki' and not defined $has_text_wiki ) {
         $has_text_wiki

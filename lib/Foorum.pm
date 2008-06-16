@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Catalyst qw/
-    Config::YAML
+    Config::YAML::XS
     Static::Simple
     Authentication
     Cache

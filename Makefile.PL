@@ -23,7 +23,7 @@ requires 'Catalyst::View::JSON';
 requires 'Catalyst::Model::DBIC::Schema';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'YAML';
-requires 'Catalyst::Plugin::Config::YAML';
+requires 'Catalyst::Plugin::Config::YAML::XS';
 requires 'Cache::FileCache';
 requires 'Catalyst::Plugin::Cache';
 requires 'Catalyst::Plugin::PageCache';
