@@ -114,7 +114,7 @@ sub members : Local {
     $c->stash(
         {   users      => [ $rs->all ],
             pager      => $rs->pager,
-            url_prefix => '/site/user',
+            url_prefix => '/site/members',
             template   => 'site/user.html',
         }
     );
