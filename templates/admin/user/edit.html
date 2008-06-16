@@ -37,7 +37,7 @@ No such user.
 <tr class='misc1'><td align='right'>Status:</td><td>
     <select name='status'>
         [% FOREACH st IN ['banned','blocked','verified','unverified','terminated'] %]
-        <option value='[% st %]'[% IF user.status == st %]selected='selected'>[% st | ucfirst %]</option>
+        <option value='[% st %]'[% IF user.status == st %]selected='selected'[% END %]>[% st | ucfirst %]</option>
         [% END %]
     </select>
 </td></tr>
