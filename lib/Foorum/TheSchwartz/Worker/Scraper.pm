@@ -199,8 +199,10 @@ sub get_topic_or_create {
                 columns  => ['comment_id'],
             }
         )->first;
-        my $reply_to = $rs->comment_id;
-        return ( $topic->topic_id, $reply_to );
+        if ($rs) {
+            my $reply_to = $rs->comment_id;
+            return ( $topic->topic_id, $reply_to );
+        }
     }
 
     # or else, create one

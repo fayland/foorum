@@ -2,6 +2,7 @@ This file documents the revision history for Foorum.
 
 0.1.7
         - use Catalyst::Plugin::Config::YAML::XS instead of Catalyst::Plugin::Config::YAML
+        - new jQuery UI 1.5
 
 0.1.6 Mon Jun 16 7:29:00
         - fix login Captcha bug
