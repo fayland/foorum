@@ -8,7 +8,7 @@
  <br /><br />
  [% c.loc('Threads:') %] [% user.threads %]<br />
  [% c.loc('Replies:') %] [% user.replies %]<br />
- [% c.loc('Register on') %]: [% date_format(user.register_time) %]<br />
+ [% c.loc('Register on') %]: [% date_format(user.register_time, '%Y-%m-%d') %]<br />
  <a href='/help/user_status'>[% c.loc('Status:') %]</a> [% user.status | ucfirst %]<br />
 [% ELSE %]
  Anonymous

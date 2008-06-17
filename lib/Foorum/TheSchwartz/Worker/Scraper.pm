@@ -12,7 +12,7 @@ use Foorum::Scraper::MailMan;
 use Foorum::Utils qw/encodeHTML/;
 use POSIX qw(strftime);
 use File::Spec;
-use YAML qw/LoadFile/;
+use YAML::XS qw/LoadFile/;
 my ( undef, $path ) = File::Spec->splitpath(__FILE__);
 my $scraper_config = LoadFile("$path/../../../../conf/scraper.yml");
 

@@ -16,7 +16,7 @@
 </table>
 [% mytime = date.now - 86000 %]
 [% FOREACH f IN forums %]
-[% IF f.last_post.last_update_date > mytime %]
+[% IF f.last_post.last_update_date && f.last_post.last_update_date > mytime %]
 [% status = 'on' %]
 [% ELSE %]
 [% status = 'off' %]

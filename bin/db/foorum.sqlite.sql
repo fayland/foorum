@@ -1,6 +1,6 @@
 -- 
 -- Created by SQL::Translator::Producer::SQLite
--- Created on Mon Jun 16 10:48:45 2008
+-- Created on Mon Jun 16 20:35:12 2008
 -- 
 BEGIN TRANSACTION;
 
@@ -299,6 +299,7 @@ CREATE TABLE topic (
   topic_id INTEGER PRIMARY KEY NOT NULL,
   forum_id int(11) NOT NULL DEFAULT '0',
   title varchar(255) DEFAULT NULL,
+  post_on int(11) NOT NULL DEFAULT '0',
   closed enum(1) NOT NULL DEFAULT '0',
   sticky enum(1) NOT NULL DEFAULT '0',
   elite enum(1) NOT NULL DEFAULT '0',

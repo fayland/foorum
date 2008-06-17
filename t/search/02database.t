@@ -8,7 +8,7 @@ BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
 
-    plan tests => 19;
+    plan tests => 23;
 }
 
 use FindBin;
@@ -39,6 +39,7 @@ my $create = {
     author_id        => 1,
     last_updator_id  => 1,
     last_update_date => time() - 200,
+    post_on          => time(),
 };
 $schema->resultset('Topic')->create_topic($create);
 $create = {
@@ -49,6 +50,7 @@ $create = {
     author_id        => 1,
     last_updator_id  => 2,
     last_update_date => time() - 100,
+    post_on          => time() - 100,
 };
 $schema->resultset('Topic')->create_topic($create);
 $create = {
@@ -59,6 +61,7 @@ $create = {
     author_id        => 2,
     last_updator_id  => 3,
     last_update_date => time(),
+    post_on          => time() - 200,
 };
 $schema->resultset('Topic')->create_topic($create);
 
@@ -69,6 +72,13 @@ is( $ret->{matches}->[0],        2,     '[0]matches[0] is topic 2' );
 is( $ret->{matches}->[1],        1,     '[0]matches[1] is topic 1' );
 isa_ok( $ret->{pager}, 'Data::Page', '[0]pager is ISA Data::Page' );
 is( $ret->{pager}->total_entries, 2, '[0]pager OK' );
+
+# add order_by
+$ret = $search->query( 'topic', { author_id => 1, order_by => 'post_on' } );
+is( $ret->{error},               undef, '[0+]no error in database' );
+is( scalar @{ $ret->{matches} }, 2,     '[0+]get 2 results' );
+is( $ret->{matches}->[0],        1,     '[0+]matches[0] is topic 2' );
+is( $ret->{matches}->[1],        2,     '[0+]matches[1] is topic 1' );
 
 $ret = $search->query( 'topic', { title => 'test' } );
 is( $ret->{error},                undef, '[1]no error in database' );

@@ -39,7 +39,7 @@ my $verbose = sub {
 $client->set_verbose($verbose);
 
 # load entry from theschwartz.yml or examples/theschwartz.yml
-use YAML qw/LoadFile/;
+use YAML::XS qw/LoadFile/;
 my $theschwartz_config;
 if ( -e "$base_path/conf/theschwartz.yml" ) {
     $theschwartz_config = LoadFile("$base_path/conf/theschwartz.yml");

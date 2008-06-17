@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
-use YAML qw/LoadFile/;
+use YAML::XS qw/LoadFile/;
 use Email::Send;
 use MIME::Entity;
 use Data::Dumper;

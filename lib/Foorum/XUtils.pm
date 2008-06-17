@@ -5,9 +5,9 @@ use warnings;
 
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 
-use YAML qw/LoadFile/;    # config
-use TheSchwartz;          # theschwartz
-use Template;             # template
+use YAML::XS qw/LoadFile/;    # config
+use TheSchwartz;              # theschwartz
+use Template;                 # template
 use Template::Stash::XS;
 use base 'Exporter';
 use vars qw/@EXPORT_OK $base_path $config $cache $tt2 $theschwartz/;

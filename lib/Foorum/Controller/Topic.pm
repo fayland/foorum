@@ -22,7 +22,7 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
     my $forum_id = $forum->{forum_id};
 
     my $format = $c->req->param('format');
-    if ( $format eq 'pdf' ) {
+    if ( $format and $format eq 'pdf' ) {
         unless ( $c->config->{function_on}->{topic_pdf} ) {
             $c->detach( '/print_error', ['Function Disabled'] );
         }

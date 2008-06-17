@@ -8,7 +8,7 @@
 </head>
 <body class="t6">
 <div id="wikicontent">
-<h1> Tutorial 1: Catalyst Plugins used in Foorum </h1><h2> Config::YAML </h2><p><a href="http://search.cpan.org/perldoc?Catalyst::Plugin::Config::YAML" rel="nofollow">Catalyst::Plugin::Config::YAML</a></p><p>Why we are using Config::YAML instead ConfigLoader is under a simple <a href="RULES.html">RULES</a>, Fast is better.</p><h2> Static::Simple </h2><p><a href="http://search.cpan.org/perldoc?Catalyst::Plugin::Static::Simple" rel="nofollow">Catalyst::Plugin::Static::Simple</a></p><p>I think I need let Static::Simple be configurable later. because it's better let Apache handles static contents.</p><h2> Authentication </h2><p><a href="http://search.cpan.org/perldoc?Catalyst::Plugin::Authentication" rel="nofollow">Catalyst::Plugin::Authentication</a></p><p>Authentication is a important part in Foorum. viacheslav.t suggests</p><blockquote>Another thing that i am concerned about is a way how to plug-in your forum to an
+<h1> Tutorial 1: Catalyst Plugins used in Foorum </h1><h2> Config::YAML </h2><p><a href="http://search.cpan.org/perldoc?Catalyst::Plugin::Config::YAML::XS" rel="nofollow">Catalyst::Plugin::Config::YAML::XS</a></p><p>Why we are using Config::YAML::XS instead ConfigLoader is under a simple <a href="RULES.html">RULES</a>, Fast is better.</p><h2> Static::Simple </h2><p><a href="http://search.cpan.org/perldoc?Catalyst::Plugin::Static::Simple" rel="nofollow">Catalyst::Plugin::Static::Simple</a></p><p>I think I need let Static::Simple be configurable later. because it's better let Apache handles static contents.</p><h2> Authentication </h2><p><a href="http://search.cpan.org/perldoc?Catalyst::Plugin::Authentication" rel="nofollow">Catalyst::Plugin::Authentication</a></p><p>Authentication is a important part in Foorum. viacheslav.t suggests</p><blockquote>Another thing that i am concerned about is a way how to plug-in your forum to an
 existing Cat application. For example i have my own user infrastructure and
 registration, banning, blocking system (some things are borrowed from your code
 ;-)...
@@ -63,7 +63,10 @@ registration, banning, blocking system (some things are borrowed from your code
 </pre><p>when page_cache: 1, it will be enabled.</p><h1> SEE ALSO </h1><p><a href="I18N.html">I18N</a>, <a href="Configure.html">Configure</a>, <a href="Tutorial2.html">Tutorial2</a>, <a href="Tutorial3.html">Tutorial3</a>, <a href="Tutorial4.html">Tutorial4</a>, <a href="Tutorial5.html">Tutorial5</a></p>
 </div>
 <h1>WHERE TO GO NEXT</h1>
-<p>Get the lastest version from <a href="http://code.google.com/p/foorum/wiki/Tutorial1">http://code.google.com/p/foorum/wiki/Tutorial1</a></p>
+<ul>
+<li>Get the lastest version from <a href="http://code.google.com/p/foorum/wiki/Tutorial1">http://code.google.com/p/foorum/wiki/Tutorial1</a></li>
+<li><a href="index.html">Index Page</a></li>
+</ul>
 <script src="static/prettify.js"></script>
 <script>
  prettyPrint();

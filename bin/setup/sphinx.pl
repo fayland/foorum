@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use FindBin;
 use Cwd qw/abs_path/;
-use YAML qw/LoadFile/;
+use YAML::XS qw/LoadFile/;
 use File::Path;
 
 my $path = abs_path("$FindBin::RealBin/../..");

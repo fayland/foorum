@@ -35,9 +35,11 @@ sub forum : Local {
 
     $c->stash->{template} = 'search/forum.html';
 
-    my $title  = $c->req->params->{'title'};
-    my $author = $c->req->params->{'author'};
-    my $date   = $c->req->params->{'date'};
+    my $params   = $c->req->params;
+    my $title    = $params->{'title'};
+    my $author   = $params->{'author'};
+    my $date     = $params->{'date'};
+    my $order_by = $params->{order_by};
 
     # date value would be 2, 7, 30, 999
     $date = 0 if ( $date and $date != 2 and $date != 7 and $date != 30 and $date != 999 );
@@ -52,15 +54,16 @@ sub forum : Local {
 
     my $page     = get_page_from_url( $c->req->path );
     my $per_page = 20;
-    my $params   = {
+    my $scond    = {
         title     => $c->req->params->{'title'},
         date      => $date,
         author_id => $author_id,
         forum_id  => $forum_id,
         page      => $page,
         per_page  => $per_page,
+        order_by  => $order_by,
     };
-    my $ret = $c->stash->{search}->query( 'topic', $params );
+    my $ret = $c->stash->{search}->query( 'topic', $scond );
     my $err = $ret->{error};
     if ($err) {
         error_log( $c->model('DBIC'), 'fatal', $err );

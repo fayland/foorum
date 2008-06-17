@@ -2,9 +2,9 @@ package Foorum::TestUtils;
 
 use strict;
 use warnings;
-use YAML qw/LoadFile/;    # config
-use Foorum::Schema;       # schema
-use Cache::FileCache;     # cache
+use YAML::XS qw/LoadFile/;    # config
+use Foorum::Schema;           # schema
+use Cache::FileCache;         # cache
 use base 'Exporter';
 use vars qw/@EXPORT_OK $config $cache $base_path/;
 @EXPORT_OK = qw/

@@ -37,6 +37,7 @@ sub create_topic {
 
     my $schema = $self->result_source->schema;
 
+    $create->{post_on} = time() unless ( $create->{post_on} );
     my $topic = $self->create($create);
 
     # star it by default

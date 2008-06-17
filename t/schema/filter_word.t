@@ -49,27 +49,6 @@ is( $has_bad_word, 'fuck', 'has_bad_word OK' );
 my $return_text = $filter_word_res->convert_offensive_word("kick your asshole la, dude!");
 like( $return_text, qr/\*/, 'convert_offensive_word OK' );
 
-#remove
-$filter_word_res->search(
-    {   word => 'system',
-        type => 'username_reserved'
-    }
-)->delete;
-$filter_word_res->search(
-    {   word => 'fuck',
-        type => 'bad_word'
-    }
-)->delete;
-$filter_word_res->search(
-    {   word => 'asshole',
-        type => 'offensive_word'
-    }
-)->delete;
-
-$cache->remove("filter_word|type=username_reserved");
-$cache->remove("filter_word|type=bad_word");
-$cache->remove("filter_word|type=offensive_word");
-
 END {
 
     # Keep Database the same from original

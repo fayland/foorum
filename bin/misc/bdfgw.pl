@@ -19,7 +19,7 @@ my @filenames = (
     'README',          'INSTALL',   'Configure', 'I18N',
     'TroubleShooting', 'AUTHORS',   'RULES',     'HowRSS',
     'Tutorial1',       'Tutorial2', 'Tutorial3', 'Tutorial4',
-    'Tutorial5',
+    'Tutorial5',       'PreRelease',
 );
 
 my %tags = %Text::GooglewikiFormat::tags;
@@ -95,7 +95,10 @@ sub buildhtml {
 $html
 </div>
 <h1>WHERE TO GO NEXT</h1>
-<p>Get the lastest version from <a href="$wiki_url">$wiki_url</a></p>
+<ul>
+<li>Get the lastest version from <a href="$wiki_url">$wiki_url</a></li>
+<li><a href="index.html">Index Page</a></li>
+</ul>
 <script src="static/prettify.js"></script>
 <script>
  prettyPrint();

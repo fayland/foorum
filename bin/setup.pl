@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use FindBin;
 use Cwd qw/abs_path/;
-use YAML qw/DumpFile LoadFile/;
+use YAML::XS qw/DumpFile LoadFile/;
 use DBI;
 use lib "$FindBin::Bin/../lib";
 use vars qw/$dbh/;

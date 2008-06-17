@@ -43,6 +43,7 @@ sub topic {
     my $date      = $params->{'date'};
     my $page      = $params->{'page'} || 1;
     my $per_page  = $params->{per_page} || 20;
+    my $order_by  = $params->{order_by} || 'last_update_date';
 
     my $sphinx = $self->{sphinx};
     my $schema = $self->{schema};
@@ -62,7 +63,8 @@ sub topic {
         }
     }
 
-    $sphinx->SetSortMode( SPH_SORT_ATTR_DESC, 'last_update_date' );
+    $order_by = 'last_update_date' if ( $order_by ne 'post_on' );
+    $sphinx->SetSortMode( SPH_SORT_ATTR_DESC, $order_by );
     $sphinx->SetMatchMode(SPH_MATCH_ANY);
     $sphinx->SetLimits( ( $page - 1 ) * $per_page, $per_page, 20 * $per_page )
         ;                        # MAX is 20 pages

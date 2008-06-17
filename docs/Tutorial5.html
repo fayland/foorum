@@ -52,7 +52,7 @@ BEGIN {
 ### load Foorum::TestUtils to get schema and cache
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Foorum::TestUtils qw/schema cache/;
+use Foorum::TestUtils qw/schema cache base_path/;
 my $schema = schema();
 my $cache  = cache();
  
@@ -102,30 +102,17 @@ is( $has_bad_word, 1, 'has_bad_word OK' );
 ### Code Exp.
 ### check sub convert_offensive_word in Foorum::ResultSet::FilterWord
 my $return_text = $filter_word_res-&gt;convert_offensive_word("kick your asshole la, dude!");
-like( $return_text, qr/\*/, 'convert_offensive_word OK' );
+like( $return_text, qr/\*/, 'convert_offensive_word OK' ); #\ #/
  
 ### Code Exp.
-### Make our DB as the same before we run it. so that we can run it many times
-#remove
-$filter_word_res-&gt;search(
-    {   word =&gt; 'system',
-        type =&gt; 'username_reserved'
-    }
-)-&gt;delete;
-$filter_word_res-&gt;search(
-    {   word =&gt; 'fuck',
-        type =&gt; 'bad_word'
-    }
-)-&gt;delete;
-$filter_word_res-&gt;search(
-    {   word =&gt; 'asshole',
-        type =&gt; 'offensive_word'
-    }
-)-&gt;delete;
- 
-$cache-&gt;remove("filter_word|type=username_reserved");
-$cache-&gt;remove("filter_word|type=bad_word");
-$cache-&gt;remove("filter_word|type=offensive_word");
+### Make our DB as the same as before we run it. so that we can run it many times
+END {
+    # Keep Database the same from original
+    use File::Copy ();
+    my $base_path = base_path();
+    File::Copy::copy( "$base_path/t/lib/Foorum/backup.db",
+        "$base_path/t/lib/Foorum/test.db" );
+}
  
 1;
 </pre><h2> View Esp. TT </h2><p>Generally we don't write any test cases for TT. but if we want to write one, that's still possible.</p><p>check t/templates/wrapper.t</p><pre class="prettyprint">#!/usr/bin/perl
@@ -196,7 +183,10 @@ like( $html, qr/\&lt;a href=/,
 </pre><h1> SEE ALSO </h1><p><a href="Tutorial1.html">Tutorial1</a>, <a href="Tutorial2.html">Tutorial2</a>, <a href="Tutorial3.html">Tutorial3</a>, <a href="Tutorial4.html">Tutorial4</a></p>
 </div>
 <h1>WHERE TO GO NEXT</h1>
-<p>Get the lastest version from <a href="http://code.google.com/p/foorum/wiki/Tutorial5">http://code.google.com/p/foorum/wiki/Tutorial5</a></p>
+<ul>
+<li>Get the lastest version from <a href="http://code.google.com/p/foorum/wiki/Tutorial5">http://code.google.com/p/foorum/wiki/Tutorial5</a></li>
+<li><a href="index.html">Index Page</a></li>
+</ul>
 <script src="static/prettify.js"></script>
 <script>
  prettyPrint();

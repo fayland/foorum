@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
-use YAML qw/DumpFile LoadFile/;
+use YAML::XS qw/DumpFile LoadFile/;
 
 sub auto : Private {
     my ( $self, $c ) = @_;

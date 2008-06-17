@@ -3,7 +3,7 @@ abstract: 'Foorum - forum system based on Catalyst'
 author:
   - 'Fayland Lam<fayland@gmail.com>'
 distribution_type: module
-generated_by: 'Module::Install version 0.71'
+generated_by: 'Module::Install version 0.75'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.3.html
@@ -14,7 +14,6 @@ no_index:
     - inc
     - t
 recommends:
-  Catalyst::Model::DBIC::Schema::QueryLog: 0
   Email::Send::SMTP::TLS: 0
   File::HomeDir: 0
   Proc::PID::File: 0
@@ -27,7 +26,7 @@ requires:
   Catalyst::Plugin::Authentication::Credential::Password: 0
   Catalyst::Plugin::Cache: 0
   Catalyst::Plugin::Captcha: 0
-  Catalyst::Plugin::Config::YAML: 0
+  Catalyst::Plugin::Config::YAML::XS: 0
   Catalyst::Plugin::FormValidator::Simple: 0
   Catalyst::Plugin::I18N: 0
   Catalyst::Plugin::PageCache: 0
@@ -59,7 +58,6 @@ requires:
   Set::Object: 0
   Sphinx::Search: 0
   Sub::Install: 0
-  Switch: 0
   Template: 0
   Template::Plugin::Date: 0
   Template::Plugin::FillInForm: 0
@@ -69,4 +67,4 @@ requires:
   TheSchwartz: 0
   URI::Find::UTF8: 0
   YAML: 0
-version: 0.1.6
+version: 0.1.7

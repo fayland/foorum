@@ -34,8 +34,8 @@ sub login : Global {
 
     # check if we need captcha
     # for login password wrong more than 3 times, we create a captcha.
-    my $mem_key             = "captcha|login|username=$username";
-    my $failure_login_times = $c->cache->get($mem_key);
+    my $mem_key = "captcha|login|username=$username";
+    my $failure_login_times = $c->cache->get($mem_key) || 0;
 
     if ( $username and $password ) {
 
@@ -87,7 +87,6 @@ sub login : Global {
             my $referer = $c->req->param('referer') || '/';
             $c->res->redirect($referer);
         } else {
-            $failure_login_times = 0 unless ($failure_login_times);
             $failure_login_times++;
             $c->cache->set( $mem_key, $failure_login_times, 600 );    # 10 minite
             $c->stash->{failure_login_times} = $failure_login_times;

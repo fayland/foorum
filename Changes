@@ -4,6 +4,7 @@ This file documents the revision history for Foorum.
         - use Catalyst::Plugin::Config::YAML::XS instead of Catalyst::Plugin::Config::YAML
         - new jQuery UI 1.5
         - add SQLite SQL files bin/db/foorum.sqlite.sql and theschwartz.sqlite.sql
+        - add 'post_on' column in 'topic' table + Sort by post_on for Search Topic
 
 0.1.6 Mon Jun 16 7:29:00
         - fix login Captcha bug

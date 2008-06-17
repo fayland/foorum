@@ -8,7 +8,7 @@ use base qw( TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
 use Foorum::XUtils qw/base_path/;
-use YAML qw/LoadFile/;
+use YAML::XS qw/LoadFile/;
 
 my $base_path   = base_path();
 my $cron_config = LoadFile("$base_path/conf/cron.yml");

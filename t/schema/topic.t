@@ -7,7 +7,7 @@ use Test::More;
 BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
-    plan tests           => 11;
+    plan tests           => 13;
 }
 
 use FindBin;
@@ -19,7 +19,8 @@ my $cache  = cache();
 
 my $topic_res = $schema->resultset('Topic');
 
-my $create = {
+my $post_on = time();
+my $create  = {
     topic_id        => 1,
     forum_id        => 1,
     title           => 'test title',
@@ -44,6 +45,8 @@ my $topic = $topic_res->get(1);
 is( $topic->{forum_id},  1,            'get forum_id OK' );
 is( $topic->{title},     'test title', 'get title OK' );
 is( $topic->{author_id}, 1,            'get author_id OK' );
+cmp_ok( $topic->{post_on}, '>=', $post_on, 'topic.post_on >= $post_on' );
+cmp_ok( $topic->{post_on}, '<=', time(),   'topic.post_on <= now' );
 
 # test update_topic
 $topic_res->update_topic( 1, { title => 'test title2', author_id => 2 } );

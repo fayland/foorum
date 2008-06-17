@@ -1,0 +1,4 @@
+foorum.sqlite.sql and theschwartz.sqlite.sql is produced by following commands:
+$ cpan SQL::Translator
+$ sqlt --from MySQL --to SQLite foorum.sql > foorum.sqlite.sql
+$ sqlt --from MySQL --to SQLite theschwartz.sql > theschwartz.sqlite.sql

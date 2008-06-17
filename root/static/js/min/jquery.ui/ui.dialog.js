@@ -1,25 +1,42 @@
-(function($)
-{$.ui=$.ui||{};$.fn.dialog=function(o){return this.each(function(){if(!$(this).is(".ui-dialog"))new $.ui.dialog(this,o);});}
-$.fn.dialogOpen=function(){return this.each(function(){var contentEl;if($(this).parents(".ui-dialog").length)contentEl=this;if(!contentEl&&$(this).is(".ui-dialog"))contentEl=$('.ui-dialog-content',this)[0];$.ui.dialogOpen(contentEl)});}
-$.fn.dialogClose=function(){return this.each(function(){var contentEl;if($(this).parents(".ui-dialog").length)contentEl=this;if(!contentEl&&$(this).is(".ui-dialog"))contentEl=$('.ui-dialog-content',this)[0];$.ui.dialogClose(contentEl);});}
-$.ui.dialog=function(el,o){var options={width:300,height:200,position:'center',buttons:[],modal:false,drag:true,resize:true,shadow:false};var o=o||{};$.extend(options,o);this.element=el;var self=this;$.data(this.element,"ui-dialog",this);var uiDialogContent=$(el).addClass('ui-dialog-content')
-.wrap(document.createElement('div'))
-.wrap(document.createElement('div'));var uiDialogContainer=uiDialogContent.parent().addClass('ui-dialog-container').css({position:'relative'});var uiDialog=uiDialogContainer.parent()
-.addClass('ui-dialog').addClass(uiDialogContent.attr('className'))
-.css({position:'absolute',width:options.width,height:options.height});if(options.modal==false&&options.resize==true){uiDialog.append("<div class='ui-resizable-n ui-resizable-handle'></div>")
-.append("<div class='ui-resizable-s ui-resizable-handle'></div>")
-.append("<div class='ui-resizable-e ui-resizable-handle'></div>")
-.append("<div class='ui-resizable-w ui-resizable-handle'></div>")
-.append("<div class='ui-resizable-ne ui-resizable-handle'></div>")
-.append("<div class='ui-resizable-se ui-resizable-handle'></div>")
-.append("<div class='ui-resizable-sw ui-resizable-handle'></div>")
-.append("<div class='ui-resizable-nw ui-resizable-handle'></div>");uiDialog.resizable();}
-uiDialogContainer.prepend('<div class="ui-dialog-titlebar"></div>');var uiDialogTitlebar=$('.ui-dialog-titlebar',uiDialogContainer);var title=(options.title)?options.title:(uiDialogContent.attr('title'))?uiDialogContent.attr('title'):'';uiDialogTitlebar.append('<span class="ui-dialog-title">'+title+'</span>');uiDialogTitlebar.append('<div class="ui-dialog-titlebar-close"></div>');$('.ui-dialog-titlebar-close',uiDialogTitlebar)
+(function($){var setDataSwitch={dragStart:"start.draggable",drag:"drag.draggable",dragStop:"stop.draggable",maxHeight:"maxHeight.resizable",minHeight:"minHeight.resizable",maxWidth:"maxWidth.resizable",minWidth:"minWidth.resizable",resizeStart:"start.resizable",resize:"drag.resizable",resizeStop:"stop.resizable"};$.widget("ui.dialog",{init:function(){var self=this,options=this.options,resizeHandles=typeof options.resizable=='string'?options.resizable:'n,e,s,w,se,sw,ne,nw',uiDialogContent=this.element
+.addClass('ui-dialog-content')
+.wrap('<div/>')
+.wrap('<div/>'),uiDialogContainer=uiDialogContent.parent()
+.addClass('ui-dialog-container')
+.css({position:'relative'}),title=options.title||uiDialogContent.attr('title')||'',uiDialogTitlebar=(this.uiDialogTitlebar=$('<div class="ui-dialog-titlebar"/>'))
+.append('<span class="ui-dialog-title">'+title+'</span>')
+.append('<a href="#" class="ui-dialog-titlebar-close"><span>X</span></a>')
+.prependTo(uiDialogContainer),uiDialog=(this.uiDialog=uiDialogContainer.parent())
+.appendTo(document.body)
+.hide()
+.addClass('ui-dialog')
+.addClass(options.dialogClass)
+.addClass(uiDialogContent.attr('className'))
+.removeClass('ui-dialog-content')
+.css({position:'absolute',width:options.width,height:options.height,overflow:'hidden',zIndex:options.zIndex})
+.attr('tabIndex',-1).css('outline',0).keydown(function(ev){if(options.closeOnEscape){var ESC=27;(ev.keyCode&&ev.keyCode==ESC&&self.close());}})
+.mousedown(function(){self.moveToTop();});this.uiDialogTitlebarClose=$('.ui-dialog-titlebar-close',uiDialogTitlebar)
 .hover(function(){$(this).addClass('ui-dialog-titlebar-close-hover');},function(){$(this).removeClass('ui-dialog-titlebar-close-hover');})
 .mousedown(function(ev){ev.stopPropagation();})
-.click(function(){self.close();});var l=0;$.each(options.buttons,function(){l=1;return false;});if(l==1){uiDialog.append('<div class="ui-dialog-buttonpane"></div>');var uiDialogButtonPane=$('.ui-dialog-buttonpane',uiDialog);$.each(options.buttons,function(name,value){var btn=$(document.createElement('button')).text(name).click(value);uiDialogButtonPane.append(btn);});}
-if(options.modal==false&&options.drag==true){uiDialog.draggable({handle:'.ui-dialog-titlebar'});}
-this.open=function(){var wnd=$(window),top=0,left=0;switch(options.position){case'center':top=(wnd.height()/2)-(uiDialog.height()/2);left=(wnd.width()/2)-(uiDialog.width()/2);break;case'left':top=(wnd.height()/2)-(uiDialog.height()/2);left=0;break;case'top':top=0;left=(wnd.width()/2)-(uiDialog.width()/2);break;}
-uiDialog.css({top:top,left:left});uiDialog.appendTo('body').show();};this.close=function(){uiDialog.hide();};uiDialog.show();this.open();if(options.shadow&&$.fn.shadow!=undefined){uiDialog.shadow();}}
-$.ui.dialogOpen=function(el){$.data(el,"ui-dialog").open();}
-$.ui.dialogClose=function(el){$.data(el,"ui-dialog").close();}})(jQuery);
+.click(function(){self.close();return false;});var hasButtons=false;$.each(options.buttons,function(){return!(hasButtons=true);});if(hasButtons){var uiDialogButtonPane=$('<div class="ui-dialog-buttonpane"/>')
+.appendTo(uiDialog);$.each(options.buttons,function(name,fn){$('<button/>')
+.text(name)
+.click(function(){fn.apply(self.element[0],arguments);})
+.appendTo(uiDialogButtonPane);});}
+if($.fn.draggable){uiDialog.draggable({handle:'.ui-dialog-titlebar',start:function(e,ui){self.moveToTop();(options.dragStart&&options.dragStart.apply(this,arguments));},drag:options.drag,stop:function(e,ui){(options.dragStop&&options.dragStop.apply(this,arguments));$.ui.dialog.overlay.resize();}});(options.draggable||uiDialog.draggable('disable'));}
+if($.fn.resizable){uiDialog.resizable({maxWidth:options.maxWidth,maxHeight:options.maxHeight,minWidth:options.minWidth,minHeight:options.minHeight,start:options.resizeStart,resize:options.resize,handles:resizeHandles,stop:function(e,ui){(options.resizeStop&&options.resizeStop.apply(this,arguments));$.ui.dialog.overlay.resize();}});(options.resizable||uiDialog.resizable('disable'));}
+(options.bgiframe&&$.fn.bgiframe&&uiDialog.bgiframe());(options.autoOpen&&this.open());},setData:function(key,value){(setDataSwitch[key]&&this.uiDialog.data(setDataSwitch[key],value));switch(key){case"draggable":this.uiDialog.draggable(value?'enable':'disable');break;case"height":this.uiDialog.height(value);break;case"position":this.position(value);break;case"resizable":(typeof value=='string'&&this.uiDialog.data('handles.resizable',value));this.uiDialog.resizable(value?'enable':'disable');break;case"title":$(".ui-dialog-title",this.uiDialogTitlebar).text(value);break;case"width":this.uiDialog.width(value);break;}
+$.widget.prototype.setData.apply(this,arguments);},position:function(pos){var wnd=$(window),doc=$(document),pTop=doc.scrollTop(),pLeft=doc.scrollLeft(),minTop=pTop;if($.inArray(pos,['center','top','right','bottom','left'])>=0){pos=[pos=='right'||pos=='left'?pos:'center',pos=='top'||pos=='bottom'?pos:'middle'];}
+if(pos.constructor!=Array){pos=['center','middle'];}
+if(pos[0].constructor==Number){pLeft+=pos[0];}else{switch(pos[0]){case'left':pLeft+=0;break;case'right':pLeft+=wnd.width()-this.uiDialog.width();break;default:case'center':pLeft+=(wnd.width()-this.uiDialog.width())/2;}}
+if(pos[1].constructor==Number){pTop+=pos[1];}else{switch(pos[1]){case'top':pTop+=0;break;case'bottom':pTop+=wnd.height()-this.uiDialog.height();break;default:case'middle':pTop+=(wnd.height()-this.uiDialog.height())/2;}}
+pTop=Math.max(pTop,minTop);this.uiDialog.css({top:pTop,left:pLeft});},open:function(){this.overlay=this.options.modal?new $.ui.dialog.overlay(this):null;this.uiDialog.appendTo('body');this.position(this.options.position);this.uiDialog.show();this.moveToTop(true);var openEV=null;var openUI={options:this.options};this.uiDialogTitlebarClose.focus();this.element.triggerHandler("dialogopen",[openEV,openUI],this.options.open);},moveToTop:function(force){if((this.options.modal&&!force)||!this.options.stack){return;}
+var maxZ=this.options.zIndex,options=this.options;$('.ui-dialog:visible').each(function(){maxZ=Math.max(maxZ,parseInt($(this).css('z-index'),10)||options.zIndex);});(this.overlay&&this.overlay.$el.css('z-index',++maxZ));this.uiDialog.css('z-index',++maxZ);},close:function(){(this.overlay&&this.overlay.destroy());this.uiDialog.hide();var closeEV=null;var closeUI={options:this.options};this.element.triggerHandler("dialogclose",[closeEV,closeUI],this.options.close);$.ui.dialog.overlay.resize();},destroy:function(){(this.overlay&&this.overlay.destroy());this.uiDialog.hide();this.element
+.unbind('.dialog')
+.removeData('dialog')
+.removeClass('ui-dialog-content')
+.hide().appendTo('body');this.uiDialog.remove();}});$.extend($.ui.dialog,{defaults:{autoOpen:true,bgiframe:false,buttons:{},closeOnEscape:true,draggable:true,height:200,minHeight:100,minWidth:150,modal:false,overlay:{},position:'center',resizable:true,stack:true,width:300,zIndex:1000},overlay:function(dialog){this.$el=$.ui.dialog.overlay.create(dialog);}});$.extend($.ui.dialog.overlay,{instances:[],events:$.map('focus,mousedown,mouseup,keydown,keypress,click'.split(','),function(e){return e+'.dialog-overlay';}).join(' '),create:function(dialog){if(this.instances.length===0){setTimeout(function(){$('a, :input').bind($.ui.dialog.overlay.events,function(){var allow=false;var $dialog=$(this).parents('.ui-dialog');if($dialog.length){var $overlays=$('.ui-dialog-overlay');if($overlays.length){var maxZ=parseInt($overlays.css('z-index'),10);$overlays.each(function(){maxZ=Math.max(maxZ,parseInt($(this).css('z-index'),10));});allow=parseInt($dialog.css('z-index'),10)>maxZ;}else{allow=true;}}
+return allow;});},1);$(document).bind('keydown.dialog-overlay',function(e){var ESC=27;(e.keyCode&&e.keyCode==ESC&&dialog.close());});$(window).bind('resize.dialog-overlay',$.ui.dialog.overlay.resize);}
+var $el=$('<div/>').appendTo(document.body)
+.addClass('ui-dialog-overlay').css($.extend({borderWidth:0,margin:0,padding:0,position:'absolute',top:0,left:0,width:this.width(),height:this.height()},dialog.options.overlay));(dialog.options.bgiframe&&$.fn.bgiframe&&$el.bgiframe());this.instances.push($el);return $el;},destroy:function($el){this.instances.splice($.inArray(this.instances,$el),1);if(this.instances.length===0){$('a, :input').add([document,window]).unbind('.dialog-overlay');}
+$el.remove();},height:function(){if($.browser.msie&&$.browser.version<7){var scrollHeight=Math.max(document.documentElement.scrollHeight,document.body.scrollHeight);var offsetHeight=Math.max(document.documentElement.offsetHeight,document.body.offsetHeight);if(scrollHeight<offsetHeight){return $(window).height()+'px';}else{return scrollHeight+'px';}}else{return $(document).height()+'px';}},width:function(){if($.browser.msie&&$.browser.version<7){var scrollWidth=Math.max(document.documentElement.scrollWidth,document.body.scrollWidth);var offsetWidth=Math.max(document.documentElement.offsetWidth,document.body.offsetWidth);if(scrollWidth<offsetWidth){return $(window).width()+'px';}else{return scrollWidth+'px';}}else{return $(document).width()+'px';}},resize:function(){var $overlays=$([]);$.each($.ui.dialog.overlay.instances,function(){$overlays=$overlays.add(this);});$overlays.css({width:0,height:0}).css({width:$.ui.dialog.overlay.width(),height:$.ui.dialog.overlay.height()});}});$.extend($.ui.dialog.overlay.prototype,{destroy:function(){$.ui.dialog.overlay.destroy(this.$el);}});})(jQuery);

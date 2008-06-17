@@ -34,6 +34,7 @@ sub topic {
     my $date      = $params->{'date'};
     my $page      = $params->{'page'} || 1;
     my $per_page  = $params->{per_page} || 20;
+    my $order_by  = $params->{order_by} || 'last_update_date';
 
     my $schema = $self->{schema};
 
@@ -60,10 +61,11 @@ sub topic {
         $where->{title} = { 'LIKE', '%' . $title . '%' };
     }
 
-    $attr->{rows}     = $per_page;
-    $attr->{page}     = $page;
-    $attr->{columns}  = ['topic_id'];
-    $attr->{order_by} = \'last_update_date DESC';    #'
+    $attr->{rows}    = $per_page;
+    $attr->{page}    = $page;
+    $attr->{columns} = ['topic_id'];
+    $attr->{order_by}
+        = ( $order_by eq 'post_on' ) ? \'post_on DESC' : \'last_update_date DESC';
 
     my $rs = $schema->resultset('Topic')->search( $where, $attr );
     my @topic_ids;

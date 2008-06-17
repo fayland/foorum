@@ -41,7 +41,7 @@ sub work {
 
 use MIME::Entity;
 use Email::Send;
-use YAML qw/LoadFile/;
+use YAML::XS qw/LoadFile/;
 
 my $base_path = base_path();
 my $config;

@@ -359,6 +359,7 @@ CREATE TABLE IF NOT EXISTS `topic` (
   `topic_id` int(11) unsigned NOT NULL auto_increment,
   `forum_id` int(11) unsigned NOT NULL default '0',
   `title` varchar(255) default NULL,
+  `post_on` int(11) unsigned NOT NULL default '0',
   `closed` enum('0','1') NOT NULL default '0',
   `sticky` enum('0','1') NOT NULL default '0',
   `elite` enum('0','1') NOT NULL default '0',

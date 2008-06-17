@@ -16,14 +16,6 @@ sub auto : Private {
     return 1;
 }
 
-=pod
-
-=item validate_username
-
-Ajax way to validate the username in Register progress.
-
-=cut
-
 sub validate_username : Local {
     my ( $self, $c ) = @_;
 
@@ -102,7 +94,21 @@ __END__
 
 =pod
 
-=head2 AUTHOR
+=head1 NAME
+
+Foorum::Search - search Foorum
+
+=head1 FUNCTIONS
+
+=head2 validate_username
+
+Ajax way to validate the username in Register progress.
+
+=head2 preview
+
+(Ajax way) use L<Foorum::Formatter> to format the text and show in a div
+
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 

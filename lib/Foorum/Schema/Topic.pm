@@ -12,6 +12,13 @@ __PACKAGE__->add_columns(
   { data_type => "INT", default_value => undef, is_nullable => 0, size => 11 },
   "forum_id",
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
+  "post_on",
+  {
+    data_type => 'INT',
+    default_value => 0,
+    is_nullable => 0,
+    size => 11,
+  },
   "title",
   {
     data_type => "VARCHAR",

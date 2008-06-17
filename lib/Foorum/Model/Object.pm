@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Model';
-use Switch;
 
 sub get_object_from_url {
     my ( $self, $c, $path ) = @_;
@@ -48,10 +47,12 @@ sub get_url_from_object {
     my $object_id   = $info->{object_id};
     my $forum_id    = $info->{forum_id};
 
-    switch ($object_type) {
-        case 'poll'         { return "/forum/$forum_id/poll/$object_id"; }
-        case 'topic'        { return "/forum/$forum_id/topic/$object_id"; }
-        case 'user_profile' { return "/u/$object_id"; }
+    if ( $object_type eq 'poll' ) {
+        return "/forum/$forum_id/poll/$object_id";
+    } elsif ( $object_type eq 'topic' ) {
+        return "/forum/$forum_id/topic/$object_id";
+    } elsif ( $object_type eq 'user_profile' ) {
+        return "/u/$object_id";
     }
 }
 
@@ -62,35 +63,30 @@ sub get_object_by_type_id {
     my $object_id   = $info->{object_id};
     return unless ( $object_type and $object_id );
 
-    switch ($object_type) {
-        case 'topic' {
-            my $object = $c->model('DBIC::Topic')->get($object_id);
-            return unless ($object);
-            return {
-                object_type => 'topic',
-                object_id   => $object_id,
-                title       => $object->{title},
-                author =>
-                    $c->model('DBIC::User')->get( { user_id => $object->{author_id} } ),
-                url         => '/forum/' . $object->{forum_id} . "/$object_id",
-                last_update => $object->{last_update_date},
-                forum_id    => $object->{forum_id},
-            };
-        }
-        case 'poll' {
-            my $object = $c->model('DBIC::Poll')->find( { poll_id => $object_id, } );
-            return unless ($object);
-            return {
-                object_type => 'poll',
-                object_id   => $object_id,
-                title       => $object->title,
-                author =>
-                    $c->model('DBIC::User')->get( { user_id => $object->author_id } ),
-                url         => '/forum/' . $object->forum_id . "/poll/$object_id",
-                last_update => '-',
-                forum_id    => $object->forum_id,
-            };
-        }
+    if ( $object_type eq 'topic' ) {
+        my $object = $c->model('DBIC::Topic')->get($object_id);
+        return unless ($object);
+        return {
+            object_type => 'topic',
+            object_id   => $object_id,
+            title       => $object->{title},
+            author => $c->model('DBIC::User')->get( { user_id => $object->{author_id} } ),
+            url    => '/forum/' . $object->{forum_id} . "/$object_id",
+            last_update => $object->{last_update_date},
+            forum_id    => $object->{forum_id},
+        };
+    } elsif ( $object_type eq 'poll' ) {
+        my $object = $c->model('DBIC::Poll')->find( { poll_id => $object_id, } );
+        return unless ($object);
+        return {
+            object_type => 'poll',
+            object_id   => $object_id,
+            title       => $object->title,
+            author => $c->model('DBIC::User')->get( { user_id => $object->author_id } ),
+            url    => '/forum/' . $object->forum_id . "/poll/$object_id",
+            last_update => '-',
+            forum_id    => $object->forum_id,
+        };
     }
 }
 

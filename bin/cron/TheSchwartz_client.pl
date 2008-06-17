@@ -40,7 +40,7 @@ if ($worker) {
     my $cron = new Schedule::Cron( sub { return 1; } );
 
     # load entry from theschwartz.yml or examples/theschwartz.yml
-    use YAML qw/LoadFile/;
+    use YAML::XS qw/LoadFile/;
     my $base_path = base_path();
     my $theschwartz_config;
     if ( -e "$base_path/conf/theschwartz.yml" ) {
