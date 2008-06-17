@@ -42,7 +42,7 @@ NOT NULL, PRIMARY KEY
 
 =back
 
-=head2 AUTHOR
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 

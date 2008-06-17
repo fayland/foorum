@@ -125,7 +125,7 @@ NOT NULL, DEFAULT VALUE 'open'
 
 =back
 
-=head2 AUTHOR
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 
