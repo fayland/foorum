@@ -4,13 +4,14 @@ use strict;
 use FindBin qw/$Bin/;
 use lib "$Bin/../../lib";
 use DBICx::AutoDoc;
-
-## XXX? TODO
+use Data::Dumper;
 
 my $ad = DBICx::AutoDoc->new(
     schema => 'Foorum::Schema',
-    output => $Bin,
+    output => "$Bin/../../docs",
 );
-$ad->fill_template('html');
+
+$ad->include_path("$Bin/autodoc-templates");
+$ad->fill_template("AUTODOC.html");
 
 1;
