@@ -39,3 +39,83 @@ __PACKAGE__->set_primary_key("hit_id");
 __PACKAGE__->resultset_class('Foorum::ResultSet::Hit');
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::Hit - Table 'hit'
+
+=head1 COLUMNS
+
+=over 4
+
+=item hit_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item object_type
+
+VARCHAR(12)
+
+NOT NULL
+
+=item object_id
+
+INT(11)
+
+NOT NULL
+
+=item hit_new
+
+INT(11)
+
+NOT NULL
+
+=item hit_today
+
+INT(11)
+
+NOT NULL
+
+=item hit_yesterday
+
+INT(11)
+
+NOT NULL
+
+=item hit_weekly
+
+INT(11)
+
+NOT NULL
+
+=item hit_monthly
+
+INT(11)
+
+NOT NULL
+
+=item hit_all
+
+INT(11)
+
+NOT NULL
+
+=item last_update_time
+
+INT(11)
+
+NOT NULL
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

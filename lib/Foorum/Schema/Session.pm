@@ -32,3 +32,53 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::Session - Table 'session'
+
+=head1 COLUMNS
+
+=over 4
+
+=item id
+
+CHAR(72)
+
+NOT NULL, PRIMARY KEY
+
+=item session_data
+
+TEXT(65535)
+
+
+
+=item expires
+
+INT(11)
+
+
+
+=item user_id
+
+INT(11)
+
+NOT NULL
+
+=item path
+
+VARCHAR(255)
+
+
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

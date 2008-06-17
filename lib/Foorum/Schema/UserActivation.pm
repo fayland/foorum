@@ -28,3 +28,41 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("user_id");
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::UserActivation - Table 'user_activation'
+
+=head1 COLUMNS
+
+=over 4
+
+=item user_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item activation_code
+
+VARCHAR(12)
+
+
+
+=item new_email
+
+VARCHAR(255)
+
+
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

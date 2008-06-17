@@ -62,3 +62,71 @@ __PACKAGE__->belongs_to(
     { 'foreign.user_id' => 'self.user_id' }
 );
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::UserDetails - Table 'user_details'
+
+=head1 COLUMNS
+
+=over 4
+
+=item user_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item qq
+
+VARCHAR(14)
+
+
+
+=item msn
+
+VARCHAR(64)
+
+
+
+=item yahoo
+
+VARCHAR(64)
+
+
+
+=item skype
+
+VARCHAR(64)
+
+
+
+=item gtalk
+
+VARCHAR(64)
+
+
+
+=item homepage
+
+VARCHAR(255)
+
+
+
+=item birthday
+
+DATE(10)
+
+
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

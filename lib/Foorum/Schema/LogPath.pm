@@ -48,3 +48,71 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("path_id");
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::LogPath - Table 'log_path'
+
+=head1 COLUMNS
+
+=over 4
+
+=item path_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item session_id
+
+VARCHAR(72)
+
+
+
+=item user_id
+
+INT(11)
+
+NOT NULL
+
+=item path
+
+VARCHAR(255)
+
+NOT NULL
+
+=item get
+
+VARCHAR(255)
+
+
+
+=item post
+
+TEXT(65535)
+
+
+
+=item time
+
+INT(11)
+
+NOT NULL
+
+=item loadtime
+
+DOUBLE(64)
+
+NOT NULL
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

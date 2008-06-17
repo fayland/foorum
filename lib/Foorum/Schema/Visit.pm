@@ -22,3 +22,47 @@ __PACKAGE__->set_primary_key("user_id", "object_type", "object_id");
 __PACKAGE__->resultset_class('Foorum::ResultSet::Visit');
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::Visit - Table 'visit'
+
+=head1 COLUMNS
+
+=over 4
+
+=item user_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item object_type
+
+VARCHAR(12)
+
+NOT NULL, PRIMARY KEY
+
+=item object_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item time
+
+INT(10)
+
+NOT NULL
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

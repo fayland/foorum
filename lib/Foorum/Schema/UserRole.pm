@@ -21,3 +21,41 @@ __PACKAGE__->belongs_to(
     { 'foreign.user_id' => 'self.user_id' }
 );
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::UserRole - Table 'user_role'
+
+=head1 COLUMNS
+
+=over 4
+
+=item user_id
+
+INT(11)
+
+NOT NULL
+
+=item role
+
+ENUM(9)
+
+DEFAULT VALUE 'user'
+
+=item field
+
+VARCHAR(32)
+
+NOT NULL
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

@@ -32,3 +32,47 @@ __PACKAGE__->belongs_to(
     { 'foreign.option_id' => 'self.option_id' }
 );
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::PollResult - Table 'poll_result'
+
+=head1 COLUMNS
+
+=over 4
+
+=item option_id
+
+INT(11)
+
+NOT NULL
+
+=item poll_id
+
+INT(11)
+
+NOT NULL
+
+=item poster_id
+
+INT(11)
+
+NOT NULL
+
+=item poster_ip
+
+VARCHAR(32)
+
+
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

@@ -97,3 +97,131 @@ __PACKAGE__->might_have(
 __PACKAGE__->resultset_class('Foorum::ResultSet::User');
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::User - Table 'user'
+
+=head1 COLUMNS
+
+=over 4
+
+=item user_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item username
+
+VARCHAR(32)
+
+NOT NULL
+
+=item password
+
+VARCHAR(32)
+
+NOT NULL, DEFAULT VALUE '000000'
+
+=item nickname
+
+VARCHAR(100)
+
+NOT NULL
+
+=item gender
+
+ENUM(2)
+
+NOT NULL, DEFAULT VALUE 'NA'
+
+=item email
+
+VARCHAR(255)
+
+NOT NULL
+
+=item register_time
+
+INT(11)
+
+NOT NULL
+
+=item register_ip
+
+VARCHAR(32)
+
+NOT NULL
+
+=item last_login_on
+
+INT(11)
+
+
+
+=item last_login_ip
+
+VARCHAR(32)
+
+
+
+=item login_times
+
+MEDIUMINT(8)
+
+NOT NULL, DEFAULT VALUE '1'
+
+=item status
+
+ENUM(10)
+
+NOT NULL, DEFAULT VALUE 'unverified'
+
+=item threads
+
+INT(11)
+
+NOT NULL
+
+=item replies
+
+INT(11)
+
+NOT NULL
+
+=item lang
+
+CHAR(2)
+
+DEFAULT VALUE 'cn'
+
+=item country
+
+CHAR(2)
+
+DEFAULT VALUE 'cn'
+
+=item state_id
+
+INT(11)
+
+NOT NULL
+
+=item city_id
+
+INT(11)
+
+NOT NULL
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

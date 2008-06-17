@@ -24,3 +24,59 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("user_id");
 
 1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::UserProfilePhoto - Table 'user_profile_photo'
+
+=head1 COLUMNS
+
+=over 4
+
+=item user_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item type
+
+ENUM(6)
+
+NOT NULL, DEFAULT VALUE 'upload'
+
+=item value
+
+VARCHAR(255)
+
+NOT NULL
+
+=item width
+
+SMALLINT(6)
+
+NOT NULL
+
+=item height
+
+SMALLINT(6)
+
+NOT NULL
+
+=item time
+
+INT(11)
+
+NOT NULL
+
+=back
+
+=head2 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+
