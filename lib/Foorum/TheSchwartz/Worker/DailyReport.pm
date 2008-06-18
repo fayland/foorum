@@ -95,7 +95,7 @@ Foorum::TheSchwartz::Worker::DailyReport - send a daily report to Administrator
 
 Send a daily report incluing:
 
-= over 4
+=over 4
 
 =item How many users joined last 24 hours
 
