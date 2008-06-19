@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 18;
+use Test::More tests => 13;
 
 use Foorum::Utils qw/
     encodeHTML decodeHTML

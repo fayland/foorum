@@ -17,7 +17,6 @@ use vars qw/@EXPORT_OK/;
     /;
 
 use Encode ();
-use Data::UUID;
 
 sub encodeHTML {
     my $text = shift;
