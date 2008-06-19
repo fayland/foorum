@@ -131,8 +131,8 @@ dir:
 # For Foorum pm using
 mail:
   on: 1
-  from_email: 'fayland@gmail.com'
-  daily_report_email: 'fayland@gmail.com'
+  from_email: 'foorumbbs.com@gmail.com'
+  daily_report_email: 'foorumbbs.com@gmail.com'
 
 extra:
   urchin_account: UA-65008-5
