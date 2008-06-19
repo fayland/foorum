@@ -1,5 +1,8 @@
 This file documents the revision history for Foorum.
 
+0.1.8
+        - TheSchwartz::ResendActivation to real use
+
 0.1.7 Tue Jun 17 9:32:00
         - use Catalyst::Plugin::Config::YAML::XS instead of Catalyst::Plugin::Config::YAML
         - new jQuery UI 1.5

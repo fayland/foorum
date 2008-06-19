@@ -19,6 +19,7 @@ sub work {
     my $base_path = base_path();
 
     # resend the emails if user is not verified after 30 days of the registration time
+    # but don't send it many times.
     my $rs = $schema->resultset('User')->search(
         {   status        => 'unverified',
             register_time => { '<', time() - 30 * 86400 }
@@ -27,6 +28,14 @@ sub work {
 
     my @all_user_ids;
     while ( my $user = $rs->next ) {
+        # skip if it's sent within 30 days
+        # YYY? that's not so smart, need redo later.
+        my $cnt = $schema->resultset('ScheduledEmail')->count( {
+            email_type => 'activation',
+            to_email   => $user->email,
+            time       => { '<', time() - 30 * 86400 }
+        } );
+        next if ($cnt);
 
         # send activation code
         $c->model('DBIC::ScheduledEmail')
