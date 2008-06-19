@@ -14,6 +14,7 @@ sub login : Global {
     my $url_base = $c->req->base;
     $c->req->param( 'referer', $c->req->referer )
         if (not $c->req->param('referer')
+        and $c->req->referer
         and $c->req->referer =~ /$url_base/
         and $c->req->referer !~ /login/ );
     return unless ( $c->req->method eq 'POST' );
