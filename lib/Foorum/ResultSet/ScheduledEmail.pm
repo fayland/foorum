@@ -5,7 +5,7 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class::ResultSet';
 
-use Foorum::Utils qw/generate_random_word uuid_string/;
+use Foorum::Utils qw/generate_random_word/;
 use Foorum::Logger qw/error_log/;
 
 sub send_activation {
@@ -16,7 +16,6 @@ sub send_activation {
     my $tt2    = $schema->tt2();
     my $config = $schema->config();
     my $lang   = $opts->{lang};
-    my $uuid   = uuid_string();
 
     my $activation_code;
     my $rs = $schema->resultset('UserActivation')->find( { user_id => $user->user_id, } );
@@ -41,7 +40,6 @@ sub send_activation {
         activation_code => $activation_code,
         new_email       => $new_email,
         config          => $config,
-        uuid            => $uuid,
     };
 
     my $email_body;
@@ -55,7 +53,6 @@ sub send_activation {
             plain_body => $email_body,
             time       => time(),
             processed  => 'N',
-            uuid       => $uuid,
         }
     );
     my $client = $schema->theschwartz();
@@ -71,7 +68,6 @@ sub create_email {
     my $config    = $schema->config();
     my $base_path = $schema->base_path();
     my $lang      = $opts->{lang};
-    my $uuid      = uuid_string();
 
     my $subject    = $opts->{subject};
     my $plain_body = $opts->{plain_body};
@@ -103,7 +99,6 @@ sub create_email {
         # we will set 'base' in cron manually, so we put %$stash before %{$opts->{stash}}
         my $stash = $opts->{stash};
         $stash->{config} = $config;
-        $stash->{uuid}   = $uuid;
 
         # prepare TXT format
         if ( -e $file_prefix . '.txt' ) {
@@ -136,7 +131,6 @@ sub create_email {
             html_body  => $html_body,
             time       => time(),
             processed  => 'N',
-            uuid       => $uuid,
         }
     );
 

@@ -46,7 +46,6 @@ requires 'Locale::Country::Multilingual' => '0.03'; # for tw lang
 #requires 'File::Slurp';
 requires 'Net::IP::Match::Regexp';
 requires 'Net::CIDR::Lite';
-requires 'Data::UUID';
 
 # search
 requires 'Sphinx::Search';

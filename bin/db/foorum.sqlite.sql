@@ -1,6 +1,6 @@
 -- 
 -- Created by SQL::Translator::Producer::SQLite
--- Created on Thu Jun 19 13:11:28 2008
+-- Created on Thu Jun 19 14:46:55 2008
 -- 
 BEGIN TRANSACTION;
 
@@ -234,12 +234,10 @@ CREATE TABLE scheduled_email (
   subject text,
   plain_body text,
   html_body text,
-  time int(11) NOT NULL DEFAULT '0',
-  uuid varchar(36) NOT NULL DEFAULT '0'
+  time int(11) NOT NULL DEFAULT '0'
 );
 
 CREATE INDEX processed_scheduled_email ON scheduled_email (processed);
-CREATE INDEX uuid_scheduled_email ON scheduled_email (uuid);
 
 --
 -- Table: session

@@ -61,13 +61,6 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => 11,
   },
-  "uuid",
-  {
-    data_type => "VARCHAR",
-    default_value => 0,
-    is_nullable => 0,
-    size => 36,
-  },
 );
 __PACKAGE__->set_primary_key("email_id");
 
@@ -137,12 +130,6 @@ TEXT(65535)
 =item time
 
 INT(11)
-
-NOT NULL
-
-=item uuid
-
-VARCHAR(36)
 
 NOT NULL
 
