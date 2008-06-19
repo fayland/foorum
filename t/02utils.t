@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 13;
+use Test::More tests => 14;
 
 use Foorum::Utils qw/
     encodeHTML decodeHTML
@@ -11,6 +11,7 @@ use Foorum::Utils qw/
     get_page_from_url
     datetime_to_tt2_acceptable
     truncate_text
+    uuid_string
     /;
 
 # test encodeHTML and decodeHTML
@@ -63,5 +64,9 @@ use Foorum::Utils qw/
     $text2 = truncate_text( $text, 10 );
     is( $text2, "Hello, 请截取 ...", 'truncate_text 10 OK' );
 }
+
+# test uuid_string
+my $uuid_string = uuid_string();
+is(length($uuid_string), 36, 'uuid_string OK');
 
 1;

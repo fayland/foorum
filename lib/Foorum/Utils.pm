@@ -14,9 +14,11 @@ use vars qw/@EXPORT_OK/;
     get_page_from_url
     datetime_to_tt2_acceptable
     truncate_text
+    uuid_string
     /;
 
 use Encode ();
+use Data::UUID;
 
 sub encodeHTML {
     my $text = shift;
@@ -96,6 +98,11 @@ sub truncate_text {
     $text .= ' ...';
 
     return $text;
+}
+
+sub uuid_string {
+    my $du = new Data::UUID;
+    return $du->to_string($du->create);
 }
 
 1;
