@@ -1,5 +1,6 @@
 [% title = c.loc('Search') %]
 
+[% c.load_once("jquery.ui/ui.core.js") %]
 [% c.load_once("jquery.ui/ui.tabs.js") %]
 [% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
 
@@ -41,6 +42,6 @@
 
 <script>
     $(function() {
-        $('#search_tabs ul').tabs([% IF c.req.path.match('/topic(\/|$)') %]2[% ELSIF c.req.path.match('/user(\/|$)') %]3[% END %]);
+        $('#search_tabs > ul').tabs([% IF c.req.path.match('/topic(\/|$)') %]2[% ELSIF c.req.path.match('/user(\/|$)') %]3[% END %]);
     });
 </script>

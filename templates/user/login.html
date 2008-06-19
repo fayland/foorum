@@ -1,5 +1,5 @@
 [% USE Math %]
-
+[% c.load_once("jquery.ui/ui.core.js") %]
 [% c.load_once("jquery.ui/ui.tabs.js") %]
 [% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
 
@@ -78,6 +78,6 @@
 
 <script>
     $().ready(function() {
-        $('#login_tabs ul').tabs([% IF c.req.param('email') %]2[% END %]);
+        $('#login_tabs > ul').tabs([% IF c.req.param('email') %]2[% END %]);
     });
 </script>

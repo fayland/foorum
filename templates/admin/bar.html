@@ -1,5 +1,6 @@
 [% url_base = '/admin' %]
 
+[% c.load_once("jquery.ui/ui.core.js") %]
 [% c.load_once("jquery.ui/ui.tabs.js") %]
 [% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
 
@@ -38,7 +39,7 @@
 
 <script>
     $(function() {
-        $('#admin_tabs ul').tabs([% IF c.req.path.match('forum') %]2[% ELSIF c.req.path.match('user') %]3[% ELSIF c.req.path.match('settings') %]4[% ELSIF c.req.path.match('ban') %]5[% ELSIF c.req.path.match('tools') %]6[% ELSIF c.req.path.match('log') %]7[% END %]);
+        $('#admin_tabs > ul').tabs([% IF c.req.path.match('forum') %]2[% ELSIF c.req.path.match('user') %]3[% ELSIF c.req.path.match('settings') %]4[% ELSIF c.req.path.match('ban') %]5[% ELSIF c.req.path.match('tools') %]6[% ELSIF c.req.path.match('log') %]7[% END %]);
     });
 </script>
 
