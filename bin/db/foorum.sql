@@ -283,8 +283,10 @@ CREATE TABLE IF NOT EXISTS `scheduled_email` (
   `plain_body` text,
   `html_body` text,
   `time` int(11) unsigned NOT NULL default '0',
+  `uuid` varchar(36) NOT NULL default '0',
   PRIMARY KEY  (`email_id`),
-  KEY `processed` (`processed`)
+  KEY `processed` (`processed`),
+  KEY `uuid` (`uuid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

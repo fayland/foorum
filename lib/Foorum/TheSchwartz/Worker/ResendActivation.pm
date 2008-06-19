@@ -28,17 +28,19 @@ sub work {
 
     my @all_user_ids;
     while ( my $user = $rs->next ) {
+
         # skip if it's sent within 30 days
         # YYY? that's not so smart, need redo later.
-        my $cnt = $schema->resultset('ScheduledEmail')->count( {
-            email_type => 'activation',
-            to_email   => $user->email,
-            time       => { '<', time() - 30 * 86400 }
-        } );
+        my $cnt = $schema->resultset('ScheduledEmail')->count(
+            {   email_type => 'activation',
+                to_email   => $user->email,
+                time       => { '<', time() - 30 * 86400 }
+            }
+        );
         next if ($cnt);
 
         # send activation code
-        $c->model('DBIC::ScheduledEmail')
+        $schema->resultset('ScheduledEmail')
             ->send_activation( $user, 0, { lang => $user->lang } );
         push @all_user_ids, $user->user_id;
     }

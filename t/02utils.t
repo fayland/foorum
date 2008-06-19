@@ -67,6 +67,6 @@ use Foorum::Utils qw/
 
 # test uuid_string
 my $uuid_string = uuid_string();
-is(length($uuid_string), 36, 'uuid_string OK');
+is( length($uuid_string), 36, 'uuid_string OK' );
 
 1;

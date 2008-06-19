@@ -102,7 +102,7 @@ sub truncate_text {
 
 sub uuid_string {
     my $du = new Data::UUID;
-    return $du->to_string($du->create);
+    return $du->to_string( $du->create );
 }
 
 1;

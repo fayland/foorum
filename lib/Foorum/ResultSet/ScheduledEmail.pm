@@ -5,7 +5,7 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class::ResultSet';
 
-use Foorum::Utils qw/generate_random_word/;
+use Foorum::Utils qw/generate_random_word uuid_string/;
 use Foorum::Logger qw/error_log/;
 
 sub send_activation {
@@ -16,6 +16,7 @@ sub send_activation {
     my $tt2    = $schema->tt2();
     my $config = $schema->config();
     my $lang   = $opts->{lang};
+    my $uuid   = uuid_string();
 
     my $activation_code;
     my $rs = $schema->resultset('UserActivation')->find( { user_id => $user->user_id, } );
@@ -40,6 +41,7 @@ sub send_activation {
         activation_code => $activation_code,
         new_email       => $new_email,
         config          => $config,
+        uuid            => $uuid,
     };
 
     my $email_body;
@@ -53,6 +55,7 @@ sub send_activation {
             plain_body => $email_body,
             time       => time(),
             processed  => 'N',
+            uuid       => $uuid,
         }
     );
     my $client = $schema->theschwartz();
@@ -68,52 +71,58 @@ sub create_email {
     my $config    = $schema->config();
     my $base_path = $schema->base_path();
     my $lang      = $opts->{lang};
+    my $uuid      = uuid_string();
 
-    # find the template for TT use
-    my $template_prefix;
-    my $template_name = $opts->{template};
-    my $file_prefix   = "$base_path/templates/lang/$lang/email/$template_name";
-    if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
-        $template_prefix = "lang/$lang/email/$template_name";
-    } elsif ( $lang ne 'en' ) {
+    my $subject    = $opts->{subject};
+    my $plain_body = $opts->{plain_body};
+    my $html_body  = $opts->{html_body};
 
-        # try to use lang=en for default
-        $file_prefix = "$base_path/templates/lang/en/email/$template_name";
+    unless ( $subject and ( $plain_body or $html_body ) ) {
+
+        # find the template for TT use
+        my $template_prefix;
+        my $template_name = $opts->{template};
+        my $file_prefix   = "$base_path/templates/lang/$lang/email/$template_name";
         if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
-            $template_prefix = 'lang/en/email/' . $template_name;
+            $template_prefix = "lang/$lang/email/$template_name";
+        } elsif ( $lang ne 'en' ) {
+
+            # try to use lang=en for default
+            $file_prefix = "$base_path/templates/lang/en/email/$template_name";
+            if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
+                $template_prefix = 'lang/en/email/' . $template_name;
+            }
         }
-    }
-    unless ($template_prefix) {
-        error_log( $schema, 'error',
-            "Template not found in Email.pm notification with params: $template_name" );
-        return 0;
-    }
+        unless ($template_prefix) {
+            error_log( $schema, 'error',
+                "Template not found in Email.pm notification with params: $template_name"
+            );
+            return 0;
+        }
 
-    # prepare the tt2
-    my ( $plain_body, $html_body );
+        # we will set 'base' in cron manually, so we put %$stash before %{$opts->{stash}}
+        my $stash = $opts->{stash};
+        $stash->{config} = $config;
+        $stash->{uuid}   = $uuid;
 
-    # we will set 'base' in cron manually, so we put %$stash before %{$opts->{stash}}
-    my $stash = $opts->{stash};
-    $stash->{config} = $config;
+        # prepare TXT format
+        if ( -e $file_prefix . '.txt' ) {
+            $tt2->process( $template_prefix . '.txt', $stash, \$plain_body );
+        }
+        if ( -e $file_prefix . '.html' ) {
+            $tt2->process( $template_prefix . '.html', $stash, \$html_body );
+        }
 
-    # prepare TXT format
-    if ( -e $file_prefix . '.txt' ) {
-        $tt2->process( $template_prefix . '.txt', $stash, \$plain_body );
+        # get the subject from $plain_body or $html_body
+        # the format is ########Title Subject#########
+        if ( $plain_body and $plain_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg ) {
+            $subject = $1;
+        }
+        if ( $html_body and $html_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg ) {
+            $subject = $1;
+        }
+        $subject ||= 'Notification From ' . $config->{name};
     }
-    if ( -e $file_prefix . '.html' ) {
-        $tt2->process( $template_prefix . '.html', $stash, \$html_body );
-    }
-
-    # get the subject from $plain_body or $html_body
-    # the format is ########Title Subject#########
-    my $subject;
-    if ( $plain_body and $plain_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg ) {
-        $subject = $1;
-    }
-    if ( $html_body and $html_body =~ s/\#{6,}(.*?)\#{6,}\s+//isg ) {
-        $subject = $1;
-    }
-    $subject ||= 'Notification From ' . $config->{name};
 
     my $to         = $opts->{to};
     my $from       = $opts->{from} || $config->{mail}->{from_email};
@@ -127,6 +136,7 @@ sub create_email {
             html_body  => $html_body,
             time       => time(),
             processed  => 'N',
+            uuid       => $uuid,
         }
     );
 

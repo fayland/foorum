@@ -64,14 +64,13 @@ sub work {
         }
     }
 
-    $schema->resultset('ScheduledEmail')->create(
-        {   email_type => 'daily_report',
-            from_email => $config->{mail}->{from_email},
-            to_email   => $config->{mail}->{daily_report_email},
+    # Send DailyReport Email
+    $schema->resultset('ScheduledEmail')->create_email(
+        {   template   => 'daily_report',
+            to         => $config->{mail}->{daily_report_email},
+            lang       => $config->{default_lang},
             subject    => '[Foorum] Daily Report @ ' . scalar( localtime() ),
             plain_body => $text_body,
-            time       => time(),
-            processed  => 'N',
         }
     );
 
