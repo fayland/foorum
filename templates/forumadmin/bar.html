@@ -18,7 +18,7 @@
         [% END %]
         <li[% IF c.req.path.match('announcement') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/announcement'><span>[% c.loc('Announcement Setting') %]</span></a></li>
     </ul>
-    <div class="ui-tabs-container">
+    <div class="ui-tabs-panel">
 
 [% content %]
 

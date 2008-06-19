@@ -9,7 +9,7 @@
         <li><a href='/profile/edit'><span>[% c.loc('Edit Profile') %]</span></a></li>
         <li class="ui-tabs-selected"><a href='javascript:void(0);'><span>Settings</span></a></li>
     </ul>
-    <div class="ui-tabs-container">
+    <div class="ui-tabs-panel">
 
 [% FILTER fillinform fdat => settings || c.req.params %]
 <div class='one'>

@@ -5,7 +5,7 @@
         <li[% IF c.req.path.match('inbox') OR c.req.path.match('message/?$') %] class="ui-tabs-selected"[% END %]><a href='/message/inbox'><span>[% c.loc('Inbox') %]</span></a></li>
         <li[% IF c.req.path.match('outbox') %] class="ui-tabs-selected"[% END %]><a href='/message/outbox'><span>[% c.loc('Outbox') %]</span></a></li>
     </ul>
-    <div class="ui-tabs-container">
+    <div class="ui-tabs-panel">
 
 [% content %]
 
