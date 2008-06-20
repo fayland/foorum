@@ -108,7 +108,8 @@ sub end : ActionClass('+Foorum::Action::PathLogger') {
 
         # get whos view this page?
         if ( $c->stash->{whos_view_this_page} ) {
-            my $results = $c->model('DBIC::UserOnline')->whos_view_this_page($c->sessionid, $c->req->path);
+            my $results = $c->model('DBIC::UserOnline')
+                ->whos_view_this_page( $c->sessionid, $c->req->path );
             $c->stash->{whos_view_this_page} = $results;
         }
         $c->stash->{elapsed_time} = tv_interval( $c->stash->{start_t0}, [gettimeofday] );

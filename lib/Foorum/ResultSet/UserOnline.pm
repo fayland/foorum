@@ -7,10 +7,10 @@ use base 'DBIx::Class::ResultSet';
 
 sub get_data {
     my ( $self, $sid, $forum_code, $attr ) = @_;
-    
+
     my $schema = $self->result_source->schema;
     my $cache  = $schema->cache();
-    
+
     $attr->{page}     = 1           unless ( $attr->{page} );
     $attr->{order_by} = 'last_time' unless ( $attr->{order_by} );
 
@@ -54,7 +54,7 @@ sub whos_view_this_page {
     my $last_15_min = time() - 900;
     my @onlines     = $schema->resultset('UserOnline')->search(
         {   last_time => { '>', $last_15_min },
-            path    => $path,
+            path      => $path,
         },
         {   order_by => 'last_time',
             rows     => 20,
@@ -69,7 +69,7 @@ sub whos_view_this_page {
 
 sub _handler_onlines {
     my ( $self, $sid, @onlines ) = @_;
-    
+
     my $schema = $self->result_source->schema;
     my $cache  = $schema->cache();
 
@@ -89,7 +89,7 @@ sub _handler_onlines {
 
     # if it's not in @onlines
     unless ($has_me) {
-        push @results, 'SELF'; # let TT2 handle this.
+        push @results, 'SELF';    # let TT2 handle this.
     }
 
     return wantarray ? @results : \@results;

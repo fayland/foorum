@@ -1,6 +1,8 @@
 ---
 - time: '*/5 * * * *'
   worker: Hit
+- time: '*/15 * * * *'
+  worker: Every15Min
 - time: 10 3 * * *
   worker: RemoveOldDataFromDB
 - time: 0 0 * * *

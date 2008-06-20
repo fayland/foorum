@@ -84,7 +84,8 @@ sub online : Local {
 
     $c->cache_page('60');
 
-    my ( $results, $pager ) = $c->model('DBIC::UserOnline')->get_data( $c->sessionid, $forum_code );
+    my ( $results, $pager )
+        = $c->model('DBIC::UserOnline')->get_data( $c->sessionid, $forum_code );
 
     $c->stash(
         {   results  => $results,
