@@ -17,9 +17,15 @@ sub new {
     $sphinx->SetServer( 'localhost', 3312 );
 
     $self->{sphinx} = $sphinx;
-    $self->{schema} = schema();
 
     return bless $self => $class;
+}
+
+sub get_schema {
+    my ($self) = @_;
+
+    $self->{schema} = schema() unless ( $self->{schema} );
+    return $self->{schema};
 }
 
 sub can_search { return shift->{sphinx}->_Connect(); }
@@ -46,7 +52,7 @@ sub topic {
     my $order_by  = $params->{order_by} || 'last_update_date';
 
     my $sphinx = $self->{sphinx};
-    my $schema = $self->{schema};
+    my $schema = $self->get_schema();
     $sphinx->ResetFilters();
 
     $sphinx->SetFilter( 'forum_id',  [$forum_id] )  if ($forum_id);

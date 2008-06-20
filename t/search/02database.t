@@ -8,8 +8,6 @@ BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
 
-    $ENV{AUTHOR_TEST} or plan skip_all => 'SET $ENV{AUTHOR_TEST} to process';
-
     plan tests => 23;
 }
 

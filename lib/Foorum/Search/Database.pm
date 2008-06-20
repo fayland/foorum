@@ -9,9 +9,6 @@ use Foorum::SUtils qw/schema/;
 sub new {
     my $class = shift;
     my $self  = {@_};
-
-    $self->{schema} = schema();
-
     return bless $self => $class;
 }
 
@@ -25,6 +22,13 @@ sub query {
     }
 }
 
+sub get_schema {
+    my ($self) = @_;
+
+    $self->{schema} = schema() unless ( $self->{schema} );
+    return $self->{schema};
+}
+
 sub topic {
     my ( $self, $params ) = @_;
 
@@ -36,7 +40,7 @@ sub topic {
     my $per_page  = $params->{per_page} || 20;
     my $order_by  = $params->{order_by} || 'last_update_date';
 
-    my $schema = $self->{schema};
+    my $schema = $self->get_schema();
 
     my ( $where, $attr );
 
