@@ -11,8 +11,8 @@ sub get_data {
     my $schema = $self->result_source->schema;
     my $cache  = $schema->cache();
 
-    $attr->{page}     = 1           unless ( $attr->{page} );
-    $attr->{order_by} = 'last_time' unless ( $attr->{order_by} );
+    $attr->{page}     = 1                unless ( $attr->{page} );
+    $attr->{order_by} = 'last_time DESC' unless ( $attr->{order_by} );
 
     my @extra_cols;
     if ($forum_code) {
@@ -56,7 +56,7 @@ sub whos_view_this_page {
         {   last_time => { '>', $last_15_min },
             path      => $path,
         },
-        {   order_by => 'last_time',
+        {   order_by => 'last_time DESC',
             rows     => 20,
             page     => 1,
         }
