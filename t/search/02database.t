@@ -8,6 +8,8 @@ BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
 
+    $ENV{AUTHOR_TEST} or plan skip_all => 'SET $ENV{AUTHOR_TEST} to process';
+
     plan tests => 23;
 }
 
@@ -17,14 +19,12 @@ use Foorum::TestUtils qw/schema base_path/;
 
 my $schema = schema();
 
-use Foorum::Search;
+use Foorum::Search::Database;
 
-my $search = new Foorum::Search;
+my $search = new Foorum::Search::Database;
 
 # use database
-$search->{sphinx}       = undef;
-$search->{use_sphinx}   = 0;
-$search->{db}->{schema} = $schema;
+$search->{schema} = $schema;
 
 ##################################
 # Forum Tests
