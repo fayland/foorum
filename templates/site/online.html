@@ -9,9 +9,21 @@
 	<td>[% c.loc('Path') %]</td>
 	<td width='120'>[% c.loc('Visit Time') %]</td>
 	<td width='120'>[% c.loc('Active Time') %]</td>
-	[% IF roles.is_admin %]<td>IP</td>[% END %]
 	</tr>
 [% FOREACH r IN results %]
+
+    [% IF r == 'SELF';
+          r = {
+            user_id => c.user_exists ? c.user_id : 0,
+            user    => c.user_exists ? c.user : undef,
+            sessionid => c.sessionid,
+            path    => c.req.path,
+            title   => title || 'unknown',
+            start_time => date.now,
+            last_time  => date.now
+          };
+       END; %]
+
 	<tr align='center'>
 	<td class='forum1'>
 	    [% IF r.user %]
@@ -21,19 +33,14 @@
 	    [% END %]
 	</td>
 	<td class='forum2'>
-		<a href='/[% r.refer %]'>/[% r.refer %]</a>
+		<a href='/[% r.path %]'>[% r.title %]</a>
 	</td>
 	<td class='forum1'>
-	    <span class='date'>[% date.format(r.visit_time, '%Y-%m-%d %H:%M:%S') %]</span>
+	    <span class='date'>[% date.format(r.start_time, '%Y-%m-%d %H:%M:%S') %]</span>
 	</td>
 	<td class='forum2'>
-	    <span class='date'>[% date.format(r.active_time, '%Y-%m-%d %H:%M:%S') %]</span>
+	    <span class='date'>[% date.format(r.last_time, '%Y-%m-%d %H:%M:%S') %]</span>
 	</td>
-	[% IF roles.is_admin %]
-	<td class='forum1'>
-	    [% r.IP %]
-	</td>
-	[% END %]
 	</tr>
 [% END %]
 </table>

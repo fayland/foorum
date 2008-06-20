@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 24, 2008 at 10:08 ????
+-- Generation Time: Jun 20, 2008 at 04:57 AM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.5
 
@@ -297,10 +297,7 @@ CREATE TABLE IF NOT EXISTS `session` (
   `id` char(72) NOT NULL default '',
   `session_data` text,
   `expires` int(11) default '0',
-  `user_id` int(11) unsigned NOT NULL default '0',
-  `path` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `user_id` (`user_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -467,6 +464,24 @@ CREATE TABLE IF NOT EXISTS `user_forum` (
   `status` enum('admin','moderator','user','blocked','pending','rejected') NOT NULL default 'user',
   `time` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`user_id`,`forum_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_online`
+--
+
+CREATE TABLE IF NOT EXISTS `user_online` (
+  `sessionid` varchar(72) NOT NULL default '0',
+  `user_id` int(11) unsigned NOT NULL default '0',
+  `path` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `start_time` int(11) unsigned NOT NULL default '0',
+  `last_time` int(11) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`sessionid`),
+  KEY `start_time` (`start_time`),
+  KEY `last_time` (`last_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

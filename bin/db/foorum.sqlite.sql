@@ -1,6 +1,6 @@
 -- 
 -- Created by SQL::Translator::Producer::SQLite
--- Created on Thu Jun 19 14:46:55 2008
+-- Created on Fri Jun 20 13:35:27 2008
 -- 
 BEGIN TRANSACTION;
 
@@ -246,12 +246,9 @@ CREATE TABLE session (
   id char(72) NOT NULL DEFAULT '',
   session_data text,
   expires int(11) DEFAULT '0',
-  user_id int(11) NOT NULL DEFAULT '0',
-  path varchar(255) DEFAULT NULL,
   PRIMARY KEY (id)
 );
 
-CREATE INDEX user_id_session ON session (user_id);
 
 --
 -- Table: share
@@ -394,6 +391,22 @@ CREATE TABLE user_forum (
   PRIMARY KEY (user_id, forum_id)
 );
 
+
+--
+-- Table: user_online
+--
+CREATE TABLE user_online (
+  sessionid varchar(72) NOT NULL DEFAULT '0',
+  user_id int(11) NOT NULL DEFAULT '0',
+  path varchar(255) NOT NULL,
+  title varchar(255) NOT NULL,
+  start_time int(11) NOT NULL DEFAULT '0',
+  last_time int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (sessionid)
+);
+
+CREATE INDEX start_time_user_online ON user_online (start_time);
+CREATE INDEX last_time_user_online ON user_online (last_time);
 
 --
 -- Table: user_profile_photo

@@ -82,9 +82,9 @@ sub recent : Local {
 sub online : Local {
     my ( $self, $c, undef, $forum_code ) = @_;
 
-    $c->cache_page('300');
+    $c->cache_page('60');
 
-    my ( $results, $pager ) = $c->model('Online')->get_data( $c, $forum_code );
+    my ( $results, $pager ) = $c->model('DBIC::UserOnline')->get_data( $c->sessionid, $forum_code );
 
     $c->stash(
         {   results  => $results,

@@ -24,6 +24,40 @@ sub load_once {
     }
 }
 
+sub user_online {
+    my ( $c, $title ) = @_;
+    
+    my $path = $c->req->path;
+    $path = ($path) ? substr( $path, 0, 255 ) : 'forum';    # varchar(255)
+    $c->create_session_id_if_needed; # must have a sessionid
+    my $session_id = $c->sessionid;
+    my $user_id = ( $c->user_exists ) ? $c->user->user_id : 0;
+    
+    # check if there is a rs
+    my $online = $c->model('DBIC::UserOnline')->find( {
+        sessionid => $session_id,
+    } );
+    if ($online) {
+        $online->update( {
+            user_id => $user_id,
+            path    => $path,
+            title   => $title,
+            last_time => time()
+        } );
+    } else {
+        $c->model('DBIC::UserOnline')->create( {
+            sessionid => $session_id,
+            user_id => $user_id,
+            path    => $path,
+            title   => $title,
+            start_time => time(),
+            last_time  => time()
+        } );
+    }
+    
+    return;
+}
+
 1;
 __END__
 

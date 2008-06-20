@@ -8,10 +8,23 @@
     <td class='forum1' valign='middle' align='center' width='28'><img src='[% c.config.dir.images %]/board/online.gif' alt='On' width='16' height='16' /></td>
     <td class='forum2' width='100%'>
     [% FOREACH whos IN whos_view_this_page %]
+    
+    [% IF whos == 'SELF';
+          whos = {
+            user_id => c.user_exists ? c.user_id : 0,
+            user    => c.user_exists ? c.user : undef,
+            sessionid => c.sessionid,
+            path    => c.req.path,
+            title   => title || 'unknown',
+            start_time => date.now,
+            last_time  => date.now
+          };
+       END; %]
+    
     [% IF whos.user %]
-    <a href='/u/[% whos.user.username %]' alt="Visit time: [% date.format(whos.visit_time, '%Y-%m-%d %H:%M:%S') %]\nActive time: [% date.format(whos.active_time, '%Y-%m-%d %H:%M:%S') %]">[% whos.user.nickname %]</a>[% UNLESS loop.last %], [% END %]
+    <a href='/u/[% whos.user.username %]' alt="Visit time: [% date.format(whos.start_time, '%Y-%m-%d %H:%M:%S') %]\nActive time: [% date.format(whos.last_time, '%Y-%m-%d %H:%M:%S') %]">[% whos.user.nickname %]</a>[% UNLESS loop.last %], [% END %]
     [% ELSE %]
-    <span alt="Visit time: [% date.format(whos.visit_time, '%Y-%m-%d %H:%M:%S') %]\nActive time: [% date.format(whos.active_time, '%Y-%m-%d %H:%M:%S') %]">Guest</span>
+    <span alt="Visit time: [% date.format(whos.start_time, '%Y-%m-%d %H:%M:%S') %]\nActive time: [% date.format(whos.last_time, '%Y-%m-%d %H:%M:%S') %]">Guest</span>
     [% END %]
     [% END %]
     </td>

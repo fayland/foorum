@@ -27,6 +27,7 @@
     [% c.config.name %]
     [% END %]
 </title>
+[% c.user_online(title) # set user online %]
 <link rel="shortcut icon" href="[% c.config.dir.static %]/favicon.ico" type="image/x-icon" />
 [% IF RSS_URL %]
 <link rel="alternate" type="application/rss+xml" title="[% title %]" href="[% RSS_URL %]" />
