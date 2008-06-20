@@ -67,7 +67,7 @@ sub path_log : Local {
 
 =pod
 
-=head2 AUTHOR
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 

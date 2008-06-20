@@ -137,7 +137,7 @@ It's pretty trival to write it everywhere, and we can't put '/print_error' into 
 
 so does forum, topic.
 
-=head2 AUTHOR
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 

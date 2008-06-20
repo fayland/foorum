@@ -49,7 +49,7 @@ We insert before the 'jquery.js' with [% c.config.dir.js %] and the 'default.css
 
 =back
 
-=head2 AUTHOR
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 

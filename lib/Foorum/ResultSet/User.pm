@@ -281,7 +281,7 @@ get records from user_settings table. return is hashref
 
 =back
 
-=head2 AUTHOR
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 

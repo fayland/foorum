@@ -44,7 +44,7 @@ the same as $c->model('DBIC')
 
 =back
 
-=head2 AUTHOR
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 

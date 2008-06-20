@@ -38,7 +38,7 @@ insert log into table 'log_error'
 
 =back
 
-=head2 AUTHOR
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 

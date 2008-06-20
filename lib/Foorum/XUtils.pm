@@ -127,7 +127,7 @@ TheSchwartz->new with correct database from $config
 
 =back
 
-=head2 AUTHOR
+=head1 AUTHOR
 
 Fayland Lam <fayland at gmail.com>
 
