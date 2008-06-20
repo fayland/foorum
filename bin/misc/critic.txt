@@ -24,7 +24,7 @@
 /bin/upgrade/0.1.3/up.pl source OK
 /bin/upgrade/0.1.5/up.pl source OK
 /bin/upgrade/0.1.7/up.pl source OK
-/lib/Catalyst/Plugin/Session/Store/DBIC_Foorum.pm source OK
+/bin/upgrade/0.1.8/up.pl source OK
 /lib/Foorum/Action/PathLogger.pm source OK
 /lib/Foorum/Controller/Admin/BanIP.pm source OK
 /lib/Foorum/Controller/Admin/Forum.pm source OK
@@ -64,7 +64,6 @@
 /lib/Foorum/Model/DBIC.pm source OK
 /lib/Foorum/Model/Log.pm source OK
 /lib/Foorum/Model/Object.pm source OK
-/lib/Foorum/Model/Online.pm source OK
 /lib/Foorum/Model/Policy.pm source OK
 /lib/Foorum/Model/UserAuth.pm source OK
 /lib/Foorum/Model/Validation.pm source OK
@@ -82,6 +81,7 @@
 /lib/Foorum/ResultSet/Upload.pm source OK
 /lib/Foorum/ResultSet/User.pm source OK
 /lib/Foorum/ResultSet/UserForum.pm source OK
+/lib/Foorum/ResultSet/UserOnline.pm source OK
 /lib/Foorum/ResultSet/Visit.pm source OK
 /lib/Foorum/Scraper/MailMan.pm source OK
 /lib/Foorum/Search/Database.pm source OK
@@ -90,6 +90,7 @@
 /lib/Foorum/SUtils.pm source OK
 /lib/Foorum/TheSchwartz/Worker/DailyChart.pm source OK
 /lib/Foorum/TheSchwartz/Worker/DailyReport.pm source OK
+/lib/Foorum/TheSchwartz/Worker/Every15Min.pm source OK
 /lib/Foorum/TheSchwartz/Worker/Hit.pm source OK
 /lib/Foorum/TheSchwartz/Worker/RemoveObject.pm source OK
 /lib/Foorum/TheSchwartz/Worker/RemoveOldDataFromDB.pm source OK

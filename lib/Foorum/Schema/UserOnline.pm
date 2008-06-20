@@ -43,17 +43,11 @@ Foorum::Schema::UserOnline - Table 'user_online'
 
 =over 4
 
-=item online_id
-
-INT(11)
-
-NOT NULL, PRIMARY KEY
-
-=item session_id
+=item sessionid
 
 VARCHAR(72)
 
-
+PRIMARY KEY
 
 =item user_id
 

@@ -2152,25 +2152,22 @@ div.comment {
     <th width="40%">Info</th>
     </tr>
     
-        <tr class="odd"> <td>online_id </td> <td>INT(11) </td> <td>NOT NULL, PRIMARY KEY </td>
+        <tr class="odd"> <td>sessionid </td> <td>VARCHAR(72) </td> <td>PRIMARY KEY </td>
 
     
-        <tr class="even"> <td>session_id </td> <td>VARCHAR(72) </td> <td> </td>
+        <tr class="even"> <td>user_id </td> <td>INT(11) </td> <td>NOT NULL </td>
 
     
-        <tr class="odd"> <td>user_id </td> <td>INT(11) </td> <td>NOT NULL </td>
+        <tr class="odd"> <td>path </td> <td>VARCHAR(255) </td> <td>NOT NULL </td>
 
     
-        <tr class="even"> <td>path </td> <td>VARCHAR(255) </td> <td>NOT NULL </td>
+        <tr class="even"> <td>title </td> <td>VARCHAR(255) </td> <td>NOT NULL </td>
 
     
-        <tr class="odd"> <td>title </td> <td>VARCHAR(255) </td> <td>NOT NULL </td>
+        <tr class="odd"> <td>start_time </td> <td>INT(11) </td> <td>NOT NULL </td>
 
     
-        <tr class="even"> <td>start_time </td> <td>INT(11) </td> <td>NOT NULL </td>
-
-    
-        <tr class="odd"> <td>last_time </td> <td>INT(11) </td> <td>NOT NULL </td>
+        <tr class="even"> <td>last_time </td> <td>INT(11) </td> <td>NOT NULL </td>
 
     
 </table>
@@ -2184,7 +2181,7 @@ div.comment {
     <tr><th width="20%">Name</th><th width="80%">Columns</th> </tr>
     
         
-        <tr class="odd"> <td>primary</td> <td>online_id</td> </tr>
+        <tr class="odd"> <td>primary</td> <td>sessionid</td> </tr>
     
 </table>
 
@@ -2467,7 +2464,7 @@ div.comment {
 
 
     <p>
-        Generated Fri Jun 20 13:07:33 2008
+        Generated Fri Jun 20 14:46:33 2008
         by <a href="http://www.jasonkohles.com/projects/DBICx-AutoDoc/">DBICx::AutoDoc</a>
         version 0.04
     </p>
