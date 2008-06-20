@@ -97,6 +97,10 @@ sub ban : Local {
 
     my $username = $c->req->param('username');
     my $user = $c->controller('Get')->user( $c, $username );
+    
+    if ($user->{status} eq 'banned') {
+        $c->detach('/print_error', [ 'Already banned' ] );
+    }
 
     $c->model('DBIC::User')->update_user( $user, { status => 'banned' } );
 
