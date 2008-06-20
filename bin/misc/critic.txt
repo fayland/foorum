@@ -127,6 +127,7 @@
 /t/schema/upload.t source OK
 /t/schema/user.t source OK
 /t/schema/user_forum.t source OK
+/t/schema/user_online.t source OK
 /t/schema/visit.t source OK
 /t/scraper/01mailman.t source OK
 /t/search/01main.t source OK
