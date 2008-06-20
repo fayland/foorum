@@ -33,7 +33,7 @@
 	    [% END %]
 	</td>
 	<td class='forum2'>
-		<a href='/[% r.path %]'>[% r.title %]</a>
+		<a href='/[% r.path %]'>[% r.title || r.path %]</a>
 	</td>
 	<td class='forum1'>
 	    <span class='date'>[% date.format(r.start_time, '%Y-%m-%d %H:%M:%S') %]</span>
