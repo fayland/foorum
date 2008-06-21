@@ -2,6 +2,7 @@ This file documents the revision history for Foorum.
 
 0.1.9
         - ban user bug fix.
+        - forum rss no text fix.
 
 0.1.8 Fri Jun 20 22:15:00
         - TheSchwartz::ResendActivation to real use
