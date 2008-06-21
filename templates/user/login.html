@@ -78,6 +78,7 @@
 
 <script>
     $().ready(function() {
-        $('#login_tabs > ul').tabs([% IF c.req.param('email') %]2[% END %]);
+        $('#login_tabs > ul').tabs();
+        $('#login_tabs > ul').tabs('select', [% IF c.req.param('email') %]1[% ELSE %]0[% END %]);
     });
 </script>

@@ -42,6 +42,7 @@
 
 <script>
     $(function() {
-        $('#search_tabs > ul').tabs([% IF c.req.path.match('/topic(\/|$)') %]2[% ELSIF c.req.path.match('/user(\/|$)') %]3[% END %]);
+        $('#search_tabs > ul').tabs();
+        $('#search_tabs > ul').tabs('select', [% IF c.req.path.match('/topic(\/|$)') %]1[% ELSIF c.req.path.match('/user(\/|$)') %]2[% ELSE %]0[% END %]);
     });
 </script>
