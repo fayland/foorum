@@ -39,7 +39,8 @@
 
 <script>
     $(function() {
-        $('#admin_tabs > ul').tabs([% IF c.req.path.match('forum') %]2[% ELSIF c.req.path.match('user') %]3[% ELSIF c.req.path.match('settings') %]4[% ELSIF c.req.path.match('ban') %]5[% ELSIF c.req.path.match('tools') %]6[% ELSIF c.req.path.match('log') %]7[% END %]);
+        $('#admin_tabs > ul').tabs();
+        $('#admin_tabs > ul').tabs('select', [% IF c.req.path.match('forum') %]1[% ELSIF c.req.path.match('user') %]2[% ELSIF c.req.path.match('settings') %]3[% ELSIF c.req.path.match('ban') %]4[% ELSIF c.req.path.match('tools') %]5[% ELSIF c.req.path.match('log') %]6[% ELSE %]0[% END %]);
     });
 </script>
 
