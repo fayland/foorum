@@ -3,7 +3,8 @@
 use strict;
 use warnings;
 use FindBin qw/$Bin/;
-use lib "$Bin/../../lib";
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
 use Foorum::XUtils qw/config/;
 my $config = config();
 use DBI;

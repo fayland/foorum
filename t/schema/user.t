@@ -11,7 +11,8 @@ BEGIN {
 }
 
 use FindBin;
-use lib "$FindBin::Bin/../lib";
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
 use Foorum::TestUtils qw/schema base_path/;
 my $schema = schema();
 
@@ -48,9 +49,14 @@ is( $user->{email}, $org_email, 'update_user 2 OK' );
 use File::Copy ();
 
 END {
+
+    # Keep Database the same from original
+    use File::Copy ();
     my $base_path = base_path();
-    File::Copy::copy( "$base_path/t/lib/Foorum/backup.db",
-        "$base_path/t/lib/Foorum/test.db" );
+    File::Copy::copy(
+        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'backup.db' ),
+        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'test.db' )
+    );
 }
 
 1;

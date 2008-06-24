@@ -6,6 +6,17 @@ use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/encodeHTML get_page_from_url/;
 
+sub auto : Private {
+    my ( $self, $c ) = @_;
+
+    unless ( $c->config->{function_on}->{poll} ) {
+        $c->forward( '/print_error', ['ERROR_PERMISSION_DENIED'] );
+        return 0;
+    }
+
+    return 1;
+}
+
 sub create : Regex('^forum/(\w+)/poll/new$') {
     my ( $self, $c ) = @_;
 

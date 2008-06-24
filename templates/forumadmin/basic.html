@@ -52,7 +52,9 @@ END; %]
     <tr class='forum2'><td>Policy</td><td><input type='checkbox' name='private' value='1' /> Private</td></tr>
     <tr class='forum1'><td>Can Post Topics:</td><td><input type='radio' name='can_post_threads' value='Y' checked='checked' /> Yes <input type='radio' name='can_post_threads' value='N' /> No</td></tr>
     <tr class='forum2'><td>Can Post Replies:</td><td><input type='radio' name='can_post_replies' value='Y' checked='checked' /> Yes <input type='radio' name='can_post_replies' value='N' /> No</td></tr>
+    [% IF c.config.function_on.poll %]
     <tr class='forum1'><td>Can Post Polls:</td><td><input type='radio' name='can_post_polls' value='Y' checked='checked' /> Yes <input type='radio' name='can_post_polls' value='N' /> No</td></tr>
+    [% END %]
     <tr class='forum1'><td colspan='2'><input type='submit' /></td></tr>
 </table>
 </form>

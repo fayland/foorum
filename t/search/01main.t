@@ -12,7 +12,8 @@ BEGIN {
 }
 
 use FindBin;
-use lib "$FindBin::Bin/../lib";
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
 use Foorum::TestUtils qw/schema base_path/;
 
 my $schema = schema();

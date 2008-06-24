@@ -108,6 +108,7 @@ function_on:
   scraper: 0
   page_cache: 1
   topic_pdf: 0
+  poll: 0
 
 site:
   domain: 'http://www.foorumbbs.com/'

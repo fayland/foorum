@@ -11,7 +11,8 @@ BEGIN {
 }
 
 use FindBin;
-use lib "$FindBin::Bin/../lib";
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
 use Foorum::TestUtils qw/schema cache base_path/;
 use File::Path;
 use File::Copy ();
@@ -84,9 +85,14 @@ ok( not( -e $dest_file ), 'after remove_by_upload file deleted' );
 use File::Copy ();
 
 END {
+
+    # Keep Database the same from original
+    use File::Copy ();
     my $base_path = base_path();
-    File::Copy::copy( "$base_path/t/lib/Foorum/backup.db",
-        "$base_path/t/lib/Foorum/test.db" );
+    File::Copy::copy(
+        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'backup.db' ),
+        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'test.db' )
+    );
 
     if ( scalar @created ) {
         remove \1, @created;

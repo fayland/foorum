@@ -11,8 +11,9 @@ BEGIN {
 }
 
 use FindBin;
-use lib "$FindBin::Bin/../lib";
-use Foorum::TestUtils qw/schema/;
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
+use Foorum::TestUtils qw/schema base_path/;
 my $schema = schema();
 
 foreach ( 1, 2 ) {
@@ -44,3 +45,14 @@ $schema->resultset('Star')->search(
         object_id   => 1,
     }
 )->delete;
+
+END {
+
+    # Keep Database the same from original
+    use File::Copy ();
+    my $base_path = base_path();
+    File::Copy::copy(
+        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'backup.db' ),
+        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'test.db' )
+    );
+}

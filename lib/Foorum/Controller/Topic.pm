@@ -85,7 +85,10 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
         # get comments
         my ($view_mode)  = ( $c->req->path =~ /\/view_mode=(thread|flat)(\/|$)/ );
         my ($comment_id) = ( $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ );
-        ( $c->stash->{comments}, $c->stash->{comments_pager} )
+        (   $c->stash->{comments},
+            $c->stash->{comments_pager},
+            $c->stash->{top_comment_id}
+            )
             = $c->model('DBIC::Comment')->get_comments_by_object(
             {   object_type => 'topic',
                 object_id   => $topic_id,

@@ -15,7 +15,8 @@ if ( $has_proc_pid_file and $has_home_dir ) {
 }
 
 use FindBin qw/$Bin/;
-use lib "$Bin/../../lib";
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
 use Foorum::XUtils qw/theschwartz config base_path/;
 
 my $client    = theschwartz();
@@ -41,10 +42,12 @@ $client->set_verbose($verbose);
 # load entry from theschwartz.yml or examples/theschwartz.yml
 use YAML::XS qw/LoadFile/;
 my $theschwartz_config;
-if ( -e "$base_path/conf/theschwartz.yml" ) {
-    $theschwartz_config = LoadFile("$base_path/conf/theschwartz.yml");
+if ( -e File::Spec->catfile( $base_path, 'conf', 'theschwartz.yml' ) ) {
+    $theschwartz_config
+        = LoadFile( File::Spec->catfile( $base_path, 'conf', 'theschwartz.yml' ) );
 } else {
-    $theschwartz_config = LoadFile("$base_path/conf/examples/theschwartz.yml");
+    $theschwartz_config = LoadFile(
+        File::Spec->catfile( $base_path, 'conf', 'examples', 'theschwartz.yml' ) );
 }
 
 foreach my $one (

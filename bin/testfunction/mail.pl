@@ -3,12 +3,13 @@
 use strict;
 use warnings;
 use FindBin qw/$Bin/;
-use lib "$Bin/../../lib";
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
 use YAML::XS qw/LoadFile/;
 use Email::Send;
 use MIME::Entity;
 use Data::Dumper;
-my $config = LoadFile("$Bin/../../conf/mail.yml");
+my $config = LoadFile( File::Spec->catfile( $Bin, '..', '..', 'conf', 'mail.yml' ) );
 
 if ( $config->{mailer} eq 'Sendmail' ) {
     if ( -e '/usr/sbin/sendmail' ) {

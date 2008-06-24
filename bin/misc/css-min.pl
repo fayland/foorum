@@ -7,8 +7,10 @@ use CSS::Minifier qw(minify);
 use File::Next;
 use File::Basename;
 use File::Path;
+use File::Spec;
 
-my $path = abs_path("$RealBin/../../root/static/css");
+my $path
+    = abs_path( File::Spec->catdir( $RealBin, '..', '..', 'root', 'static', 'css' ) );
 
 my $files = File::Next::files($path);
 

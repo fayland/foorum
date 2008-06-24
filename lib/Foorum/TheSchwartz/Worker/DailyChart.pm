@@ -8,6 +8,7 @@ use base qw( TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
 use Foorum::XUtils qw/tt2/;
+use File::Spec;
 
 sub work {
     my $class = shift;
@@ -50,8 +51,15 @@ sub work {
     use File::Spec;
     my ( undef, $path ) = File::Spec->splitpath(__FILE__);
 
-    $tt2->process( 'site/stats/chart.html', $var,
-        "$path/../../../../root/static/stats/$filename.html" );
+    $tt2->process(
+        'site/stats/chart.html',
+        $var,
+        File::Spec->catfile(
+            $path, '..',   '..',     '..',
+            '..',  'root', 'static', 'stats',
+            "$filename.html"
+        )
+    );
 
     $job->completed();
 }

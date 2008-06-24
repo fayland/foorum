@@ -73,11 +73,13 @@ sub edit : Local {
             # user has this column
             if ( grep { $_ eq $key } @columns ) {
                 if ( $key eq 'username' ) {
+
                     # validate username
                     my $ERROR_USERNAME = $c->model('Validation')
                         ->validate_username( $c, $query->{username} );
                     next if ($ERROR_USERNAME);
-                } elsif ( $key eq 'email') {
+                } elsif ( $key eq 'email' ) {
+
                     # validate email
                     my $err = $c->model('Validation')->validate_email( $c, $email );
                     next if ($err);
@@ -88,12 +90,11 @@ sub edit : Local {
                             object_type => 'user',
                             object_id   => $user->{user_id},
                             forum_id    => 0,
-                            text        => 'From ' . $user->{status} .
-                                           ' To '  . $query->{status},
+                            text => 'From ' . $user->{status} . ' To ' . $query->{status},
                         }
                     );
                 }
-                
+
                 push @update_cols, ( $key, $query->{$key} );
             }
         }

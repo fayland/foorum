@@ -2,11 +2,11 @@
 
 use strict;
 use Encode::HanConvert;
-
+use File::Spec;
 use FindBin qw/$Bin/;
 use Cwd qw/abs_path/;
 
-my $home = abs_path("$Bin/../../");    # Foorum home dir
+my $home = abs_path( File::Spec->catdir( $Bin, '..', '..' ) );    # Foorum home dir
 
 local $/ = undef;
 

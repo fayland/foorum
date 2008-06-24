@@ -5,8 +5,9 @@ use FindBin qw/$RealBin/;
 use Cwd qw/abs_path/;
 use Perl::Critic;
 use File::Next;
+use File::Spec;
 
-my $path = abs_path("$RealBin/../..");
+my $path = abs_path( File::Spec->catdir( $RealBin, '..', '..' ) );
 
 my $files  = File::Next::files($path);
 my $critic = Perl::Critic->new();

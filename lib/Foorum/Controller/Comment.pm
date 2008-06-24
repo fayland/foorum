@@ -52,7 +52,7 @@ sub post : Local {
 
         # for topic. only the first comment (topic) is reply_to == 0.
         # get the first comment for reply_to
-        my @rs = $c->model('DBIC::Comment')->search(
+        my $rs = $c->model('DBIC::Comment')->find(
             {   object_type => 'topic',
                 object_id   => $object_id,
             },
@@ -61,8 +61,10 @@ sub post : Local {
                 page     => 1,
                 columns  => ['comment_id'],
             }
-        )->all;    # I'm confused that why ->first is not working at all. YYY?
-        $reply_to = $rs[0]->comment_id;
+        );    # I'm confused that why search->first is not working at all. YYY?
+              # and why find is working at all
+        $c->detach( '/print_error', ['ERROR_CLOSED'] ) unless ($rs);
+        $reply_to = $rs->comment_id;
     }
 
     # execute validation.

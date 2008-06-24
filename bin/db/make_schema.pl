@@ -3,13 +3,14 @@
 use strict;
 use warnings;
 use FindBin qw/$Bin $RealBin/;
+use File::Spec;
 use Cwd qw/abs_path/;
 
 use DBIx::Class::Schema::Loader qw| make_schema_at dump_to_dir |;
 
-my $path = abs_path("$RealBin/../../lib");
+my $path = abs_path( File::Spec->catdir( $RealBin, '..', '..', 'lib' ) );
 
-use lib "$Bin/../../lib";
+use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
 use Foorum::XUtils qw/config/;
 my $config = config();
 

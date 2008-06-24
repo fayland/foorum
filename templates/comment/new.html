@@ -15,12 +15,16 @@ END; %]
 <div id='edit_profile_tabs' class='tabs'>
     <ul class="ui-tabs-nav">
         <li><a href='[% forum.forum_url %]'><span>Topics</span></a></li>
+        [% IF c.config.function_on.poll %]
         <li><a href='[% forum.forum_url %]/polls'><span>Polls</span></a></li>
+        [% END %]
         [% UNLESS forum.settings.can_post_threads AND forum.settings.can_post_threads == 'N' %]
         <li class="ui-tabs-selected"><a href='[% forum.forum_url %]/topic/new'><span>[% c.loc("New Topic") %]</span></a></li>
         [% END %]
+        [% IF c.config.function_on.poll %]
         [% UNLESS forum.settings.can_post_polls AND forum.settings.can_post_polls == 'N' %]
         <li><a href='[% forum.forum_url %]/poll/new'><span>[% c.loc("New Poll") %]</span></a></li>
+        [% END %]
         [% END %]
         <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
     </ul>

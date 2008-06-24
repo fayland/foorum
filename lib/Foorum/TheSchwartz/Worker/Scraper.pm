@@ -12,9 +12,11 @@ use Foorum::Scraper::MailMan;
 use Foorum::Utils qw/encodeHTML/;
 use POSIX qw(strftime);
 use File::Spec;
+use Encode qw/from_to/;
 use YAML::XS qw/LoadFile/;
 my ( undef, $path ) = File::Spec->splitpath(__FILE__);
-my $scraper_config = LoadFile("$path/../../../../conf/scraper.yml");
+my $scraper_config = LoadFile(
+    File::Spec->catfile( $path, '..', '..', '..', '..', 'conf', 'scraper.yml' ) );
 
 my @FullName_months = (
     '',     'January', 'February', 'March',     'April',   'May',
@@ -97,6 +99,9 @@ sub work {
                     scalar @populate_contents - 1 );
                 $last_post_id = $topic_id;
                 foreach my $content (@populate_contents) {
+
+                    # XXX? fix the Scraper encoding issue (TODO)
+
                     my $text
                         = qq~<p><strong>$content->{who}</strong> posted on <i>$content->{when}</i>:</p><pre>$content->{text}</pre>~;
                     my $comment = $schema->resultset('Comment')->create(

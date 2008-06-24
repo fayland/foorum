@@ -10,9 +10,10 @@ use Text::GooglewikiFormat;
 use FindBin qw/$Bin/;
 use Cwd qw/abs_path/;
 use File::Copy;
+use File::Spec;
 
-my $trunk_dir   = abs_path("$Bin/../../../trunk");
-my $wiki_dir    = abs_path("$Bin/../../../wiki");
+my $trunk_dir = abs_path( File::Spec->catdir( $Bin, '..', '..', '..', 'trunk' ) );
+my $wiki_dir  = abs_path( File::Spec->catdir( $Bin, '..', '..', '..', 'wiki' ) );
 my $project_url = 'http://code.google.com/p/foorum';
 
 my @filenames = (
@@ -52,7 +53,7 @@ my $indexpage;
 foreach my $filename (@filenames) {
     {
         local $/;
-        open( my $fh, '<', "$wiki_dir/$filename\.wiki" );
+        open( my $fh, '<', File::Spec->catfile( $wiki_dir, "$filename\.wiki" ) );
         flock( $fh, 1 );
         my $string = <$fh>;
         close($fh);
@@ -67,7 +68,10 @@ foreach my $filename (@filenames) {
         # XXX? TODO
         # text to README INSTALL AUTHOR
         if ( $filename eq 'AUTHORS' ) {
-            copy( "$wiki_dir/$filename\.wiki", "$trunk_dir/$filename" );
+            copy(
+                File::Spec->catfile( $wiki_dir,  "$filename\.wiki" ),
+                File::Spec->catfile( $trunk_dir, $filename )
+            );
         }
     }
 }
@@ -106,7 +110,7 @@ $html
 </body>
 </html>
 HTML
-    open( my $fh, '>', "$trunk_dir/docs/$filename\.html" );
+    open( my $fh, '>', File::Spec->catfile( $trunk_dir, 'docs', "$filename\.html" ) );
     flock( $fh, 2 );
     print $fh $html;
     close($fh);

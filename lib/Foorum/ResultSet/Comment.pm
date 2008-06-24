@@ -33,6 +33,10 @@ sub get_comments_by_object {
 
     my @comments = $self->get_all_comments_by_object( $object_type, $object_id );
 
+    # we return the top_comment_id for "Reply Topic"
+    my $top_comment_id = 0;
+    $top_comment_id = $comments[0]->{comment_id} if ( $comments[0] );
+
     my $pager = Data::Page->new();
     $pager->current_page($page);
     $pager->entries_per_page($rows);
@@ -121,7 +125,7 @@ sub get_comments_by_object {
 
     @comments = $self->prepare_comments_for_view(@comments);
 
-    return ( \@comments, $pager );
+    return ( \@comments, $pager, $top_comment_id );
 }
 
 sub get_children_comments {

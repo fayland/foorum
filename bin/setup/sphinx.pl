@@ -6,8 +6,9 @@ use FindBin;
 use Cwd qw/abs_path/;
 use YAML::XS qw/LoadFile/;
 use File::Path;
+use File::Spec;
 
-my $path = abs_path("$FindBin::RealBin/../..");
+my $path = abs_path( File::Spec->catdir( $FindBin::RealBin, '..', '..' ) );
 
 print "You are going to configure Sphinx for foorum.\n",
     "=" x 50,

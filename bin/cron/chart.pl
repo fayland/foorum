@@ -15,7 +15,8 @@ if ( $has_proc_pid_file and $has_home_dir ) {
 }
 
 use FindBin qw/$Bin/;
-use lib "$Bin/../../lib";
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
 use Foorum::XUtils qw/tt2/;
 use Foorum::SUtils qw/schema/;
 
@@ -45,6 +46,7 @@ my $var = {
 my $filename = sprintf( "%04d%02d%02d", $year, $month, $day );
 
 $tt2->process( 'site/stats/chart.html', $var,
-    "$Bin/../../root/static/stats/$filename.html" );
+    File::Spec->catfile( $Bin, '..', '..', 'root', 'static', 'stats', "$filename.html" )
+);
 
 1;

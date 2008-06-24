@@ -7,8 +7,9 @@ use JavaScript::Minifier qw(minify);
 use File::Next;
 use File::Basename;
 use File::Path;
+use File::Spec;
 
-my $path = abs_path("$RealBin/../../root/static");
+my $path = abs_path( File::Spec->catdir( $RealBin, '..', '..', 'root', 'static' ) );
 
 my $files = File::Next::files($path);
 

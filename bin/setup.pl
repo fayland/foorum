@@ -6,16 +6,18 @@ use FindBin;
 use Cwd qw/abs_path/;
 use YAML::XS qw/DumpFile LoadFile/;
 use DBI;
-use lib "$FindBin::Bin/../lib";
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
 use vars qw/$dbh/;
 
-my $path = abs_path("$FindBin::RealBin/..");
+my $path = abs_path( File::Spec->catdir( $FindBin::Bin, '..' ) );
 
 print "You are going to configure Foorum for your own using.\n",
     "=" x 50,
     "\nPlease report bugs to AUTHORS if u meet any problem.\n\n";
 
-print "We are saving your configure to\n", "$path/foorum_local.yml\n",
+my $foorum_local_file = File::Spec->catfile( $path, 'foorum_local.yml' );
+print "We are saving your configure to\n", "$foorum_local_file\n",
     "You can change it use a plain editor later\n\n";
 
 DBI:
@@ -60,8 +62,8 @@ $domain .= '/';
 $domain =~ s/\/+$/\//isg;
 
 my $yaml;
-if ( -e "$path/foorum_local.yml" ) {
-    $yaml = LoadFile("$path/foorum_local.yml");
+if ( -e $foorum_local_file ) {
+    $yaml = LoadFile($foorum_local_file);
 }
 
 $yaml->{dsn}             = "dbi:mysql:database=foorum;host=$dns_host;port=3306";
@@ -71,7 +73,7 @@ $yaml->{theschwartz_dsn} = "dbi:mysql:database=theschwartz;host=$dns_host;port=3
 $yaml->{site}->{domain}  = $domain;
 
 print "\n\nSaving ....\n";
-DumpFile( "$path/foorum_local.yml", $yaml );
+DumpFile( $foorum_local_file, $yaml );
 
 print "Attention! The first user created will be site admin automatically!\n";
 my $sql = q~INSERT INTO user_role SET user_id = 1, role = 'admin', field = 'site'~;

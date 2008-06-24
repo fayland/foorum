@@ -2,8 +2,8 @@
 
 use strict;
 use FindBin qw/$Bin/;
-use lib "$Bin/../../lib";
-use File::Spec ();
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
 use DBICx::AutoDoc;
 use Data::Dumper;
 
