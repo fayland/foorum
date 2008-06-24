@@ -28,6 +28,7 @@ sub default : Private {
             maintain     => $c->config->{function_on}->{maintain},
             register     => $c->config->{function_on}->{register},
             create_forum => $c->config->{function_on}->{create_forum},
+            poll         => $c->config->{function_on}->{poll},
 
             site_domain => $c->config->{site}->{domain},
 
@@ -67,12 +68,15 @@ sub default : Private {
     $activation = 1 if ( $activation != 0 );
     my $create_forum = $params{create_forum};
     $create_forum = 1 if ( $create_forum != 0 );
+    my $poll = $params{poll};
+    $poll = 1 if ( $poll != 0 );
     $yaml->{function_on} = {
         %{ $c->config->{function_on} },    # keep some values
         activation   => $activation,
         maintain     => $maintain,
         register     => $register,
-        create_forum => $create_forum
+        create_forum => $create_forum,
+        poll         => $poll,
     };
 
     # per page
