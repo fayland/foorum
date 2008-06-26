@@ -51,12 +51,16 @@ print $fh2 $content;
 close($fh2);
 
 unless ( -d File::Spec->catdir( $path, 'log' ) ) {
-    mkpath( [ File::Spec->catdir( $path, 'log' ) ], 0, 0777 )
-        ;    ## no critic (ProhibitLeadingZeros)
+    mkpath(
+        [ File::Spec->catdir( $path, 'log' ) ],    ## no critic
+        0, 0777                                    ## no critic (ProhibitLeadingZeros)
+    );                                             ## no critic (ProhibitLeadingZeros)
 }
 unless ( -d File::Spec->catdir( $path, 'data', 'sphinx' ) ) {
-    mkpath( [ File::Spec->catdir( $path, 'data', 'sphinx' ) ], 0, 0777 )
-        ;    ## no critic (ProhibitLeadingZeros)
+    mkpath(
+        [ File::Spec->catdir( $path, 'data', 'sphinx' ) ],    ## no critic
+        0, 0777    ## no critic (ProhibitLeadingZeros)
+    );             ## no critic (ProhibitLeadingZeros)
 }
 
 print "Configure is saved: $path/conf/sphinx.conf\n",
