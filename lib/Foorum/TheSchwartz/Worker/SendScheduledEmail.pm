@@ -8,6 +8,7 @@ use base qw( TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
 use Foorum::XUtils qw/config base_path/;
+use File::Spec;
 
 sub work {
     my $class = shift;
@@ -45,10 +46,11 @@ use YAML::XS qw/LoadFile/;
 
 my $base_path = base_path();
 my $config;
-if ( -e "$base_path/conf/mail.yml" ) {
-    $config = LoadFile("$base_path/conf/mail.yml");
+if ( -e File::Spec->catfile( $base_path, 'conf', 'mail.yml' ) ) {
+    $config = LoadFile( File::Spec->catfile( $base_path, 'conf', 'mail.yml' ) );
 } else {
-    $config = LoadFile("$base_path/conf/examples/mail/sendmail.yml");
+    $config = LoadFile(
+        File::Spec->catfile( $base_path, 'conf', 'examples', 'mail', 'mail.yml' ) );
 }
 
 if ( $config->{mailer} eq 'Sendmail' ) {

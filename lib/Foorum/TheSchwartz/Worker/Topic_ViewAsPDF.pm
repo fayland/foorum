@@ -10,6 +10,7 @@ use Foorum::Logger qw/error_log/;
 use Foorum::XUtils qw/config base_path cache tt2/;
 use Foorum::Formatter qw/filter_format/;
 use PDF::FromHTML;
+use File::Spec;
 
 sub work {
     my $class = shift;
@@ -25,7 +26,8 @@ sub work {
     my $tt2        = tt2();
     my $user_model = $schema->resultset('User');
 
-    my $file = "$base_path/root/upload/pdf/$forum_id-$topic_id-$random_word.pdf";
+    my $file = File::Spec->catfile( $base_path, 'root', 'upload', 'pdf',
+        "$forum_id-$topic_id-$random_word.pdf" );
     my $var;    # tt2 vars.
 
     # get comments

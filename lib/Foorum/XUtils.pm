@@ -66,7 +66,7 @@ sub tt2 {
     $base_path = base_path() unless ($base_path);
 
     $tt2 = Template->new(
-        {   INCLUDE_PATH => ["$base_path/templates"],
+        {   INCLUDE_PATH => [ File::Spec->catdir( $base_path, 'templates' ) ],
             PRE_CHOMP    => 1,
             POST_CHOMP   => 1,
             STASH        => Template::Stash::XS->new,

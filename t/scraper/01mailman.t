@@ -16,10 +16,11 @@ BEGIN {
 }
 
 use Foorum::Scraper::MailMan;
+use File::Spec;
 
 my $mailman = new Foorum::Scraper::MailMan;
 
-open( my $fh, '<', "$Bin/01mailman/001126.html" );
+open( my $fh, '<', File::Spec->catfile( $Bin, '01mailman', '001126.html' ) );
 local $/ = undef;
 flock( $fh, 2 );
 my $html = <$fh>;
@@ -31,7 +32,7 @@ my ( undef, $ret ) = $mailman->extract_from_message($html);
 
 like( $ret, qr/everything is nothing/, 'extract_from_message ok' );
 
-open( $fh, '<', "$Bin/01mailman/thread.html" );
+open( $fh, '<', File::Spec->catfile( $Bin, '01mailman', 'thread.html' ) );
 local $/ = undef;
 flock( $fh, 2 );
 $html = <$fh>;

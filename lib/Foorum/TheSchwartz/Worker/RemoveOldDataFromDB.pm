@@ -9,9 +9,10 @@ use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
 use Foorum::XUtils qw/base_path/;
 use YAML::XS qw/LoadFile/;
+use File::Spec;
 
-my $base_path   = base_path();
-my $cron_config = LoadFile("$base_path/conf/cron.yml");
+my $base_path = base_path();
+my $cron_config = LoadFile( File::Spec->catfile( $base_path, 'conf', 'cron.yml' ) );
 
 sub work {
     my $class = shift;

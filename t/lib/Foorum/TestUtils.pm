@@ -49,7 +49,7 @@ sub schema {
     };
 
     # create the database
-    my $db_file = "$path/test.db";
+    my $db_file = File::Spec->catfile( $path, 'test.db' );
     my $schema
         = Foorum::Schema->connect( "dbi:SQLite:$db_file", '', '',
         { AutoCommit => 1, RaiseError => 1, PrintError => 1 },

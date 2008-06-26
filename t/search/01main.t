@@ -68,8 +68,10 @@ is( $ret->{pager}->total_entries, 1,     '[2]pager OK' );
 
 END {
     my $base_path = base_path();
-    File::Copy::copy( "$base_path/t/lib/Foorum/backup.db",
-        "$base_path/t/lib/Foorum/test.db" );
+    File::Copy::copy(
+        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'backup.db' ),
+        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'test.db' )
+    );
 }
 
 #######################################

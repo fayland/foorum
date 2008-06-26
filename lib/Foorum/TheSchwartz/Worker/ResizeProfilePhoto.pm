@@ -9,6 +9,7 @@ use Foorum::SUtils qw/schema/;
 use Foorum::XUtils qw/base_path/;
 use Image::Magick;
 use File::Copy ();
+use File::Spec;
 
 sub work {
     my $class = shift;
@@ -33,7 +34,11 @@ sub work {
     my $directory_1 = int( $upload_id / 3200 / 3200 );
     my $directory_2 = int( $upload_id / 3200 );
     my $file        = abs_path(
-        "$base_path/root/upload/$directory_1/$directory_2/" . $upload->filename );
+        File::Spec->catfile(
+            $base_path,   'root', 'upload', $directory_1,
+            $directory_2, $upload->filename
+        )
+    );
 
     # resize photo
     my $p = new Image::Magick;

@@ -24,7 +24,7 @@ while ( defined ( my $file = $files->() ) ) {
     Perl::Tidy::perltidy(
         source            => $file,
         destination       => $tidyfile,
-        perltidyrc        => "$RealBin/.perltidyrc",
+        perltidyrc        => File::Spec->catfile( $RealBin, '.perltidyrc' ),
     );
     move($tidyfile, $file);
 }

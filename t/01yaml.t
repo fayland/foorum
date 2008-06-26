@@ -13,16 +13,17 @@ BEGIN {
 }
 
 use Foorum::XUtils qw/base_path/;
+use File::Spec;
 
 my $base_path = base_path();
 
 # XXX? since make test copy files to blib
 $base_path =~ s/\/blib$//isg;
 
-my @yml_files = ("$base_path/foorum.yml");
+my @yml_files = ( File::Spec->catfile( $base_path, 'foorum.yml' ) );
 
 # test conf/*.yml
-my $files = File::Next::files("$base_path/conf");
+my $files = File::Next::files( File::Spec->catdir( $base_path, 'conf' ) );
 while ( defined( my $file = $files->() ) ) {
     next if ( $file !~ /\.ya?ml$/ );    # only .yml or .yaml
     push @yml_files, $file;

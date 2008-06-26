@@ -7,6 +7,7 @@ use base 'DBIx::Class::ResultSet';
 
 use File::Remove qw(remove);
 use File::Path;
+use File::Spec;
 use File::Copy ();
 use Foorum::Utils qw/generate_random_word/;
 use Scalar::Util ();
@@ -76,7 +77,9 @@ sub remove_by_upload {
 
     my $directory_1 = int( $upload->{upload_id} / 3200 / 3200 );
     my $directory_2 = int( $upload->{upload_id} / 3200 );
-    my $file = "$base_path/root/upload/$directory_1/$directory_2/$upload->{filename}";
+    my $file
+        = File::Spec->catfile( $base_path, 'root', 'upload', $directory_1, $directory_2,
+        $upload->{filename} );
     remove($file);
     $self->search( { upload_id => $upload->{upload_id} } )->delete;
 
@@ -122,26 +125,30 @@ sub add_file {
 
     my $directory_1 = int( $upload_id / 3200 / 3200 );
     my $directory_2 = int( $upload_id / 3200 );
-    my $upload_dir  = "$base_path/root/upload/$directory_1/$directory_2";
+    my $upload_dir
+        = File::Spec->catdir( $base_path, 'root', 'upload', $directory_1, $directory_2 );
 
     unless ( -e $upload_dir ) {
         my @created
             = mkpath( [$upload_dir], 0, 0777 );    ## no critic (ProhibitLeadingZeros)
                # copy index.html to protect dir from Options Indexes
-        my $indexfile = "$base_path/root/upload/index.html";
+        my $indexfile = File::Spec->catfile( $base_path, 'root', 'upload', 'index.html' );
         foreach my $dir (@created) {
             File::Copy::copy( $indexfile, $dir );
         }
     }
 
-    my $target = "$base_path/root/upload/$directory_1/$directory_2/$basename";
+    my $target
+        = File::Spec->catfile( $base_path, 'root', 'upload', $directory_1, $directory_2,
+        $basename );
 
     # rename if exist
     if ( -e $target ) {
         my $random_filename;
         while ( -e $target ) {
             $random_filename = generate_random_word(15) . ".$filetype";
-            $target = "$base_path/root/upload/$directory_1/$directory_2/$random_filename";
+            $target = File::Spec->catfile( $base_path, 'root', 'upload', $directory_1,
+                $directory_2, $random_filename );
         }
         $upload_rs->update( { filename => $random_filename } );
     }
