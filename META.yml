@@ -66,4 +66,4 @@ requires:
   Text::Textile: 0
   TheSchwartz: 0
   URI::Find::UTF8: 0
-version: 0.1.8
+version: 0.1.9
