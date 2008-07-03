@@ -20,6 +20,8 @@ sub info : Global {
 sub __serve_static_info {
     my ( $c, $type, $type_id ) = @_;
 
+    $c->cache_page('1800'); # cache 30 minutes
+
     $c->stash->{template}                  = "$type/index.html";
     $c->stash->{additional_template_paths} = [
         $c->path_to( 'templates', 'lang', $c->stash->{lang} ),
