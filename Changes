@@ -1,6 +1,9 @@
 This file documents the revision history for Foorum.
 
-0.1.9
+0.2.0
+        - poll optional fix
+
+0.1.9 Sun Jun 29 20:31:00
         - ban user bug fix.
         - forum rss no text fix.
         - make poll optional (set in foorum.yml function_on: poll)
