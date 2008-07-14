@@ -254,12 +254,12 @@ sub get_announcement {
         $memval = $memval->{value};
     } else {
         my $rs           = $schema->resultset('Comment');
-        my $announcement = $rs->search(
+        my $announcement = $rs->find(
             {   object_type => 'announcement',
                 object_id   => $forum_id,
             },
             { columns => [ 'title', 'text', 'formatter' ], }
-        )->first;
+        );
 
         # filter format by Foorum::Filter
         if ($announcement) {
