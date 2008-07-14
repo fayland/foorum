@@ -282,12 +282,12 @@ sub announcement : Chained('forum_for_admin') Args(0) {
     my $forum    = $c->stash->{forum};
     my $forum_id = $forum->{forum_id};
 
-    my $announce = $c->model('DBIC::Comment')->search(
+    my $announce = $c->model('DBIC::Comment')->find(
         {   object_id   => $forum_id,
             object_type => 'announcement',
         },
         { columns => [ 'title', 'text', 'formatter' ] }
-    )->first;
+    );
 
     unless ( $c->req->method eq 'POST' ) {
         $c->stash(
