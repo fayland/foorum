@@ -1,4 +1,5 @@
 [% USE date %]
+[% PROCESS sub/date.html %]
 
 [% title = forum.name %]
 
@@ -48,8 +49,8 @@ Admin: <a href='/u/[% forum_roles.${forum.forum_id}.admin.username %]'>[% forum_
 	<td align='left' class='forum2'><a href='[% forum.forum_url %]/poll/[% poll.poll_id %]'>[% poll.title %]</a></td>
 	<td class='forum1'><a href='/u/[% poll.author.username %]'>[% poll.author.nickname %]</a></td>
 	<td class='forum2'>[% poll.vote_no %]</td>
-	<td class='forum1'><span class='date'>[% date.format(poll.time, '%Y-%m-%d %H:%M:%S') %]</span></td>
-	<td class='forum2'><span class='date'>[% date.format(poll.duration, '%Y-%m-%d %H:%M:%S') %]</span></td>
+	<td class='forum1'><span class='date'>[% date_format(poll.time) %]</span></td>
+	<td class='forum2'><span class='date'>[% date_format(poll.duration) %]</span></td>
 </tr>
 [% END %]
 </table>

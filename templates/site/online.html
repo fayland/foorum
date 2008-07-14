@@ -1,4 +1,5 @@
 [% USE date %]
+[% PROCESS sub/date.html %]
 
 [% title = 'Online' %]
 
@@ -36,10 +37,10 @@
 		<a href='/[% r.path %]'>[% r.title || r.path %]</a>
 	</td>
 	<td class='forum1'>
-	    <span class='date'>[% date.format(r.start_time, '%Y-%m-%d %H:%M:%S') %]</span>
+	    <span class='date'>[% date_format(r.start_time) %]</span>
 	</td>
 	<td class='forum2'>
-	    <span class='date'>[% date.format(r.last_time, '%Y-%m-%d %H:%M:%S') %]</span>
+	    <span class='date'>[% date_format(r.last_time) %]</span>
 	</td>
 	</tr>
 [% END %]

@@ -1,4 +1,5 @@
 [% USE date %]
+[% PROCESS sub/date.html %]
 
 <br />
 <div class='one'>
@@ -22,9 +23,9 @@
        END; %]
     
     [% IF whos.user %]
-    <a href='/u/[% whos.user.username %]' alt="Visit time: [% date.format(whos.start_time, '%Y-%m-%d %H:%M:%S') %]\nActive time: [% date.format(whos.last_time, '%Y-%m-%d %H:%M:%S') %]">[% whos.user.nickname %]</a>[% UNLESS loop.last %], [% END %]
+    <a href='/u/[% whos.user.username %]' alt="Visit time: [% date_format(whos.start_time) %]\nActive time: [% date_format(whos.last_time) %]">[% whos.user.nickname %]</a>[% UNLESS loop.last %], [% END %]
     [% ELSE %]
-    <span alt="Visit time: [% date.format(whos.start_time, '%Y-%m-%d %H:%M:%S') %]\nActive time: [% date.format(whos.last_time, '%Y-%m-%d %H:%M:%S') %]">Guest</span>
+    <span alt="Visit time: [% date_format(whos.start_time) %]\nActive time: [% date_format(whos.last_time) %]">Guest</span>
     [% END %]
     [% END %]
     </td>
