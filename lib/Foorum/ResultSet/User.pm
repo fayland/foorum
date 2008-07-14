@@ -149,6 +149,28 @@ sub update_user {
     $self->search( { user_id => $user->{user_id} } )->update($update);
 }
 
+# update threads and replies count
+sub update_threads_and_replies {
+    my ( $self, $user ) = @_;
+
+    my $schema = $self->result_source->schema;
+
+    # get $threads + $replies
+    my $total = $schema->resultset('Comment')->count(
+        {   author_id   => $user->{user_id},
+            object_type => 'topic',
+        }
+    );
+    my $replies = $schema->resultset('Comment')->count(
+        {   author_id   => $user->{user_id},
+            object_type => 'topic',
+            reply_to    => 0,
+        }
+    );
+
+    $self->update_user( $user, { threads => $total - $replies, replies => $replies } );
+}
+
 # get user_settings
 # we don't merge it into sub get_from_db is because it's not used so frequently
 sub get_user_settings {
@@ -268,6 +290,12 @@ the difference between $row->update of L<DBIx::Class> is that it delete cache.
   $schema->resultset('User')->delete_cache_by_user_cond( { user_id => ? } );
   $c->model('DBIC::User')->delete_cache_by_user_cond( { username => ? } );
   $c->model('DBIC::User')->delete_cache_by_user_cond( { email => ? } );
+
+=item update_threads_and_replies
+
+  $schema->resultset('User')->update_threads_and_replies($user);
+
+get the correct 'threads' and 'replies' and update for user
 
 =item get_user_settings
 
