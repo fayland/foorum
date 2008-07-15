@@ -6,11 +6,11 @@ package Foorum::Scraper::MailMan;
 
 use strict;
 use warnings;
-
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
-
 use HTML::TokeParser;
 use LWP::Simple;
+use Encode qw/from_to/;
+use Encode::Guess qw/euc-cn/;    # XXX? can't explain
 
 sub new {
     my $class = shift;
@@ -104,6 +104,15 @@ sub extract_from_message {
 
     $tag = $stream->get_tag('pre');
     my $text = $stream->get_text('/pre');
+
+    my $enc = Encode::Guess->guess($text);
+    my $encoding;
+    if ( ref($enc) ) {
+        $encoding = $enc->name;
+    }
+    if ( $encoding and $encoding ne 'utf8' ) {
+        from_to( $text, $encoding, 'utf8' );
+    }
 
     #$text = mail_body_to_abstract($text);
     return ( $when, $text );

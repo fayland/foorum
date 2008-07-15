@@ -99,9 +99,6 @@ sub work {
                     scalar @populate_contents - 1 );
                 $last_post_id = $topic_id;
                 foreach my $content (@populate_contents) {
-
-                    # XXX? fix the Scraper encoding issue (TODO)
-
                     my $text
                         = qq~<p><strong>$content->{who}</strong> posted on <i>$content->{when}</i>:</p><pre>$content->{text}</pre>~;
                     my $comment = $schema->resultset('Comment')->create(
