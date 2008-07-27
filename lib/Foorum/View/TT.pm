@@ -9,7 +9,7 @@ use File::Spec;
 #use Template::Constants qw( :debug );
 use NEXT;
 use HTML::Email::Obfuscate;
-use Foorum::Utils qw/decodeHTML/;
+use Foorum::Utils qw/decodeHTML be_url_part/;
 use Locale::Country::Multilingual;
 use vars qw/$lcm $Email/;
 
@@ -28,6 +28,7 @@ __PACKAGE__->config(
     FILTERS     => {
         email_obfuscate => sub               { $Email->escape_html(shift) },
         decodeHTML      => sub               { decodeHTML(shift) },
+        be_url_part     => sub               { be_url_part(shift) },
         code2country    => [ \&code2country, 1 ],
     }
 );

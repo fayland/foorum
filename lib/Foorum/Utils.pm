@@ -14,6 +14,7 @@ use vars qw/@EXPORT_OK/;
     get_page_from_url
     datetime_to_tt2_acceptable
     truncate_text
+    be_url_part
     /;
 
 use Encode ();
@@ -98,6 +99,16 @@ sub truncate_text {
     return $text;
 }
 
+sub be_url_part {
+    my ($str) = @_;
+    
+    $str =~ s/\W+/\-/isg;
+    $str =~ s/\-+/\-/isg;
+    $str =~ s/(^\-|\-$)//isg;
+    
+    return $str;
+}
+
 1;
 __END__
 
@@ -138,6 +149,10 @@ convert MySQL DateTime format to TT2 date.format
 =item truncate_text
 
 truncate text using Encode utf8
+
+=item be_url_part
+
+convert (title) string to be an acceptable URL part
 
 =back
 

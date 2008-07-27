@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 13;
+use Test::More tests => 15;
 
 use Foorum::Utils qw/
     encodeHTML decodeHTML
@@ -11,6 +11,7 @@ use Foorum::Utils qw/
     get_page_from_url
     datetime_to_tt2_acceptable
     truncate_text
+    be_url_part
     /;
 
 # test encodeHTML and decodeHTML
@@ -62,6 +63,14 @@ use Foorum::Utils qw/
     is( $text2, "Hello, 请截 ...", 'truncate_text 9 OK' );
     $text2 = truncate_text( $text, 10 );
     is( $text2, "Hello, 请截取 ...", 'truncate_text 10 OK' );
+}
+
+# test be_url_part
+{
+    my $ret = be_url_part("I'm a title");
+    is($ret, 'I-m-a-title', 'be_url_part 1');
+    $ret = be_url_part("+I'm a 88 title!");
+    is($ret, 'I-m-a-88-title', 'be_url_part 2');
 }
 
 1;
