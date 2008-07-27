@@ -17,10 +17,10 @@ my $wiki_dir  = abs_path( File::Spec->catdir( $Bin, '..', '..', '..', 'wiki' ) )
 my $project_url = 'http://code.google.com/p/foorum';
 
 my @filenames = (
-    'README',          'INSTALL',   'Configure', 'I18N',
-    'TroubleShooting', 'AUTHORS',   'RULES',     'HowRSS',
-    'Tutorial1',       'Tutorial2', 'Tutorial3', 'Tutorial4',
-    'Tutorial5',       'PreRelease',
+    'README',          'INSTALL',    'Configure', 'I18N',
+    'TroubleShooting', 'AUTHORS',    'RULES',     'HowRSS',
+    'Tutorial1',       'Tutorial2',  'Tutorial3', 'Tutorial4',
+    'Tutorial5',       'PreRelease', 'Upgrade'
 );
 
 my %tags = %Text::GooglewikiFormat::tags;
@@ -53,7 +53,10 @@ my $indexpage;
 foreach my $filename (@filenames) {
     {
         local $/;
-        open( my $fh, '<', File::Spec->catfile( $wiki_dir, "$filename\.wiki" ) );
+        open( my $fh, '<', File::Spec->catfile( $wiki_dir, "$filename\.wiki" ) ) or do {
+            print "Skip $filename\n";
+            next;
+        };
         flock( $fh, 1 );
         my $string = <$fh>;
         close($fh);

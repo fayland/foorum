@@ -2,6 +2,7 @@ This file documents the revision history for Foorum.
 
 0.2.1
         - Topic URL with title(url-ize) for Search sites like Google
+        - docs/Upgrade.html
 
 0.2.0 Sun Jul 27 12:48:00
         - poll optional fix

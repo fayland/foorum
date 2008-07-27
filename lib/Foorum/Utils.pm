@@ -101,11 +101,11 @@ sub truncate_text {
 
 sub be_url_part {
     my ($str) = @_;
-    
+
     $str =~ s/\W+/\-/isg;
     $str =~ s/\-+/\-/isg;
     $str =~ s/(^\-|\-$)//isg;
-    
+
     return $str;
 }
 

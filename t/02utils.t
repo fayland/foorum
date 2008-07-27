@@ -68,9 +68,9 @@ use Foorum::Utils qw/
 # test be_url_part
 {
     my $ret = be_url_part("I'm a title");
-    is($ret, 'I-m-a-title', 'be_url_part 1');
+    is( $ret, 'I-m-a-title', 'be_url_part 1' );
     $ret = be_url_part("+I'm a 88 title!");
-    is($ret, 'I-m-a-88-title', 'be_url_part 2');
+    is( $ret, 'I-m-a-88-title', 'be_url_part 2' );
 }
 
 1;

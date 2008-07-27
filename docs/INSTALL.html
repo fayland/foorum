@@ -8,7 +8,7 @@
 </head>
 <body class="t6">
 <div id="wikicontent">
-<p>#labels Phase-Deploy</p><h1> Steps </h1><ul><li>mysql -uroot -p </li><li>mysql&gt;CREATE DATABASE foorum; </li><li>mysql&gt;CREATE DATABASE theschwartz; </li><li>mysql&gt;exit; </li><li>mysql -uroot -p foorum &lt; bin/db/foorum.sql </li><li>mysql -uroot -p theschwartz &lt; bin/db/theschwartz.sql </li><li>perl bin/setup.pl </li><li>perl Makefile.PL; make; make test; </li><li>perl bin/foorum_server.pl </li></ul><h1> Apache Configure </h1><ul><li>remember set Options -Index in /root/upload, so that nobody can view /upload URL </li></ul><pre class="prettyprint">$ vim Foorum/root/upload/.htaccess
+<p>#labels Phase-Deploy,Featured</p><h1> Steps </h1><ul><li>mysql -uroot -p </li><li>mysql&gt;CREATE DATABASE foorum; </li><li>mysql&gt;CREATE DATABASE theschwartz; </li><li>mysql&gt;exit; </li><li>mysql -uroot -p foorum &lt; bin/db/foorum.sql </li><li>mysql -uroot -p theschwartz &lt; bin/db/theschwartz.sql </li><li>perl bin/setup.pl </li><li>perl Makefile.PL; make; make test; </li><li>perl bin/foorum_server.pl </li></ul><h1> Apache Configure </h1><ul><li>remember set Options -Index in /root/upload, so that nobody can view /upload URL </li></ul><pre class="prettyprint">$ vim Foorum/root/upload/.htaccess
 Options -Indexes
 </pre><h2> SEE ALSO </h2><p><a href="Configure.html">Configure</a>, <a href="TroubleShooting.html">TroubleShooting</a></p>
 </div>
