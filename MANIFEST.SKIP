@@ -1,6 +1,7 @@
 conf/mail.yml
 conf/scraper.yml
 conf/sphinx.conf
+conf/theschwartz.yml
 foorum_local.yml
 lib/Foorum/Controller/Test.pm
 root/upload/\d+

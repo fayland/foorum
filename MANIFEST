@@ -50,6 +50,7 @@ bin/upgrade/0.1.3/up.pl
 bin/upgrade/0.1.5/up.pl
 bin/upgrade/0.1.7/up.pl
 bin/upgrade/0.1.8/up.pl
+bin/upgrade/0.2.0/scraper.pl
 Changes
 Changes2
 conf/cron.yml
@@ -63,6 +64,7 @@ docs/AUTHORS.html
 docs/Configure.html
 docs/Foorum-Schema-0.1.7.html
 docs/Foorum-Schema-0.1.8.html
+docs/Foorum-Schema-0.2.0.html
 docs/HowRSS.html
 docs/I18N.html
 docs/index.html

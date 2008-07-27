@@ -35,14 +35,15 @@ my @mailmans = @{ $scraper_config->{scraper}->{mailman} };
 foreach my $mailman (@mailmans) {
     my $forum_id = $mailman->{forum_id};
     print "Working on $forum_id\n";
-    my $rs = $schema->resultset('Comment')->search( {
-        forum_id => $forum_id,
-        object_type => 'topic',
-    } );
-    while (my $r = $rs->next) {
+    my $rs = $schema->resultset('Comment')->search(
+        {   forum_id    => $forum_id,
+            object_type => 'topic',
+        }
+    );
+    while ( my $r = $rs->next ) {
         my $comment_id = $r->comment_id;
-        my $text = $r->text;
-        
+        my $text       = $r->text;
+
         my $enc = Encode::Guess->guess($text);
         my $encoding;
         if ( ref($enc) ) {
@@ -51,9 +52,7 @@ foreach my $mailman (@mailmans) {
         if ( $encoding and $encoding ne 'utf8' ) {
             from_to( $text, $encoding, 'utf8' );
             print "Convert $comment_id FROM $encoding TO utf8\n";
-            $r->update( {
-                text => $text,
-            } );
+            $r->update( { text => $text, } );
         } else {
             print "Skip $comment_id\n";
         }
