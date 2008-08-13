@@ -24,6 +24,10 @@ my @FullName_months = (
     'December'
 );
 
+my @Re_s = (
+    'Re\:', '答复\:'
+);
+
 sub work {
     my $class = shift;
     my TheSchwartz::Job $job = shift;
@@ -184,7 +188,9 @@ sub get_topic_or_create {
     my ( $schema, $forum_id, $title, $user_id, $replies_no ) = @_;
 
     # trim 'Re:\s+'
-    $title =~ s/^Re\:\s+//isg;
+    foreach my $tre (@Re_s) {
+        $title =~ s/^$tre\s+//isg;
+    }
 
     my $topic = $schema->resultset('Topic')->search(
         {   title    => { 'LIKE', $title },
