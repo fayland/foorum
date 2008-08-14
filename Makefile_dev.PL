@@ -6,8 +6,7 @@ abstract        ('Foorum - forum system based on Catalyst');
 license         ('perl');
 version_from    ('lib/Foorum/Version.pm');
 
-requires 'Template::Plugin::Math'; # Template 2.19 don't contain this one.
-requires 'Template';
+requires 'Template' => '2.20';
 requires 'DBIx::Class';
 requires 'Catalyst' => '5.64';
 requires 'Digest';
