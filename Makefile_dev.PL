@@ -52,7 +52,9 @@ requires 'Sphinx::Search';
 # cron
 requires 'TheSchwartz';
 requires 'Schedule::Cron';
-requires 'Proc::PID::File';
+if ($^O ne 'MSWin32') {
+    recommends 'Proc::PID::File';
+}
 requires 'File::HomeDir';
 
 # cron/misc|db

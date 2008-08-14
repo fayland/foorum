@@ -52,7 +52,9 @@ requires 'Sphinx::Search';
 # cron
 requires 'TheSchwartz';
 requires 'Schedule::Cron';
-recommends 'Proc::PID::File';
+if ($^O ne 'MSWin32') {
+    recommends 'Proc::PID::File';
+}
 recommends 'File::HomeDir';
 
 # mail
