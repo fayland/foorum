@@ -13,7 +13,7 @@ BEGIN {
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
-use Foorum::TestUtils qw/schema base_path/;
+use Foorum::TestUtils qw/schema rollback_db/;
 
 my $schema = schema();
 
@@ -34,14 +34,8 @@ $count = $visit_res->count( { object_type => 'test', object_id => 1, user_id => 
 is( $count, 0, 'make_visited OK' );
 
 END {
-
     # Keep Database the same from original
-    use File::Copy ();
-    my $base_path = base_path();
-    File::Copy::copy(
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'backup.db' ),
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'test.db' )
-    );
+    rollback_db();
 }
 
 1;

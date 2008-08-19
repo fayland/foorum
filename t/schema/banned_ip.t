@@ -13,7 +13,7 @@ BEGIN {
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
-use Foorum::TestUtils qw/schema cache base_path/;
+use Foorum::TestUtils qw/schema cache rollback_db/;
 my $schema = schema();
 my $cache  = cache();
 
@@ -52,14 +52,8 @@ $banned_ip_res->search(
 $cache->remove('global|banned_ip');
 
 END {
-
     # Keep Database the same from original
-    use File::Copy ();
-    my $base_path = base_path();
-    File::Copy::copy(
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'backup.db' ),
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'test.db' )
-    );
+    rollback_db();
 }
 
 1;

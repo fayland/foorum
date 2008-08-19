@@ -13,7 +13,7 @@ BEGIN {
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
-use Foorum::TestUtils qw/schema base_path/;
+use Foorum::TestUtils qw/schema rollback_db/;
 my $schema = schema();
 
 my $tbl = $schema->resultset('UserOnline');
@@ -85,14 +85,8 @@ is( $rets[0]->sessionid, $sid2,  'whos_view_this_page2 result' );
 is( $rets[-1],           'SELF', 'return SELF' );
 
 END {
-
     # Keep Database the same from original
-    use File::Copy ();
-    my $base_path = base_path();
-    File::Copy::copy(
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'backup.db' ),
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'test.db' )
-    );
+    rollback_db();
 }
 
 1;

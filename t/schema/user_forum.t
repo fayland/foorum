@@ -13,7 +13,7 @@ BEGIN {
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
-use Foorum::TestUtils qw/schema base_path/;
+use Foorum::TestUtils qw/schema rollback_db/;
 my $schema = schema();
 
 my $userforum_res = $schema->resultset('UserForum');
@@ -44,14 +44,8 @@ my $cnt = $userforum_res->count( { forum_id => 999 } );
 is( $cnt, 0, 'after remove_user_forum OK' );
 
 END {
-
     # Keep Database the same from original
-    use File::Copy ();
-    my $base_path = base_path();
-    File::Copy::copy(
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'backup.db' ),
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'test.db' )
-    );
+    rollback_db();
 }
 
 1;

@@ -13,7 +13,7 @@ BEGIN {
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
-use Foorum::TestUtils qw/schema cache base_path/;
+use Foorum::TestUtils qw/schema cache base_path rollback_db/;
 use File::Path;
 use File::Copy ();
 use File::Remove qw/remove/;
@@ -83,18 +83,9 @@ $upload = $upload_res->get($upload_id);
 is( $upload, undef, 'after remove_by_upload get undef' );
 ok( not( -e $dest_file ), 'after remove_by_upload file deleted' );
 
-# Keep Database the same from original
-use File::Copy ();
-
 END {
-
     # Keep Database the same from original
-    use File::Copy ();
-    my $base_path = base_path();
-    File::Copy::copy(
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'backup.db' ),
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'test.db' )
-    );
+    rollback_db();
 
     if ( scalar @created ) {
         remove \1, @created;
