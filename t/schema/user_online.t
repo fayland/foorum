@@ -85,6 +85,7 @@ is( $rets[0]->sessionid, $sid2,  'whos_view_this_page2 result' );
 is( $rets[-1],           'SELF', 'return SELF' );
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }

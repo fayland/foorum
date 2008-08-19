@@ -97,6 +97,7 @@ is( $log_action->user_id, 2, 'operator_id OK' );
 is( $log_action->text, 'delete for test', 'LogAction reason OK' );
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }

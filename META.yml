@@ -3,7 +3,7 @@ abstract: 'Foorum - forum system based on Catalyst'
 author:
   - 'Fayland Lam<fayland@gmail.com>'
 distribution_type: module
-generated_by: 'Module::Install version 0.76'
+generated_by: 'Module::Install version 0.77'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -16,7 +16,6 @@ no_index:
 recommends:
   Email::Send::SMTP::TLS: 0
   File::HomeDir: 0
-  Proc::PID::File: 0
 requires:
   Cache::FileCache: 0
   Catalyst: 5.64
@@ -28,7 +27,7 @@ requires:
   Catalyst::Plugin::Captcha: 0
   Catalyst::Plugin::Config::YAML::XS: 0
   Catalyst::Plugin::FormValidator::Simple: 0
-  Catalyst::Plugin::I18N: 0
+  Catalyst::Plugin::I18N: 0.08
   Catalyst::Plugin::PageCache: 0
   Catalyst::Plugin::Session: 0
   Catalyst::Plugin::Session::DynamicExpiry: 0
@@ -48,7 +47,6 @@ requires:
   File::Remove: 0
   HTML::BBCode: 2.00
   HTML::Email::Obfuscate: 0
-  I18N::LangTags: 0
   List::MoreUtils: 0
   List::Util: 0
   Locale::Country::Multilingual: 0.03
@@ -59,14 +57,13 @@ requires:
   Set::Object: 0
   Sphinx::Search: 0
   Sub::Install: 0
-  Template: 0
+  Template: 2.20
   Template::Plugin::Date: 0
   Template::Plugin::FillInForm: 0
-  Template::Plugin::Math: 0
   Text::GooglewikiFormat: 0.04
   Text::Textile: 0
   TheSchwartz: 0
   URI::Find::UTF8: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.2.0
+version: 0.2.1

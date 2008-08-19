@@ -99,6 +99,7 @@ is($count, 0, 'after remove_by_object, count OK');
 =cut
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }

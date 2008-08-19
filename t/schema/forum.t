@@ -66,6 +66,7 @@ my $count = $forum_res->count( { forum_id => 1 } );
 is( $count, 0, 'remove OK' );
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }

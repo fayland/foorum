@@ -55,6 +55,7 @@ $count = $schema->resultset('MessageUnread')->count( { user_id => 1 } );
 is( $count, 0, 'message_unread OK' );
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }

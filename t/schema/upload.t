@@ -84,6 +84,7 @@ is( $upload, undef, 'after remove_by_upload get undef' );
 ok( not( -e $dest_file ), 'after remove_by_upload file deleted' );
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 

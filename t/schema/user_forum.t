@@ -44,6 +44,7 @@ my $cnt = $userforum_res->count( { forum_id => 999 } );
 is( $cnt, 0, 'after remove_user_forum OK' );
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }

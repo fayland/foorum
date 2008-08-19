@@ -34,6 +34,7 @@ $count = $visit_res->count( { object_type => 'test', object_id => 1, user_id => 
 is( $count, 0, 'make_visited OK' );
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }

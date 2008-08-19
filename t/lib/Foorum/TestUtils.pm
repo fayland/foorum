@@ -79,6 +79,7 @@ sub cache {
 }
 
 sub rollback_db {
+
     # Keep Database the same from original
     File::Copy::copy(
         File::Spec->catfile( $path, 'backup.db' ),

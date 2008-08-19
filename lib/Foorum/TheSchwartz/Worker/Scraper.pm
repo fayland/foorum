@@ -26,9 +26,7 @@ my @FullName_months = (
     'December'
 );
 
-my @Re_s = (
-    'Re\:', '答复\:'
-);
+my @Re_s = ( 'Re\:', '答复\:' );
 
 sub work {
     my $class = shift;

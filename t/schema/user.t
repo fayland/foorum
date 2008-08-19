@@ -49,6 +49,7 @@ is( $user->{email}, $org_email, 'update_user 2 OK' );
 use File::Copy ();
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }

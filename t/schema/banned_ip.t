@@ -52,6 +52,7 @@ $banned_ip_res->search(
 $cache->remove('global|banned_ip');
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }

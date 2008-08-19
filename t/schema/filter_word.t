@@ -51,6 +51,7 @@ my $return_text = $filter_word_res->convert_offensive_word("kick your asshole la
 like( $return_text, qr/\*/, 'convert_offensive_word OK' );
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }

@@ -47,6 +47,7 @@ $schema->resultset('Star')->search(
 )->delete;
 
 END {
+
     # Keep Database the same from original
     rollback_db();
 }
