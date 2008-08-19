@@ -14,7 +14,9 @@ use POSIX qw(strftime);
 use File::Spec;
 use Encode qw/from_to/;
 use YAML::XS qw/LoadFile/;
+use Cwd qw/abs_path/;
 my ( undef, $path ) = File::Spec->splitpath(__FILE__);
+$path = abs_path($path);
 my $scraper_config = LoadFile(
     File::Spec->catfile( $path, '..', '..', '..', '..', 'conf', 'scraper.yml' ) );
 

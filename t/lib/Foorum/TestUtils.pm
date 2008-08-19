@@ -19,6 +19,7 @@ use vars qw/@EXPORT_OK $config $cache $base_path/;
 use File::Spec;
 use Cwd qw/abs_path/;
 my ( undef, $path ) = File::Spec->splitpath(__FILE__);
+$path = abs_path($path);
 
 sub base_path {
     return $base_path if ($base_path);

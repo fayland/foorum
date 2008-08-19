@@ -22,6 +22,7 @@ use vars qw/@EXPORT_OK $base_path $config $cache $tt2 $theschwartz/;
 use File::Spec;
 use Cwd qw/abs_path/;
 my ( undef, $path ) = File::Spec->splitpath(__FILE__);
+$path = abs_path($path);
 
 sub base_path {
     return $base_path if ($base_path);

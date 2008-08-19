@@ -50,6 +50,8 @@ sub work {
     my $filename = sprintf( "%04d%02d%02d", $year, $month, $day );
     use File::Spec;
     my ( undef, $path ) = File::Spec->splitpath(__FILE__);
+    use Cwd qw/abs_path/;
+    $path = abs_path($path);
 
     $tt2->process(
         'site/stats/chart.html',
