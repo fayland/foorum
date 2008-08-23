@@ -2,14 +2,13 @@
 
 use strict;
 use warnings;
-use Test::More tests => 15;
+use Test::More tests => 14;
 
 use Foorum::Utils qw/
     encodeHTML decodeHTML
     is_color
     generate_random_word
     get_page_from_url
-    datetime_to_tt2_acceptable
     truncate_text
     be_url_part
     /;
@@ -45,13 +44,6 @@ use Foorum::Utils qw/
     is( $page, 3, 'get_page_from_url with page=3/' );
     $page = get_page_from_url("/test/nothing");
     is( $page, 1, 'get_page_from_url return default 1' );
-}
-
-# test datetime_to_tt2_acceptable
-{
-    my $datetime = '2007-12-21 08:09:01';
-    my $ret      = datetime_to_tt2_acceptable($datetime);
-    is( $ret, '8:9:1 21/12/2007', 'datetime_to_tt2_acceptable OK' );
 }
 
 # test truncate_text
