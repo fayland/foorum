@@ -22,7 +22,7 @@ cache:
       namespace: 'Foorum'
       default_expires_in: 600
 
-page_cache:
+Plugin::PageCache:
   expires: 300
   set_http_headers: 1
   debug: 1
