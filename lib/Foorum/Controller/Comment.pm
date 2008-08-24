@@ -68,7 +68,7 @@ sub post : Local {
     }
 
     # execute validation.
-    $c->model('Validation')->validate_comment($c);
+    $self->validate_params($c);
 
     my $upload    = $c->req->upload('upload');
     my $upload_id = 0;
@@ -170,7 +170,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
     return unless ( $c->req->method eq 'POST' );
 
     # execute validation.
-    $c->model('Validation')->validate_comment($c);
+    $self->validate_params($c);
 
     my $upload    = $c->req->upload('upload');
     my $upload_id = 0;
@@ -280,7 +280,7 @@ sub edit : LocalRegex('^(\d+)/edit$') {
     return unless ( $c->req->method eq 'POST' );
 
     # execute validation.
-    $c->model('Validation')->validate_comment($c);
+    $self->validate_params($c);
 
     my $new_upload = $c->req->upload('upload');
     my $upload_id  = $comment->{upload_id};
@@ -463,6 +463,22 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             }
         ]
     );
+}
+
+sub validate_params : Private {
+    my ($self, $c) = @_;
+    
+    my $st = $c->model('DBIC::Comment')->validate_params($c->req->params);
+    if ($st) {
+        if ($st =~ /^BAD_(\w+)_(.*?)$/) {
+            my $place = ucfirst(lc($1));
+            my $word = $2;
+            $c->detach( '/print_error',
+                [qq~Sorry, your $place has a bad word "$word".~] );
+        } else {
+            $c->detach( '/print_error', [ $st ] );
+        }
+    }
 }
 
 1;

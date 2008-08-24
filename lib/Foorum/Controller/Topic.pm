@@ -137,7 +137,7 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     return unless ( $c->req->method eq 'POST' );
 
     # execute validation.
-    $c->model('Validation')->validate_comment($c);
+    $c->controller('Comment')->validate_params($c);
 
     my $upload    = $c->req->upload('upload');
     my $upload_id = 0;

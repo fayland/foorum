@@ -274,4 +274,30 @@ sub get_announcement {
     return $memval;
 }
 
+sub validate_forum_code {
+    my ( $self, $forum_code ) = @_;
+
+    return 'LENGTH'
+        if ( length($forum_code) < 6 or length($forum_code) > 20 );
+
+    for ($forum_code) {
+        return 'HAS_BLANK' if (/\s/);
+        return 'REGEX' unless (/[A-Za-z]+/s);
+        return 'REGEX' unless (/^[A-Za-z0-9\_]+$/s);
+    }
+
+    my $schema = $self->result_source->schema;
+
+    # forum_code_reserved
+    my @reserved = $schema->resultset('FilterWord')->get_data('forum_code_reserved');
+    return 'HAS_RESERVED' if ( grep { lc($forum_code) eq lc($_) } @reserved );
+
+    # unique
+    my $cnt = $self->count( { forum_code => $forum_code } );
+    return 'DBIC_UNIQUE' if ($cnt);
+
+    return;
+}
+
+
 1;

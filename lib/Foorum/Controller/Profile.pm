@@ -218,7 +218,7 @@ sub change_email : Local {
     if ( $email eq $c->user->email ) {
         return $c->set_invalid_form( email => 'EMAIL_DUPLICATION' );
     }
-    my $err = $c->model('Validation')->validate_email( $c, $email );
+    my $err = $c->model('DBIC::User')->validate_email( $email );
     if ($err) {
         return $c->set_invalid_form( email => $err );
     }
@@ -262,7 +262,7 @@ sub change_username : Local {
     return if ( $c->form->has_error );
 
     my $new_username = $c->req->param('new_username');
-    my $err = $c->model('Validation')->validate_username( $c, $new_username );
+    my $err = $c->model('DBIC::User')->validate_username( $new_username );
     if ($err) {
         $c->set_invalid_form( new_username => $err );
         return;

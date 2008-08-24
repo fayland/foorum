@@ -6,6 +6,7 @@ use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class::ResultSet';
 
 use Object::Signature();
+use Email::Valid::Loose;
 
 sub get {
     my ( $self, $cond ) = @_;
@@ -202,6 +203,43 @@ sub get_user_settings {
     };
     my $ret = { %$default, %$cacheval };                           # merge
     return $ret;
+}
+
+sub validate_username {
+    my ( $self, $username ) = @_;
+
+    return 'LENGTH' if ( length($username) < 6 or length($username) > 20 );
+
+    for ($username) {
+        return 'HAS_BLANK' if (/\s/);
+        return 'HAS_SPECAIL_CHAR' unless (/^[A-Za-z0-9\_]+$/s);
+    }
+
+    my $schema = $self->result_source->schema;
+
+    # username_reserved
+    my @reserved = $schema->resultset('FilterWord')->get_data('username_reserved');
+    return 'HAS_RESERVED' if ( grep { lc($username) eq lc($_) } @reserved );
+
+    # unique
+    my $cnt = $self->count( { username => $username } );
+    return 'DBIC_UNIQUE' if ($cnt);
+
+    return;
+}
+
+sub validate_email {
+    my ( $self, $email ) = @_;
+
+    return 'LENGTH' if ( length($email) > 64 );
+
+    return 'EMAIL_LOOSE' unless ( Email::Valid::Loose->address($email) );
+
+    # unique
+    my $cnt = $self->count( { email => $email } );
+    return 'DBIC_UNIQUE' if ($cnt);
+
+    return;
 }
 
 1;

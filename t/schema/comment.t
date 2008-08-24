@@ -8,7 +8,7 @@ BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
 
-    plan tests => 20;
+    plan tests => 24;
 }
 
 use FindBin;
@@ -97,6 +97,24 @@ $count = $comment_res->count( { object_type => 'test', object_id => 22 } );
 is($count, 0, 'after remove_by_object, count OK');
 
 =cut
+
+# test validate_params
+my $params = { title => '', text => 'text' };
+my $st = $comment_res->validate_params($params);
+is($st, 'ERROR_TITLE_LENGTH', 'ERROR_TITLE_LENGTH');
+$params = { title => 'title', text => '' };
+$st = $comment_res->validate_params($params);
+is($st, 'ERROR_TEXT_REQUIRED', 'ERROR_TEXT_REQUIRED');
+$schema->resultset('FilterWord')->create( {
+    word => 'fuck',
+    type => 'bad_word'
+} );
+$params = { title => 'fuck', text => 'text' };
+$st = $comment_res->validate_params($params);
+is($st, 'BAD_fuck', 'BAD_fuck in title');
+$params = { title => 'title', text => 'fuck' };
+$st = $comment_res->validate_params($params);
+is($st, 'BAD_fuck', 'BAD_fuck in text');
 
 END {
 
