@@ -86,7 +86,7 @@ $().ready(function() {
 [% FILTER fillinform fdat => c.req.params %]
 <form class="valid" method='post' id="RegisterForm">
 <fieldset>
-    <legend>Register</legend>
+    <legend>[% c.loc("Register") %]</legend>
 	<p>
 	    <label for="username">[% c.loc('Username') %]</label>
 	    <input type='text' name='username' id='username' />

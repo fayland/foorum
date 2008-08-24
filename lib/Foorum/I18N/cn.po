@@ -73,6 +73,9 @@ msgstr "管理论坛"
 msgid "Message"
 msgstr "我的消息"
 
+msgid "What's New?"
+msgstr "最近更新"
+
 msgid "Edit Profile"
 msgstr "编辑个人资料"
 
@@ -247,3 +250,13 @@ msgstr "地区信息"
 
 msgid "Contact Information"
 msgstr "联系信息"
+
+# login
+msgid "Login By Username"
+msgstr "用户名登陆"
+
+msgid "Login By Email"
+msgstr "电子邮件登陆"
+
+msgid "Remember me?"
+msgstr "记住我的登陆状态？"

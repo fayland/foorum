@@ -37,7 +37,7 @@ if ( __PACKAGE__->config->{function_on}->{page_cache} ) {
 }
 
 ## set $c->language before create a key in PageCache
-__PACKAGE__->config->{Plugin::PageCache}->{key_maker} = sub {
+__PACKAGE__->config->{'Plugin::PageCache'}->{key_maker} = sub {
     my $c = shift;
 
     # something as the same as in Root.pm
