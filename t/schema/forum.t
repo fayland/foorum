@@ -70,16 +70,19 @@ my $st = $forum_res->validate_forum_code('5char');
 is($st, 'LENGTH', '5char breaks');
 $st = $forum_res->validate_forum_code('22charsabcdefghijklmno');
 is($st, 'LENGTH', '22chars breaks');
-$st = $forum_res->validate_forum_code('a c');
+$st = $forum_res->validate_forum_code('a cdddef');
 is($st, 'HAS_BLANK', 'HAS_BLANK');
-$st = $forum_res->validate_forum_code('a$b@d');
+$st = $forum_res->validate_forum_code('a$b@dge');
 is($st, 'REGEX', 'REGEX');
 $st = $forum_res->validate_forum_code('1234567');
 is($st, 'REGEX', 'all num breaks');
+
 $schema->resultset('FilterWord')->create( {
     word => 'faylandlam',
     type => 'forum_code_reserved'
 } );
+$cache->remove("filter_word|type=forum_code_reserved");
+
 $st = $forum_res->validate_forum_code('FaylandLam');
 is($st, 'HAS_RESERVED', 'HAS_RESERVED');
 my $v_forum_code = 'faylandforever';

@@ -13,8 +13,9 @@ BEGIN {
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
-use Foorum::TestUtils qw/schema rollback_db/;
+use Foorum::TestUtils qw/schema cache rollback_db/;
 my $schema = schema();
+my $cache  = cache();
 
 my $user_res = $schema->resultset('User');
 
@@ -51,14 +52,17 @@ my $st = $user_res->validate_username('5char');
 is($st, 'LENGTH', '5char breaks');
 $st = $user_res->validate_username('22charsabcdefghijklmno');
 is($st, 'LENGTH', '22chars breaks');
-$st = $user_res->validate_username('a c');
+$st = $user_res->validate_username('a cdddf');
 is($st, 'HAS_BLANK', 'HAS_BLANK');
-$st = $user_res->validate_username('a$b@d');
+$st = $user_res->validate_username('a$b@defd');
 is($st, 'HAS_SPECAIL_CHAR', 'HAS_SPECAIL_CHAR');
+
 $schema->resultset('FilterWord')->create( {
     word => 'faylandlam',
     type => 'username_reserved'
 } );
+$cache->remove("filter_word|type=username_reserved");
+
 $st = $user_res->validate_username('FaylandLam');
 is($st, 'HAS_RESERVED', 'HAS_RESERVED');
 $st = $user_res->validate_username($org_username);
