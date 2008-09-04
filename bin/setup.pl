@@ -31,17 +31,9 @@ my $dns_user = <>;
 chomp($dns_user);
 $dns_user = 'root' unless ($dns_user);
 
-DBIPASS:
-print "Your MySQL pass (required): ";
-my $dns_password;
-while ( $dns_password = <> ) {
-    chomp($dns_password);
-    if ($dns_password) {
-        last;
-    } else {
-        goto DBIPASS;
-    }
-}
+print "Your MySQL pass: ";
+my $dns_password = <>;
+chomp($dns_password);
 
 eval {
     $dbh = DBI->connect( "dbi:mysql:database=foorum;host=$dns_host;port=3306",
