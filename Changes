@@ -3,6 +3,7 @@ This file documents the revision history for Foorum.
 0.2.2
         - use Catalyst::Plugin::PageCache '0.19' and key_maker
         - split Model/Validation.pm into ResultSet and remove it
+        - use 'MooseX::TheSchwartz' and 'TheSchwartz::Simple' to replace 'TheSchwartz'
 
 0.2.1 Tue Aug 18 12:20:00
         - Topic URL with title(url-ize) for Search sites like Google
