@@ -7,11 +7,7 @@ use base qw( MooseX::TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
 use Foorum::XUtils qw/base_path/;
-use YAML::XS qw/LoadFile/;
-use File::Spec;
-
-my $base_path = base_path();
-my $cron_config = LoadFile( File::Spec->catfile( $base_path, 'conf', 'cron.yml' ) );
+use Foorum::CronUtils qw/cron_config/;
 
 sub work {
     my $class = shift;
@@ -20,6 +16,7 @@ sub work {
     my @args = $job->arg;
 
     my $schema = schema();
+    my $cron_config = cron_config();
 
     # for table 'visit'
     # 2592000 = 30 * 24 * 60 * 60
