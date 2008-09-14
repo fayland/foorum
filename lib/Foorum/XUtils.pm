@@ -6,7 +6,8 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 
 use YAML::XS qw/LoadFile/;    # config
-use TheSchwartz;              # theschwartz
+use TheSchwartz::Simple;      # theschwartz
+use DBI;
 use Template;                 # template
 use Template::Stash::XS;
 use base 'Exporter';
@@ -81,15 +82,8 @@ sub theschwartz {
     return $theschwartz if ($theschwartz);
     $config = config() unless ($config);
 
-    $theschwartz = TheSchwartz->new(
-        databases => [
-            {   dsn  => $config->{theschwartz_dsn},
-                user => $config->{theschwartz_user} || $config->{dsn_user},
-                pass => $config->{theschwartz_pwd} || $config->{dsn_pwd},
-            }
-        ],
-        verbose => 0,
-    );
+    my $dbh = DBI->connect($config->{theschwartz_dsn}, $config->{theschwartz_user} || $config->{dsn_user}, $config->{theschwartz_pwd} || $config->{dsn_pwd}, { PrintError => 1, RaiseError => 1 } );
+    $theschwartz = TheSchwartz::Simple->new([ $dbh ]);
 
     return $theschwartz;
 }

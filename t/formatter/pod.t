@@ -47,10 +47,6 @@ use L<Template>; for UI.
 
 use L<Cache::Memcached> or use L<Cache::FileCache> or others;
 
-=item reliable job queue
-
-use L<TheSchwartz>;
-
 =item Captcha
 
 To keep robot out.

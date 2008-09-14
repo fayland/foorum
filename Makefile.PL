@@ -49,7 +49,8 @@ requires 'Net::CIDR::Lite';
 requires 'Sphinx::Search';
 
 # cron
-requires 'TheSchwartz';
+requires 'TheSchwartz::Simple';
+requires 'MooseX::TheSchwartz';
 requires 'Schedule::Cron';
 if ($^O ne 'MSWin32') {
     recommends 'Proc::PID::File';

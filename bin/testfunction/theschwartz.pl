@@ -6,8 +6,10 @@ use FindBin qw/$Bin/;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
 use Foorum::XUtils qw/config/;
-my $config = config();
+use MooseX::TheSchwartz;
 use DBI;
+
+my $config = config();
 
 print "Connect to "
     . $config->{theschwartz_dsn}
@@ -18,13 +20,8 @@ my $dbh
     = DBI->connect( $config->{theschwartz_dsn}, $config->{dsn_user}, $config->{dsn_pwd} )
     or die $DBI::errstr;
 
-my $theschwartz = TheSchwartz->new(
-    databases => [
-        {   dsn  => $config->{theschwartz_dsn},
-            user => $config->{dsn_user},
-            pass => $config->{dsn_pwd},
-        }
-    ],
+my $theschwartz = MooseX::TheSchwartz->new(
+    databases => [ $dbh ],
     verbose => 1,
 );
 

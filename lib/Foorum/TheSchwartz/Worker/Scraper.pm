@@ -3,8 +3,7 @@ package Foorum::TheSchwartz::Worker::Scraper;
 use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
-use TheSchwartz::Job;
-use base qw( TheSchwartz::Worker );
+use base qw( MooseX::TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
 use Foorum::XUtils qw/cache/;
@@ -30,7 +29,7 @@ my @Re_s = ( 'Re\:', '答复\:' );
 
 sub work {
     my $class = shift;
-    my TheSchwartz::Job $job = shift;
+    my $job = shift;
 
     # if not setted, just return
     unless ($scraper_config) {

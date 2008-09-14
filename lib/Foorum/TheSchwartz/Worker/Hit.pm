@@ -3,15 +3,14 @@ package Foorum::TheSchwartz::Worker::Hit;
 use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
-use TheSchwartz::Job;
-use base qw( TheSchwartz::Worker );
+use base qw( MooseX::TheSchwartz::Worker );
 use Data::Dump qw/dump/;
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
 
 sub work {
     my $class = shift;
-    my TheSchwartz::Job $job = shift;
+    my $job = shift;
 
     my @args = $job->arg;
 

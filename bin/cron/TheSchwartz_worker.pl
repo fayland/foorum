@@ -17,7 +17,8 @@ if ( $has_proc_pid_file and $has_home_dir ) {
 use FindBin qw/$Bin/;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
-use Foorum::XUtils qw/theschwartz config base_path/;
+use Foorum::XUtils qw/config base_path/;
+use Foorum::CronUtils qw/theschwartz/;
 
 my $client    = theschwartz();
 my $config    = config();
@@ -37,7 +38,7 @@ my $verbose = sub {
         print STDERR "$msg\n";
     }
 };
-$client->set_verbose($verbose);
+$client->verbose($verbose);
 
 # load entry from theschwartz.yml or examples/theschwartz.yml
 use YAML::XS qw/LoadFile/;

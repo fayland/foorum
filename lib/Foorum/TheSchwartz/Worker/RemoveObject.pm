@@ -3,15 +3,14 @@ package Foorum::TheSchwartz::Worker::RemoveObject;
 use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
-use TheSchwartz::Job;
-use base qw( TheSchwartz::Worker );
+use base qw( MooseX::TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::XUtils qw/cache/;
 use Foorum::Logger qw/error_log/;
 
 sub work {
     my $class = shift;
-    my TheSchwartz::Job $job = shift;
+    my $job = shift;
 
     my ($args) = $job->arg;
     my $schema = schema();

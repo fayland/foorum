@@ -3,15 +3,14 @@ package Foorum::TheSchwartz::Worker::ResendActivation;
 use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
-use TheSchwartz::Job;
-use base qw( TheSchwartz::Worker );
+use base qw( MooseX::TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
 use Foorum::XUtils qw/config base_path cache/;
 
 sub work {
     my $class = shift;
-    my TheSchwartz::Job $job = shift;
+    my $job = shift;
 
     my $schema    = schema();
     my $config    = config();

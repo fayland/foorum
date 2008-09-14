@@ -3,8 +3,7 @@ package Foorum::TheSchwartz::Worker::RemoveOldDataFromDB;
 use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
-use TheSchwartz::Job;
-use base qw( TheSchwartz::Worker );
+use base qw( MooseX::TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
 use Foorum::XUtils qw/base_path/;
@@ -16,7 +15,7 @@ my $cron_config = LoadFile( File::Spec->catfile( $base_path, 'conf', 'cron.yml' 
 
 sub work {
     my $class = shift;
-    my TheSchwartz::Job $job = shift;
+    my $job = shift;
 
     my @args = $job->arg;
 
