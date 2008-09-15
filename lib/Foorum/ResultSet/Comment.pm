@@ -275,7 +275,7 @@ sub create_comment {
         my $from = $schema->resultset('User')->get( { user_id => $user_id } );
 
         # Send Notification Email
-        $schema->resultset('Email')->create_email(
+        $schema->resultset('ScheduledEmail')->create_email(
             {   template => 'new_comment',
                 to       => $rept->{email},
                 lang     => $lang,
