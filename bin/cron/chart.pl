@@ -19,6 +19,7 @@ use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
 use Foorum::XUtils qw/tt2/;
 use Foorum::SUtils qw/schema/;
+use Date::Calc qw/Add_Delta_Days/;
 
 my $tt2    = tt2();
 my $schema = schema();
@@ -28,14 +29,14 @@ my $year  = $atime[5] + 1900;
 my $month = $atime[4] + 1;
 my $day   = $atime[3];
 
-my @stats = $schema->resultset('Stat')
-    ->search( { date => \"> DATE_SUB(NOW(), INTERVAL 7 DAY)", } )->all;
+( $year, $month, $day ) = Add_Delta_Days( $year, $month, $day, -7 );
+my $date = sprintf( "%04d%02d%02d", $year, $month, $day );
+
+my @stats = $schema->resultset('Stat')->search( { date => \"> $date", } )->all;
 
 my $stats;
 foreach (@stats) {
-    my $date = $_->date;
-    $date =~ s/\-//isg;
-    $stats->{ $_->stat_key }->{$date} = $_->stat_value;
+    $stats->{ $_->stat_key }->{ $_->date } = $_->stat_value;
 }
 
 my $var = {

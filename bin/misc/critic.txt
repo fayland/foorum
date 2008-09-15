@@ -27,6 +27,7 @@
 /bin/upgrade/0.1.8/up.pl source OK
 /bin/upgrade/0.2.0/scraper.pl source OK
 /bin/upgrade/0.2.2/up.pl source OK
+/bin/upgrade/0.2.3/up.pl source OK
 /lib/Foorum/Action/PathLogger.pm source OK
 /lib/Foorum/Controller/Admin/BanIP.pm source OK
 /lib/Foorum/Controller/Admin/Forum.pm source OK
@@ -59,7 +60,6 @@
 /lib/Foorum/Controller/U.pm source OK
 /lib/Foorum/Controller/Utils.pm source OK
 /lib/Foorum/CronUtils.pm source OK
-/lib/Foorum/Formatter/BBCode.pm source OK
 /lib/Foorum/Formatter/BBCode2.pm source OK
 /lib/Foorum/Formatter/Pod.pm source OK
 /lib/Foorum/Formatter.pm source OK

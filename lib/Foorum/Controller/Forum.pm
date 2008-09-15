@@ -429,6 +429,16 @@ sub create : Local {
     $c->res->redirect("/forum/$forum_code");
 }
 
+sub about : Chained('forum') Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $forum      = $c->stash->{forum};
+    my $forum_id   = $forum->{forum_id};
+    my $forum_code = $forum->{forum_code};
+
+    $c->stash->{template} = 'forum/about.html';
+}
+
 1;
 __END__
 

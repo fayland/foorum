@@ -1,5 +1,8 @@
 This file documents the revision history for Foorum.
 
+0.2.3
+        - convert 'stat' table 'DATE' column to INT(8)
+
 0.2.2 Mon Sep 15 12:03:00
         - use Catalyst::Plugin::PageCache '0.19' and key_maker
         - split Model/Validation.pm into ResultSet and remove it

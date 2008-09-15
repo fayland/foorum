@@ -1,24 +1,22 @@
 #!/usr/bin/perl -w
 
+package DBICx::AutoDoc2; ## no critic
+
+use Moose;
+extends 'DBICx::AutoDoc';
+
+override 'filename_base' => sub {
+    return 'Foorum-Schema';
+};
+
+1;
+
+package main;
+
 use strict;
 use FindBin qw/$Bin/;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
-
-BEGIN {
-    package DBICx::AutoDoc2;
-    
-    use base 'DBICx::AutoDoc';
-    
-    sub filename_base {
-        my ( $self ) = @_;
-    
-        return 'Foorum-Schema';
-    }
-    
-    1;
-}
-
 use Data::Dumper;
 
 my $ad = DBICx::AutoDoc2->new(

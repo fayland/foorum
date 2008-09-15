@@ -20,7 +20,7 @@ __PACKAGE__->add_columns(
   "stat_value",
   { data_type => "BIGINT", default_value => 0, is_nullable => 0, size => 21 },
   "date",
-  { data_type => "DATE", default_value => undef, is_nullable => 0, size => 10 },
+  { data_type => "INT", default_value => 0, is_nullable => 0, size => 8 },
 );
 __PACKAGE__->set_primary_key("stat_id");
 
@@ -57,7 +57,7 @@ NOT NULL
 
 =item date
 
-DATE(10)
+INT(8)
 
 NOT NULL
 

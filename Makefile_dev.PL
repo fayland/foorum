@@ -11,6 +11,7 @@ requires 'DBIx::Class';
 requires 'Catalyst' => '5.64';
 requires 'Digest';
 requires 'DateTime';
+requires 'Date::Calc';
 requires 'Encode::Guess';
 requires 'File::Path';
 requires 'File::Copy';
