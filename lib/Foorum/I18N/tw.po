@@ -73,6 +73,9 @@ msgstr "管理論壇"
 msgid "Message"
 msgstr "我的消息"
 
+msgid "What's New?"
+msgstr "最近更新"
+
 msgid "Edit Profile"
 msgstr "編輯個人資料"
 
@@ -247,3 +250,13 @@ msgstr "地區信息"
 
 msgid "Contact Information"
 msgstr "聯系信息"
+
+# login
+msgid "Login By Username"
+msgstr "用戶名登陸"
+
+msgid "Login By Email"
+msgstr "電子郵件登陸"
+
+msgid "Remember me?"
+msgstr "記住我的登陸狀態？"

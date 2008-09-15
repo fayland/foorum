@@ -82,8 +82,13 @@ sub theschwartz {
     return $theschwartz if ($theschwartz);
     $config = config() unless ($config);
 
-    my $dbh = DBI->connect($config->{theschwartz_dsn}, $config->{theschwartz_user} || $config->{dsn_user}, $config->{theschwartz_pwd} || $config->{dsn_pwd}, { PrintError => 1, RaiseError => 1 } );
-    $theschwartz = TheSchwartz::Simple->new([ $dbh ]);
+    my $dbh = DBI->connect(
+        $config->{theschwartz_dsn},
+        $config->{theschwartz_user} || $config->{dsn_user},
+        $config->{theschwartz_pwd}  || $config->{dsn_pwd},
+        { PrintError => 1, RaiseError => 1 }
+    );
+    $theschwartz = TheSchwartz::Simple->new( [$dbh] );
 
     return $theschwartz;
 }

@@ -13,7 +13,7 @@ use File::Spec;
 
 sub work {
     my $class = shift;
-    my $job = shift;
+    my $job   = shift;
 
     my ($args) = $job->arg;
     my ( $forum_id, $topic_id, $random_word ) = @$args;

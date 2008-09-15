@@ -101,23 +101,24 @@ is($count, 0, 'after remove_by_object, count OK');
 # test validate_params
 my $params = { title => '', text => 'text' };
 my $st = $comment_res->validate_params($params);
-is($st, 'ERROR_TITLE_LENGTH', 'ERROR_TITLE_LENGTH');
+is( $st, 'ERROR_TITLE_LENGTH', 'ERROR_TITLE_LENGTH' );
 $params = { title => 'title', text => '' };
 $st = $comment_res->validate_params($params);
-is($st, 'ERROR_TEXT_REQUIRED', 'ERROR_TEXT_REQUIRED');
+is( $st, 'ERROR_TEXT_REQUIRED', 'ERROR_TEXT_REQUIRED' );
 
-$schema->resultset('FilterWord')->create( {
-    word => 'fuck',
-    type => 'bad_word'
-} );
+$schema->resultset('FilterWord')->create(
+    {   word => 'fuck',
+        type => 'bad_word'
+    }
+);
 $cache->remove("filter_word|type=bad_word");
 
 $params = { title => 'fuck', text => 'text' };
 $st = $comment_res->validate_params($params);
-is($st, 'BAD_TITLE_fuck', 'BAD_fuck in title');
+is( $st, 'BAD_TITLE_fuck', 'BAD_fuck in title' );
 $params = { title => 'title', text => 'fuck' };
 $st = $comment_res->validate_params($params);
-is($st, 'BAD_TEXT_fuck', 'BAD_fuck in text');
+is( $st, 'BAD_TEXT_fuck', 'BAD_fuck in text' );
 
 END {
 

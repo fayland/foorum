@@ -392,7 +392,7 @@ sub validate_params {
             return "BAD_TEXT_$bad_word";
         }
     }
-    
+
     return 0;
 }
 

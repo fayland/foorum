@@ -299,5 +299,4 @@ sub validate_forum_code {
     return;
 }
 
-
 1;

@@ -51,6 +51,7 @@ bin/upgrade/0.1.5/up.pl
 bin/upgrade/0.1.7/up.pl
 bin/upgrade/0.1.8/up.pl
 bin/upgrade/0.2.0/scraper.pl
+bin/upgrade/0.2.2/up.pl
 Changes
 Changes2
 conf/cron.yml
@@ -62,9 +63,7 @@ conf/examples/sphinx.conf
 conf/examples/theschwartz.yml
 docs/AUTHORS.html
 docs/Configure.html
-docs/Foorum-Schema-0.1.7.html
-docs/Foorum-Schema-0.1.8.html
-docs/Foorum-Schema-0.2.0.html
+docs/Foorum-Schema.html
 docs/HowRSS.html
 docs/I18N.html
 docs/index.html
@@ -126,6 +125,7 @@ lib/Foorum/Controller/Topic.pm
 lib/Foorum/Controller/TopicAction.pm
 lib/Foorum/Controller/U.pm
 lib/Foorum/Controller/Utils.pm
+lib/Foorum/CronUtils.pm
 lib/Foorum/Formatter.pm
 lib/Foorum/Formatter/BBCode.pm
 lib/Foorum/Formatter/BBCode2.pm
@@ -138,7 +138,6 @@ lib/Foorum/Model/Log.pm
 lib/Foorum/Model/Object.pm
 lib/Foorum/Model/Policy.pm
 lib/Foorum/Model/UserAuth.pm
-lib/Foorum/Model/Validation.pm
 lib/Foorum/Plugin/FoorumUtils.pm
 lib/Foorum/ResultSet/BannedIp.pm
 lib/Foorum/ResultSet/Comment.pm

@@ -29,7 +29,7 @@ my @Re_s = ( 'Re\:', '答复\:' );
 
 sub work {
     my $class = shift;
-    my $job = shift;
+    my $job   = shift;
 
     # if not setted, just return
     unless ($scraper_config) {

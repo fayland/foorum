@@ -37,14 +37,14 @@ sub default : Private {
 
     # username
     my $username = $c->req->param('username');
-    my $err = $c->model('DBIC::User')->validate_username( $username );
+    my $err      = $c->model('DBIC::User')->validate_username($username);
     if ($err) {
         return $c->set_invalid_form( username => $err );
     }
 
     # email
     my $email = $c->req->param('email');
-    $err = $c->model('DBIC::User')->validate_email( $email );
+    $err = $c->model('DBIC::User')->validate_email($email);
     if ($err) {
         return $c->set_invalid_form( email => $err );
     }

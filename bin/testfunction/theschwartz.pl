@@ -21,8 +21,8 @@ my $dbh
     or die $DBI::errstr;
 
 my $theschwartz = MooseX::TheSchwartz->new(
-    databases => [ $dbh ],
-    verbose => 1,
+    databases => [$dbh],
+    verbose   => 1,
 );
 
 $theschwartz->insert("Foorum::TheSchwartz::Worker::SendScheduledEmail");

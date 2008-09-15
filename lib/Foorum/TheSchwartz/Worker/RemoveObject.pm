@@ -10,7 +10,7 @@ use Foorum::Logger qw/error_log/;
 
 sub work {
     my $class = shift;
-    my $job = shift;
+    my $job   = shift;
 
     my ($args) = $job->arg;
     my $schema = schema();

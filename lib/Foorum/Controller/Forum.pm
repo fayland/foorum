@@ -360,7 +360,7 @@ sub create : Local {
 
     # check forum_code
     my $forum_code = $c->req->param('forum_code');
-    my $err = $c->model('DBIC::Forum')->validate_forum_code( $forum_code );
+    my $err        = $c->model('DBIC::Forum')->validate_forum_code($forum_code);
     if ($err) {
         $c->set_invalid_form( forum_code => $err );
         return;

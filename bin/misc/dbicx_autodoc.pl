@@ -4,10 +4,24 @@ use strict;
 use FindBin qw/$Bin/;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
-use DBICx::AutoDoc;
+
+BEGIN {
+    package DBICx::AutoDoc2;
+    
+    use base 'DBICx::AutoDoc';
+    
+    sub filename_base {
+        my ( $self ) = @_;
+    
+        return 'Foorum-Schema';
+    }
+    
+    1;
+}
+
 use Data::Dumper;
 
-my $ad = DBICx::AutoDoc->new(
+my $ad = DBICx::AutoDoc2->new(
     schema => 'Foorum::Schema',
     output => File::Spec->catdir( $Bin, '..', '..', 'docs' ),
 );

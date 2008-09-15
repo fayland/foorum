@@ -75,12 +75,13 @@ sub edit : Local {
                 if ( $key eq 'username' ) {
 
                     # validate username
-                    my $ERROR_USERNAME = $c->model('DBIC::User')->validate_username( $query->{username} );
+                    my $ERROR_USERNAME = $c->model('DBIC::User')
+                        ->validate_username( $query->{username} );
                     next if ($ERROR_USERNAME);
                 } elsif ( $key eq 'email' ) {
 
                     # validate email
-                    my $err = $c->model('DBIC::User')->validate_email( $email );
+                    my $err = $c->model('DBIC::User')->validate_email($email);
                     next if ($err);
                 } elsif ( $key eq 'status' and $user->{status} ne $query->{status} ) {
                     $c->model('Log')->log_action(

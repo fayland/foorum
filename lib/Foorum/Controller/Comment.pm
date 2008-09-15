@@ -466,17 +466,17 @@ sub delete : LocalRegex('^(\d+)/delete$') {
 }
 
 sub validate_params : Private {
-    my ($self, $c) = @_;
-    
-    my $st = $c->model('DBIC::Comment')->validate_params($c->req->params);
+    my ( $self, $c ) = @_;
+
+    my $st = $c->model('DBIC::Comment')->validate_params( $c->req->params );
     if ($st) {
-        if ($st =~ /^BAD_(\w+)_(.*?)$/) {
-            my $place = ucfirst(lc($1));
-            my $word = $2;
+        if ( $st =~ /^BAD_(\w+)_(.*?)$/ ) {
+            my $place = ucfirst( lc($1) );
+            my $word  = $2;
             $c->detach( '/print_error',
                 [qq~Sorry, your $place has a bad word "$word".~] );
         } else {
-            $c->detach( '/print_error', [ $st ] );
+            $c->detach( '/print_error', [$st] );
         }
     }
 }

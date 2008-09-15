@@ -11,11 +11,11 @@ use Foorum::CronUtils qw/cron_config/;
 
 sub work {
     my $class = shift;
-    my $job = shift;
+    my $job   = shift;
 
     my @args = $job->arg;
 
-    my $schema = schema();
+    my $schema      = schema();
     my $cron_config = cron_config();
 
     # for table 'visit'

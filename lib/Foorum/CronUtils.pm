@@ -17,21 +17,26 @@ use Foorum::XUtils qw/config base_path/;
 sub theschwartz {
 
     return $theschwartz if ($theschwartz);
-    
+
     my $config = config();
-    my $dbh = DBI->connect($config->{theschwartz_dsn}, $config->{theschwartz_user} || $config->{dsn_user}, $config->{theschwartz_pwd} || $config->{dsn_pwd}, { PrintError => 1, RaiseError => 1 } );
-    $theschwartz = MooseX::TheSchwartz->new(databases => [ $dbh ]);
+    my $dbh    = DBI->connect(
+        $config->{theschwartz_dsn},
+        $config->{theschwartz_user} || $config->{dsn_user},
+        $config->{theschwartz_pwd}  || $config->{dsn_pwd},
+        { PrintError => 1, RaiseError => 1 }
+    );
+    $theschwartz = MooseX::TheSchwartz->new( databases => [$dbh] );
 
     return $theschwartz;
 }
 
 sub cron_config {
-    
+
     return $cron_config if ($cron_config);
-    
+
     my $base_path = base_path();
     $cron_config = LoadFile( File::Spec->catfile( $base_path, 'conf', 'cron.yml' ) );
-    
+
     return $cron_config;
 }
 

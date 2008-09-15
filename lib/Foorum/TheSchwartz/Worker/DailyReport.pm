@@ -10,7 +10,7 @@ use Foorum::XUtils qw/config/;
 
 sub work {
     my $class = shift;
-    my $job = shift;
+    my $job   = shift;
 
     my @args = $job->arg;
 

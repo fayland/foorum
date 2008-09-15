@@ -49,8 +49,8 @@ __PACKAGE__->config->{'Plugin::PageCache'}->{key_maker} = sub {
     $lang ||= $c->config->{default_lang};
     $lang = $c->req->param('lang') if ( $c->req->param('lang') );
     $lang =~ s/\W+//isg;
-    $c->languages( [ $lang ] );
-    
+    $c->languages( [$lang] );
+
     return "/" . $c->req->path;
 };
 

@@ -9,7 +9,7 @@ use Foorum::XUtils qw/config base_path cache/;
 
 sub work {
     my $class = shift;
-    my $job = shift;
+    my $job   = shift;
 
     my ($args) = $job->arg;
     my ( $object_type, $object_id, $from_id ) = @$args;

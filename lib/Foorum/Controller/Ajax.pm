@@ -21,7 +21,7 @@ sub validate_username : Local {
 
     my $username = $c->req->param('username');
 
-    my $ERROR = $c->model('DBIC::User')->validate_username( $username );
+    my $ERROR = $c->model('DBIC::User')->validate_username($username);
     return $c->res->body($ERROR) if ($ERROR);
 
     $c->res->body('OK');
