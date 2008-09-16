@@ -70,6 +70,6 @@ foreach my $one (
     $client->can_do($module);
 }
 
-$client->work();
+$client->work_until_done();
 
 1;
