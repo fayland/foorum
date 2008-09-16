@@ -71,9 +71,9 @@ USAGE
 
 sub run_worker {
     my ($worker) = @_;
-    
+
     debug($worker);
-    
+
     my $client = theschwartz();
     $client->insert("Foorum::TheSchwartz::Worker::$worker");
 }

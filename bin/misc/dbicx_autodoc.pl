@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-package DBICx::AutoDoc2; ## no critic
+package DBICx::AutoDoc2;    ## no critic
 
 use Moose;
 extends 'DBICx::AutoDoc';

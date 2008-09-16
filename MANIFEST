@@ -52,6 +52,7 @@ bin/upgrade/0.1.7/up.pl
 bin/upgrade/0.1.8/up.pl
 bin/upgrade/0.2.0/scraper.pl
 bin/upgrade/0.2.2/up.pl
+bin/upgrade/0.2.3/up.pl
 Changes
 Changes2
 conf/cron.yml
@@ -127,7 +128,6 @@ lib/Foorum/Controller/U.pm
 lib/Foorum/Controller/Utils.pm
 lib/Foorum/CronUtils.pm
 lib/Foorum/Formatter.pm
-lib/Foorum/Formatter/BBCode.pm
 lib/Foorum/Formatter/BBCode2.pm
 lib/Foorum/Formatter/Pod.pm
 lib/Foorum/I18N/cn.po
@@ -543,6 +543,7 @@ root/static/js/site/message.js
 root/static/js/site/new_post.js
 root/static/js/site/star.js
 root/static/js/utils.js
+root/static/stats/20080908.html
 root/upload/index.html
 t/01yaml.t
 t/02utils.t

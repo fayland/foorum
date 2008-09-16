@@ -38,6 +38,7 @@ requires:
   Catalyst::View::JSON: 0
   Catalyst::View::TT: 0
   DBIx::Class: 0
+  Date::Calc: 0
   DateTime: 0
   Digest: 0
   Email::Send: 0
@@ -66,4 +67,4 @@ requires:
   URI::Find::UTF8: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.2.2
+version: 0.2.3
