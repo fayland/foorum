@@ -19,7 +19,7 @@ sub theschwartz {
     return $theschwartz if ($theschwartz);
 
     my $config = config();
-    my $dbh    = DBI->connect(
+    my $dbh    = DBI->connect_cached(
         $config->{theschwartz_dsn},
         $config->{theschwartz_user} || $config->{dsn_user},
         $config->{theschwartz_pwd}  || $config->{dsn_pwd},
