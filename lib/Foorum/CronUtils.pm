@@ -23,7 +23,7 @@ sub theschwartz {
         $config->{theschwartz_pwd}  || $config->{dsn_pwd},
         { PrintError => 1, RaiseError => 1 }
     );
-    $theschwartz = MooseX::TheSchwartz->new( databases => [$dbh] );
+    my $theschwartz = MooseX::TheSchwartz->new( databases => [$dbh] );
 
     return $theschwartz;
 }
