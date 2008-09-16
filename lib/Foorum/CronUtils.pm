@@ -10,13 +10,11 @@ use File::Spec;
 use MooseX::TheSchwartz;      # theschwartz
 use DBI;
 use base 'Exporter';
-use vars qw/@EXPORT_OK $theschwartz $cron_config/;
+use vars qw/@EXPORT_OK $cron_config/;
 @EXPORT_OK = qw/ theschwartz cron_config /;
 use Foorum::XUtils qw/config base_path/;
 
 sub theschwartz {
-
-    return $theschwartz if ($theschwartz);
 
     my $config = config();
     my $dbh    = DBI->connect_cached(

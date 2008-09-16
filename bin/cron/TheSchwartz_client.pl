@@ -20,7 +20,6 @@ use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
 use Foorum::XUtils qw/config base_path/;
 use Foorum::CronUtils qw/theschwartz/;
 
-my $client = theschwartz();
 my $config = config();
 
 use Getopt::Long;
@@ -72,7 +71,10 @@ USAGE
 
 sub run_worker {
     my ($worker) = @_;
+    
     debug($worker);
+    
+    my $client = theschwartz();
     $client->insert("Foorum::TheSchwartz::Worker::$worker");
 }
 
