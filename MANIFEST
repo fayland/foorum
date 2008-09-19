@@ -37,6 +37,7 @@ bin/misc/js-min.pl
 bin/misc/perlcritic.pl
 bin/misc/perltidy.pl
 bin/misc/pod2html.pl
+bin/misc/wiki2pod.pl
 bin/setup.pl
 bin/setup/sphinx.pl
 bin/testfunction/cache.pl
@@ -133,6 +134,21 @@ lib/Foorum/Formatter/Pod.pm
 lib/Foorum/I18N/cn.po
 lib/Foorum/I18N/tw.po
 lib/Foorum/Logger.pm
+lib/Foorum/Manual/AUTHORS.pod
+lib/Foorum/Manual/Configure.pod
+lib/Foorum/Manual/HowRSS.pod
+lib/Foorum/Manual/I18N.pod
+lib/Foorum/Manual/INSTALL.pod
+lib/Foorum/Manual/PreRelease.pod
+lib/Foorum/Manual/README.pod
+lib/Foorum/Manual/RULES.pod
+lib/Foorum/Manual/TroubleShooting.pod
+lib/Foorum/Manual/Tutorial1.pod
+lib/Foorum/Manual/Tutorial2.pod
+lib/Foorum/Manual/Tutorial3.pod
+lib/Foorum/Manual/Tutorial4.pod
+lib/Foorum/Manual/Tutorial5.pod
+lib/Foorum/Manual/Upgrade.pod
 lib/Foorum/Model/DBIC.pm
 lib/Foorum/Model/Log.pm
 lib/Foorum/Model/Object.pm
@@ -543,7 +559,6 @@ root/static/js/site/message.js
 root/static/js/site/new_post.js
 root/static/js/site/star.js
 root/static/js/utils.js
-root/static/stats/20080908.html
 root/upload/index.html
 t/01yaml.t
 t/02utils.t

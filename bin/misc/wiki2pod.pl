@@ -37,13 +37,19 @@ foreach my $filename (@filenames) {
         flock( $fh, 1 );
         my $string = <$fh>;
         close($fh);
-        
+
         my $pod = $pfg->wiki2pod($string);
-        
-        open( my $fh2, '>', File::Spec->catfile( $trunk_dir, 'lib', 'Foorum', 'Manual', "$filename\.pod" ) );
+
+        open(
+            my $fh2,
+            '>',
+            File::Spec->catfile(
+                $trunk_dir, 'lib', 'Foorum', 'Manual', "$filename\.pod"
+            )
+        );
         print $fh2 "=pod\n\n$pod\n\n=cut\n";
         close($fh2);
-        
+
         print "$filename OK\n";
     }
 }

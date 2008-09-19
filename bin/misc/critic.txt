@@ -13,6 +13,7 @@
 /bin/misc/perlcritic.pl source OK
 /bin/misc/perltidy.pl source OK
 /bin/misc/pod2html.pl source OK
+/bin/misc/wiki2pod.pl source OK
 /bin/setup/sphinx.pl source OK
 /bin/setup.pl source OK
 /bin/testfunction/cache.pl source OK
