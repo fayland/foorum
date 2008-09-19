@@ -6,7 +6,6 @@
 
 use strict;
 use warnings;
-use lib 'E:\Fayland\googlesvn\trunk\CPAN\Pod-From-GoogleWiki\lib';
 use Pod::From::GoogleWiki;
 use FindBin qw/$Bin/;
 use Cwd qw/abs_path/;
