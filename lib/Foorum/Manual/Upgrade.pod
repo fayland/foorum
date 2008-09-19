@@ -1,11 +1,14 @@
 =pod
 
-#labels Phase-Deploy
 #how to upgrade your Foorum application
+
+=head1 NAME
+
+Foorum::Manual::Upgrade - how to upgrade Foorum?
 
 =head1 Introduction
 
-It's for upgrade from old version to new Foorum. If u are trying to install from the beginning, try read L<INSTALL>
+It's for upgrade from old version to new Foorum. If u are trying to install from the beginning, try read L<Foorum::Manual::INSTALL>
 
 =head1 Details
 
@@ -16,6 +19,6 @@ Let's explain in an example like upgrade from 0.1.5 to 0.2.0
 =head1 CAVEATS
 
    * Please don't run them more than 1 time (even some scripts can run many times, but some are not)
-   * Report to L<AUTHORS> if there is something wrong
+   * Report to L<Foorum::Manual::AUTHORS> if there is something wrong
 
 =cut

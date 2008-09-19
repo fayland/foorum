@@ -1,6 +1,9 @@
 =pod
 
-#labels Phase-Deploy,Featured
+
+=head1 NAME
+
+Foorum::Manual::INSTALL- install Foorum
 
 =head1 Steps
 
@@ -24,6 +27,6 @@
 
 =head2 SEE ALSO
 
-L<Configure>, L<TroubleShooting>
+L<Foorum::Manual::Configure>, L<Foorum::Manual::TroubleShooting>
 
 =cut

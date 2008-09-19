@@ -1,6 +1,9 @@
 =pod
 
-#labels Phase-Implementation
+
+=head1 NAME
+
+Foorum::Manual::I18N - Foorum I18N
 
 =head1 I18N
 

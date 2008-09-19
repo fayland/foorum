@@ -1,10 +1,9 @@
 =pod
 
-#labels Featured
 
 =head1 NAME
 
-Foorum - Foorum is a forum script built in Catalyst.
+Foorum::Manual::READ - Foorum is a forum script built in Catalyst.
 
 =head1 INSTALL
 
@@ -22,6 +21,6 @@ for test using, we recommend to use builtin server.pl try:
 
 L<Catalyst>, L<DBIx::Class>, L<Template>
 
-L<INSTALL>, L<Configure>
+L<Foorum::Manual::INSTALL>, L<Foorum::Manual::Configure>
 
 =cut

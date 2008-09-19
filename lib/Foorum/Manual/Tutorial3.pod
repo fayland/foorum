@@ -1,7 +1,9 @@
 =pod
 
 
-=head1 Tutorial 3: For Foorum Developers
+=head1 NAME
+
+Foorum::Manual::Tutorial3 - Tutorial 3: For Foorum Developers
 
 =head2 Perl::Critic
 
@@ -43,7 +45,6 @@ Please don't edit $svn/trunk/docs/ HTML files, instead edit $svn/wiki or L<http:
 
 =head1 SEE ALSO
 
-L<Tutorial1>, L<Tutorial2>, L<Tutorial4>, L<Tutorial5>
-
+L<Foorum::Manual::Tutorial1>, L<Foorum::Manual::Tutorial2>, L<Foorum::Manual::Tutorial4>, L<Foorum::Manual::Tutorial5>
 
 =cut

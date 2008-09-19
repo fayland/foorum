@@ -1,7 +1,10 @@
 =pod
 
-#labels Phase-Implementation
 #Rules develop Foorum
+
+=head1 NAME
+
+Foorum::Manual::PreRelease - things when release
 
 =head2 Before Release
 

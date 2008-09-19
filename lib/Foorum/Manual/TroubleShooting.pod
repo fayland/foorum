@@ -1,6 +1,9 @@
 =pod
 
-#labels Phase-Support,Featured
+
+=head1 NAME
+
+Foorum::Manual::TroubleShooting - Foorum trouble fixes
 
 =head1 Trouble Shooting
 
@@ -18,6 +21,6 @@ then upgrade to 2.19
 
 =head1 SEE ALSO
 
-L<README>, L<INSTALL>, L<Configure>
+L<Foorum::Manual::README>, L<Foorum::Manual::INSTALL>, L<Foorum::Manual::Configure>
 
 =cut

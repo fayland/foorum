@@ -1,7 +1,9 @@
 =pod
 
 
-=head1 Tutorial 5: How to write test cases For Foorum
+=head1 NAME
+
+Foorum::Manual::Tutorial5 - Tutorial 5: How to write test cases For Foorum
 
 =head2 Test
 
@@ -226,7 +228,6 @@ Example: (t/formatter/textile.t)
 
 =head1 SEE ALSO
 
-L<Tutorial1>, L<Tutorial2>, L<Tutorial3>, L<Tutorial4>
-
+L<Foorum::Manual::Tutorial1>, L<Foorum::Manual::Tutorial2>, L<Foorum::Manual::Tutorial3>, L<Foorum::Manual::Tutorial4>
 
 =cut

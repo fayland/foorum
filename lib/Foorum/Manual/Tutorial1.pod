@@ -1,13 +1,15 @@
 =pod
 
 
-=head1 Tutorial 1: Catalyst Plugins used in Foorum
+=head1 NAME
+
+Foorum::Manual::Tutorial1 - Tutorial 1: Catalyst Plugins used in Foorum
 
 =head2 Config::YAML
 
 L<http://search.cpan.org/perldoc?Catalyst::Plugin::Config::YAML::XS|Catalyst::Plugin::Config::YAML::XS>
 
-Why we are using Config::YAML::XS instead ConfigLoader is under a simple L<RULES>, Fast is better.
+Why we are using Config::YAML::XS instead ConfigLoader is under a simple L<Foorum::Manual::RULES>, Fast is better.
 
 =head2 Static::Simple
 
@@ -138,7 +140,6 @@ when page_cache: 1, it will be enabled.
 
 =head1 SEE ALSO
 
-L<I18N>, L<Configure>, L<Tutorial2>, L<Tutorial3>, L<Tutorial4>, L<Tutorial5>
-
+L<Foorum::Manual::I18N>, L<Foorum::Manual::Configure>, L<Foorum::Manual::Tutorial2>, L<Foorum::Manual::Tutorial3>, L<Foorum::Manual::Tutorial4>, L<Foorum::Manual::Tutorial5>
 
 =cut

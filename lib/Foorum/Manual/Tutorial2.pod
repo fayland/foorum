@@ -1,7 +1,9 @@
 =pod
 
 
-=head1 Tutorial 2: Dive into Foorum: TheSchwartz
+=head1 NAME
+
+Foorum::Manual::Tutorial2 - Tutorial 2: Dive into Foorum: TheSchwartz
 
 =head2 TheSchwartz introduction
 
@@ -55,7 +57,7 @@ For now, we have several workers:
   * Foorum::TheSchwartz::Worker::SendStarredNofication
   * etc.
 
-There is a simple L<RULES> that why we use TheSchwartz, put heavy code on backend script instead of httpd.
+There is a simple L<Foorum::Manual::RULES> that why we use TheSchwartz, put heavy code on backend script instead of httpd.
 
   * Hit is a cron script to update topic hits and Popular.
   * RemoveOldDataFromDB - remove useless data from database because it's outdated.
@@ -69,6 +71,6 @@ OK, please borrow code from exist ones.
 
 =head1 SEE ALSO
 
-L<Tutorial1>, L<Tutorial3>, L<Tutorial4>, L<Tutorial5>
+L<Foorum::Manual::Tutorial1>, L<Foorum::Manual::Tutorial3>, L<Foorum::Manual::Tutorial4>, L<Foorum::Manual::Tutorial5>
 
 =cut

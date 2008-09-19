@@ -1,7 +1,9 @@
 =pod
 
 
-=head1 Tutorial 4: jQuery javascript framework
+=head1 NAME
+
+Foorum::Manual::Tutorial4 - Tutorial 4: jQuery javascript framework
 
 =head2 Short Introducation
 
@@ -96,7 +98,6 @@ We are using Tabs. L<http://dev.jquery.com/view/tags/ui/1.0.1a/demos/ui.tabs.htm
 
 =head1 SEE ALSO
 
-L<Tutorial1>, L<Tutorial2>, L<Tutorial3>, L<Tutorial5>
-
+L<Foorum::Manual::Tutorial1>, L<Foorum::Manual::Tutorial2>, L<Foorum::Manual::Tutorial3>, L<Foorum::Manual::Tutorial5>
 
 =cut

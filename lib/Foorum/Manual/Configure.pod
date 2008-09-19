@@ -1,6 +1,10 @@
 =pod
 
-#labels Phase-Deploy
+
+=head1 NAME
+
+Foorum::Manual::Configure - configure Foorum
+
 Generally, run bin/setup.pl
 
 =head1 Cache Configure
@@ -43,6 +47,6 @@ we have several conf under directory conf/examples/mail for mail.
 
 L<Email::Send>
 
-L<INSTALL>, L<TroubleShooting>
+L<Foorum::Manual::INSTALL>, L<Foorum::Manual::TroubleShooting>
 
 =cut

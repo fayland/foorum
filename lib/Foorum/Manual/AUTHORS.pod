@@ -1,6 +1,9 @@
 =pod
 
-#labels Featured
+
+=head1 NAME
+
+Foorum::Manual::AUTHORS - Foorum authors
 
 =head1 AUTHORS
 

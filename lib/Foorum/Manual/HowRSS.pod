@@ -1,6 +1,10 @@
 =pod
 
 
+=head1 NAME
+
+Foorum::Manual::HowRSS - How we build RSS system
+
 =head1 How we build RSS system
 
   * we don't use L<XML::RSS> or <XML::Feed> or anything else to build RSS, instead we just use TT2 to produce RSS XML.
@@ -14,6 +18,6 @@
   * we have RSS and it's based URL in one sub. so it's pretty neat and easy to read.
 
 =head2 SEE ALSO
-L<RULES>
+L<Foorum::Manual::RULES>
 
 =cut
