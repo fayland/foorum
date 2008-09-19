@@ -1,0 +1,12 @@
+=pod
+
+#labels Featured
+
+=head1 AUTHORS
+
+Alphabetical Order:
+
+Fayland                     <fayland at gmail.com>
+Viacheslav Tikhanovskii
+
+=cut

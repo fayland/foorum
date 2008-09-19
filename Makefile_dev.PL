@@ -67,6 +67,7 @@ requires 'Perl::Critic';
 requires 'Perl::Tidy';
 requires 'SQL::Translator';
 requires 'DBICx:::AutoDoc';
+requires 'Pod::From::GoogleWiki';
 
 # mail
 requires 'MIME::Entity';

@@ -1,0 +1,29 @@
+=pod
+
+#labels Phase-Deploy,Featured
+
+=head1 Steps
+
+  * mysql -uroot -p
+  * mysql>CREATE DATABASE foorum;
+  * mysql>CREATE DATABASE theschwartz;
+  * mysql>exit;
+  * mysql -uroot -p foorum < bin/db/foorum.sql
+  * mysql -uroot -p theschwartz < bin/db/theschwartz.sql
+  * perl bin/setup.pl
+  * perl Makefile.PL; make; make test;
+  * perl bin/foorum_server.pl
+
+=head1 Apache Configure
+
+  * remember set Options -Index in /root/upload, so that nobody can view /upload URL
+
+  $ vim Foorum/root/upload/.htaccess
+  Options -Indexes
+
+
+=head2 SEE ALSO
+
+L<Configure>, L<TroubleShooting>
+
+=cut
