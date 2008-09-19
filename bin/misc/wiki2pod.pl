@@ -37,6 +37,11 @@ foreach my $filename (@filenames) {
         flock( $fh, 1 );
         my $string = <$fh>;
         close($fh);
+        
+        # change build-in links
+        foreach my $f (@filenames) {
+            $string =~ s/\[$f\]/\[Foorum\:\:Manual\:\:$f\]/isg;
+        }
 
         my $pod = $pfg->wiki2pod($string);
 
