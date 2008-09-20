@@ -11,20 +11,21 @@ Test, test, test!
 
 =head2 Reference
 
-   * L<http://search.cpan.org/perldoc?Test::Simple|Test::Simple>
-   * L<http://search.cpan.org/perldoc?Test::More|Test::More>
-   * L<http://search.cpan.org/perldoc?Test::Harness|Test::Harness>
-   * L<http://search.cpan.org/perldoc?Test::LongString|Test::LongString>
+   * L<Test::Simple>
+   * L<Test::More>
+   * L<Test::Harness>
+   * L<Test::LongString>
 
 =head2 Controller
 
-We are not going to use L<http://search.cpan.org/perldoc?Test::WWW::Mechanize::Catalyst|Test::WWW::Mechanize::Catalyst> for this moment. Sure, I think we will add it later.
+We are not going to use L<Test::WWW::Mechanize::Catalyst> for this moment. Sure, I think we will add it later.
 
 =head2 Model, esp. Schema
 
 We are going to move all schema related code into ResultSet/ scope because it's easy to test without $c in Model/.
 
 Some explanation in Foorum::Test under t/lib:
+
    * we use DBD::SQLite to test all schema function since it's very simple.
 
   sub schema {

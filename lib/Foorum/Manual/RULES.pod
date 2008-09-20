@@ -1,6 +1,6 @@
 =pod
 
-#Rules develop Foorum
+
 
 =head1 NAME
 
@@ -30,5 +30,6 @@ Foorum::Manual::RULES - Foorum rules
 =head2 HTML Rules
 
   * css at begin while js at end
+
 
 =cut

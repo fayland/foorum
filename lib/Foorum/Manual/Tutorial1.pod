@@ -7,19 +7,19 @@ Foorum::Manual::Tutorial1 - Tutorial 1: Catalyst Plugins used in Foorum
 
 =head2 Config::YAML
 
-L<http://search.cpan.org/perldoc?Catalyst::Plugin::Config::YAML::XS|Catalyst::Plugin::Config::YAML::XS>
+L<Catalyst::Plugin::Config::YAML::XS>
 
 Why we are using Config::YAML::XS instead ConfigLoader is under a simple L<Foorum::Manual::RULES>, Fast is better.
 
 =head2 Static::Simple
 
-L<http://search.cpan.org/perldoc?Catalyst::Plugin::Static::Simple|Catalyst::Plugin::Static::Simple>
+L<Catalyst::Plugin::Static::Simple>
 
 I think I need let Static::Simple be configurable later. because it's better let Apache handles static contents.
 
 =head2 Authentication
 
-L<http://search.cpan.org/perldoc?Catalyst::Plugin::Authentication|Catalyst::Plugin::Authentication>
+L<Catalyst::Plugin::Authentication>
 
 Authentication is a important part in Foorum. viacheslav.t suggests
 
@@ -53,7 +53,7 @@ I must admit that FromSub::Hash is not good enough. but it doesn't hit database 
 
 =head2 Cache
 
-L<http://search.cpan.org/perldoc?Catalyst::Plugin::Cache|Catalyst::Plugin::Cache>
+L<Catalyst::Plugin::Cache>
 
 before we use Catalyst::Plugin::Cache::Memcached, but that's not so flexiable. so we turn to use Catalyst::Plugin::Cache. the configuration in foorum.yml is:
 
@@ -79,31 +79,31 @@ meanwhile, we can use Memcached:
 
 =head2 Session::DynamicExpiry
 
-L<http://search.cpan.org/perldoc?Catalyst::Plugin::Session::DynamicExpiry|Catalyst::Plugin::Session::DynamicExpiry>
+L<Catalyst::Plugin::Session::DynamicExpiry>
 
 for one "Remember Me?".
 
 =head2 Session
 
-L<http://search.cpan.org/perldoc?Catalyst::Plugin::Session|Catalyst::Plugin::Session>
+L<Catalyst::Plugin::Session>
 
 that's pretty normal here. we use DBIC and Cookie. no URI since that's bad.
 
 =head2 I18N
 
-L<http://search.cpan.org/perldoc?Catalyst::Plugin::I18N|Catalyst::Plugin::I18N>
+L<Catalyst::Plugin::I18N>
 
 check Foorum/I18N/cn.po and tw.po then u can write one for your own. that's easy!
 
 =head2 FormValidator::Simple
 
-L<http://search.cpan.org/perldoc?Catalyst::Plugin::FormValidator::Simple|Catalyst::Plugin::FormValidator::Simple>
+L<Catalyst::Plugin::FormValidator::Simple>
 
 we are going to HTML::FormFu.
 
 =head2 Captcha
 
-L<http://search.cpan.org/perldoc?Catalyst::Plugin::Captcha|Catalyst::Plugin::Captcha>
+L<Catalyst::Plugin::Captcha>
 
   captcha:
     session_name: captcha_string
@@ -123,7 +123,7 @@ L<http://search.cpan.org/perldoc?Catalyst::Plugin::Captcha|Catalyst::Plugin::Cap
 
 =head2 PageCache
 
-L<http://search.cpan.org/perldoc?Catalyst::Plugin::PageCache|Catalyst::Plugin::PageCache>
+L<Catalyst::Plugin::PageCache>
 
 it's configurable. u can disable by set
 

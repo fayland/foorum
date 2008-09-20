@@ -7,11 +7,12 @@ Foorum::Manual::Tutorial2 - Tutorial 2: Dive into Foorum: TheSchwartz
 
 =head2 TheSchwartz introduction
 
-L<http://search.cpan.org/perldoc?TheSchwartz|TheSchwartz>
+L<TheSchwartz>
 
 As CPAN perldoc says: reliable job queue. Basically it splitted into two parts, one is worker while the other is client.
 
 Worker script:
+
   * L<http://foorum.googlecode.com/svn/trunk/bin/cron/TheSchwartz_worker.pl>
   * L<http://foorum.googlecode.com/svn/trunk/bin/cron/TheSchwartzI<worker>scraper.pl>
 
@@ -32,6 +33,7 @@ What's worker for? In my idea, that's just a script to monitor a table in databa
 Where does new task from? Foorum has two ways, always one is form Foorum/Controller|Model, the other is from cron scripts.
 
 example code:
+
   # in Foorum/Model
 
   use Foorum::ExternalUtils qw/theschwartz/;
@@ -48,6 +50,7 @@ That's a simple introduction. Maybe I'm wrong here. :)
 =head2 Worker in Foorum
 
 For now, we have several workers:
+
   * Foorum::TheSchwartz::Worker::DailyChart
   * Foorum::TheSchwartz::Worker::DailyReport
   * Foorum::TheSchwartz::Worker::Hit

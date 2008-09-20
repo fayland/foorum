@@ -3,7 +3,7 @@
 
 =head1 NAME
 
-Foorum::Manual::INSTALL- install Foorum
+Foorum::Manual::INSTALL - install Foorum
 
 =head1 Steps
 

@@ -1,6 +1,6 @@
 =pod
 
-#Rules develop Foorum
+
 
 =head1 NAME
 
