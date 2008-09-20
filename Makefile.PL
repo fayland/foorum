@@ -64,7 +64,6 @@ requires 'Email::Send';
 recommends 'Email::Send::SMTP::TLS';
 
 # formatter
-requires 'HTML::BBCode' => '2.00';
 requires 'Text::Textile';
 requires 'URI::Find::UTF8';
 requires 'Text::GooglewikiFormat' => '0.04';

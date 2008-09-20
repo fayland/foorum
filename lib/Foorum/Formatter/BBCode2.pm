@@ -7,7 +7,6 @@ use Foorum::Version; our $VERSION = $Foorum::VERSION;
 
 use strict;
 use warnings;
-use HTML::BBCode::StripScripts;
 
 our @bbcode_tags
     = qw(code quote b u i color size list url email img font align flash music video);
@@ -59,56 +58,6 @@ sub _init {
 		);
    $self->{options} = \%options;
 
-   $self->{'hss'} = HTML::BBCode::StripScripts->new({
-      Context        => 'Flow',
-      AllowSrc       => 1,
-      AllowMailto    => 1,
-      AllowHref      => 1,
-      AllowRelURL    => 1,
-      BanAllBut      => [qr/a div img li ol span ul embed/],
-      EscapeFiltered => 1,
-      Rules          => {
-         br  => 1,
-         img => {
-            required  => ['src'],
-            'src'     => 1,
-            'alt'     => 1,
-            '*'       => 0,
-         },
-         a   => {
-            required  => ['href'],
-            'href'    => 1,
-            '*'       => 0,
-         },
-         img => { 
-            'src'     => 1,
-            'alt'     => 1,
-            '*'       => 0,
-         },
-         div => {
-            class => qr{^bbcode_},
-            style => sub {
-                my ($filter, $tag, $attr_name, $attr_val) = @_;
-                if ($attr_val eq 'text-align:left' or $attr_val eq 'text-align:center' or $attr_val eq 'text-align:right') {
-                    return $attr_val;
-                }
-                return undef;
-            },
-            '*'   => 0,
-         },
-         span => {
-            style => \&_filter_style,
-            '*'   => 0,
-         },
-         ol => {
-            style => qr/^list-style-type:lower-alpha$/,
-            '*'   => 0,
-         },
-         ul => 1,
-         li => 1,
-         embed => \&_embed_callback,
-      }
-   });
 
    return $self;
 }
@@ -314,6 +263,7 @@ controls="ImageWindow,StatusBar,ControlPanel" width='352' height='288' border='0
    } elsif(($tag eq 'email' || $tag eq 'url') && !$attr) {
       $html = sprintf($self->{options}->{html_tags}->{$tag}, $content,$content);
    } elsif ($attr) {
+      $attr =~ s/^(.*?)[\"\'].*?$/$1/isg;
       $html = sprintf($self->{options}->{html_tags}->{$tag}, $attr, $content);
    } else {
       $html = sprintf($self->{options}->{html_tags}->{$tag}, $content);
@@ -375,7 +325,7 @@ sub _list_removelastbr {
 
 sub _stripscripts {
    my $self = shift;
-   $self->{'html'} = $self->{'hss'}->filter_html($self->{'html'});
+   #$self->{'html'} = $self->{'hss'}->filter_html($self->{'html'});
    return $self->{'html'};
 }
 

@@ -2,6 +2,7 @@ This file documents the revision history for Foorum.
 
 0.2.6
         - ubb fix: http://code.google.com/p/foorum/issues/detail?id=84
+        - pod updates with Pod::From::GoogleWiki 0.05
 
 0.2.5 Sat Sep 20 7:11:00
         - manual and doc updates!

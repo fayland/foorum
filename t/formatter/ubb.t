@@ -28,7 +28,7 @@ $text = <<TEXT;
 TEXT
 $html = filter_format( $text, { format => 'ubb' } );
 is( $html,
-    qq~<a href="http://search.cpan.org/perldoc?CatalystX%3A%3AFoorum">CatalystX::Foorum</a><br />\n~,
+    qq~<a href="http://search.cpan.org/perldoc?CatalystX::Foorum">CatalystX::Foorum</a><br />\n~,
     'CPAN URL OK'
 );
 
@@ -44,8 +44,16 @@ $text = <<TEXT;
 TEXT
 $html = filter_format( $text, { format => 'ubb' } );
 is( $html,
-    qq~<a href="http://search.cpan.org/perldoc?CatalystX%3A%3AFoorum">CatalystX::Foorum</a><br />\n~,
+    qq~<div><embed src="http://www.youtube.com/v/vCErwxUYEbY&rel=1" type="application/x-shockwave-flash" allowfullscreen="true" width="425" height="344"></embed></div><br />
+<div class='bbcode_flash'><embed src="http://fayland.org/king.swf" type="application/x-shockwave-flash"  width="425" height="344"></embed></div><br />
+<div><embed name="rplayer" type="audio/x-pn-realaudio-plugin" src="http://fayland.org/love.mp3" 
+controls="StatusBar,ControlPanel" width='320' height='70' border='0' autostart='flase'></embed></div><br />
+~,
     '[video] [flash] [music] OK'
 );
+
+is(filter_format('[color=blue" onmouseover="alert:XSS"]test[/color]', { format => 'ubb' } ), '<span style="color:blue">test</span>', 'stripscripts enabled');
+
+
 
 1;
