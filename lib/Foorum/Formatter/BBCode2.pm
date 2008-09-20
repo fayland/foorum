@@ -121,7 +121,7 @@ sub parse {
       }
    }
    $self->{html} = join('', @{$self->{_stack}});
-   return $self->{options}->{stripscripts} ? $self->_stripscripts() : $self->{html};
+   return $self->{html};
 }
 
 sub _open_tag {
@@ -321,70 +321,6 @@ sub _list_removelastbr {
    $content =~ s|^\s*||;
    $content =~ s|\s*$||;
    return "<li>$content</li>\n";
-}
-
-sub _stripscripts {
-   my $self = shift;
-   #$self->{'html'} = $self->{'hss'}->filter_html($self->{'html'});
-   return $self->{'html'};
-}
-
-sub _filter_style {
-   my ($filter, $tag, $attr_name, $attr_val) = @_;
-   if ($attr_val eq 'font-weight:bold'
-       or $attr_val eq 'text-decoration:underline'
-       or $attr_val eq 'font-style:italic'
-       or $attr_val eq 'list-style-type') {
-        return $attr_val;
-   }
-   if ( my ($color) = $attr_val =~ /^color:(.*)/ ) {
-        my @html_color = qw/
-          black gray maroon red green lime olive yellow
-          navy blue purple fuchsia teal aqua silver white
-          /;
-      return $attr_val if $color =~ /^#[a-fA-F\d]{6}$/;
-      return $attr_val if $color =~ /^#[a-fA-F\d]{3}$/;
-      return $attr_val if grep { $color eq $_ } @html_color;
-      return undef;
-   }
-   if ( $attr_val =~ /font-size:\d+pt/ or $attr_val =~ /font-family:/ ) {
-      return $attr_val;
-   }
-   return undef;
-}
-
-sub _embed_callback {
-    my ($filter,$element) = (@_);
-
-=pod
-
-        $element = {
-            tag      => 'tag',
-            content  => 'inner_html',
-            attr     => {
-                attr_name => 'attr_value',
-            }
-        };
-        return 0 | 1;
-
-
-
-    {
-            type  => 1,
-            src   => 1,
-            name  => 1,
-            controls => sub {
-                my ($filter, $tag, $attr_name, $attr_val) = @_;
-                print STDERR "XXXXXXXXXXXXXXXXX controls $attr_name, $attr_val\n\n";
-                return undef
-            },
-            
-            '*'   => 0,
-         }
-
-=cut
-
-    return 1;
 }
 
 sub _croak {
