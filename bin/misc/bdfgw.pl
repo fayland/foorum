@@ -12,8 +12,8 @@ use Cwd qw/abs_path/;
 use File::Copy;
 use File::Spec;
 
-my $trunk_dir = abs_path( File::Spec->catdir( $Bin, '..', '..', '..', 'trunk' ) );
-my $wiki_dir  = abs_path( File::Spec->catdir( $Bin, '..', '..', '..', 'wiki' ) );
+my $trunk_dir = abs_path( File::Spec->catdir( $Bin, '..', '..' ) );
+my $wiki_dir  = abs_path( File::Spec->catdir( $trunk_dir, '..', 'wiki' ) );
 my $project_url = 'http://code.google.com/p/foorum';
 
 my @filenames = (
