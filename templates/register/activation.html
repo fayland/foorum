@@ -1,7 +1,7 @@
 <div class='one'>
-    <div class='success'>An activation email is sent to your email. Please have a check!</div>
 <table align='center'>
 	<tbody>
+    <tr><td colspan='2'><div class='success'>An activation email is sent to your email. Please have a check!</div></td></tr>
 	<form method='post'>
 	<tr class='title'><td colspan='2'>[% c.loc('Activation') %]</td></tr>
 	<tr class='misc1'><td width='20%' align='right'><label for="username">[% c.loc('Username:') %]</label></td><td><input type='text' name='username' value='[% username || c.user.username %]' length='12' /></td></tr>
