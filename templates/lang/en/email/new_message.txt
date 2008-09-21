@@ -10,4 +10,4 @@ Dear [% rept.nickname %],
 Thanks.
 
 Best Regards,
-Yours, [% config.name %]
+Yours, [% config.name %] - [% config.site.domain %]
