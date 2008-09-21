@@ -88,12 +88,12 @@ sub register_stat {
     my ($count) = $sth->fetchrow_array;
 
     unless ($count) {
-        $sql = qq~INSERT INTO stat SET stat_key = ?, stat_value = ?, date = $now~;
+        $sql = qq~INSERT INTO stat (stat_key, stat_value, date) VALUES (?, ?, ?)~;
     } else {
-        $sql = qq~UPDATE stat SET stat_key = ?, date = $now WHERE stat_value = ?~;
+        $sql = qq~UPDATE stat SET stat_key = ?, date = ? WHERE stat_value = ?~;
     }
     $sth = $dbh->prepare($sql);
-    $sth->execute( $stat_key, $stat_value );
+    $sth->execute( $stat_key, $stat_value, $now );
 
 }
 
