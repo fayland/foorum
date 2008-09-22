@@ -7,7 +7,7 @@ Foorum::Manual::READ - Foorum is a forum script built in Catalyst.
 
 =head1 INSTALL
 
-Read INSTALL file at the same dir.
+Read L<Foorum::Manual::INSTALL> file at the same dir.
 
 =head1 RUN
 

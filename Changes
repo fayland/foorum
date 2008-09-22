@@ -4,6 +4,7 @@ This file documents the revision history for Foorum.
         - ubb fix: http://code.google.com/p/foorum/issues/detail?id=84
         - Pod updates with Pod::From::GoogleWiki 0.05
         - (EXPERIMENTAL) add un-tested bin/db/foorum.pg.sql and bin/db/theschwartz.pg.sql for PostgreSQL
+        - a welcome email after register activation
 
 0.2.5 Sat Sep 20 7:11:00
         - manual and doc updates!

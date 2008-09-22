@@ -81,7 +81,7 @@ meanwhile, we can use Memcached:
 
 L<Catalyst::Plugin::Session::DynamicExpiry>
 
-for one "Remember Me?".
+for the "Remember Me?".
 
 =head2 Session
 
