@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More 'no_plan';# tests => 6;
+use Test::More 'no_plan';    # tests => 6;
 
 use Foorum::Formatter qw/filter_format/;
 
@@ -18,7 +18,7 @@ like( $html, qr/\<a href/,                 '[url] convert OK' );
 like( $html, qr/font-weight\:bold/,        '[b] convert OK' );
 like( $html, qr/font-size\:14pt/,          '[size] OK' );
 like( $html, qr/font-family\s*\:\s*Arial/, '[font] OK' );
-like( $html, qr/text-align:\s*center/,       '[align] OK' );
+like( $html, qr/text-align:\s*center/,     '[align] OK' );
 
 #diag($html);
 
@@ -52,8 +52,12 @@ controls="StatusBar,ControlPanel" width='320' height='70' border='0' autostart='
     '[video] [flash] [music] OK'
 );
 
-is(filter_format('[color=blue" onmouseover="alert:XSS"]test[/color]', { format => 'ubb' } ), '<span style="color:blue">test</span>', 'stripscripts enabled');
-
-
+is( filter_format(
+        '[color=blue" onmouseover="alert:XSS"]test[/color]',
+        { format => 'ubb' }
+    ),
+    '<span style="color:blue">test</span>',
+    'stripscripts enabled'
+);
 
 1;

@@ -1,21 +1,25 @@
+=pod
+
 =head1 NAME
 
-Foorum - Foorum is a forum script built in Catalyst.
+Foorum::Manual::READ - Foorum is a forum script built in Catalyst.
 
-=head2 INSTALL
+=head1 INSTALL
 
-Read INSTALL file at the same dir.
+Read L<Foorum::Manual::INSTALL> file at the same dir.
 
-=head2 RUN
+=head1 RUN
 
 you can run it under mod_perl or fastcgi
 
 for test using, we recommend to use builtin server.pl try:
-  
+
   perl bin/foorum_server.pl -k
 
 =head2 SEE ALSO
 
 L<Catalyst>, L<DBIx::Class>, L<Template>
 
-More at docs/*.html
+L<Foorum::Manual::INSTALL>, L<Foorum::Manual::Configure>
+
+=cut

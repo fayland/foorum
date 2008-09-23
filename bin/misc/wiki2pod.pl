@@ -12,7 +12,7 @@ use Cwd qw/abs_path/;
 use File::Copy;
 use File::Spec;
 
-my $trunk_dir = abs_path( File::Spec->catdir( $Bin, '..', '..' ) );
+my $trunk_dir = abs_path( File::Spec->catdir( $Bin,       '..', '..' ) );
 my $wiki_dir  = abs_path( File::Spec->catdir( $trunk_dir, '..', 'wiki' ) );
 my $project_url = 'http://code.google.com/p/foorum';
 
@@ -36,7 +36,7 @@ foreach my $filename (@filenames) {
         flock( $fh, 1 );
         my $string = <$fh>;
         close($fh);
-        
+
         # change build-in links
         foreach my $f (@filenames) {
             $string =~ s/\[$f\]/\[Foorum\:\:Manual\:\:$f\]/isg;
@@ -51,7 +51,7 @@ foreach my $filename (@filenames) {
                 $trunk_dir, 'lib', 'Foorum', 'Manual', "$filename\.pod"
             )
         );
-        print $fh2 "=pod\n\n$pod\n\n=cut\n";
+        print $fh2 "\n=pod\n$pod\n\n=cut\n";
         close($fh2);
 
         print "$filename OK\n";

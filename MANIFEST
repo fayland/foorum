@@ -3,9 +3,11 @@ bin/cron/chart.pl
 bin/cron/TheSchwartz_client.pl
 bin/cron/TheSchwartz_worker.pl
 bin/db/dev.txt
+bin/db/foorum.pg.sql
 bin/db/foorum.sql
 bin/db/foorum.sqlite.sql
 bin/db/make_schema.pl
+bin/db/theschwartz.pg.sql
 bin/db/theschwartz.sql
 bin/db/theschwartz.sqlite.sql
 bin/deploy/dreamhost.fastcgi.pl
@@ -643,6 +645,8 @@ templates/lang/en/email/new_comment.html
 templates/lang/en/email/new_message.html
 templates/lang/en/email/new_message.txt
 templates/lang/en/email/starred_notification.html
+templates/lang/en/email/welcome_to_join.html
+templates/lang/en/email/welcome_to_join.txt
 templates/lang/en/help/background.html
 templates/lang/en/help/email.html
 templates/lang/en/help/index.html

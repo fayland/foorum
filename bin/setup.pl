@@ -25,9 +25,9 @@ DBI:
 # options
 print "Which Database are u used for Foorum (MySQL, SQLite, Pg): ";
 my $db_type;
-while ($db_type = <>) {
+while ( $db_type = <> ) {
     chomp($db_type);
-    if ($db_type eq 'MySQL' or $db_type eq 'SQLite' or $db_type eq 'Pg') {
+    if ( $db_type eq 'MySQL' or $db_type eq 'SQLite' or $db_type eq 'Pg' ) {
         last;
     } else {
         print "Which Database are u used for Foorum (MySQL, SQLite, Pg): ";
@@ -40,27 +40,29 @@ chomp($dns_host);
 $dns_host = 'localhost' unless ($dns_host);
 
 # SQLite don't require user and password
-my ($dns_user, $dns_password) = ('', '');
-if ($db_type eq 'MySQL' or $db_type eq 'Pg') {
+my ( $dns_user, $dns_password ) = ( '', '' );
+if ( $db_type eq 'MySQL' or $db_type eq 'Pg' ) {
     print "Your $db_type user (root by default): ";
     $dns_user = <>;
     chomp($dns_user);
     $dns_user = 'root' unless ($dns_user);
-    
+
     print "Your $db_type pass: ";
     $dns_password = <>;
     chomp($dns_password);
 }
 
-$db_type = lc($db_type) if ($db_type eq 'MySQL');
-my $dns = "dbi:$db_type:database=foorum;host=$dns_host;port=3306";
+$db_type = lc($db_type) if ( $db_type eq 'MySQL' );
+my $dns             = "dbi:$db_type:database=foorum;host=$dns_host;port=3306";
 my $theschwartz_dsn = "dbi:$db_type:database=theschwartz;host=$dns_host;port=3306";
-if ($db_type eq 'SQLite') {
-    $dns = "dbi:$db_type:$dns_host";
+if ( $db_type eq 'SQLite' ) {
+    $dns             = "dbi:$db_type:$dns_host";
     $theschwartz_dsn = $dns;
 }
 eval {
-    $dbh = DBI->connect( $dns, $dns_user, $dns_password, { RaiseError => 1, PrintError => 1 } )
+    $dbh
+        = DBI->connect( $dns, $dns_user, $dns_password,
+        { RaiseError => 1, PrintError => 1 } )
         or die $DBI::errstr;
 };
 if ($@) {

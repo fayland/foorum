@@ -138,20 +138,18 @@ sub activation : Local {
         # so instead, we use set_authenticated, check Catalyst::Plugin::Authentication
         bless $user, "Catalyst::Authentication::User::Hash";    # XXX?
         $c->set_authenticated($user);
-        
+
         # send a welcome email
-        unless ($activation_rs->new_email) { # for new user
+        unless ( $activation_rs->new_email ) {                  # for new user
             $c->model('DBIC::ScheduledEmail')->create_email(
                 {   template => 'welcome_to_join',
                     to       => $user->{email},
                     lang     => $c->stash->{lang},
-                    stash    => {
-                        user => $user,
-                    }
+                    stash    => { user => $user, }
                 }
             );
         }
-        
+
         $c->res->redirect('/profile/edit');
     } else {
         $c->stash->{'ERROR_UNMATCHED'} = 1;

@@ -7,12 +7,13 @@
 use strict;
 use warnings;
 use Text::GooglewikiFormat;
+use Pod::From::GoogleWiki;
 use FindBin qw/$Bin/;
 use Cwd qw/abs_path/;
 use File::Copy;
 use File::Spec;
 
-my $trunk_dir = abs_path( File::Spec->catdir( $Bin, '..', '..' ) );
+my $trunk_dir = abs_path( File::Spec->catdir( $Bin,       '..', '..' ) );
 my $wiki_dir  = abs_path( File::Spec->catdir( $trunk_dir, '..', 'wiki' ) );
 my $project_url = 'http://code.google.com/p/foorum';
 
@@ -24,6 +25,7 @@ my @filenames = (
 );
 
 my %tags = %Text::GooglewikiFormat::tags;
+my $pfg  = Pod::From::GoogleWiki->new();
 
 # replace link sub
 my $linksub = sub {
@@ -60,6 +62,7 @@ foreach my $filename (@filenames) {
         flock( $fh, 1 );
         my $string = <$fh>;
         close($fh);
+        my $org_string = $string;    # back for later to POD
         $string =~ s/&/&amp;/gs;
         $string =~ s/>/&gt;/gs;
         $string =~ s/</&lt;/gs;
@@ -68,13 +71,19 @@ foreach my $filename (@filenames) {
 
         $indexpage .= qq~<li><a href="$filename\.html">$filename</a></li>~;
 
-        # XXX? TODO
-        # text to README INSTALL AUTHOR
-        if ( $filename eq 'AUTHORS' ) {
-            copy(
-                File::Spec->catfile( $wiki_dir,  "$filename\.wiki" ),
-                File::Spec->catfile( $trunk_dir, $filename )
-            );
+        if ( $filename eq 'AUTHORS' or $filename eq 'README' or $filename eq 'INSTALL' ) {
+
+            # convert to Pod
+
+            # change build-in links
+            foreach my $f (@filenames) {
+                $org_string =~ s/\[$f\]/\[Foorum\:\:Manual\:\:$f\]/isg;
+            }
+            my $pod = $pfg->wiki2pod($org_string);
+
+            open( my $fh2, '>', File::Spec->catfile( $trunk_dir, $filename ) );
+            print $fh2 "\n=pod\n$pod\n\n=cut\n";
+            close($fh2);
         }
     }
 }

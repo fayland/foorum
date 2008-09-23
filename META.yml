@@ -46,7 +46,6 @@ requires:
   File::Copy: 0
   File::Path: 0
   File::Remove: 0
-  HTML::BBCode: 2.00
   HTML::Email::Obfuscate: 0
   List::MoreUtils: 0
   List::Util: 0
@@ -67,4 +66,4 @@ requires:
   URI::Find::UTF8: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.2.5
+version: 0.2.6
