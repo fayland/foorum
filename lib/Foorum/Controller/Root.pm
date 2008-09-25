@@ -41,8 +41,10 @@ sub auto : Private {
     $c->stash->{is_rss_template} = ( $path =~ /\/rss(\/|$)/ ) ? 1 : 0;
 
     # for maintain, but admin can login and do something
-    if ( $c->config->{function_on}->{maintain} and $path !~ /^(admin|login)\// ) {
-        $c->stash->{template}       = 'lang/' . $c->stash->{lang} . '/site/maintain.html';
+    if (    $c->config->{function_on}->{maintain}
+        and $path !~ /^(admin|login)\// ) {
+        $c->stash->{template}
+            = 'lang/' . $c->stash->{lang} . '/site/maintain.html';
         $c->stash->{simple_wrapper} = 1;
         return 0;
     }
@@ -112,15 +114,16 @@ sub end : ActionClass('+Foorum::Action::PathLogger') {
                 ->whos_view_this_page( $c->sessionid, $c->req->path );
             $c->stash->{whos_view_this_page} = $results;
         }
-        $c->stash->{elapsed_time} = tv_interval( $c->stash->{start_t0}, [gettimeofday] );
+        $c->stash->{elapsed_time}
+            = tv_interval( $c->stash->{start_t0}, [gettimeofday] );
     }
 
     # new message
     if (    not $c->stash->{no_wrapper}
         and $c->user_exists
         and $c->req->path !~ /^message(\/|$)/ ) {
-        $c->stash->{message_unread}
-            = $c->model('DBIC::Message')->get_unread_cnt( $c->user->{user_id} );
+        $c->stash->{message_unread} = $c->model('DBIC::Message')
+            ->get_unread_cnt( $c->user->{user_id} );
     }
     $c->forward( $c->view('TT') );
 

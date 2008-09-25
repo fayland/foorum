@@ -9,7 +9,8 @@ use YAML::XS qw/LoadFile/;
 use Email::Send;
 use MIME::Entity;
 use Data::Dumper;
-my $config = LoadFile( File::Spec->catfile( $Bin, '..', '..', 'conf', 'mail.yml' ) );
+my $config
+    = LoadFile( File::Spec->catfile( $Bin, '..', '..', 'conf', 'mail.yml' ) );
 
 if ( $config->{mailer} eq 'Sendmail' ) {
     if ( -e '/usr/sbin/sendmail' ) {

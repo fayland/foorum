@@ -31,7 +31,8 @@ is( $users->{2}->{user_id}, 2, 'get_multi users.2.user_id OK' );
 
 # test get_user_settings
 my $settings = $user_res->get_user_settings($user);
-is( $settings->{show_email_public}, 'N', 'get_user_settings show_email_public OK' );
+is( $settings->{show_email_public},
+    'N', 'get_user_settings show_email_public OK' );
 
 # test update_user
 my $org_email    = $user->{email};
@@ -70,10 +71,13 @@ $st = $user_res->validate_username($org_username);
 is( $st, 'DBIC_UNIQUE', 'DBIC_UNIQUE' );
 
 # test validate_email
-$st = $user_res->validate_email(
-    '64charsemail@1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjkl.com');
+$st
+    = $user_res->validate_email(
+    '64charsemail@1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjkl.com'
+    );
 is( $st, 'LENGTH', '64 chars break' );
-$st = $user_res->validate_email('one wouldnt exist@email.com.withunknownregion');
+$st = $user_res->validate_email(
+    'one wouldnt exist@email.com.withunknownregion');
 is( $st, 'EMAIL_LOOSE', 'EMAIL_LOOSE' );
 $st = $user_res->validate_email($org_email);
 is( $st, 'DBIC_UNIQUE', 'DBIC_UNIQUE' );

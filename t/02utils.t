@@ -33,7 +33,8 @@ use Foorum::Utils qw/
 {
     my $ret = generate_random_word(8);
     is( length($ret), 8, 'generate_random_word length OK' );
-    like( $ret, qr/^[A-Za-z0-9]{8}$/, 'generate_random_word all are A-Za-z0-9' );
+    like( $ret, qr/^[A-Za-z0-9]{8}$/,
+        'generate_random_word all are A-Za-z0-9' );
 }
 
 # test get_page_from_url

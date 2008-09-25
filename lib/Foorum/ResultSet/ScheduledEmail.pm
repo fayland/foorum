@@ -18,7 +18,8 @@ sub send_activation {
     my $lang   = $opts->{lang};
 
     my $activation_code;
-    my $rs = $schema->resultset('UserActivation')->find( { user_id => $user->user_id, } );
+    my $rs = $schema->resultset('UserActivation')
+        ->find( { user_id => $user->user_id, } );
     if ($rs) {
         $activation_code = $rs->activation_code;
     } else {
@@ -78,13 +79,15 @@ sub create_email {
         # find the template for TT use
         my $template_prefix;
         my $template_name = $opts->{template};
-        my $file_prefix   = "$base_path/templates/lang/$lang/email/$template_name";
+        my $file_prefix
+            = "$base_path/templates/lang/$lang/email/$template_name";
         if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
             $template_prefix = "lang/$lang/email/$template_name";
         } elsif ( $lang ne 'en' ) {
 
             # try to use lang=en for default
-            $file_prefix = "$base_path/templates/lang/en/email/$template_name";
+            $file_prefix
+                = "$base_path/templates/lang/en/email/$template_name";
             if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
                 $template_prefix = 'lang/en/email/' . $template_name;
             }
@@ -96,7 +99,7 @@ sub create_email {
             return 0;
         }
 
-        # we will set 'base' in cron manually, so we put %$stash before %{$opts->{stash}}
+# we will set 'base' in cron manually, so we put %$stash before %{$opts->{stash}}
         my $stash = $opts->{stash};
         $stash->{config} = $config;
 

@@ -10,8 +10,9 @@ sub auto : Private {
     my ( $self, $c ) = @_;
 
     # no cache
-    $c->res->header( 'Cache-Control' => 'no-cache, must-revalidate, max-age=0' );
-    $c->res->header( 'Pragma'        => 'no-cache' );
+    $c->res->header(
+        'Cache-Control' => 'no-cache, must-revalidate, max-age=0' );
+    $c->res->header( 'Pragma' => 'no-cache' );
 
     return 1;
 }

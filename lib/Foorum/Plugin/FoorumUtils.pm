@@ -16,7 +16,8 @@ sub load_once {
 
     if ( $url =~ /\.js$/i ) {
         my $js_dir = $c->config->{dir}->{js};
-        return qq~<script type="text/javascript" src="$js_dir/$url"></script>\n~;
+        return
+            qq~<script type="text/javascript" src="$js_dir/$url"></script>\n~;
     } elsif ( $url =~ /\.css$/i ) {
         my $static_dir = $c->config->{dir}->{static};
         return
@@ -29,12 +30,13 @@ sub user_online {
 
     my $path = $c->req->path;
     $path = ($path) ? substr( $path, 0, 255 ) : 'forum';    # varchar(255)
-    $c->create_session_id_if_needed;                        # must have a sessionid
+    $c->create_session_id_if_needed;    # must have a sessionid
     my $session_id = $c->sessionid;
     my $user_id = ( $c->user_exists ) ? $c->user->user_id : 0;
 
     # check if there is a rs
-    my $online = $c->model('DBIC::UserOnline')->find( { sessionid => $session_id, } );
+    my $online = $c->model('DBIC::UserOnline')
+        ->find( { sessionid => $session_id, } );
     if ($online) {
         $online->update(
             {   user_id   => $user_id,

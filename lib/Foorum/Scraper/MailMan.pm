@@ -36,7 +36,8 @@ sub scraper {
     foreach (@$ret) {
         my $details = get( $_->{url} );
         if ($details) {
-            ( $_->{when}, $_->{text} ) = $self->extract_from_message($details);
+            ( $_->{when}, $_->{text} )
+                = $self->extract_from_message($details);
         }
     }
 
@@ -144,7 +145,9 @@ sub mail_body_to_abstract {
             $newtext .= "\002";
             next;
         } else {
-            if ( $lastwasquote && !$lastwasblank && length($_) < 20 ) { next; }
+            if ( $lastwasquote && !$lastwasblank && length($_) < 20 ) {
+                next;
+            }
             $newtext .= $_;
             $lastwasquote = 0;
         }

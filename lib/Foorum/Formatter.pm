@@ -19,19 +19,21 @@ sub filter_format {
     # don't run eval at beginning, run it when required
     if ( $format eq 'textile' and not defined $has_text_textile ) {
         $has_text_textile
-            = eval "use Text::Textile; 1;";    ## no critic (ProhibitStringyEval)
+            = eval "use Text::Textile; 1;"; ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'ubb' and not defined $has_ubb_code ) {
-        $has_ubb_code =    ## no critic no critic no critic no critic no critic no critic
-            eval "use Foorum::Formatter::BBCode2; 1;";  ## no critic (ProhibitStringyEval)
+        $has_ubb_code
+            =   ## no critic no critic no critic no critic no critic no critic
+            eval "use Foorum::Formatter::BBCode2; 1;"
+            ;    ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'wiki' and not defined $has_text_wiki ) {
-        $has_text_wiki
-            = eval "use Text::GooglewikiFormat; 1;";    ## no critic (ProhibitStringyEval)
+        $has_text_wiki = eval "use Text::GooglewikiFormat; 1;"
+            ;    ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'pod' and not defined $has_pod_simple ) {
-        $has_pod_simple
-            = eval "use Foorum::Formatter::Pod; 1;";    ## no critic (ProhibitStringyEval)
+        $has_pod_simple = eval "use Foorum::Formatter::Pod; 1;"
+            ;    ## no critic (ProhibitStringyEval)
     }
 
     if ( $format eq 'textile' and $has_text_textile ) {
@@ -39,7 +41,8 @@ sub filter_format {
         $formatter->charset('utf-8');
         $text = $formatter->process($text);
     } elsif ( $format eq 'ubb' and $has_ubb_code ) {
-        my $formatter = Foorum::Formatter::BBCode2->new( { linebreaks => 1 } );
+        my $formatter
+            = Foorum::Formatter::BBCode2->new( { linebreaks => 1 } );
         $text = $formatter->parse($text);
 
         # emot
@@ -101,7 +104,8 @@ sub filter_format {
         #$text =~ s/"/&quot;/g; #"
         $text =~ s|\n|<br />\n|gs;    # linebreaks
 
-        $has_uri_find = eval "use URI::Find::UTF8; 1;"  ## no critic (ProhibitStringyEval)
+        $has_uri_find = eval
+            "use URI::Find::UTF8; 1;"    ## no critic (ProhibitStringyEval)
             if ( not defined $has_uri_find );
         if ($has_uri_find) {
 

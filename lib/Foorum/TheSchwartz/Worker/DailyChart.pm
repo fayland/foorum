@@ -35,7 +35,8 @@ sub work {
     ( $year, $month, $day ) = Add_Delta_Days( $year, $month, $day, -7 );
     my $date = sprintf( "%04d%02d%02d", $year, $month, $day );
 
-    my @stats = $schema->resultset('Stat')->search( { date => \"> $date", } )->all;
+    my @stats
+        = $schema->resultset('Stat')->search( { date => \"> $date", } )->all;
 
     my $stats;
     foreach (@stats) {
@@ -81,16 +82,19 @@ sub register_stat {
 
     my $dbh = $schema->storage->dbh;
 
-    my $sql = qq~SELECT COUNT(*) FROM stat WHERE stat_key = ? AND date = $now~;
+    my $sql
+        = qq~SELECT COUNT(*) FROM stat WHERE stat_key = ? AND date = $now~;
     my $sth = $dbh->prepare($sql);
     $sth->execute($stat_key);
 
     my ($count) = $sth->fetchrow_array;
 
     unless ($count) {
-        $sql = qq~INSERT INTO stat (stat_key, stat_value, date) VALUES (?, ?, ?)~;
+        $sql
+            = qq~INSERT INTO stat (stat_key, stat_value, date) VALUES (?, ?, ?)~;
     } else {
-        $sql = qq~UPDATE stat SET stat_key = ?, date = ? WHERE stat_value = ?~;
+        $sql
+            = qq~UPDATE stat SET stat_key = ?, date = ? WHERE stat_value = ?~;
     }
     $sth = $dbh->prepare($sql);
     $sth->execute( $stat_key, $stat_value, $now );

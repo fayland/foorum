@@ -20,18 +20,19 @@ sub work {
     my $time = time() - 86400;
 
     # check db
-    my $new_added_user
-        = $schema->resultset('User')->count( { register_time => { '>', $time } } );
+    my $new_added_user = $schema->resultset('User')
+        ->count( { register_time => { '>', $time } } );
     my $new_added_visits
         = $schema->resultset('Visit')->count( { time => { '>', $time } } );
-    my $left_email = $schema->resultset('ScheduledEmail')->count( { processed => 'N' } );
+    my $left_email
+        = $schema->resultset('ScheduledEmail')->count( { processed => 'N' } );
     my $sent_email = $schema->resultset('ScheduledEmail')->count(
         {   processed => 'Y',
             time      => { '>', $time },
         }
     );
-    my $log_error_count
-        = $schema->resultset('LogError')->count( { time => { '>', $time }, } );
+    my $log_error_count = $schema->resultset('LogError')
+        ->count( { time => { '>', $time }, } );
     my $log_path_count
         = $schema->resultset('LogPath')->count( { time => { '>', $time }, } );
 

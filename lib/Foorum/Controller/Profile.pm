@@ -49,7 +49,8 @@ sub edit : Local {
         . $c->req->param('day');
     my ( @extra_valid, @extra_insert );
     if ( length($birthday) > 2 ) {    # is not --
-        @extra_valid = ( { birthday => [ 'year', 'month', 'day' ] } => ['DATE'] );
+        @extra_valid
+            = ( { birthday => [ 'year', 'month', 'day' ] } => ['DATE'] );
         @extra_insert = ( birthday => $birthday );
     }
 
@@ -83,8 +84,8 @@ sub edit : Local {
         $c->user,
         {   nickname => $c->req->param('nickname') || $c->user->username,
             gender   => $c->req->param('gender')   || 'NA',
-            lang     => $c->req->param('lang')     || $c->config->{default_lang},
-            country  => $c->req->param('country')  || '',
+            lang => $c->req->param('lang') || $c->config->{default_lang},
+            country => $c->req->param('country') || '',
         }
     );
 
@@ -117,7 +118,7 @@ sub change_password : Local {
 
     # check the password typed in is correct
     my $password = $c->req->param('password');
-    my $d        = Digest->new( $c->config->{authentication}->{password_hash_type} );
+    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
     if ( $computed ne $c->user->{password} ) {
@@ -128,7 +129,8 @@ sub change_password : Local {
     # execute validation.
     $c->form(
         new_password => [ qw/NOT_BLANK/, [qw/LENGTH 6 20/] ],
-        { passwords => [ 'new_password', 'confirm_password' ] } => ['DUPLICATION'],
+        { passwords => [ 'new_password', 'confirm_password' ] } =>
+            ['DUPLICATION'],
     );
     return if ( $c->form->has_error );
 
@@ -138,7 +140,8 @@ sub change_password : Local {
     $d->add($new_password);
     my $new_computed = $d->digest;
 
-    $c->model('DBIC::User')->update_user( $c->user, { password => $new_computed, } );
+    $c->model('DBIC::User')
+        ->update_user( $c->user, { password => $new_computed, } );
 
     $c->detach(
         '/print_message',
@@ -186,8 +189,9 @@ sub forget_password : Local {
     $c->model('DBIC::User')->update_user( $user, { password => $computed } );
     $c->detach(
         '/print_message',
-        [   {   msg => 'Your Password is Sent to Your Email, Please have a check',
-                url => '/login',
+        [   {   msg =>
+                    'Your Password is Sent to Your Email, Please have a check',
+                url          => '/login',
                 stay_in_page => 1,
             }
         ]
@@ -205,7 +209,7 @@ sub change_email : Local {
 
     # check the password typed in is correct
     my $password = $c->req->param('password');
-    my $d        = Digest->new( $c->config->{authentication}->{password_hash_type} );
+    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
     if ( $computed ne $c->user->{password} ) {
@@ -227,10 +231,12 @@ sub change_email : Local {
 
         # send activation code
         $c->model('DBIC::ScheduledEmail')
-            ->send_activation( $c->user, $email, { lang => $c->stash->{lang} } );
+            ->send_activation( $c->user, $email,
+            { lang => $c->stash->{lang} } );
         $c->res->redirect( '/register/activation/' . $c->user->username );
     } else {
-        $c->model('DBIC::User')->update_user( $c->user, { email => $email, } );
+        $c->model('DBIC::User')
+            ->update_user( $c->user, { email => $email, } );
         $c->res->redirect('/profile/edit');
     }
 }
@@ -246,7 +252,7 @@ sub change_username : Local {
 
     # check the password typed in is correct
     my $password = $c->req->param('password');
-    my $d        = Digest->new( $c->config->{authentication}->{password_hash_type} );
+    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
     if ( $computed ne $c->user->{password} ) {
@@ -257,18 +263,20 @@ sub change_username : Local {
     # execute validation.
     $c->form(
         new_username => [qw/NOT_BLANK/],
-        { usernames => [ 'new_username', 'confirm_username' ] } => ['DUPLICATION'],
+        { usernames => [ 'new_username', 'confirm_username' ] } =>
+            ['DUPLICATION'],
     );
     return if ( $c->form->has_error );
 
     my $new_username = $c->req->param('new_username');
-    my $err          = $c->model('DBIC::User')->validate_username($new_username);
+    my $err = $c->model('DBIC::User')->validate_username($new_username);
     if ($err) {
         $c->set_invalid_form( new_username => $err );
         return;
     }
 
-    $c->model('DBIC::User')->update_user( $c->user, { username => $new_username, } );
+    $c->model('DBIC::User')
+        ->update_user( $c->user, { username => $new_username, } );
     $c->session->{__user} = $new_username;
 
     $c->res->redirect("/u/$new_username");
@@ -289,7 +297,8 @@ sub profile_photo : Local {
         ? $c->user->{profile_photo}->{value}
         : 0;
     my $new_upload_id = $old_upload_id;
-    if ( ( $c->req->param('attachment_action') eq 'delete' ) or $new_upload ) {
+    if ( ( $c->req->param('attachment_action') eq 'delete' ) or $new_upload )
+    {
 
         # delete old upload
         if ($old_upload_id) {
@@ -307,7 +316,8 @@ sub profile_photo : Local {
             }
 
             my $client = theschwartz();
-            $client->insert( 'Foorum::TheSchwartz::Worker::ResizeProfilePhoto',
+            $client->insert(
+                'Foorum::TheSchwartz::Worker::ResizeProfilePhoto',
                 $new_upload_id );
         }
     }

@@ -47,7 +47,8 @@ ok( grep { $_ eq 'system' } @data, "get 'username_reserved' OK" );
 my $has_bad_word = $filter_word_res->has_bad_word("oh, fuck you!");
 is( $has_bad_word, 'fuck', 'has_bad_word OK' );
 
-my $return_text = $filter_word_res->convert_offensive_word("kick your asshole la, dude!");
+my $return_text
+    = $filter_word_res->convert_offensive_word("kick your asshole la, dude!");
 like( $return_text, qr/\*/, 'convert_offensive_word OK' );
 
 END {

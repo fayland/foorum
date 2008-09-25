@@ -69,7 +69,9 @@ sub topic {
     $attr->{page}    = $page;
     $attr->{columns} = ['topic_id'];
     $attr->{order_by}
-        = ( $order_by eq 'post_on' ) ? \'post_on DESC' : \'last_update_date DESC';
+        = ( $order_by eq 'post_on' )
+        ? \'post_on DESC'
+        : \'last_update_date DESC';
 
     my $rs = $schema->resultset('Topic')->search( $where, $attr );
     my @topic_ids;

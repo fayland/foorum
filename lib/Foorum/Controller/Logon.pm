@@ -45,8 +45,11 @@ sub login : Global {
                 and $c->validate_captcha( $c->req->param('captcha') ) );
         $can_login = ( $failure_login_times < 3 or $captcha_ok );
 
-        if (    $can_login
-            and $c->authenticate( { username => $username, password => $password } ) ) {
+        if ($can_login
+            and $c->authenticate(
+                { username => $username, password => $password }
+            )
+            ) {
 
             # check if he is activated
             if (    $c->config->{mail}->{on}
@@ -66,7 +69,7 @@ sub login : Global {
 
             # remember me
             if ( $c->req->param('remember_me') ) {
-                $c->session_time_to_live(604800);    # 7 days = 24 * 60 * 60 * 7
+                $c->session_time_to_live(604800);  # 7 days = 24 * 60 * 60 * 7
             }
 
             # login_times++
@@ -89,7 +92,7 @@ sub login : Global {
             $c->res->redirect($referer);
         } else {
             $failure_login_times++;
-            $c->cache->set( $mem_key, $failure_login_times, 600 );    # 10 minite
+            $c->cache->set( $mem_key, $failure_login_times, 600 ); # 10 minite
             $c->stash->{failure_login_times} = $failure_login_times;
 
             if ($can_login) {

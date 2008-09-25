@@ -17,8 +17,8 @@ sub work {
     my $schema = schema();
 
     # remove user_online data
-    $schema->resultset('UserOnline')->search( { last_time => { '<', time() - 1200 }, } )
-        ->delete;
+    $schema->resultset('UserOnline')
+        ->search( { last_time => { '<', time() - 1200 }, } )->delete;
 
     $job->completed();
 }

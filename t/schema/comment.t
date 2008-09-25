@@ -46,9 +46,9 @@ $cache->remove($cache_key);
 # test get
 my $comment = $comment_res->get( 1, { with_text => 1 } );
 isn't( $comment, undef, 'get OK' );
-is( $comment->{object_type}, 'test',                'get object_type OK' );
-is( $comment->{title},       '1 - 0 &lt;title&gt;', 'get encodeHTML title OK' );
-is( $comment->{text},        '1 x 0 x foorumbbs' );
+is( $comment->{object_type}, 'test', 'get object_type OK' );
+is( $comment->{title}, '1 - 0 &lt;title&gt;', 'get encodeHTML title OK' );
+is( $comment->{text}, '1 x 0 x foorumbbs' );
 
 # test remove_one_item
 my $ok = $comment_res->remove_one_item($comment);
@@ -74,13 +74,16 @@ is( $comments[3]->{comment_id}, 4, 'comments[3]->{comment_id} == 4' );
 # test get_children_comments
 my @result_comments;
 $comment_res->get_children_comments( 1, 1, \@comments, \@result_comments );
-is( scalar @result_comments,           3, 'get_children_comments OK' );
-is( $result_comments[0]->{comment_id}, 2, 'get_children_comments first node OK' );
-is( $result_comments[0]->{level},      1, 'get_children_comments level 1 OK' );
-is( $result_comments[1]->{comment_id}, 4, 'get_children_comments second node OK' );
-is( $result_comments[1]->{level},      2, 'get_children_comments level 2 OK' );
-is( $result_comments[2]->{comment_id}, 3, 'get_children_comments third node OK' );
-is( $result_comments[2]->{level},      1, 'get_children_comments level 1 OK' );
+is( scalar @result_comments, 3, 'get_children_comments OK' );
+is( $result_comments[0]->{comment_id},
+    2, 'get_children_comments first node OK' );
+is( $result_comments[0]->{level}, 1, 'get_children_comments level 1 OK' );
+is( $result_comments[1]->{comment_id},
+    4, 'get_children_comments second node OK' );
+is( $result_comments[1]->{level}, 2, 'get_children_comments level 2 OK' );
+is( $result_comments[2]->{comment_id},
+    3, 'get_children_comments third node OK' );
+is( $result_comments[2]->{level}, 1, 'get_children_comments level 1 OK' );
 
 # test remove_children
 my $deleted_count = $comment_res->remove_children( $comments[1] );

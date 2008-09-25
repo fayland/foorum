@@ -22,17 +22,20 @@ my $schema    = schema();
 my $cache     = cache();
 my $base_path = base_path();
 
-my $upload_res  = $schema->resultset('Upload');
-my $upload_file = File::Spec->catfile( $base_path, 't', 'schema', 'upload', 'test.txt' );
+my $upload_res = $schema->resultset('Upload');
+my $upload_file
+    = File::Spec->catfile( $base_path, 't', 'schema', 'upload', 'test.txt' );
 my $upload_id   = 1;
 my $directory_1 = int( $upload_id / 3200 / 3200 );
 my $directory_2 = int( $upload_id / 3200 );
 my $upload_dir
-    = File::Spec->catdir( $base_path, 'root', 'upload', $directory_1, $directory_2 );
+    = File::Spec->catdir( $base_path, 'root', 'upload', $directory_1,
+    $directory_2 );
 my @created;
 
 unless ( -e $upload_dir ) {
-    @created = mkpath( [$upload_dir], 0, 0777 );    ## no critic (ProhibitLeadingZeros)
+    @created = mkpath( [$upload_dir], 0, 0777 )
+        ;    ## no critic (ProhibitLeadingZeros)
 }
 my $dest_file = File::Spec->catfile( $upload_dir, 'test.txt' );
 

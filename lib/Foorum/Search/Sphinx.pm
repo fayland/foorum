@@ -63,17 +63,19 @@ sub topic {
         # date value would be 2, 7, 30, 999
         my $now = time();
         if ( $date == 999 ) {    # more than 30 days
-            $sphinx->SetFilterRange( 'last_update_date', $now - 30 * 86400, $now, 1 );
+            $sphinx->SetFilterRange( 'last_update_date', $now - 30 * 86400,
+                $now, 1 );
         } else {
-            $sphinx->SetFilterRange( 'last_update_date', $now - $date * 86400, $now );
+            $sphinx->SetFilterRange( 'last_update_date', $now - $date * 86400,
+                $now );
         }
     }
 
     $order_by = 'last_update_date' if ( $order_by ne 'post_on' );
     $sphinx->SetSortMode( SPH_SORT_ATTR_DESC, $order_by );
     $sphinx->SetMatchMode(SPH_MATCH_ANY);
-    $sphinx->SetLimits( ( $page - 1 ) * $per_page, $per_page, 20 * $per_page )
-        ;                        # MAX is 20 pages
+    $sphinx->SetLimits( ( $page - 1 ) * $per_page, $per_page,
+        20 * $per_page );    # MAX is 20 pages
 
     my $query;
     if ($title) {

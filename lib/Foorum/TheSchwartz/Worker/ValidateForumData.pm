@@ -27,8 +27,10 @@ sub work {
         my ( $topics, $replies ) = ( 0, 0 );
         my $topic_search = $topic_rs->search( { forum_id => $forum_id } );
         while ( my $topic = $topic_search->next ) {
-            my $c_replies = $schema->resultset('Comment')
-                ->count( { object_type => 'topic', object_id => $topic->topic_id } );
+            my $c_replies
+                = $schema->resultset('Comment')
+                ->count(
+                { object_type => 'topic', object_id => $topic->topic_id } );
             $c_replies--;    # one is topic body
 
             $topics++;

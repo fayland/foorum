@@ -19,10 +19,10 @@ sub get_comments_by_object {
     my $cache  = $schema->cache();
     my $config = $schema->config();
 
-    my $object_type         = $info->{object_type};
-    my $object_id           = $info->{object_id};
-    my $page                = $info->{page} || 1;
-    my $rows                = $info->{rows} || $config->{per_page}->{topic} || 10;
+    my $object_type = $info->{object_type};
+    my $object_id   = $info->{object_id};
+    my $page        = $info->{page} || 1;
+    my $rows        = $info->{rows} || $config->{per_page}->{topic} || 10;
     my $selected_comment_id = $info->{comment_id};
 
     # 'thread' or 'flat'
@@ -31,7 +31,8 @@ sub get_comments_by_object {
     #$view_mode ||= ($object_type eq 'topic') ? 'thread' : 'flat';
     $view_mode ||= 'thread';    # XXX? Temp
 
-    my @comments = $self->get_all_comments_by_object( $object_type, $object_id );
+    my @comments
+        = $self->get_all_comments_by_object( $object_type, $object_id );
 
     # we return the top_comment_id for "Reply Topic"
     my $top_comment_id = 0;
@@ -47,7 +48,8 @@ sub get_comments_by_object {
         # we need show that page including $comment_id
         if ( scalar @comments > $rows and $selected_comment_id ) {
             my $first_index
-                = first_index { $_->{comment_id} == $selected_comment_id } @comments;
+                = first_index { $_->{comment_id} == $selected_comment_id }
+            @comments;
             $page = int( $first_index / $rows ) + 1 if ($first_index);
             $pager->current_page($page);
         }
@@ -64,7 +66,9 @@ sub get_comments_by_object {
         #            reply_to == topic.comments[0].comment_id means top level.
         if ( $object_type eq 'topic' ) {
             ( my $top_comments ) = part {
-                ( $_->{reply_to} == 0 or $_->{reply_to} == $comments[0]->{comment_id} )
+                (          $_->{reply_to} == 0
+                        or $_->{reply_to} == $comments[0]->{comment_id}
+                    )
                     ? 0
                     : 1;
             }
@@ -86,7 +90,8 @@ sub get_comments_by_object {
 
             # need to find out the top comment's comment_id
             my $top_comment
-                = first { $_->{comment_id} == $selected_comment_id } @comments;
+                = first { $_->{comment_id} == $selected_comment_id }
+            @comments;
             while (1) {
                 my $reply_to = $top_comment->{reply_to};
                 $selected_comment_id = $top_comment->{comment_id};
@@ -94,10 +99,12 @@ sub get_comments_by_object {
                 last
                     if ($object_type eq 'topic'
                     and $reply_to == $comments[0]->{comment_id} );
-                $top_comment = first { $_->{comment_id} == $reply_to } @comments;
+                $top_comment
+                    = first { $_->{comment_id} == $reply_to } @comments;
             }
             my $first_index
-                = first_index { $_->{comment_id} == $selected_comment_id } @top_comments;
+                = first_index { $_->{comment_id} == $selected_comment_id }
+            @top_comments;
             $page = int( $first_index / $rows ) + 1 if ($first_index);
             $pager->current_page($page);
         }
@@ -140,8 +147,10 @@ sub get_children_comments {
     foreach (@$tmp_comments) {
         $_->{level} = $level;
         push @$result_comments, $_;
-        $self->get_children_comments( $_->{comment_id}, $level + 1, $left_comments,
-            $result_comments );
+        $self->get_children_comments(
+            $_->{comment_id}, $level + 1,
+            $left_comments,   $result_comments
+        );
     }
 }
 
@@ -177,7 +186,8 @@ sub get_all_comments_by_object {
                 ->convert_offensive_word( $rec->{title} );
             $rec->{text} = $schema->resultset('FilterWord')
                 ->convert_offensive_word( $rec->{text} );
-            $rec->{text} = filter_format( $rec->{text}, { format => $rec->{formatter} } );
+            $rec->{text} = filter_format( $rec->{text},
+                { format => $rec->{formatter} } );
 
             push @comments, $rec;
         }
@@ -200,7 +210,8 @@ sub prepare_comments_for_view {
     }
     if ( scalar @all_user_ids ) {
         @all_user_ids = uniq @all_user_ids;
-        my $authors = $schema->resultset('User')->get_multi( 'user_id', \@all_user_ids );
+        my $authors = $schema->resultset('User')
+            ->get_multi( 'user_id', \@all_user_ids );
         foreach (@comments) {
             $_->{author} = $authors->{ $_->{author_id} };
         }
@@ -224,8 +235,8 @@ sub get {
         # filter format by Foorum::Filter
         $comment->{text} = $schema->resultset('FilterWord')
             ->convert_offensive_word( $comment->{text} );
-        $comment->{text}
-            = filter_format( $comment->{text}, { format => $comment->{formatter} } );
+        $comment->{text} = filter_format( $comment->{text},
+            { format => $comment->{formatter} } );
     }
 
     return $comment;
@@ -248,7 +259,7 @@ sub create_comment {
     my $text        = $info->{text} || '';
     my $lang        = $info->{lang} || 'en';
 
-    # we don't use [% | html %] now because there is too many title around in TT
+  # we don't use [% | html %] now because there is too many title around in TT
     $title = encodeHTML($title);
 
     my $comment = $self->create(
@@ -271,7 +282,8 @@ sub create_comment {
 
     # Email Sent
     if ( $object_type eq 'user_profile' ) {
-        my $rept = $schema->resultset('User')->get( { user_id => $object_id } );
+        my $rept
+            = $schema->resultset('User')->get( { user_id => $object_id } );
         my $from = $schema->resultset('User')->get( { user_id => $user_id } );
 
         # Send Notification Email
@@ -334,9 +346,11 @@ sub remove_children {
     my $object_type = $comment->{object_type};
     my $object_id   = $comment->{object_id};
 
-    my @comments = $self->get_all_comments_by_object( $object_type, $object_id );
+    my @comments
+        = $self->get_all_comments_by_object( $object_type, $object_id );
     my @result_comments;
-    $self->get_children_comments( $comment_id, 1, \@comments, \@result_comments );
+    $self->get_children_comments( $comment_id, 1, \@comments,
+        \@result_comments );
 
     my $delete_counts = 1;
     $self->remove_one_item($comment);
@@ -362,7 +376,8 @@ sub remove_one_item {
     }
 
     if ( $comment->{upload_id} ) {
-        $schema->resultset('Upload')->remove_file_by_upload_id( $comment->{upload_id} );
+        $schema->resultset('Upload')
+            ->remove_file_by_upload_id( $comment->{upload_id} );
     }
     $self->search( { comment_id => $comment->{comment_id} } )->delete;
 

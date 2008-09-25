@@ -29,10 +29,12 @@ my $pfg = Pod::From::GoogleWiki->new();
 foreach my $filename (@filenames) {
     {
         local $/;
-        open( my $fh, '<', File::Spec->catfile( $wiki_dir, "$filename\.wiki" ) ) or do {
+        open( my $fh, '<',
+            File::Spec->catfile( $wiki_dir, "$filename\.wiki" ) )
+            or do {
             print "Skip $filename\n";
             next;
-        };
+            };
         flock( $fh, 1 );
         my $string = <$fh>;
         close($fh);

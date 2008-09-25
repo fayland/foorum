@@ -25,8 +25,8 @@ sub get {
     }
 
     if ( $attrs->{with_author} ) {
-        $topic->{author}
-            = $schema->resultset('User')->get( { user_id => $topic->{author_id} } );
+        $topic->{author} = $schema->resultset('User')
+            ->get( { user_id => $topic->{author_id} } );
     }
 
     return $topic;
@@ -74,8 +74,8 @@ sub remove {
     $cache->remove("topic|topic_id=$topic_id");
 
     # delete comments with upload
-    my $total_replies
-        = $schema->resultset('Comment')->remove_by_object( 'topic', $topic_id );
+    my $total_replies = $schema->resultset('Comment')
+        ->remove_by_object( 'topic', $topic_id );
 
     # since one comment is topic indeed. so total_replies = delete_counts - 1
     $total_replies-- if ( $total_replies > 0 );
@@ -107,7 +107,8 @@ sub remove {
 
     # update last
     my $lastest = $self->search( { forum_id => $forum_id },
-        { order_by => \'last_update_date DESC', columns => ['topic_id'] } )->first;
+        { order_by => \'last_update_date DESC', columns => ['topic_id'] } )
+        ->first;
     my $last_post_id = $lastest ? $lastest->topic_id : 0;
     $schema->resultset('Forum')->update_forum(
         $forum_id,

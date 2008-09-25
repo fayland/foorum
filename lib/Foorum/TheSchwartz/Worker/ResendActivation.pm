@@ -17,8 +17,8 @@ sub work {
     my $cache     = cache();
     my $base_path = base_path();
 
-    # resend the emails if user is not verified after 30 days of the registration time
-    # but don't send it many times.
+# resend the emails if user is not verified after 30 days of the registration time
+# but don't send it many times.
     my $rs = $schema->resultset('User')->search(
         {   status        => 'unverified',
             register_time => { '<', time() - 30 * 86400 }
@@ -44,7 +44,7 @@ sub work {
         push @all_user_ids, $user->user_id;
     }
 
-    # XXX? TODO, "remove unverfied data after half a year of the registration time."
+# XXX? TODO, "remove unverfied data after half a year of the registration time."
 
     my $log_user_ids = join( ', ', @all_user_ids );
     error_log( $schema, 'info', <<LOG);

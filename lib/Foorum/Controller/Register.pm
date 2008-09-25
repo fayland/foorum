@@ -31,7 +31,8 @@ sub default : Private {
     $c->form(
         username => [qw/NOT_BLANK/],
         password => [ qw/NOT_BLANK/, [qw/LENGTH 6 20/] ],
-        { passwords => [ 'password', 'confirm_password' ] } => ['DUPLICATION'],
+        { passwords => [ 'password', 'confirm_password' ] } =>
+            ['DUPLICATION'],
     );
     return if ( $c->form->has_error );
 
@@ -51,7 +52,7 @@ sub default : Private {
 
     # password
     my $password = $c->req->param('password');
-    my $d        = Digest->new( $c->config->{authentication}->{password_hash_type} );
+    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->add($password);
     my $computed = $d->digest;
 
@@ -68,12 +69,13 @@ sub default : Private {
     );
 
     # redirect or forward
-    if ( $c->config->{mail}->{on} and $c->config->{function_on}->{activation} ) {
+    if (    $c->config->{mail}->{on}
+        and $c->config->{function_on}->{activation} ) {
 
         # send activation code
         $c->model('DBIC::ScheduledEmail')
             ->send_activation( $user, 0, { lang => $c->stash->{lang} } );
-        $c->res->redirect("/register/activation/$username");    # to activation
+        $c->res->redirect("/register/activation/$username");   # to activation
     } else {
         $c->login( $username, $password );
         $c->forward(
@@ -113,7 +115,8 @@ sub activation : Local {
         if ( $user->{status} eq 'unverified' ) {    # new account
             $c->model('DBIC::ScheduledEmail')
                 ->send_activation( $user, 0, { lang => $c->stash->{lang} } );
-            return $c->res->redirect( '/register/activation/' . $user->{username} );
+            return $c->res->redirect(
+                '/register/activation/' . $user->{username} );
         } else {
             return $c->res->redirect('/profile/edit');
         }
@@ -133,9 +136,9 @@ sub activation : Local {
         );
         $activation_rs->delete;
 
-        # login will be failed since the $user->password is SHA1 Hashed.
-        # $c->login( $username, $user->{password} );
-        # so instead, we use set_authenticated, check Catalyst::Plugin::Authentication
+# login will be failed since the $user->password is SHA1 Hashed.
+# $c->login( $username, $user->{password} );
+# so instead, we use set_authenticated, check Catalyst::Plugin::Authentication
         bless $user, "Catalyst::Authentication::User::Hash";    # XXX?
         $c->set_authenticated($user);
 

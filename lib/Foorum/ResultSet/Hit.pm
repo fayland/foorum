@@ -11,9 +11,9 @@ sub register {
     my $schema = $self->result_source->schema;
     my $cache  = $schema->cache();
 
-    # we update table 'hit' then use Foorum::TheSchwartz::Worker::Hit to update
-    # the real table every 5 minutes
-    # the status field is time(), after update in real, that will be 0
+   # we update table 'hit' then use Foorum::TheSchwartz::Worker::Hit to update
+   # the real table every 5 minutes
+   # the status field is time(), after update in real, that will be 0
 
     my $hit = $self->search(
         {   object_type => $object_type,

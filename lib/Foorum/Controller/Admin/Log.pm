@@ -11,7 +11,8 @@ sub error_log : Local {
 
     my $level = $c->req->param('level');
     my @extra_cols;
-    if ( grep { $level eq $_ } ( 'info', 'debug', 'warn', 'error', 'fatal' ) ) {
+    if ( grep { $level eq $_ } ( 'info', 'debug', 'warn', 'error', 'fatal' ) )
+    {
         push @extra_cols, ( 'level', $level );
         $c->stash->{has_level}   = 1;
         $c->stash->{url_postfix} = '?level=' . $level;

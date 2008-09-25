@@ -15,7 +15,8 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
 
     my $page = get_page_from_url( $c->req->path );
     $page = 1 unless ( $page and $page =~ /^\d+$/ );
-    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;    # /forum/ForumName/1/rss
+    my $rss
+        = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0; # /forum/ForumName/1/rss
 
     # get the forum information
     my $forum = $c->controller('Get')->forum( $c, $forum_code );
@@ -35,7 +36,8 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
             [ $forum_id, $topic_id, $random_word ]
         );
 
-        my $url = $c->req->base . "upload/pdf/$forum_id-$topic_id-$random_word.pdf";
+        my $url = $c->req->base
+            . "upload/pdf/$forum_id-$topic_id-$random_word.pdf";
         $c->stash(
             {   download_url => $url,
                 template     => 'topic/pdf_download.html',
@@ -46,7 +48,8 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
     }
 
     # get the topic
-    my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
+    my $topic = $c->controller('Get')
+        ->topic( $c, $topic_id, { forum_id => $forum_id } );
 
     if ($rss) {
         my @comments = $c->model('DBIC::Comment')
@@ -62,8 +65,8 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
             }
         );
     } else {
-        $topic->{hit}
-            = $c->model('DBIC::Hit')->register( 'topic', $topic_id, $topic->{hit} );
+        $topic->{hit} = $c->model('DBIC::Hit')
+            ->register( 'topic', $topic_id, $topic->{hit} );
         if ( $c->user_exists ) {
             my $query = {
                 user_id     => $c->user->user_id,
@@ -75,7 +78,8 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
             $c->stash->{is_starred} = $c->model('DBIC::Star')->count($query);
 
             # 'share' status
-            $c->stash->{is_shared} = $c->model('DBIC')->resultset('Share')->count($query);
+            $c->stash->{is_shared}
+                = $c->model('DBIC')->resultset('Share')->count($query);
 
             # 'visit'
             $c->model('DBIC::Visit')
@@ -83,7 +87,8 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
         }
 
         # get comments
-        my ($view_mode)  = ( $c->req->path =~ /\/view_mode=(thread|flat)(\/|$)/ );
+        my ($view_mode)
+            = ( $c->req->path =~ /\/view_mode=(thread|flat)(\/|$)/ );
         my ($comment_id) = ( $c->req->path =~ /\/comment_id=(\d+)(\/|$)/ );
         (   $c->stash->{comments},
             $c->stash->{comments_pager},
@@ -193,12 +198,13 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     );
 
     # update user stat
-    $c->model('DBIC::User')->update_user( $c->user, { threads => \"threads + 1", } );   #"
+    $c->model('DBIC::User')
+        ->update_user( $c->user, { threads => \"threads + 1", } );    #"
 
     # update forum
     $c->model('DBIC::Forum')->update_forum(
         $forum_id,
-        {   total_topics => \'total_topics + 1',                                        #'
+        {   total_topics => \'total_topics + 1',                      #'
             last_post_id => $topic->topic_id,
         }
     );

@@ -33,8 +33,10 @@ my $linksub = sub {
     $opts ||= {};
 
     my $ori_text = $link;
-    ( $link, my $title ) = Text::GooglewikiFormat::find_link_title( $link, $opts );
-    ( $link, my $is_relative ) = Text::GooglewikiFormat::escape_link( $link, $opts );
+    ( $link, my $title )
+        = Text::GooglewikiFormat::find_link_title( $link, $opts );
+    ( $link, my $is_relative )
+        = Text::GooglewikiFormat::escape_link( $link, $opts );
     unless ($is_relative) {
         return qq|<a href="$link" rel="nofollow">$title</a>|;
     } elsif (
@@ -55,10 +57,12 @@ my $indexpage;
 foreach my $filename (@filenames) {
     {
         local $/;
-        open( my $fh, '<', File::Spec->catfile( $wiki_dir, "$filename\.wiki" ) ) or do {
+        open( my $fh, '<',
+            File::Spec->catfile( $wiki_dir, "$filename\.wiki" ) )
+            or do {
             print "Skip $filename\n";
             next;
-        };
+            };
         flock( $fh, 1 );
         my $string = <$fh>;
         close($fh);
@@ -71,7 +75,9 @@ foreach my $filename (@filenames) {
 
         $indexpage .= qq~<li><a href="$filename\.html">$filename</a></li>~;
 
-        if ( $filename eq 'AUTHORS' or $filename eq 'README' or $filename eq 'INSTALL' ) {
+        if (   $filename eq 'AUTHORS'
+            or $filename eq 'README'
+            or $filename eq 'INSTALL' ) {
 
             # convert to Pod
 
@@ -81,7 +87,8 @@ foreach my $filename (@filenames) {
             }
             my $pod = $pfg->wiki2pod($org_string);
 
-            open( my $fh2, '>', File::Spec->catfile( $trunk_dir, $filename ) );
+            open( my $fh2, '>',
+                File::Spec->catfile( $trunk_dir, $filename ) );
             print $fh2 "\n=pod\n$pod\n\n=cut\n";
             close($fh2);
         }
@@ -122,7 +129,8 @@ $html
 </body>
 </html>
 HTML
-    open( my $fh, '>', File::Spec->catfile( $trunk_dir, 'docs', "$filename\.html" ) );
+    open( my $fh, '>',
+        File::Spec->catfile( $trunk_dir, 'docs', "$filename\.html" ) );
     flock( $fh, 2 );
     print $fh $html;
     close($fh);

@@ -36,7 +36,8 @@ sub default : Private {
             forum_per_page   => $c->config->{per_page}->{forum},
             topic_per_page   => $c->config->{per_page}->{topic},
 
-            most_deletion_topic => $c->config->{per_day}->{most_deletion_topic},
+            most_deletion_topic =>
+                $c->config->{per_day}->{most_deletion_topic},
 
         };
         $c->stash->{fulfill} = $fulfill;

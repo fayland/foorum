@@ -19,9 +19,8 @@ sub auto : Private {
 sub default : Private {
     my ( $self, $c ) = @_;
 
-    my @forums
-        = $c->model('DBIC')->resultset('Forum')->search( {}, { order_by => 'forum_id', } )
-        ->all;
+    my @forums = $c->model('DBIC')->resultset('Forum')
+        ->search( {}, { order_by => 'forum_id', } )->all;
 
     $c->stash->{forums}   = \@forums;
     $c->stash->{template} = 'admin/forum/index.html';

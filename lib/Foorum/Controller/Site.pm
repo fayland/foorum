@@ -10,7 +10,7 @@ use Foorum::Formatter qw/filter_format/;
 sub recent : Local {
     my ( $slef, $c, $recent_type ) = @_;
 
-    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;    # /site/recent/rss
+    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;   # /site/recent/rss
 
     my @extra_cols;
     my $url_prefix;
@@ -60,9 +60,10 @@ sub recent : Local {
             $_->{text} = $rs->text;
 
             # filter format by Foorum::Filter
+            $_->{text} = $c->model('DBIC::FilterWord')
+                ->convert_offensive_word( $_->{text} );
             $_->{text}
-                = $c->model('DBIC::FilterWord')->convert_offensive_word( $_->{text} );
-            $_->{text} = filter_format( $_->{text}, { format => $rs->formatter } );
+                = filter_format( $_->{text}, { format => $rs->formatter } );
         }
         $c->stash->{topics} = \@topics;
 
@@ -85,7 +86,8 @@ sub online : Local {
     $c->cache_page('60');
 
     my ( $results, $pager )
-        = $c->model('DBIC::UserOnline')->get_data( $c->sessionid, $forum_code );
+        = $c->model('DBIC::UserOnline')
+        ->get_data( $c->sessionid, $forum_code );
 
     $c->stash(
         {   results  => $results,
@@ -105,7 +107,8 @@ sub members : Local {
         undef,
         {   order_by => \'register_time DESC',
             columns  => [
-                'user_id', 'username', 'nickname', 'register_time', 'gender', 'status'
+                'user_id', 'username', 'nickname', 'register_time',
+                'gender',  'status'
             ],
             page => $page,
             rows => 20,

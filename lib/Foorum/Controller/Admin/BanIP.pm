@@ -38,8 +38,8 @@ sub remove : Local {
     my $ip_id = $c->req->param('ip_id');
     return $c->res->redirect('/admin/banip') unless ($ip_id);
 
-    my $st = $c->model('DBIC')->resultset('BannedIp')->search( { ip_id => $ip_id, } )
-        ->delete;
+    my $st = $c->model('DBIC')->resultset('BannedIp')
+        ->search( { ip_id => $ip_id, } )->delete;
 
     my $cache_key = 'global|banned_ip';
     $c->cache->reomove($cache_key);

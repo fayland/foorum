@@ -7,10 +7,10 @@ BEGIN {
     my $use_base_module = 'Catalyst::Model::DBIC::Schema';
     if ( Foorum->config->{debug_mode} ) {
         my $querylog = 'Catalyst::Model::DBIC::Schema::QueryLog';
-        my $has = eval("use $querylog;1;");    ## no critic (ProhibitStringyEval)
+        my $has = eval("use $querylog;1;"); ## no critic (ProhibitStringyEval)
         $use_base_module = $querylog if ($has);
     }
-    eval("use base '$use_base_module';");      ## no critic (ProhibitStringyEval)
+    eval("use base '$use_base_module';");   ## no critic (ProhibitStringyEval)
 }
 
 __PACKAGE__->config(

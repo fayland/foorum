@@ -10,11 +10,12 @@ use Foorum::Formatter qw/filter_format/;
 sub default : Private {
     my ( $self, $c, undef, undef, $type ) = @_;
 
-    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;    # /site/recent/rss
+    my $rss = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;   # /site/recent/rss
 
     unless ( $type
-        and grep { $type eq $_ } ( 'weekly', 'monthly', 'yesterday', 'all' ) ) {
-        $type = 'today';                                     # default
+        and grep { $type eq $_ } ( 'weekly', 'monthly', 'yesterday', 'all' ) )
+    {
+        $type = 'today';                                    # default
     }
     $c->stash->{type} = $type;
 
@@ -44,7 +45,8 @@ sub default : Private {
         my $forum_id = $object->{forum_id};
         unless ( exists $forum_policy{$forum_id} ) {
             my $forum = $c->model('DBIC::Forum')->get($forum_id);
-            $forum_policy{$forum_id} = ($forum) ? $forum->{policy} : 'private';
+            $forum_policy{$forum_id}
+                = ($forum) ? $forum->{policy} : 'private';
         }
         next if ( $forum_policy{$forum_id} ne 'public' );
 
@@ -71,9 +73,10 @@ sub default : Private {
             $_->{text} = $rs->text;
 
             # filter format by Foorum::Filter
+            $_->{text} = $c->model('DBIC::FilterWord')
+                ->convert_offensive_word( $_->{text} );
             $_->{text}
-                = $c->model('DBIC::FilterWord')->convert_offensive_word( $_->{text} );
-            $_->{text} = filter_format( $_->{text}, { format => $rs->formatter } );
+                = filter_format( $_->{text}, { format => $rs->formatter } );
         }
         $c->stash->{objects} = \@objects;
 

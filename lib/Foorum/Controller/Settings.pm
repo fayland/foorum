@@ -14,26 +14,32 @@ sub default : Private {
     if ( $c->req->method ne 'POST' ) {
 
         # for fullfil
-        $c->stash->{settings} = $c->model('DBIC::User')->get_user_settings( $c->user );
+        $c->stash->{settings}
+            = $c->model('DBIC::User')->get_user_settings( $c->user );
         return;
     }
 
     # for submit
 
-    my $send_starred_notification = $c->req->param('send_starred_notification');
-    $send_starred_notification = 'Y' unless ( $send_starred_notification eq 'N' );
+    my $send_starred_notification
+        = $c->req->param('send_starred_notification');
+    $send_starred_notification = 'Y'
+        unless ( $send_starred_notification eq 'N' );
     my $show_email_public = $c->req->param('show_email_public');
     $show_email_public = 'Y' unless ( $show_email_public eq 'N' );
 
     # remove old data from db
     $c->model('DBIC')->resultset('UserSettings')->search(
         {   user_id => $c->user->{user_id},
-            type    => { 'IN', [ 'send_starred_notification', 'show_email_public' ] },
+            type    => {
+                'IN', [ 'send_starred_notification', 'show_email_public' ]
+            },
         }
     )->delete;
 
     # insert new data
-    if ( $send_starred_notification eq 'N' ) {    # don't store 'Y' because it's default
+    if ( $send_starred_notification eq 'N' )
+    {    # don't store 'Y' because it's default
         $c->model('DBIC')->resultset('UserSettings')->create(
             {   user_id => $c->user->{user_id},
                 type    => 'send_starred_notification',

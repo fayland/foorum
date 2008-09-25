@@ -42,7 +42,12 @@ sub forum : Local {
     my $order_by = $params->{order_by};
 
     # date value would be 2, 7, 30, 999
-    $date = 0 if ( $date and $date != 2 and $date != 7 and $date != 30 and $date != 999 );
+    $date = 0
+        if ($date
+        and $date != 2
+        and $date != 7
+        and $date != 30
+        and $date != 999 );
     return unless ( $title or $author or $date );
 
     my $author_id;
@@ -68,7 +73,8 @@ sub forum : Local {
     if ($err) {
         error_log( $c->model('DBIC'), 'fatal', $err );
 
-        $c->detach( '/print_error', ['Search is not going well, we will fix it ASAP.'] );
+        $c->detach( '/print_error',
+            ['Search is not going well, we will fix it ASAP.'] );
     }
 
     my $topic_ids = $ret->{matches};

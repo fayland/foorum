@@ -83,14 +83,17 @@ sub edit : Local {
                     # validate email
                     my $err = $c->model('DBIC::User')->validate_email($email);
                     next if ($err);
-                } elsif ( $key eq 'status' and $user->{status} ne $query->{status} ) {
+                } elsif ( $key eq 'status'
+                    and $user->{status} ne $query->{status} ) {
                     $c->model('Log')->log_action(
                         $c,
                         {   action      => 'ban',
                             object_type => 'user',
                             object_id   => $user->{user_id},
                             forum_id    => 0,
-                            text => 'From ' . $user->{status} . ' To ' . $query->{status},
+                            text        => 'From '
+                                . $user->{status} . ' To '
+                                . $query->{status},
                         }
                     );
                 }

@@ -100,16 +100,18 @@ sub comment : Private {
     # print error if the comment is non-exist
     $c->detach( '/print_error', ['Non-existent comment'] ) unless ($comment);
 
-    if ( $attrs->{object_type} and $comment->{object_type} != $attrs->{object_type} ) {
+    if (    $attrs->{object_type}
+        and $comment->{object_type} != $attrs->{object_type} ) {
         $c->detach( '/print_error', ['Non-existent comment'] );
     }
-    if ( $attrs->{object_id} and $comment->{object_id} != $attrs->{object_id} ) {
+    if (    $attrs->{object_id}
+        and $comment->{object_id} != $attrs->{object_id} ) {
         $c->detach( '/print_error', ['Non-existent comment'] );
     }
 
     if ( $attrs->{with_author} ) {
-        $comment->{author}
-            = $c->model('DBIC::User')->get( { user_id => $comment->{author_id} } );
+        $comment->{author} = $c->model('DBIC::User')
+            ->get( { user_id => $comment->{author_id} } );
     }
 
     $c->stash->{comment} = $comment;

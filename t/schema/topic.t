@@ -52,8 +52,8 @@ cmp_ok( $topic->{post_on}, '<=', time(),   'topic.post_on <= now' );
 # test update_topic
 $topic_res->update_topic( 1, { title => 'test title2', author_id => 2 } );
 $topic = $topic_res->get(1);
-is( $topic->{title},     'test title2', 'get title OK after update_topic' );
-is( $topic->{author_id}, 2,             'get author_id OK after update_topic' );
+is( $topic->{title}, 'test title2', 'get title OK after update_topic' );
+is( $topic->{author_id}, 2, 'get author_id OK after update_topic' );
 
 # be Sure forum is there before remove topic
 $schema->resultset('Forum')->create(

@@ -17,11 +17,15 @@ use Cwd qw/abs_path/;
 my ( undef, $path ) = File::Spec->splitpath(__FILE__);
 $path = abs_path($path);
 my $scraper_config = LoadFile(
-    File::Spec->catfile( $path, '..', '..', '..', '..', 'conf', 'scraper.yml' ) );
+    File::Spec->catfile(
+        $path, '..', '..', '..', '..', 'conf', 'scraper.yml'
+    )
+);
 
 my @FullName_months = (
-    '',     'January', 'February', 'March',     'April',   'May',
-    'June', 'July',    'August',   'September', 'October', 'November',
+    '',       'January',   'February', 'March',
+    'April',  'May',       'June',     'July',
+    'August', 'September', 'October',  'November',
     'December'
 );
 
@@ -41,22 +45,22 @@ sub work {
     my $cache  = cache();
     my $log_text;
 
-    my @gmtimes        = gmtime( time() - 86400 );              # check one day before
+    my @gmtimes        = gmtime( time() - 86400 );    # check one day before
     my $year           = $gmtimes[5] + 1900;
     my $month          = $gmtimes[4] + 1;
     my $fullname_month = $FullName_months[$month];
-    my $postfix        = "$year-$fullname_month/thread.html";
-    my $scraper        = new Foorum::Scraper::MailMan();
+    my $postfix = "$year-$fullname_month/thread.html";
+    my $scraper = new Foorum::Scraper::MailMan();
 
     my @mailmans = @{ $scraper_config->{scraper}->{mailman} };
     foreach my $mailman (@mailmans) {
         $log_text .= "Working on $mailman->{name}\n";
         next unless ( $mailman->{forum_id} );
-        my $forum_id = $mailman->{forum_id};
-        my $user_id  = $mailman->{user_id};
-        my $name     = $mailman->{name};
-        my $last_msg_id
-            = get_last_scraped_msg_id( $schema, $forum_id, "scraper-mailman-$name" );
+        my $forum_id    = $mailman->{forum_id};
+        my $user_id     = $mailman->{user_id};
+        my $name        = $mailman->{name};
+        my $last_msg_id = get_last_scraped_msg_id( $schema, $forum_id,
+            "scraper-mailman-$name" );
         next if ( $last_msg_id == -1 );    # non-exists
         my $scraper_url = $mailman->{url} . $postfix;
 
@@ -98,8 +102,8 @@ sub work {
 
                 # get topic_id or create one
                 my ( $topic_id, $reply_to )
-                    = get_topic_or_create( $schema, $forum_id, $title, $user_id,
-                    scalar @populate_contents - 1 );
+                    = get_topic_or_create( $schema, $forum_id, $title,
+                    $user_id, scalar @populate_contents - 1 );
                 $last_post_id = $topic_id;
                 foreach my $content (@populate_contents) {
                     my $text
@@ -130,19 +134,22 @@ sub work {
                 }
 
                 # clear cache
-                my $cache_key = "comment|object_type=topic|object_id=$topic_id";
+                my $cache_key
+                    = "comment|object_type=topic|object_id=$topic_id";
                 $cache->remove($cache_key);
 
             }
         }
 
         # update last_msg_id
-        update_last_scraped_msg_id( $schema, "scraper-mailman-$name", $last_msg_id );
+        update_last_scraped_msg_id( $schema, "scraper-mailman-$name",
+            $last_msg_id );
 
         # update threads|replies count for forum and user
         if ( $is_changed and $last_post_id ) {
             update_forum( $schema, $cache, $forum_id, $last_post_id );
-            my $user = $schema->resultset('User')->get( { user_id => $user_id } );
+            my $user
+                = $schema->resultset('User')->get( { user_id => $user_id } );
             $schema->resultset('User')->update_threads_and_replies($user);
         }
     }
@@ -154,7 +161,8 @@ sub work {
 sub get_last_scraped_msg_id {
     my ( $schema, $forum_id, $name ) = @_;
 
-    my $count = $schema->resultset('Forum')->count( { forum_id => $forum_id } );
+    my $count
+        = $schema->resultset('Forum')->count( { forum_id => $forum_id } );
     return -1 unless ($count);    # forum non-exists
 
     $name = substr( $name, 0, 24 );
@@ -232,7 +240,8 @@ sub get_topic_or_create {
 sub update_forum {
     my ( $schema, $cache, $forum_id, $last_post_id ) = @_;
 
-    my $forum = $schema->resultset('Forum')->count( { forum_id => $forum_id } );
+    my $forum
+        = $schema->resultset('Forum')->count( { forum_id => $forum_id } );
     return unless ($forum);
 
     # update forum

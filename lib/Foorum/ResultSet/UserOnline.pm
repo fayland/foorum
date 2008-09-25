@@ -81,7 +81,8 @@ sub _handler_onlines {
         }
         my $user;
         if ( $online->user_id ) {
-            $user = $schema->resultset('User')->get( { user_id => $online->user_id } );
+            $user = $schema->resultset('User')
+                ->get( { user_id => $online->user_id } );
         }
         $online->{user} = $user;
         push @results, $online;

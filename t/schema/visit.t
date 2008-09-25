@@ -21,7 +21,8 @@ my $visit_res = $schema->resultset('Visit');
 
 # test make_visited
 $visit_res->make_visited( 'test', 1, 2 );
-my $count = $visit_res->count( { object_type => 'test', object_id => 1, user_id => 2 } );
+my $count = $visit_res->count(
+    { object_type => 'test', object_id => 1, user_id => 2 } );
 is( $count, 1, 'make_visited OK' );
 
 # test is_visited
@@ -30,7 +31,8 @@ is_deeply( $ret, { test => { 1 => 1 } }, 'is_visited OK' );
 
 # test make_un_visited
 $visit_res->make_un_visited( 'test', 1 );
-$count = $visit_res->count( { object_type => 'test', object_id => 1, user_id => 2 } );
+$count = $visit_res->count(
+    { object_type => 'test', object_id => 1, user_id => 2 } );
 is( $count, 0, 'make_visited OK' );
 
 END {

@@ -4,8 +4,10 @@ use strict;
 use warnings;
 
 # for both Linux/Win32
-my $has_proc_pid_file = eval "use Proc::PID::File; 1;"; ## no critic (ProhibitStringyEval)
-my $has_home_dir      = eval "use File::HomeDir; 1;";   ## no critic (ProhibitStringyEval)
+my $has_proc_pid_file
+    = eval "use Proc::PID::File; 1;";    ## no critic (ProhibitStringyEval)
+my $has_home_dir
+    = eval "use File::HomeDir; 1;";      ## no critic (ProhibitStringyEval)
 if ( $has_proc_pid_file and $has_home_dir ) {
 
     # If already running, then exit
@@ -26,7 +28,8 @@ my $schema = schema();
 # before is 0
 
 my $dbh = $schema->storage->dbh;
-my $sql = q~select object_type, object_id FROM comment GROUP BY object_type, object_id~;
+my $sql
+    = q~select object_type, object_id FROM comment GROUP BY object_type, object_id~;
 my $sth = $dbh->prepare($sql);
 $sth->execute();
 

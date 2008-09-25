@@ -1,4 +1,4 @@
--l=90 # max line width is 90 cols
+-l=78 # max line width is 78 cols
 -i=4 # indent level 4 cols
 -ci=4 # continuation indent 4 cols
 -vt=2 # maximal vertical tightness

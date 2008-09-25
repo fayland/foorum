@@ -32,10 +32,11 @@ sub get {
             $cache->set( $mem_key, $mem_val, 36000 );    # 10 hours
 
             # set cache
-            $forum              = $forum->{_column_data};              # hash for cache
+            $forum = $forum->{_column_data};             # hash for cache
             $forum->{settings}  = $self->get_forum_settings($forum);
             $forum->{forum_url} = $self->get_forum_url($forum);
-            $cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
+            $cache->set( "forum|forum_id=$forum_id",
+                { val => $forum, 1 => 2 }, 7200 );
         }
     }
 
@@ -52,10 +53,11 @@ sub get {
             return unless ($forum);
 
             # set cache
-            $forum              = $forum->{_column_data};              # hash for cache
+            $forum = $forum->{_column_data};    # hash for cache
             $forum->{settings}  = $self->get_forum_settings($forum);
             $forum->{forum_url} = $self->get_forum_url($forum);
-            $cache->set( "forum|forum_id=$forum_id", { val => $forum, 1 => 2 }, 7200 );
+            $cache->set( "forum|forum_id=$forum_id",
+                { val => $forum, 1 => 2 }, 7200 );
         }
     }
 
@@ -77,8 +79,8 @@ sub get_forum_settings {
     my $forum_id = $forum->{forum_id};
 
     # get forum settings
-    my $settings_rs
-        = $schema->resultset('ForumSettings')->search( { forum_id => $forum_id } );
+    my $settings_rs = $schema->resultset('ForumSettings')
+        ->search( { forum_id => $forum_id } );
     my $settings = {    # default
         can_post_threads => 'Y',
         can_post_replies => 'Y',
@@ -116,10 +118,12 @@ sub remove_forum {
     my $cache  = $schema->cache();
 
     $self->search( { forum_id => $forum_id, } )->delete;
-    $schema->resultset('LogAction')->search( { forum_id => $forum_id } )->delete;
+    $schema->resultset('LogAction')->search( { forum_id => $forum_id } )
+        ->delete;
 
     # remove user_forum
-    $schema->resultset('UserForum')->search( { forum_id => $forum_id } )->delete;
+    $schema->resultset('UserForum')->search( { forum_id => $forum_id } )
+        ->delete;
 
     # get all topic_ids
     my @topic_ids;
@@ -139,10 +143,10 @@ sub remove_forum {
     }
     $schema->resultset('Poll')->search( { forum_id => $forum_id, } )->delete;
     if ( scalar @poll_ids ) {
-        $schema->resultset('PollOption')->search( { poll_id => { 'IN', \@poll_ids }, } )
-            ->delete;
-        $schema->resultset('PollResult')->search( { poll_id => { 'IN', \@poll_ids }, } )
-            ->delete;
+        $schema->resultset('PollOption')
+            ->search( { poll_id => { 'IN', \@poll_ids }, } )->delete;
+        $schema->resultset('PollResult')
+            ->search( { poll_id => { 'IN', \@poll_ids }, } )->delete;
     }
 
     # comment and star/share
@@ -206,7 +210,8 @@ sub merge_forums {
     my $total_members = $old_forum->total_members;
     my @extra_cols;
     if ( $new_forum->policy eq 'private' ) {
-        @extra_cols = ( 'total_members', \"total_members + $total_members" );    #"
+        @extra_cols
+            = ( 'total_members', \"total_members + $total_members" );    #"
     }
     $self->search( { forum_id => $to_id, } )->update(
         {   total_topics  => \"total_topics  + $total_topics",
@@ -216,7 +221,8 @@ sub merge_forums {
     );
 
     # remove user_forum
-    $schema->resultset('UserForum')->search( { forum_id => $from_id } )->delete;
+    $schema->resultset('UserForum')->search( { forum_id => $from_id } )
+        ->delete;
 
     # topics
     $schema->resultset('Topic')->search( { forum_id => $from_id, } )
@@ -289,7 +295,8 @@ sub validate_forum_code {
     my $schema = $self->result_source->schema;
 
     # forum_code_reserved
-    my @reserved = $schema->resultset('FilterWord')->get_data('forum_code_reserved');
+    my @reserved
+        = $schema->resultset('FilterWord')->get_data('forum_code_reserved');
     return 'HAS_RESERVED' if ( grep { lc($forum_code) eq lc($_) } @reserved );
 
     # unique

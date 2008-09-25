@@ -38,8 +38,8 @@ sub work {
         foreach my $user_id (@user_ids) {
             my $user = $user_model->get( { user_id => $user_id } );
             next unless ($user);
-            next if ( $user->{user_id} == $from->{user_id} );    # skip himself
-                                                                 # Send Notification Email
+            next if ( $user->{user_id} == $from->{user_id} );   # skip himself
+                 # Send Notification Email
 
             # Send Notification Email
             $schema->resultset('ScheduledEmail')->create_email(
@@ -65,7 +65,8 @@ sub get_object {
     my $user_model = $schema->resultset('User');
 
     if ( $object_type eq 'topic' ) {
-        my $object = $schema->resultset('Topic')->find( { topic_id => $object_id, } );
+        my $object = $schema->resultset('Topic')
+            ->find( { topic_id => $object_id, } );
         return unless ($object);
         my $author = $user_model->get( { user_id => $object->author_id } );
         return {
@@ -77,7 +78,8 @@ sub get_object {
             last_update => $object->last_update_date,
         };
     } elsif ( $object_type eq 'poll' ) {
-        my $object = $schema->resultset('Poll')->find( { poll_id => $object_id, } );
+        my $object
+            = $schema->resultset('Poll')->find( { poll_id => $object_id, } );
         return unless ($object);
         my $author = $user_model->get( { user_id => $object->author_id } );
         return {

@@ -36,10 +36,15 @@ sub __serve_static_info {
     # since too many text needs translation.
     if ($type_id) {
         $type_id =~ s/\W+//isg;
-        if (-e $c->path_to( 'templates', 'lang', $c->stash->{lang}, $type,
-                "$type_id.html" )
-            or ( $c->stash->{lang} ne 'en'
-                and -e $c->path_to( 'templates', 'lang', 'en', $type, "$type_id.html" ) )
+        if (-e $c->path_to(
+                'templates', 'lang', $c->stash->{lang}, $type,
+                "$type_id.html"
+            )
+            or ($c->stash->{lang} ne 'en'
+                and -e $c->path_to(
+                    'templates', 'lang', 'en', $type, "$type_id.html"
+                )
+            )
             ) {
             $c->stash->{template} = "$type/$type_id.html";
         }

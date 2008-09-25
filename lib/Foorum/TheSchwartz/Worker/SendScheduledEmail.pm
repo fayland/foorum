@@ -17,7 +17,8 @@ sub work {
 
     my $schema = schema();
 
-    my $rs = $schema->resultset('ScheduledEmail')->search( { processed => 'N' } );
+    my $rs = $schema->resultset('ScheduledEmail')
+        ->search( { processed => 'N' } );
 
     my $handled = 0;
     while ( my $rec = $rs->next ) {
@@ -46,10 +47,14 @@ use YAML::XS qw/LoadFile/;
 my $base_path = base_path();
 my $config;
 if ( -e File::Spec->catfile( $base_path, 'conf', 'mail.yml' ) ) {
-    $config = LoadFile( File::Spec->catfile( $base_path, 'conf', 'mail.yml' ) );
+    $config
+        = LoadFile( File::Spec->catfile( $base_path, 'conf', 'mail.yml' ) );
 } else {
     $config = LoadFile(
-        File::Spec->catfile( $base_path, 'conf', 'examples', 'mail', 'mail.yml' ) );
+        File::Spec->catfile(
+            $base_path, 'conf', 'examples', 'mail', 'mail.yml'
+        )
+    );
 }
 
 if ( $config->{mailer} eq 'Sendmail' ) {
@@ -64,7 +69,7 @@ sub send_email {
     my ( $from, $to, $subject, $plain_body, $html_body ) = @_;
 
     my $top = MIME::Entity->build(
-        'X-Mailer' => undef,                     # remove X-Mailer tag in header
+        'X-Mailer' => undef,                   # remove X-Mailer tag in header
         'Type'     => "multipart/alternative",
         'Reply-To' => $from,
         'From'     => $from,

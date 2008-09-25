@@ -5,8 +5,8 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 
-sub lock_or_sticky_or_elite : Regex('^forum/(\w+)/topic/(\d+)/(un)?(sticky|elite|lock)$')
-{
+sub lock_or_sticky_or_elite :
+    Regex('^forum/(\w+)/topic/(\d+)/(un)?(sticky|elite|lock)$') {
     my ( $self, $c ) = @_;
 
     my $forum_code = $c->req->snippets->[0];
@@ -17,11 +17,13 @@ sub lock_or_sticky_or_elite : Regex('^forum/(\w+)/topic/(\d+)/(un)?(sticky|elite
     my $is_un    = $c->req->snippets->[2];
     my $action   = $c->req->snippets->[3];
 
-    my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
+    my $topic = $c->controller('Get')
+        ->topic( $c, $topic_id, { forum_id => $forum_id } );
 
     # check policy
     unless ( $c->model('Policy')->is_moderator( $c, $forum_id )
-        or ( $action eq 'lock' and $topic->{author_id} == $c->user->user_id ) ) {
+        or ( $action eq 'lock' and $topic->{author_id} == $c->user->user_id )
+        ) {
         $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
     }
 
@@ -36,7 +38,8 @@ sub lock_or_sticky_or_elite : Regex('^forum/(\w+)/topic/(\d+)/(un)?(sticky|elite
         $update_col = 'elite';
     }
 
-    $c->model('DBIC::Topic')->update_topic( $topic_id, { $update_col => $status, } );
+    $c->model('DBIC::Topic')
+        ->update_topic( $topic_id, { $update_col => $status, } );
 
     $c->model('Log')->log_action(
         $c,
@@ -73,7 +76,8 @@ sub ban_or_unban_topic : Regex('^forum/(\w+)/topic/(\d+)/(un)?ban$') {
     my $topic_id = $c->req->snippets->[1];
     my $is_un    = $c->req->snippets->[2];
 
-    my $topic = $c->controller('Get')->topic( $c, $topic_id, { forum_id => $forum_id } );
+    my $topic = $c->controller('Get')
+        ->topic( $c, $topic_id, { forum_id => $forum_id } );
 
     # check policy
     unless ( $c->model('Policy')->is_moderator( $c, $forum_id ) ) {
@@ -81,9 +85,11 @@ sub ban_or_unban_topic : Regex('^forum/(\w+)/topic/(\d+)/(un)?ban$') {
     }
 
     if ($is_un) {
-        $c->model('DBIC::Topic')->update_topic( $topic_id, { status => 'healthy' } );
+        $c->model('DBIC::Topic')
+            ->update_topic( $topic_id, { status => 'healthy' } );
     } else {
-        $c->model('DBIC::Topic')->update_topic( $topic_id, { status => 'banned' } );
+        $c->model('DBIC::Topic')
+            ->update_topic( $topic_id, { status => 'banned' } );
     }
 
     $c->forward(

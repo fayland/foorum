@@ -14,7 +14,8 @@ print "You are going to configure Sphinx for foorum.\n",
     "=" x 50,
     "\nPlease report bugs to AUTHORS if u meet any problem.\n\n";
 
-my $module_installed = eval "use Sphinx::Search;1;";    ## no critic (ProhibitStringyEval)
+my $module_installed
+    = eval "use Sphinx::Search;1;";    ## no critic (ProhibitStringyEval)
 unless ($module_installed) {
     print "Please cpan Sphinx::Search first!\n\n";
 }
@@ -34,7 +35,8 @@ if ( $dsn =~ /port=(\d+)/ ) {
     $port = $1;
 }
 
-open( my $fh, '<', File::Spec->catfile( $path, 'conf', 'examples', 'sphinx.conf' ) )
+open( my $fh, '<',
+    File::Spec->catfile( $path, 'conf', 'examples', 'sphinx.conf' ) )
     or die $!;
 local $/ = undef;
 my $content = <$fh>;
@@ -46,15 +48,16 @@ $content =~ s/__PASS__/$pass/isg;
 $content =~ s/__PORT__/$port/isg;
 $content =~ s/__HOME__/$path/isg;
 
-open( my $fh2, '>', File::Spec->catfile( $path, 'conf', 'sphinx.conf' ) ) or die $!;
+open( my $fh2, '>', File::Spec->catfile( $path, 'conf', 'sphinx.conf' ) )
+    or die $!;
 print $fh2 $content;
 close($fh2);
 
 unless ( -d File::Spec->catdir( $path, 'log' ) ) {
     mkpath(
         [ File::Spec->catdir( $path, 'log' ) ],    ## no critic
-        0, 0777                                    ## no critic (ProhibitLeadingZeros)
-    );                                             ## no critic (ProhibitLeadingZeros)
+        0, 0777    ## no critic (ProhibitLeadingZeros)
+    );             ## no critic (ProhibitLeadingZeros)
 }
 unless ( -d File::Spec->catdir( $path, 'data', 'sphinx' ) ) {
     mkpath(

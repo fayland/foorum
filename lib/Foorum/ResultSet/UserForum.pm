@@ -77,7 +77,8 @@ sub get_forum_moderators {
 
     my $roles;
     foreach (@users) {
-        my $user = $schema->resultset('User')->get( { user_id => $_->user_id, } );
+        my $user
+            = $schema->resultset('User')->get( { user_id => $_->user_id, } );
         next unless ($user);
         if ( $_->status eq 'admin' ) {
             $roles->{ $_->forum_id }->{'admin'} = {    # for cache

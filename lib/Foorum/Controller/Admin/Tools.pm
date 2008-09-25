@@ -25,9 +25,10 @@ sub flush_cache : Local {
     my $result = 'Not available';
     if ( $cache->can('flush_all') ) {         # for Cache::Memcached
         $result = $cache->flush_all;
-    } elsif ( $cache->can('Clear') ) {        # for Cache::Cache, regardless namespace
+    } elsif ( $cache->can('Clear') )
+    {    # for Cache::Cache, regardless namespace
         $result = $cache->Clear();
-    } elsif ( $cache->can('clear') ) {        # for Cache::Cache, this namespace
+    } elsif ( $cache->can('clear') ) {    # for Cache::Cache, this namespace
         $result = $cache->clear();
     }
 

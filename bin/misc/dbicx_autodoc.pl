@@ -42,7 +42,8 @@ foreach my $source (@sources) {
     # make file dir
     my @parts_of_modules = split( '::', $class );
     $parts_of_modules[-1] .= '.pm';
-    my $file_dir = File::Spec->catfile( $Bin, '..', '..', 'lib', @parts_of_modules );
+    my $file_dir
+        = File::Spec->catfile( $Bin, '..', '..', 'lib', @parts_of_modules );
 
     my $output;
     $tt2->process( 'pod.html', { source => $source }, \$output )

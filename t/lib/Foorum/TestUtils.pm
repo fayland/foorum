@@ -30,10 +30,15 @@ sub base_path {
 sub config {
     return $config if ($config);
 
-    $config = LoadFile( File::Spec->catfile( $path, '..', '..', '..', 'foorum.yml' ) );
-    if ( -e File::Spec->catfile( $path, '..', '..', '..', 'foorum_local.yml' ) ) {
+    $config = LoadFile(
+        File::Spec->catfile( $path, '..', '..', '..', 'foorum.yml' ) );
+    if ( -e File::Spec->catfile( $path, '..', '..', '..', 'foorum_local.yml' )
+        ) {
         my $extra_config = LoadFile(
-            File::Spec->catfile( $path, '..', '..', '..', 'foorum_local.yml' ) );
+            File::Spec->catfile(
+                $path, '..', '..', '..', 'foorum_local.yml'
+            )
+        );
         $config = { %$config, %$extra_config };
     }
     return $config;

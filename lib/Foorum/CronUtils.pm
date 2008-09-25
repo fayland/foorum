@@ -33,7 +33,8 @@ sub cron_config {
     return $cron_config if ($cron_config);
 
     my $base_path = base_path();
-    $cron_config = LoadFile( File::Spec->catfile( $base_path, 'conf', 'cron.yml' ) );
+    $cron_config
+        = LoadFile( File::Spec->catfile( $base_path, 'conf', 'cron.yml' ) );
 
     return $cron_config;
 }

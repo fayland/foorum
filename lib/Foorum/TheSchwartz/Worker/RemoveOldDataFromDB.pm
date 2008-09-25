@@ -21,15 +21,13 @@ sub work {
     # for table 'visit'
     # 2592000 = 30 * 24 * 60 * 60
     my $old_time = $cron_config->{remove_db_old_data}->{visit} || 2592000;
-    my $visit_status
-        = $schema->resultset('Visit')->search( { time => { '<', time() - $old_time } } )
-        ->delete;
+    my $visit_status = $schema->resultset('Visit')
+        ->search( { time => { '<', time() - $old_time } } )->delete;
 
     # for table 'log_path'
     my $days_ago = $cron_config->{remove_db_old_data}->{log_path} || 30;
-    my $log_path_status
-        = $schema->resultset('LogPath')->search( { time => { '<', $days_ago * 86400 }, } )
-        ->delete;
+    my $log_path_status = $schema->resultset('LogPath')
+        ->search( { time => { '<', $days_ago * 86400 }, } )->delete;
 
     # for table 'log_error'
     $days_ago = $cron_config->{remove_db_old_data}->{log_error} || 30;
@@ -43,9 +41,8 @@ sub work {
 
     # for table 'session'
     # 2592000 = 30 * 24 * 60 * 60
-    my $session_status
-        = $schema->resultset('Session')->search( { expires => { '<', time() }, } )
-        ->delete;
+    my $session_status = $schema->resultset('Session')
+        ->search( { expires => { '<', time() }, } )->delete;
 
     error_log( $schema, 'info', <<LOG);
 remove_db_old_data - status:

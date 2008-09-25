@@ -32,7 +32,8 @@ sub board : Path {
     my @forum_ids;
     push @forum_ids, $_->forum_id foreach (@forums);
     if ( scalar @forum_ids ) {
-        my $roles = $c->model('DBIC::UserForum')->get_forum_moderators( \@forum_ids );
+        my $roles = $c->model('DBIC::UserForum')
+            ->get_forum_moderators( \@forum_ids );
         $c->stash->{forum_roles} = $roles;
     }
 
@@ -52,7 +53,7 @@ sub forum_list : Regex('^forum/(\w+)$') {
 
     my $is_elite = ( $c->req->path =~ /\/elite(\/|$)/ ) ? 1 : 0;
     my $page     = get_page_from_url( $c->req->path );
-    my $rss      = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;     # /forum/1/rss
+    my $rss      = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0;  # /forum/1/rss
 
     # get the forum information
     my $forum_code = $c->req->snippets->[0];
@@ -61,7 +62,10 @@ sub forum_list : Regex('^forum/(\w+)$') {
     $forum_code = $forum->{forum_code};
 
     my @extra_cols = ($is_elite) ? ( 'elite', 1 ) : ();
-    my $rows = ($rss) ? 10 : $c->config->{per_page}->{forum};      # 10 for RSS is enough
+    my $rows
+        = ($rss)
+        ? 10
+        : $c->config->{per_page}->{forum};    # 10 for RSS is enough
     my $it = $c->model('DBIC')->resultset('Topic')->search(
         {   forum_id    => $forum_id,
             'me.status' => { '!=', 'banned' },
@@ -91,9 +95,10 @@ sub forum_list : Regex('^forum/(\w+)$') {
             $_->{text} = $rs->text;
 
             # filter format by Foorum::Filter
+            $_->{text} = $c->model('DBIC::FilterWord')
+                ->convert_offensive_word( $_->{text} );
             $_->{text}
-                = $c->model('DBIC::FilterWord')->convert_offensive_word( $_->{text} );
-            $_->{text} = filter_format( $_->{text}, { format => $rs->formatter } );
+                = filter_format( $_->{text}, { format => $rs->formatter } );
         }
         $c->stash->{topics}   = \@topics;
         $c->stash->{template} = 'forum/forum.rss.html';
@@ -121,7 +126,8 @@ sub forum_list : Regex('^forum/(\w+)$') {
         }
 
         # check announcement
-        $c->stash->{announcement} = $c->model('DBIC::Forum')->get_announcement($forum);
+        $c->stash->{announcement}
+            = $c->model('DBIC::Forum')->get_announcement($forum);
     }
 
     $c->cache_page('300');
@@ -188,14 +194,14 @@ sub join : Chained('forum') Arg(0) {
                     }
                 );
 
-                my $forum_admin
-                    = $c->model('DBIC::UserForum')->get_forum_admin($forum_id);
-                my $requestor
-                    = $c->model('DBIC::User')->get( { user_id => $c->user->user_id } );
+                my $forum_admin = $c->model('DBIC::UserForum')
+                    ->get_forum_admin($forum_id);
+                my $requestor = $c->model('DBIC::User')
+                    ->get( { user_id => $c->user->user_id } );
 
                 my $forum;
-                if ( $c->stash->{forum} and $c->stash->{forum}->{forum_id} == $forum_id )
-                {
+                if (    $c->stash->{forum}
+                    and $c->stash->{forum}->{forum_id} == $forum_id ) {
                     $forum = $c->stash->{forum};
                 } else {
                     $forum = $c->model('DBIC::Forum')->get($forum_id);
@@ -214,8 +220,11 @@ sub join : Chained('forum') Arg(0) {
                     }
                 );
 
-                $c->detach( '/print_message',
-                    ['Successfully Requested. You need wait for admin\'s approval'] );
+                $c->detach(
+                    '/print_message',
+                    [   'Successfully Requested. You need wait for admin\'s approval'
+                    ]
+                );
             }
         } else {
             $c->stash(
@@ -274,8 +283,11 @@ sub members : Chained('forum') Args(0) {
     if ( scalar @all_user_ids ) {
         @members = $c->model('DBIC::User')->search(
             { user_id => { 'IN', \@all_user_ids }, },
-            {   columns =>
-                    [ 'user_id', 'username', 'nickname', 'gender', 'register_time' ],
+            {   columns => [
+                    'user_id',  'username',
+                    'nickname', 'gender',
+                    'register_time'
+                ],
             }
         )->all;
         %members = map { $_->user_id => $_ } @members;
@@ -322,7 +334,8 @@ sub action_log : Chained('forum') Args(0) {
         $unique_user_ids{ $_->user_id } = 1;
     }
     if ( scalar @all_user_ids ) {
-        my $authors = $c->model('DBIC::User')->get_multi( 'user_id', \@all_user_ids );
+        my $authors
+            = $c->model('DBIC::User')->get_multi( 'user_id', \@all_user_ids );
         foreach (@actions) {
             $_->{operator} = $authors->{ $_->user_id };
         }
@@ -360,7 +373,7 @@ sub create : Local {
 
     # check forum_code
     my $forum_code = $c->req->param('forum_code');
-    my $err        = $c->model('DBIC::Forum')->validate_forum_code($forum_code);
+    my $err = $c->model('DBIC::Forum')->validate_forum_code($forum_code);
     if ($err) {
         $c->set_invalid_form( forum_code => $err );
         return;
@@ -390,8 +403,10 @@ sub create : Local {
     foreach (@moderators) {
         next if ( $_ eq $admin_user->{username} );    # avoid the same man
         last
-            if ( scalar @moderator_users > 2 );       # only allow 3 moderators at most
-        my $moderator_user = $c->model('DBIC::User')->get( { username => $_ } );
+            if ( scalar @moderator_users > 2 )
+            ;    # only allow 3 moderators at most
+        my $moderator_user
+            = $c->model('DBIC::User')->get( { username => $_ } );
         unless ($moderator_user) {
             $c->stash->{non_existence_user} = $_;
             return $c->set_invalid_form( moderators => 'ADMIN_NONEXISTENCE' );

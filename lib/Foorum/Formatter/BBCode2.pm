@@ -85,8 +85,11 @@ main:
         # End tag
         if ( $input =~ /^(\[\/[^\]]+\])/s ) {
             my $end = lc $1;
-            if (   ( $self->{_skip_nest} ne '' && $end ne "[/$self->{_skip_nest}]" )
-                || ( $self->{_in_code_block} && $end ne "[/code]" ) ) {
+            if ((      $self->{_skip_nest} ne ''
+                    && $end ne "[/$self->{_skip_nest}]"
+                )
+                || ( $self->{_in_code_block} && $end ne "[/code]" )
+                ) {
                 _content( $self, $end );
             } else {
                 _end_tag( $self, $end );
@@ -127,7 +130,8 @@ main:
 
 sub _open_tag {
     my ( $self, $open ) = @_;
-    my ( $tag, $rest ) = $open =~ m/\[([^=\]]+)(.*)?\]/s;    # Don't do this! ARGH!
+    my ( $tag, $rest )
+        = $open =~ m/\[([^=\]]+)(.*)?\]/s;    # Don't do this! ARGH!
     $tag = lc $tag;
     if ( _dont_nest( $self, $tag ) && $tag eq 'img' ) {
         $self->{_skip_nest} = $tag;
@@ -178,7 +182,8 @@ sub _end_tag {
         }
 
         $self->{_nest_count}--
-            if ( "[/$self->{_skip_nest}]" eq $end && $self->{_nest_count} > 0 );
+            if ( "[/$self->{_skip_nest}]" eq $end
+            && $self->{_nest_count} > 0 );
 
         if ( $item =~ /\[([^=\]]+).*\]/s ) {
             $tag = $1;
@@ -252,7 +257,8 @@ controls="ImageWindow,StatusBar,ControlPanel" width='352' height='288' border='0
     } elsif ( $tag eq 'size' ) {
         $attr = 8  if ( $attr < 8 );    # validation
         $attr = 16 if ( $attr > 16 );
-        $html = sprintf( $self->{options}->{html_tags}->{size}, $attr, $content );
+        $html = sprintf( $self->{options}->{html_tags}->{size}, $attr,
+            $content );
         return $html;
     }
 
@@ -263,14 +269,17 @@ controls="ImageWindow,StatusBar,ControlPanel" width='352' height='288' border='0
             ? "$attr wrote:"
             : "Quote:", $content );
     } elsif ( $tag eq 'code' ) {
-        $html = sprintf( $self->{options}->{html_tags}->{code}, _code($content) );
+        $html = sprintf( $self->{options}->{html_tags}->{code},
+            _code($content) );
     } elsif ( $tag eq 'list' ) {
         $html = _list( $self, $attr, $content );
     } elsif ( ( $tag eq 'email' || $tag eq 'url' ) && !$attr ) {
-        $html = sprintf( $self->{options}->{html_tags}->{$tag}, $content, $content );
+        $html = sprintf( $self->{options}->{html_tags}->{$tag},
+            $content, $content );
     } elsif ($attr) {
         $attr =~ s/^(.*?)[\"\'].*?$/$1/isg;
-        $html = sprintf( $self->{options}->{html_tags}->{$tag}, $attr, $content );
+        $html = sprintf( $self->{options}->{html_tags}->{$tag}, $attr,
+            $content );
     } else {
         $html = sprintf( $self->{options}->{html_tags}->{$tag}, $content );
     }
@@ -281,7 +290,8 @@ controls="ImageWindow,StatusBar,ControlPanel" width='352' height='288' border='0
 
 sub _is_allowed {
     my ( $self, $check ) = @_;
-    map { return 1 if ( $_ eq $check ); } @{ $self->{options}->{allowed_tags} };
+    map { return 1 if ( $_ eq $check ); }
+        @{ $self->{options}->{allowed_tags} };
     return 0;
 }
 

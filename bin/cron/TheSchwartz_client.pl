@@ -4,8 +4,10 @@ use strict;
 use warnings;
 
 # for both Linux/Win32
-my $has_proc_pid_file = eval "use Proc::PID::File; 1;"; ## no critic (ProhibitStringyEval)
-my $has_home_dir      = eval "use File::HomeDir; 1;";   ## no critic (ProhibitStringyEval)
+my $has_proc_pid_file
+    = eval "use Proc::PID::File; 1;";    ## no critic (ProhibitStringyEval)
+my $has_home_dir
+    = eval "use File::HomeDir; 1;";      ## no critic (ProhibitStringyEval)
 if ( $has_proc_pid_file and $has_home_dir ) {
 
     # If already running, then exit
@@ -45,18 +47,23 @@ if ($worker) {
     my $base_path = base_path();
     my $theschwartz_config;
     if ( -e File::Spec->catfile( $base_path, 'conf', 'theschwartz.yml' ) ) {
-        $theschwartz_config
-            = LoadFile( File::Spec->catfile( $base_path, 'conf', 'theschwartz.yml' ) );
+        $theschwartz_config = LoadFile(
+            File::Spec->catfile( $base_path, 'conf', 'theschwartz.yml' ) );
     } else {
         $theschwartz_config = LoadFile(
-            File::Spec->catfile( $base_path, 'conf', 'examples', 'theschwartz.yml' ) );
+            File::Spec->catfile(
+                $base_path, 'conf', 'examples', 'theschwartz.yml'
+            )
+        );
     }
 
     foreach my $one (@$theschwartz_config) {
         my $worker = $one->{worker};
 
         # skip some
-        next if ( $worker eq 'Scraper' and not $config->{function_on}->{scraper} );
+        next
+            if ( $worker eq 'Scraper'
+            and not $config->{function_on}->{scraper} );
 
         $cron->add_entry( $one->{time}, \&run_worker, $worker );
     }

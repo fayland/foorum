@@ -4,8 +4,10 @@ use strict;
 use warnings;
 
 # for both Linux/Win32
-my $has_proc_pid_file = eval "use Proc::PID::File; 1;"; ## no critic (ProhibitStringyEval)
-my $has_home_dir      = eval "use File::HomeDir; 1;";   ## no critic (ProhibitStringyEval)
+my $has_proc_pid_file
+    = eval "use Proc::PID::File; 1;";    ## no critic (ProhibitStringyEval)
+my $has_home_dir
+    = eval "use File::HomeDir; 1;";      ## no critic (ProhibitStringyEval)
 if ( $has_proc_pid_file and $has_home_dir ) {
 
     # If already running, then exit
@@ -41,7 +43,8 @@ $sth->execute();
 print "Create Table OK\n";
 
 # populate data from user_role to user_forum
-my $rs = $schema->resultset('UserRole')->search( { field => { '!=', 'site' } } );
+my $rs
+    = $schema->resultset('UserRole')->search( { field => { '!=', 'site' } } );
 while ( my $r = $rs->next ) {
     $schema->resultset('UserForum')->create(
         {   forum_id => $r->field,
@@ -49,10 +52,14 @@ while ( my $r = $rs->next ) {
             user_id  => $r->user_id,
         }
     );
-    print "Migrate For " . $r->user_id . '-' . $r->field . '-' . $r->role . "\n";
+    print "Migrate For "
+        . $r->user_id . '-'
+        . $r->field . '-'
+        . $r->role . "\n";
 }
 
-$schema->resultset('UserRole')->search( { field => { '!=', 'site' } } )->delete;
+$schema->resultset('UserRole')->search( { field => { '!=', 'site' } } )
+    ->delete;
 
 print "Done\n";
 

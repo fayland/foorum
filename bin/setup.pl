@@ -53,8 +53,9 @@ if ( $db_type eq 'MySQL' or $db_type eq 'Pg' ) {
 }
 
 $db_type = lc($db_type) if ( $db_type eq 'MySQL' );
-my $dns             = "dbi:$db_type:database=foorum;host=$dns_host;port=3306";
-my $theschwartz_dsn = "dbi:$db_type:database=theschwartz;host=$dns_host;port=3306";
+my $dns = "dbi:$db_type:database=foorum;host=$dns_host;port=3306";
+my $theschwartz_dsn
+    = "dbi:$db_type:database=theschwartz;host=$dns_host;port=3306";
 if ( $db_type eq 'SQLite' ) {
     $dns             = "dbi:$db_type:$dns_host";
     $theschwartz_dsn = $dns;
@@ -93,7 +94,8 @@ print "\n\nSaving ....\n\n";
 DumpFile( $foorum_local_file, $yaml );
 
 print "Attention! The first user created will be site admin automatically!\n";
-my $sql = q~INSERT INTO user_role (user_id, role, field) VALUES (1, 'admin', 'site')~;
+my $sql
+    = q~INSERT INTO user_role (user_id, role, field) VALUES (1, 'admin', 'site')~;
 $dbh->do($sql) or die $DBI::errstr;
 print "[OK] ", $sql, "\n";
 

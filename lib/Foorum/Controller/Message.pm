@@ -71,7 +71,8 @@ sub compose : Local {
             user_id    => $rept->{user_id},
         }
     );
-    $c->cache->remove( 'global|message_unread_cnt|user_id=' . $rept->{user_id} );
+    $c->cache->remove(
+        'global|message_unread_cnt|user_id=' . $rept->{user_id} );
 
     # Send Notification Email
     $c->model('DBIC::ScheduledEmail')->create_email(
@@ -100,8 +101,8 @@ sub inbox : Local {
         {   columns  => [ 'message_id', 'title', 'post_on', ],
             prefetch => ['sender'],
             order_by => \'post_on DESC',
-            rows     => $c->config->{per_page}->{message},
-            page     => $page,
+            rows => $c->config->{per_page}->{message},
+            page => $page,
         }
     );
     my @messages = $it->all;
@@ -129,8 +130,8 @@ sub outbox : Local {
         {   columns  => [ 'message_id', 'title', 'post_on', ],
             prefetch => ['recipient'],
             order_by => \'post_on DESC',
-            rows     => $c->config->{per_page}->{message},
-            page     => $page,
+            rows => $c->config->{per_page}->{message},
+            page => $page,
         }
     );
     my @messages = $it->all;
@@ -146,7 +147,8 @@ sub message : LocalRegex('^(\d+)$') {
     my $message_id = $c->req->snippets->[0];
 
     my $message
-        = $c->model('DBIC')->resultset('Message')->find( { message_id => $message_id, },
+        = $c->model('DBIC')->resultset('Message')
+        ->find( { message_id => $message_id, },
         { prefetch => [ 'sender', 'recipient' ], } );
     $c->stash->{message} = $message;
 
@@ -162,7 +164,8 @@ sub message : LocalRegex('^(\d+)$') {
             user_id    => $c->user->user_id,
         }
     )->delete;
-    $c->cache->remove( 'global|message_unread_cnt|user_id=' . $c->user->{user_id} );
+    $c->cache->remove(
+        'global|message_unread_cnt|user_id=' . $c->user->{user_id} );
 
     $c->stash->{template} = 'message/message.html';
 }
@@ -172,8 +175,8 @@ sub delete : LocalRegex('^(\d+)/delete$') {
 
     my $message_id = $c->req->snippets->[0];
 
-    my $message
-        = $c->model('DBIC')->resultset('Message')->find( { message_id => $message_id, } );
+    my $message = $c->model('DBIC')->resultset('Message')
+        ->find( { message_id => $message_id, } );
 
     # permission check
     if (    $c->user->{user_id} != $message->from_id
@@ -187,7 +190,8 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             user_id    => $c->user->user_id,
         }
     )->delete;
-    $c->cache->remove( 'global|message_unread_cnt|user_id=' . $c->user->{user_id} );
+    $c->cache->remove(
+        'global|message_unread_cnt|user_id=' . $c->user->{user_id} );
 
     # both inbox and outbox.
     # we set 'from_status' as 'deleted' when from_id delete it

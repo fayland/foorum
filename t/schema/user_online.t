@@ -69,20 +69,20 @@ is( $rets[-1],    'SELF', 'return SELF' );
 
 # 3, get_data with FoorumCode
 @rets = $tbl->get_data( $sid1, 'FoorumTest' );
-@rets = @{ $rets[0] };    # since return is (\@onlines, $pager);
+@rets = @{ $rets[0] };           # since return is (\@onlines, $pager);
 is( scalar @rets,        1,     'get_data with FoorumTest' );
 is( $rets[0]->sessionid, $sid1, 'get_data with FoorumTest result' );
 
 # 4, test whos_view_this_page
 @rets = $tbl->whos_view_this_page( $sid2, 'forum/FoorumTest2' );
-is( scalar @rets,        1,     'whos_view_this_page with forum/FoorumTest2' );
+is( scalar @rets, 1, 'whos_view_this_page with forum/FoorumTest2' );
 is( $rets[0]->sessionid, $sid2, 'whos_view_this_page1 result' );
 
 # 5, test whos_view_this_page with non-exists $sid4
 @rets = $tbl->whos_view_this_page( $sid4, 'forum/FoorumTest2' );
-is( scalar @rets,        2,      'whos_view_this_page with non-exists $sid4' );
-is( $rets[0]->sessionid, $sid2,  'whos_view_this_page2 result' );
-is( $rets[-1],           'SELF', 'return SELF' );
+is( scalar @rets,        2,     'whos_view_this_page with non-exists $sid4' );
+is( $rets[0]->sessionid, $sid2, 'whos_view_this_page2 result' );
+is( $rets[-1], 'SELF', 'return SELF' );
 
 END {
 

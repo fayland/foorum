@@ -20,8 +20,10 @@ $Email = HTML::Email::Obfuscate->new();
 __PACKAGE__->config(
 
     #DEBUG        => DEBUG_PARSER | DEBUG_PROVIDER,
-    INCLUDE_PATH =>
-        [ Foorum->path_to( 'templates', 'custom' ), Foorum->path_to('templates') ],
+    INCLUDE_PATH => [
+        Foorum->path_to( 'templates', 'custom' ),
+        Foorum->path_to('templates')
+    ],
     COMPILE_DIR => File::Spec->catdir( $tmpdir, 'ttcache', $< ),
     COMPILE_EXT => '.ttp1',
     STASH       => Template::Stash::XS->new,

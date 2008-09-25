@@ -51,7 +51,8 @@ sub work {
                 ->convert_offensive_word( $rec->{title} );
             $rec->{text} = $schema->resultset('FilterWord')
                 ->convert_offensive_word( $rec->{text} );
-            $rec->{text} = filter_format( $rec->{text}, { format => $rec->{formatter} } );
+            $rec->{text} = filter_format( $rec->{text},
+                { format => $rec->{formatter} } );
 
             push @comments, $rec;
         }
@@ -62,7 +63,8 @@ sub work {
     $var->{comments} = \@comments;
 
     # get topic
-    my $topic = $schema->resultset('Topic')->find( { topic_id => $topic_id } );
+    my $topic
+        = $schema->resultset('Topic')->find( { topic_id => $topic_id } );
     $var->{topic} = $topic;
 
     my $pdf_body;
