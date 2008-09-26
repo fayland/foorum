@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use t::theschwartz::TestTheSchwartz;
+use t::theschwartz::Redefined;
 use MooseX::TheSchwartz;
 use Foorum::TheSchwartz::Worker::DailyReport;
 
