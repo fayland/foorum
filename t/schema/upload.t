@@ -34,8 +34,8 @@ my $upload_dir
 my @created;
 
 unless ( -e $upload_dir ) {
-    @created = mkpath( [$upload_dir], 0, 0777 )
-        ;    ## no critic (ProhibitLeadingZeros)
+    @created = mkpath( [$upload_dir], 0, 0777 );    ## no critic
+    ## no critic (ProhibitLeadingZeros)
 }
 my $dest_file = File::Spec->catfile( $upload_dir, 'test.txt' );
 

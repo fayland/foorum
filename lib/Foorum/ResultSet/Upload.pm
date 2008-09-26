@@ -132,9 +132,9 @@ sub add_file {
         $directory_2 );
 
     unless ( -e $upload_dir ) {
-        my @created = mkpath( [$upload_dir], 0, 0777 )
-            ;    ## no critic (ProhibitLeadingZeros)
-                 # copy index.html to protect dir from Options Indexes
+        my @created = mkpath( [$upload_dir], 0, 0777 );    ## no critic
+        ## no critic (ProhibitLeadingZeros)
+        # copy index.html to protect dir from Options Indexes
         my $indexfile = File::Spec->catfile( $base_path, 'root', 'upload',
             'index.html' );
         foreach my $dir (@created) {

@@ -23,17 +23,16 @@ sub filter_format {
     }
     if ( $format eq 'ubb' and not defined $has_ubb_code ) {
         $has_ubb_code
-            =   ## no critic no critic no critic no critic no critic no critic
-            eval "use Foorum::Formatter::BBCode2; 1;"
-            ;    ## no critic (ProhibitStringyEval)
+            = eval "use Foorum::Formatter::BBCode2; 1;";    ## no critic
+        ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'wiki' and not defined $has_text_wiki ) {
-        $has_text_wiki = eval "use Text::GooglewikiFormat; 1;"
-            ;    ## no critic (ProhibitStringyEval)
+        $has_text_wiki = eval "use Text::GooglewikiFormat; 1;";   ## no critic
+        ## no critic (ProhibitStringyEval)
     }
     if ( $format eq 'pod' and not defined $has_pod_simple ) {
-        $has_pod_simple = eval "use Foorum::Formatter::Pod; 1;"
-            ;    ## no critic (ProhibitStringyEval)
+        $has_pod_simple = eval "use Foorum::Formatter::Pod; 1;";  ## no critic
+        ## no critic (ProhibitStringyEval)
     }
 
     if ( $format eq 'textile' and $has_text_textile ) {
@@ -104,8 +103,8 @@ sub filter_format {
         #$text =~ s/"/&quot;/g; #"
         $text =~ s|\n|<br />\n|gs;    # linebreaks
 
-        $has_uri_find = eval
-            "use URI::Find::UTF8; 1;"    ## no critic (ProhibitStringyEval)
+        $has_uri_find = eval "use URI::Find::UTF8; 1;"    ## no critic
+            ## no critic (ProhibitStringyEval)
             if ( not defined $has_uri_find );
         if ($has_uri_find) {
 

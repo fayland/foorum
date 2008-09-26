@@ -1,7 +1,5 @@
-/bin/cron/chart.pl source OK
 /bin/cron/TheSchwartz_client.pl source OK
 /bin/cron/TheSchwartz_worker.pl source OK
-/bin/db/make_schema.pl source OK
 /bin/deploy/dreamhost.fastcgi.pl source OK
 /bin/foorum_server.pl source OK
 /bin/misc/bdfgw.pl source OK
@@ -12,12 +10,9 @@
 /bin/misc/js-min.pl source OK
 /bin/misc/perlcritic.pl source OK
 /bin/misc/perltidy.pl source OK
-/bin/misc/pod2html.pl source OK
 /bin/misc/wiki2pod.pl source OK
 /bin/setup/sphinx.pl source OK
 /bin/setup.pl source OK
-/bin/testfunction/cache.pl source OK
-/bin/testfunction/config.pl source OK
 /bin/testfunction/db.pl source OK
 /bin/testfunction/mail.pl source OK
 /bin/testfunction/theschwartz.pl source OK
