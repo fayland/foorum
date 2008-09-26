@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More 'no_plan';
+use Test::More tests => 5;
 use FindBin qw/$RealBin/;
 use Cwd qw/abs_path/;
 use Foorum::XUtils qw/base_path cache config/;
