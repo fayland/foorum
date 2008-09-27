@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base qw/Exporter/;
 use Test::More;
+use FindBin qw/$Bin/;
 use DBI;
 our @EXPORT = (@Test::More::EXPORT, 'run_test');
 
@@ -14,26 +15,14 @@ plan skip_all => 'this test requires File::Temp' if $@;
 eval 'require MooseX::TheSchwartz;';
 plan skip_all => 'this test requires MooseX::TheSchwartz' if $@;
 
-my $SCHEMA = join '', <DATA>;
-
 sub run_test (&) {
     my $code = shift;
-    my $tmp = File::Temp->new;
-    $tmp->close();
-    my $tmpf = $tmp->filename;
-    my $dbh = DBI->connect("dbi:SQLite:dbname=$tmpf", '', '', {RaiseError => 1}) or die $DBI::err;
+    my $db_file = File::Spec->catfile( $Bin, '..', 'lib', 'Foorum', 'theschwartz.db' );
+    my $dbh = DBI->connect("dbi:SQLite:dbname=$db_file", '', '', {RaiseError => 1}) or die $DBI::err;
 
     # work around for DBD::SQLite's resource leak
     tie my %blackhole, 't::theschwartz::TestTheSchwartz::Blackhole';
     $dbh->{CachedKids} = \%blackhole;
-
-    do {
-        $dbh->begin_work;
-        for (split /;\s*/, $SCHEMA) {
-            $dbh->do($_);
-        }
-        $dbh->commit;
-    };
 
     $code->($dbh); # do test
 
@@ -48,38 +37,24 @@ sub run_test (&) {
     sub FETCH { } # nop
 }
 
+{
+    package Foorum::SUtils;
+    
+    use Foorum::TestUtils ();
+    sub schema { Foorum::TestUtils::schema() }
+    
+    1;
+}
+{
+    package Foorum::XUtils;
+    
+    use Carp qw/croak/;
+    use Foorum::TestUtils ();
+    sub config { Foorum::TestUtils::config(); }
+    sub cache  { Foorum::TestUtils::cache(); }
+    sub theschwartz { croak 'undefined'; }
+    
+    1;
+}
 1;
-__DATA__
-CREATE TABLE funcmap (
-        funcid         INTEGER PRIMARY KEY AUTOINCREMENT,
-        funcname       VARCHAR(255) NOT NULL,
-        UNIQUE(funcname)
-);
 
-CREATE TABLE job (
-        jobid           INTEGER PRIMARY KEY AUTOINCREMENT,
-        funcid          INTEGER UNSIGNED NOT NULL,
-        arg             MEDIUMBLOB,
-        uniqkey         VARCHAR(255) NULL,
-        insert_time     INTEGER UNSIGNED,
-        run_after       INTEGER UNSIGNED NOT NULL,
-        grabbed_until   INTEGER UNSIGNED NOT NULL,
-        priority        SMALLINT UNSIGNED,
-        coalesce        VARCHAR(255),
-        UNIQUE(funcid,uniqkey)
-);
-
-CREATE TABLE error (
-        error_time      INTEGER UNSIGNED NOT NULL,
-        jobid           INTEGER NOT NULL,
-        message         VARCHAR(255) NOT NULL,
-        funcid          INT UNSIGNED NOT NULL DEFAULT 0
-);
-
-CREATE TABLE exitstatus (
-        jobid           INTEGER PRIMARY KEY NOT NULL,
-        funcid          INT UNSIGNED NOT NULL DEFAULT 0,
-        status          SMALLINT UNSIGNED,
-        completion_time INTEGER UNSIGNED,
-        delete_after    INTEGER UNSIGNED
-);

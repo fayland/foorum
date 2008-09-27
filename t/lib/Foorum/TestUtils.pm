@@ -57,16 +57,11 @@ sub schema {
     };
 
     # create the database
-    my $db_file = File::Spec->catfile( $path, 'test.db' );
+    my $db_file = File::Spec->catfile( $path, 'foorum.db' );
     my $schema
         = Foorum::Schema->connect( "dbi:SQLite:$db_file", '', '',
         { AutoCommit => 1, RaiseError => 1, PrintError => 1 },
         );
-
-    #unlink $db_file if -e $db_file;
-    #$schema->deploy;
-    #my $dbh = $schema->storage->dbh;
-    #$dbh->do( $_ ) for split /;/, $sql;
 
     return $schema;
 }
@@ -87,8 +82,12 @@ sub rollback_db {
 
     # Keep Database the same from original
     File::Copy::copy(
-        File::Spec->catfile( $path, 'backup.db' ),
-        File::Spec->catfile( $path, 'test.db' )
+        File::Spec->catfile( $path, 'foorum.backup.db' ),
+        File::Spec->catfile( $path, 'foorum.db' )
+    );
+    File::Copy::copy(
+        File::Spec->catfile( $path, 'theschwartz.backup.db' ),
+        File::Spec->catfile( $path, 'theschwartz.db' )
     );
 }
 
