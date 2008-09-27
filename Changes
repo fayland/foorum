@@ -2,7 +2,7 @@ This file documents the revision history for Foorum.
 
 0.2.7
         - perltidy cols 78
-        - more test cases
+        - more test cases (Files=27, Tests=209)
 
 0.2.6 Tue Sep 23 13:38:00
         - ubb fix: http://code.google.com/p/foorum/issues/detail?id=84

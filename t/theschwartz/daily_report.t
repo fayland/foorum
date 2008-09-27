@@ -2,34 +2,49 @@
 
 use strict;
 use warnings;
-use t::theschwartz::TestTheSchwartz;
+
+BEGIN {
+    $ENV{TEST_FOORUM} = 1;
+}
+
+use FindBin qw/$Bin/;
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
+use Foorum::TestTheSchwartz;
 use Foorum::TheSchwartz::Worker::DailyReport;
 use MooseX::TheSchwartz;
-use FindBin qw/$Bin/;
-use lib "$Bin/../lib";
-use Foorum::TestUtils qw/schema rollback_db/;
+use Foorum::SUtils qw/schema/;
+use Foorum::TestUtils qw/rollback_db/;
 
-plan tests => 2;
+plan tests => 4;
 
 run_test {
-    my $dbh = shift;
+    my $dbh    = shift;
     my $client = MooseX::TheSchwartz->new();
-    $client->databases([$dbh]);
+    $client->databases( [$dbh] );
 
     {
-        my $handle = $client->insert("Foorum::TheSchwartz::Worker::DailyReport");
-        isa_ok $handle, 'MooseX::TheSchwartz::JobHandle', "inserted job";
+        my $handle
+            = $client->insert("Foorum::TheSchwartz::Worker::DailyReport");
 
         $client->can_do("Foorum::TheSchwartz::Worker::DailyReport");
         $client->work_until_done;
 
         # test if OK
-        my $schema = schema();
-        my $mail_count = $schema->resultset('ScheduledEmail')->count( {
-            email_type => 'daily_report',
-        } );
-        #is($mail_count, 1, 'has 1 daily_report mail');
-        ok(1);
+        my $schema     = schema();
+        my $mail_count = $schema->resultset('ScheduledEmail')
+            ->count( { email_type => 'daily_report', } );
+        is( $mail_count, 1, 'has 1 daily_report mail' );
+        my $mail_rs = $schema->resultset('ScheduledEmail')
+            ->search( { email_type => 'daily_report', } )->first;
+        ok($mail_rs);
+        like(
+            $mail_rs->subject,
+            qr/\[Foorum\] Daily Report/,
+            'subject has [Foorum] Daily Report'
+        );
+        like( $mail_rs->plain_body, qr/NewAddedUser/,
+            'plain_body has NewAddedUser' );
     }
 };
 

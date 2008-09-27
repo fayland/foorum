@@ -8,13 +8,15 @@ BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
 
+    $ENV{TEST_FOORUM} = 1;
     plan tests => 9;
 }
 
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
-use Foorum::TestUtils qw/schema base_path/;
+use Foorum::SUtils qw/schema/;
+use Foorum::TestUtils qw/rollback_db/;
 
 my $schema = schema();
 
@@ -67,11 +69,9 @@ is( scalar @{ $ret->{matches} },  1,     '[2]get 1 results' );
 is( $ret->{pager}->total_entries, 1,     '[2]pager OK' );
 
 END {
-    my $base_path = base_path();
-    File::Copy::copy(
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'backup.db' ),
-        File::Spec->catfile( $base_path, 't', 'lib', 'Foorum', 'test.db' )
-    );
+
+    # Keep Database the same from original
+    rollback_db();
 }
 
 #######################################

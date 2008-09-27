@@ -7,13 +7,15 @@ use Test::More;
 BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
-    plan tests           => 5;
+    $ENV{TEST_FOORUM} = 1;
+    plan tests => 5;
 }
 
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
-use Foorum::TestUtils qw/schema rollback_db/;
+use Foorum::SUtils qw/schema/;
+use Foorum::TestUtils qw/rollback_db/;
 my $schema = schema();
 
 my $hit_res = $schema->resultset('Hit');

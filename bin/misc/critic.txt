@@ -13,9 +13,7 @@
 /bin/misc/wiki2pod.pl source OK
 /bin/setup/sphinx.pl source OK
 /bin/setup.pl source OK
-/bin/testfunction/db.pl source OK
 /bin/testfunction/mail.pl source OK
-/bin/testfunction/theschwartz.pl source OK
 /bin/upgrade/0.1.2/up.pl source OK
 /bin/upgrade/0.1.3/up.pl source OK
 /bin/upgrade/0.1.5/up.pl source OK
@@ -107,12 +105,13 @@
 /t/01yaml.t source OK
 /t/02utils.t source OK
 /t/03xutils.t source OK
-/t/04testutils.t source OK
+/t/05sutils.t source OK
 /t/formatter/plain.t source OK
 /t/formatter/pod.t source OK
 /t/formatter/textile.t source OK
 /t/formatter/ubb.t source OK
 /t/formatter/wiki.t source OK
+/t/lib/Foorum/TestTheSchwartz.pm source OK
 /t/lib/Foorum/TestUtils.pm source OK
 /t/schema/banned_ip.t source OK
 /t/schema/comment.t source OK
@@ -131,3 +130,4 @@
 /t/search/01main.t source OK
 /t/search/02database.t source OK
 /t/template/01wrapper.t source OK
+/t/theschwartz/daily_report.t source OK

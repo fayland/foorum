@@ -2,6 +2,11 @@
 
 use strict;
 use warnings;
+
+BEGIN {
+    $ENV{TEST_FOORUM} = 1;
+}
+
 use Test::More tests => 5;
 use FindBin qw/$RealBin/;
 use Cwd qw/abs_path/;
@@ -22,41 +27,16 @@ my $config = config();
 ok( $config->{'View::TT'}, 'View::TT config defined' );
 is( ref $config->{session}, 'HASH', 'session config is a HASHREF' );
 
-## test cache
-SKIP: {
-    my $cache_config = $config->{cache}->{backends}->{default};
-    my $backend      = $cache_config->{class};
-    my $skip_me      = 1;
-    if ( $backend eq 'Cache::FileCache' ) {
-        $skip_me = 0;
-    } elsif ( $backend eq 'Cache::Memcached' ) {
-        my $has_io_socket = eval "use IO::Socket::INET; 1;";    ## no critic
-        ## no critic (ProhibitStringyEval)
-        if ($has_io_socket) {
-            my @servers = @{ $cache_config->{servers} };
-            my $msock   = IO::Socket::INET->new(
-                PeerAddr => $servers[0],
-                Timeout  => 3
-            );
-            if ($msock) {
-                $skip_me = 0;
-            }
-        }
-    }
+my $cache = cache();
 
-    skip 'cache tests is skipped because it is not usable.', 2 if ($skip_me);
+my $key = 'Foorum:testfunction:cache';
+my $val = scalar( localtime() );
 
-    my $cache = cache();
+$cache->set( $key, $val, 60 );
+my $ret = $cache->get($key);
+is( $ret, $val, 'cache: get ok' );
 
-    my $key = 'Foorum:testfunction:cache';
-    my $val = scalar( localtime() );
-
-    $cache->set( $key, $val, 60 );
-    my $ret = $cache->get($key);
-    is( $ret, $val, 'cache: get ok' );
-
-    $cache->remove($key);
-    $ret = $cache->get($key);
-    is( $ret, undef, 'cache: get after remove ok' );
-}
+$cache->remove($key);
+$ret = $cache->get($key);
+is( $ret, undef, 'cache: get after remove ok' );
 
