@@ -18,7 +18,7 @@ use Foorum::TestUtils qw/rollback_db/;
 
 plan tests => 4;
 
-run_test {
+run_test( sub {
     my $dbh    = shift;
     my $client = MooseX::TheSchwartz->new();
     $client->databases( [$dbh] );
@@ -46,7 +46,7 @@ run_test {
         like( $mail_rs->plain_body, qr/NewAddedUser/,
             'plain_body has NewAddedUser' );
     }
-};
+} );
 
 END {
 
