@@ -3,24 +3,50 @@ package Foorum::Controller::Topic;
 use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
-use base 'Catalyst::Controller';
+use base 'Catalyst::Controller::REST';
 use Foorum::Utils qw/encodeHTML get_page_from_url generate_random_word/;
 use Foorum::XUtils qw/theschwartz/;
 
-sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
+__PACKAGE__->config(
+    serialize => {
+         'stash_key' => 'rest',
+         'map'       => {
+            'text/html' => [ 'View', 'TT' ],
+            'text/xml'           => 'XML::Simple',
+            'text/x-yaml'        => 'YAML',
+            'application/json'   => 'JSON',
+            'text/x-json'        => 'JSON',
+          },
+    }
+);
+
+sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') : ActionClass('REST') {
     my ( $self, $c ) = @_;
 
     my $forum_code = $c->req->snippets->[0];
     my $topic_id   = $c->req->snippets->[2];
 
+    # get the forum information
+    my $forum = $c->controller('Get')->forum( $c, $forum_code );
+    my $forum_id = $forum->{forum_id};
+    
+    $c->stash( {
+        forum => $forum,
+        topic_id => $topic_id
+    } );
+}
+
+sub topic_GET {
+    my ( $self, $c ) = @_;
+
+    my $forum    = $c->stash->{forum};
+    my $topic_id = $c->stash->{topic_id};
+    my $forum_id = $forum->{forum_id};
+
     my $page = get_page_from_url( $c->req->path );
     $page = 1 unless ( $page and $page =~ /^\d+$/ );
     my $rss
         = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0; # /forum/ForumName/1/rss
-
-    # get the forum information
-    my $forum = $c->controller('Get')->forum( $c, $forum_code );
-    my $forum_id = $forum->{forum_id};
 
     my $format = $c->req->param('format');
     if ( $format and $format eq 'pdf' ) {

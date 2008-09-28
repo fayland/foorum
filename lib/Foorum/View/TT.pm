@@ -24,6 +24,7 @@ __PACKAGE__->config(
         Foorum->path_to( 'templates', 'custom' ),
         Foorum->path_to('templates')
     ],
+    TEMPLATE_EXTENSION => '.html',
     COMPILE_DIR => File::Spec->catdir( $tmpdir, 'ttcache', $< ),
     COMPILE_EXT => '.ttp1',
     STASH       => Template::Stash::XS->new,

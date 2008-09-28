@@ -37,6 +37,7 @@ requires 'Catalyst::Plugin::Session::DynamicExpiry';
 requires 'Catalyst::Plugin::FormValidator::Simple';
 requires 'Catalyst::Plugin::Captcha';
 requires 'Catalyst::Plugin::I18N' => '0.08';
+requires 'Catalyst::Action::REST';
 requires 'Template::Plugin::FillInForm';
 requires 'Template::Plugin::Date';
 requires 'File::Remove';
