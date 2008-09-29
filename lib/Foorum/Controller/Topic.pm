@@ -3,24 +3,11 @@ package Foorum::Controller::Topic;
 use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
-use base 'Catalyst::Controller::REST';
+use base 'Catalyst::Controller';
 use Foorum::Utils qw/encodeHTML get_page_from_url generate_random_word/;
 use Foorum::XUtils qw/theschwartz/;
 
-__PACKAGE__->config(
-    serialize => {
-         'stash_key' => 'rest',
-         'map'       => {
-            'text/html' => [ 'View', 'TT' ],
-            'text/xml'           => 'XML::Simple',
-            'text/x-yaml'        => 'YAML',
-            'application/json'   => 'JSON',
-            'text/x-json'        => 'JSON',
-          },
-    }
-);
-
-sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') : ActionClass('REST') {
+sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
     my ( $self, $c ) = @_;
 
     my $forum_code = $c->req->snippets->[0];
@@ -28,19 +15,6 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') : ActionClass('REST') {
 
     # get the forum information
     my $forum = $c->controller('Get')->forum( $c, $forum_code );
-    my $forum_id = $forum->{forum_id};
-    
-    $c->stash( {
-        forum => $forum,
-        topic_id => $topic_id
-    } );
-}
-
-sub topic_GET {
-    my ( $self, $c ) = @_;
-
-    my $forum    = $c->stash->{forum};
-    my $topic_id = $c->stash->{topic_id};
     my $forum_id = $forum->{forum_id};
 
     my $page = get_page_from_url( $c->req->path );
