@@ -48,6 +48,13 @@ sub create_topic {
             time        => time(),
         }
     );
+    
+    # update user stat
+    my $user = $schema->resultset('User')->get( { user_id => $create->{author_id} } );
+    $schema->resultset('User')->update_user( $user, {
+        threads => \'threads + 1',
+        point   => \'point + 2',
+    } );
 
     return $topic;
 }
@@ -64,10 +71,14 @@ sub update_topic {
 }
 
 sub remove {
-    my ( $self, $forum_id, $topic_id, $info ) = @_;
+    my ( $self, $topic_id, $info ) = @_;
 
     my $schema = $self->result_source->schema;
     my $cache  = $schema->cache();
+
+    my $topic = $self->get( $topic_id );
+
+    return 0 unless ($topic);
 
     # delete topic
     $self->search( { topic_id => $topic_id } )->delete;
@@ -91,6 +102,8 @@ sub remove {
             object_id   => $topic_id,
         }
     )->delete;
+
+    my $forum_id = $topic->{forum_id};
 
     # log action
     my $user_id = $info->{operator_id} || 0;
@@ -117,6 +130,15 @@ sub remove {
             total_replies => \"total_replies - $total_replies",
         }
     );
+    
+    # update user stat
+    my $user = $schema->resultset('User')->get( { user_id => $topic->{author_id} } );
+    $schema->resultset('User')->update_user( $user, {
+        threads => \'threads - 1',
+        point   => \'point - 2',
+    } );
+    
+    return 1;
 }
 
 1;

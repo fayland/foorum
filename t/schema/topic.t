@@ -74,7 +74,7 @@ $schema->resultset('Forum')->create(
 
 # test remove
 $topic_res->remove(
-    1, 1,
+    1,
     {   operator_id => 2,
         log_text    => 'delete for test',
     }

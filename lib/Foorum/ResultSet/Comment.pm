@@ -279,6 +279,13 @@ sub create_comment {
 
     my $cache_key = "comment|object_type=$object_type|object_id=$object_id";
     $cache->remove($cache_key);
+    
+    # update user stat
+    my $user = $schema->resultset('User')->get( { user_id => $user_id } );
+    $schema->resultset('User')->update_user( $user, {
+        replies => \'replies + 1',
+        point   => \'point + 1',
+    } );
 
     # Email Sent
     if ( $object_type eq 'user_profile' ) {
@@ -380,6 +387,12 @@ sub remove_one_item {
             ->remove_file_by_upload_id( $comment->{upload_id} );
     }
     $self->search( { comment_id => $comment->{comment_id} } )->delete;
+    
+    my $user = $schema->resultset('User')->get( { user_id => $comment->{user_id} } );
+    $schema->resultset('User')->update_user( $user, {
+        replies => \'replies - 1',
+        point   => \'point - 1',
+    } );
 
     return 1;
 }

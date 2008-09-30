@@ -1,6 +1,6 @@
 -- 
 -- Created by SQL::Translator::Producer::SQLite
--- Created on Fri Jun 20 13:35:27 2008
+-- Created on Tue Sep 30 12:54:33 2008
 -- 
 BEGIN TRANSACTION;
 
@@ -335,6 +335,7 @@ CREATE TABLE user (
   nickname varchar(100) NOT NULL,
   gender enum(2) NOT NULL DEFAULT 'NA',
   email varchar(255) NOT NULL,
+  point int(8) NOT NULL DEFAULT '0',
   register_time int(11) NOT NULL DEFAULT '0',
   register_ip varchar(32) NOT NULL,
   last_login_ip varchar(32) DEFAULT NULL,

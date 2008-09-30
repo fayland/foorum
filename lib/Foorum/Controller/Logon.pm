@@ -76,6 +76,7 @@ sub login : Global {
             $c->model('DBIC::User')->update_user(
                 $c->user,
                 {   login_times   => \'login_times + 1',
+                    point         => \'point + 1',
                     last_login_on => time(),
                     last_login_ip => $c->req->address,
                 }

@@ -3,7 +3,7 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-    <title>Foorum::Schema version 0.2.4</title>
+    <title>Foorum::Schema version 0.2.7</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style type="text/css">
 body {
@@ -101,7 +101,7 @@ div.comment {
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body>
-<h1><a name="index">Foorum::Schema version 0.2.4</a></h1>
+<h1><a name="index">Foorum::Schema version 0.2.7</a></h1>
 
 
 
@@ -1821,40 +1821,43 @@ div.comment {
         <tr class="even"> <td>email </td> <td>VARCHAR(255) </td> <td>NOT NULL </td>
 
     
-        <tr class="odd"> <td>register_time </td> <td>INT(11) </td> <td>NOT NULL </td>
+        <tr class="odd"> <td>point </td> <td>INT(8) </td> <td>NOT NULL </td>
 
     
-        <tr class="even"> <td>register_ip </td> <td>VARCHAR(32) </td> <td>NOT NULL </td>
+        <tr class="even"> <td>register_time </td> <td>INT(11) </td> <td>NOT NULL </td>
 
     
-        <tr class="odd"> <td>last_login_on </td> <td>INT(11) </td> <td> </td>
+        <tr class="odd"> <td>register_ip </td> <td>VARCHAR(32) </td> <td>NOT NULL </td>
 
     
-        <tr class="even"> <td>last_login_ip </td> <td>VARCHAR(32) </td> <td> </td>
+        <tr class="even"> <td>last_login_on </td> <td>INT(11) </td> <td> </td>
 
     
-        <tr class="odd"> <td>login_times </td> <td>MEDIUMINT(8) </td> <td>NOT NULL, DEFAULT VALUE '1' </td>
+        <tr class="odd"> <td>last_login_ip </td> <td>VARCHAR(32) </td> <td> </td>
 
     
-        <tr class="even"> <td>status </td> <td>ENUM(10) </td> <td>NOT NULL, DEFAULT VALUE 'unverified' </td>
+        <tr class="even"> <td>login_times </td> <td>MEDIUMINT(8) </td> <td>NOT NULL, DEFAULT VALUE '1' </td>
 
     
-        <tr class="odd"> <td>threads </td> <td>INT(11) </td> <td>NOT NULL </td>
+        <tr class="odd"> <td>status </td> <td>ENUM(10) </td> <td>NOT NULL, DEFAULT VALUE 'unverified' </td>
 
     
-        <tr class="even"> <td>replies </td> <td>INT(11) </td> <td>NOT NULL </td>
+        <tr class="even"> <td>threads </td> <td>INT(11) </td> <td>NOT NULL </td>
 
     
-        <tr class="odd"> <td>lang </td> <td>CHAR(2) </td> <td>DEFAULT VALUE 'cn' </td>
+        <tr class="odd"> <td>replies </td> <td>INT(11) </td> <td>NOT NULL </td>
 
     
-        <tr class="even"> <td>country </td> <td>CHAR(2) </td> <td>DEFAULT VALUE 'cn' </td>
+        <tr class="even"> <td>lang </td> <td>CHAR(2) </td> <td>DEFAULT VALUE 'cn' </td>
 
     
-        <tr class="odd"> <td>state_id </td> <td>INT(11) </td> <td>NOT NULL </td>
+        <tr class="odd"> <td>country </td> <td>CHAR(2) </td> <td>DEFAULT VALUE 'cn' </td>
 
     
-        <tr class="even"> <td>city_id </td> <td>INT(11) </td> <td>NOT NULL </td>
+        <tr class="even"> <td>state_id </td> <td>INT(11) </td> <td>NOT NULL </td>
+
+    
+        <tr class="odd"> <td>city_id </td> <td>INT(11) </td> <td>NOT NULL </td>
 
     
 </table>
@@ -2464,7 +2467,7 @@ div.comment {
 
 
     <p>
-        Generated Fri Sep 19 13:27:40 2008
+        Generated Tue Sep 30 12:52:23 2008
         by <a href="http://www.jasonkohles.com/projects/DBICx-AutoDoc/">DBICx::AutoDoc</a>
         version 0.04
     </p>

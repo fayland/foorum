@@ -123,10 +123,6 @@ sub post : Local {
         );
     }
 
-    # update user stat
-    $c->model('DBIC::User')
-        ->update_user( $c->user, { replies => \"replies + 1" } );    #"
-
     if ($forum_id) {
         $c->forward( '/clear_when_topic_changes', [$forum] );
     }
@@ -237,10 +233,6 @@ sub reply : LocalRegex('^(\d+)/reply$') {
             }
         );
     }
-
-    # update user stat
-    $c->model('DBIC::User')
-        ->update_user( $c->user, { replies => \"replies + 1" } );    #"
 
     if ($forum_id) {
         $c->forward( '/clear_when_topic_changes', [$forum] );
@@ -427,7 +419,6 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             }
 
             $c->model('DBIC::Topic')->remove(
-                $forum_id,
                 $object_id,
                 {   log_text    => $comment->{title},
                     operator_id => $c->user->user_id

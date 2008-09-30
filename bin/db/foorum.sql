@@ -401,6 +401,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `nickname` varchar(100) NOT NULL,
   `gender` enum('F','M','NA') NOT NULL default 'NA',
   `email` varchar(255) NOT NULL,
+  `point` int(8) NOT NULL default '0',
   `register_time` int(11) unsigned NOT NULL default '0',
   `register_ip` varchar(32) NOT NULL,
   `last_login_ip` varchar(32) default NULL,

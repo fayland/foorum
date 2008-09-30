@@ -197,10 +197,6 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
         }
     );
 
-    # update user stat
-    $c->model('DBIC::User')
-        ->update_user( $c->user, { threads => \"threads + 1", } );    #"
-
     # update forum
     $c->model('DBIC::Forum')->update_forum(
         $forum_id,

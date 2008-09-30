@@ -40,6 +40,8 @@ __PACKAGE__->add_columns(
     is_nullable => 0,
     size => 255,
   },
+  "point",
+  { data_type => "INT", default_value => 0, is_nullable => 0, size => 8 },
   "register_time",
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
   "register_ip",
@@ -142,6 +144,12 @@ NOT NULL, DEFAULT VALUE 'NA'
 =item email
 
 VARCHAR(255)
+
+NOT NULL
+
+=item point
+
+INT(8)
 
 NOT NULL
 

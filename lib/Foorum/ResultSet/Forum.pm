@@ -230,7 +230,7 @@ sub merge_forums {
 
     # FIXME!!!
     # need delete all topic_id cache object
-    # $=cache->remove("topic|topic_id=$topic_id");
+    # $c->cache->remove("topic|topic_id=$topic_id");
 
     # polls
     $schema->resultset('Poll')->search( { forum_id => $from_id, } )

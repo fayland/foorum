@@ -343,6 +343,7 @@ CREATE TABLE "user" (
   "nickname" character varying(100) NOT NULL,
   "gender" character varying(2) DEFAULT 'NA' NOT NULL,
   "email" character varying(255) NOT NULL,
+  "point" integer DEFAULT '0' NOT NULL,
   "register_time" bigint DEFAULT '0' NOT NULL,
   "register_ip" character varying(32) NOT NULL,
   "last_login_ip" character varying(32) DEFAULT NULL,
