@@ -28,33 +28,7 @@ my $dbh    = $schema->storage->dbh;
 # we add a new column 'point' to user table
 # and a new 'type' value 'created_time' in 'forum_settings' table
 
-# for 'created_time'
-# 1, get all forums
-my $frs = $schema->resultset('Forum');
-while ( my $r = $frs->next ) {
-    # check if the forum_settings have that already
-    my $count = $schema->resultset('ForumSettings')->count( {
-        forum_id => $r->forum_id
-    } );
-    unless ($count) {
-        print "Working on Forum " . $r->forum_id . "\n";
-        # get the min time from topic
-        my $sql = q~SELECT MIN(post_on) FROM topic WHERE forum_id = ?~;
-        my $sth = $dbh->prepare($sql);
-        $sth->execute( $r->forum_id );
-        my ($min_time) = $sth->fetchrow_array;
-        # insert into forum_settings
-        $schema->resultset('ForumSettings')->create(
-            {   forum_id => $r->forum_id,
-                type     => 'created_time',
-                value    => $min_time || time(),
-            }
-        );
-    }
-}
-
-exit;
-
+# new 'point'
 my $sql
     = q~ALTER TABLE `user` ADD `point` INT( 8 ) NOT NULL DEFAULT '0' AFTER `email` ;~;
 $dbh->do($sql) or die $DBI::errstr;
@@ -67,6 +41,31 @@ while ( my $r = $rs->next ) {
     my $point = $r->threads * 2 + $r->replies + $r->login_times;
     $r->update( { point => $point } );
     print "Working on User " . $r->user_id . "\n";
+}
+
+# for 'created_time'
+# 1, get all forums
+my $frs = $schema->resultset('Forum');
+while ( my $r = $frs->next ) {
+    # 2, check if the forum_settings have that already
+    my $count = $schema->resultset('ForumSettings')->count( {
+        forum_id => $r->forum_id
+    } );
+    unless ($count) {
+        print "Working on Forum " . $r->forum_id . "\n";
+        # 3, get the min time from topic
+        my $sql = q~SELECT MIN(post_on) FROM topic WHERE forum_id = ?~;
+        my $sth = $dbh->prepare($sql);
+        $sth->execute( $r->forum_id );
+        my ($min_time) = $sth->fetchrow_array;
+        # 4, insert into forum_settings
+        $schema->resultset('ForumSettings')->create(
+            {   forum_id => $r->forum_id,
+                type     => 'created_time',
+                value    => $min_time || time(),
+            }
+        );
+    }
 }
 
 print "Done\n";
