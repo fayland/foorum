@@ -20,6 +20,7 @@
 	[% IF user.details.birthday %]
 	<tr class='misc2'><td align='right'>[% c.loc('Birthday') %]</td><td>[% user.details.birthday %]</td></tr>
 	[% END %]
+	<tr class='misc1'><td align='right'>[% c.loc("Point:") %]</td><td>[% user.point %]</td></tr>
 	<tr class='misc1'><td align='right'>[% c.loc("Threads:") %]</td><td>[% user.threads %]</td></tr>
 	<tr class='misc2'><td align='right'>[% c.loc("Replies:") %]</td><td>[% user.replies %]</td></tr>
 	<tr class='misc2'><td align='right'>[% c.loc("Register on") %]</label></td><td>[% date_format(user.register_time) %]</td></tr>
