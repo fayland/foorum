@@ -1,6 +1,6 @@
 [% PROCESS sub/date.html %]
 
-[% title = 'Action Logs Of ' _ forum.name %]
+[% title = 'About ' _ forum.name %]
 
 [% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
 
@@ -22,10 +22,6 @@
         [% END %]
         <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
         <li class="ui-tabs-selected"><a href='[% forum.forum_url %]/about'><span>About</span></a></li>
-        <li>Admin: <a href='/u/[% forum_roles.${forum.forum_id}.admin.username %]'>[% forum_roles.${forum.forum_id}.admin.nickname %]</a>
-[% FOREACH moderator IN forum_roles.${forum.forum_id}.moderator %]
-[% IF loop.first %], [% END %]<a href='/u/[% moderator.username %]'>[% moderator.nickname %]</a>[% UNLESS loop.last %], [% END %]
-[% END %]</li>
     </ul>
     <div class="ui-tabs-panel">
 
@@ -37,6 +33,10 @@
         <li>Can [% IF forum.settings.can_post_replies == 'N' %]<b>NOT</b>[% END %] Post Replies</li>
         <li>Can [% IF forum.settings.can_post_polls == 'N' %]<b>NOT</b>[% END %] Post Polls</li>
         <li>Created On [% date_format(settings.created_time) %]</li>
+        <li>Admin: <a href='/u/[% forum_roles.${forum.forum_id}.admin.username %]'>[% forum_roles.${forum.forum_id}.admin.nickname %]</a>
+[% FOREACH moderator IN forum_roles.${forum.forum_id}.moderator %]
+[% IF loop.first %], [% END %]<a href='/u/[% moderator.username %]'>[% moderator.nickname %]</a>[% UNLESS loop.last %], [% END %]
+[% END %]</li>
     </ul>
 </td>
 </tr>
