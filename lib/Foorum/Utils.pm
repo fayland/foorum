@@ -129,10 +129,6 @@ return a random word (length is $len), char is random ('A' .. 'Z', 'a' .. 'z', 0
 
 since we always use /page=(\d+)/ as in sub/pager.html
 
-=item datetime_to_tt2_acceptable
-
-convert MySQL DateTime format to TT2 date.format
-
 =item truncate_text
 
 truncate text using Encode utf8
