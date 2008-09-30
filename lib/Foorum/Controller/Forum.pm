@@ -244,14 +244,13 @@ sub join : Chained('forum') Arg(0) {
     }
 }
 
-sub members : Chained('forum') Args(0) {
-    my ( $self, $c ) = @_;
+sub members : Chained('forum') Args(1) {
+    my ( $self, $c, $member_type ) = @_;
 
     my $forum      = $c->stash->{forum};
     my $forum_id   = $forum->{forum_id};
     my $forum_code = $forum->{forum_code};
 
-    my ($member_type) = ( $c->req->path =~ /members\/(\w+)/ );
     $member_type ||= 'user';
     if (    $member_type ne 'pending'
         and $member_type ne 'blocked'
