@@ -79,7 +79,7 @@ sub login : Global {
             $point++ if ( $c->user->{last_login_on} < time() - 3600 * 3 );
             $c->model('DBIC::User')->update_user(
                 $c->user,
-                {   login_times   => \'login_times + 1', #'
+                {   login_times   => \'login_times + 1',    #'
                     point         => $point,
                     last_login_on => time(),
                     last_login_ip => $c->req->address,

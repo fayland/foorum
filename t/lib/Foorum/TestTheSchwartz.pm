@@ -8,11 +8,11 @@ use FindBin qw/$Bin/;
 use DBI;
 our @EXPORT = ( @Test::More::EXPORT, 'run_test' );
 
-eval 'require DBD::SQLite'; ## no critic (ProhibitStringyEval)
+eval 'require DBD::SQLite';    ## no critic (ProhibitStringyEval)
 plan skip_all => 'this test requires DBD::SQLite' if $@;
-eval 'require File::Temp'; ## no critic (ProhibitStringyEval)
+eval 'require File::Temp';     ## no critic (ProhibitStringyEval)
 plan skip_all => 'this test requires File::Temp' if $@;
-eval 'require MooseX::TheSchwartz;'; ## no critic (ProhibitStringyEval)
+eval 'require MooseX::TheSchwartz;';    ## no critic (ProhibitStringyEval)
 plan skip_all => 'this test requires MooseX::TheSchwartz' if $@;
 
 sub run_test {

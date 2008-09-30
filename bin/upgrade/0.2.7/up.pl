@@ -27,14 +27,15 @@ my $dbh    = $schema->storage->dbh;
 # from Foorum v0.2.7 on,
 # we add a new column 'point' to user table
 
-my $sql = q~ALTER TABLE `user` ADD `point` INT( 8 ) NOT NULL DEFAULT '0' AFTER `email` ;~;
+my $sql
+    = q~ALTER TABLE `user` ADD `point` INT( 8 ) NOT NULL DEFAULT '0' AFTER `email` ;~;
 $dbh->do($sql) or die $DBI::errstr;
 $sql = q~ALTER TABLE `user` ADD INDEX ( `point` ) ;~;
 $dbh->do($sql) or die $DBI::errstr;
 
 # calc the points
 my $rs = $schema->resultset('User');
-while (my $r = $rs->next) {
+while ( my $r = $rs->next ) {
     my $point = $r->threads * 2 + $r->replies + $r->login_times;
     $r->update( { point => $point } );
     print "Working on " . $r->user_id . "\n";

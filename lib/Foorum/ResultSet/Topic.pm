@@ -48,13 +48,16 @@ sub create_topic {
             time        => time(),
         }
     );
-    
+
     # update user stat
-    my $user = $schema->resultset('User')->get( { user_id => $create->{author_id} } );
-    $schema->resultset('User')->update_user( $user, {
-        threads => \'threads + 1',
-        point   => \'point + 2',
-    } );
+    my $user = $schema->resultset('User')
+        ->get( { user_id => $create->{author_id} } );
+    $schema->resultset('User')->update_user(
+        $user,
+        {   threads => \'threads + 1',
+            point   => \'point + 2',
+        }
+    );
 
     return $topic;
 }
@@ -76,7 +79,7 @@ sub remove {
     my $schema = $self->result_source->schema;
     my $cache  = $schema->cache();
 
-    my $topic = $self->get( $topic_id );
+    my $topic = $self->get($topic_id);
 
     return 0 unless ($topic);
 
@@ -121,7 +124,7 @@ sub remove {
     # update last
     my $lastest = $self->search( { forum_id => $forum_id },
         { order_by => \'last_update_date DESC', columns => ['topic_id'] } )
-        ->first; #'
+        ->first;    #'
     my $last_post_id = $lastest ? $lastest->topic_id : 0;
     $schema->resultset('Forum')->update_forum(
         $forum_id,
@@ -130,15 +133,18 @@ sub remove {
             total_replies => \"total_replies - $total_replies",
         }
     );
-    
+
     # update user stat
-    my $user = $schema->resultset('User')->get( { user_id => $topic->{author_id} } );
+    my $user = $schema->resultset('User')
+        ->get( { user_id => $topic->{author_id} } );
     my $remove_point = ( $topic->{elite} ) ? 6 : 2;
-    $schema->resultset('User')->update_user( $user, {
-        threads => \'threads - 1', #'
-        point   => \"point - $remove_point", #"
-    } );
-    
+    $schema->resultset('User')->update_user(
+        $user,
+        {   threads => \'threads - 1',              #'
+            point   => \"point - $remove_point",    #"
+        }
+    );
+
     return 1;
 }
 

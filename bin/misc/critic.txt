@@ -22,6 +22,7 @@
 /bin/upgrade/0.2.0/scraper.pl source OK
 /bin/upgrade/0.2.2/up.pl source OK
 /bin/upgrade/0.2.3/up.pl source OK
+/bin/upgrade/0.2.7/up.pl source OK
 /lib/Foorum/Action/PathLogger.pm source OK
 /lib/Foorum/Controller/Admin/BanIP.pm source OK
 /lib/Foorum/Controller/Admin/Forum.pm source OK
@@ -131,3 +132,4 @@
 /t/search/02database.t source OK
 /t/template/01wrapper.t source OK
 /t/theschwartz/daily_report.t source OK
+/t/theschwartz/resend_activation.t source OK
