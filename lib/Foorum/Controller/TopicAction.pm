@@ -58,7 +58,7 @@ sub lock_or_sticky_or_elite :
         
         # for point
         my $plus_point = ($is_un) ? '- 4' : '+ 4';
-        my $user = $c->model('DBIC')->resultset('User')->get($c, { user_id => $topic->{author_id} } );
+        my $user = $c->model('DBIC')->resultset('User')->get( { user_id => $topic->{author_id} } );
         $c->model('DBIC')->resultset('User')->update_user( $user, {
             point => \"point $plus_point", #"
         } );
