@@ -24,6 +24,7 @@
         [% END %]
         [% END %]
         <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
+        <li><a href='[% forum.forum_url %]/about'><span>About</span></a></li>
         [% IF c.user_exists AND roles.is_admin %]
         <li><a href='/forumadmin/[% forum.forum_id %]'><span>[% c.loc('Forum Admin') %]</span></a></li>
         [% END %]

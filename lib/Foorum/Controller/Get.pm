@@ -21,6 +21,7 @@ sub forum : Private {
         and not $c->model('Policy')->is_moderator( $c, $forum->{forum_id} ) );
 
     my $forum_id = $forum->{forum_id};
+    $c->stash->{forum} = $forum;
 
     # check policy
     if (    $c->user_exists
@@ -44,7 +45,6 @@ sub forum : Private {
         }
     }
 
-    $c->stash->{forum} = $forum;
     return $forum;
 }
 
