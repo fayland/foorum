@@ -244,13 +244,14 @@ sub join : Chained('forum') Arg(0) {
     }
 }
 
-sub members : Chained('forum') Args(1) {
+sub members : Chained('forum') Args {
     my ( $self, $c, $member_type ) = @_;
 
     my $forum      = $c->stash->{forum};
     my $forum_id   = $forum->{forum_id};
     my $forum_code = $forum->{forum_code};
 
+    my ($member_type) = ( $c->req->path =~ /members\/(\w+)/ );
     $member_type ||= 'user';
     if (    $member_type ne 'pending'
         and $member_type ne 'blocked'
@@ -292,8 +293,7 @@ sub members : Chained('forum') Args(1) {
         %members = map { $_->user_id => $_ } @members;
     }
 
-    my $url_prefix = $forum->{forum_url} . '/members';
-    $url_prefix .= "/$member_type" if ($member_type);
+    my $url_prefix = $forum->{forum_url} . "/members/$member_type";
 
     $c->stash(
         {   template            => 'forum/members.html',
