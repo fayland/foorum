@@ -1,6 +1,34 @@
 This file documents the revision history for Foorum.
 
-0.1.4 Sat Apr 12 14:26:00
+0.1.9 Sun Jun 29 20:31:00 2008
+        - ban user bug fix.
+        - forum rss no text fix.
+        - make poll optional (set in foorum.yml function_on: poll)
+        - trying to support Mac OS
+
+0.1.8 Fri Jun 20 22:15:00 2008
+        - TheSchwartz::ResendActivation to real use
+        - use stardard Session::Store::DBIC
+
+0.1.7 Tue Jun 17 9:32:00 2008
+        - use Catalyst::Plugin::Config::YAML::XS instead of Catalyst::Plugin::Config::YAML
+        - new jQuery UI 1.5
+        - add SQLite SQL files bin/db/foorum.sqlite.sql and theschwartz.sqlite.sql
+        - add 'post_on' column in 'topic' table + Sort by post_on for Search Topic
+        - DBICx::AutoDoc support
+
+0.1.6 Mon Jun 16 7:29:00 2008
+        - fix login Captcha bug
+        - TheSchwartz cron job: resend activation email
+        - better document
+
+0.1.5 Sun Jun 15 15:37:00 2008
+        - Sphinx::Search improvements
+        - change DATETIME to INT(11) for tables.
+        - because 'mark ResultSetManager as deprecated and undocument it' in DBIx-Class, we switch back to ResultSet/*.pm
+        - Foorum::Search with Database or Sphinx backend
+
+0.1.4 Sat Apr 12 14:26:00 2008
         - $topic->url/print
         - Sphinx::Search support (EXPERIMENTAL)
 

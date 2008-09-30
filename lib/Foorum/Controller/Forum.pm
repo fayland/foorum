@@ -251,7 +251,6 @@ sub members : Chained('forum') Args {
     my $forum_id   = $forum->{forum_id};
     my $forum_code = $forum->{forum_code};
 
-    my ($member_type) = ( $c->req->path =~ /members\/(\w+)/ );
     $member_type ||= 'user';
     if (    $member_type ne 'pending'
         and $member_type ne 'blocked'
