@@ -121,7 +121,7 @@ sub remove {
     # update last
     my $lastest = $self->search( { forum_id => $forum_id },
         { order_by => \'last_update_date DESC', columns => ['topic_id'] } )
-        ->first;
+        ->first; #'
     my $last_post_id = $lastest ? $lastest->topic_id : 0;
     $schema->resultset('Forum')->update_forum(
         $forum_id,
@@ -133,9 +133,10 @@ sub remove {
     
     # update user stat
     my $user = $schema->resultset('User')->get( { user_id => $topic->{author_id} } );
+    my $remove_point = ( $topic->{elite} ) ? 6 : 2;
     $schema->resultset('User')->update_user( $user, {
-        threads => \'threads - 1',
-        point   => \'point - 2',
+        threads => \'threads - 1', #'
+        point   => \"point - $remove_point", #"
     } );
     
     return 1;
