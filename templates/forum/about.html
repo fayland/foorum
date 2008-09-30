@@ -22,6 +22,10 @@
         [% END %]
         <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
         <li class="ui-tabs-selected"><a href='[% forum.forum_url %]/about'><span>About</span></a></li>
+        <li>Admin: <a href='/u/[% forum_roles.${forum.forum_id}.admin.username %]'>[% forum_roles.${forum.forum_id}.admin.nickname %]</a>
+[% FOREACH moderator IN forum_roles.${forum.forum_id}.moderator %]
+[% IF loop.first %], [% END %]<a href='/u/[% moderator.username %]'>[% moderator.nickname %]</a>[% UNLESS loop.last %], [% END %]
+[% END %]</li>
     </ul>
     <div class="ui-tabs-panel">
 
