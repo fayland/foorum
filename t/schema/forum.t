@@ -8,7 +8,7 @@ BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
     $ENV{TEST_FOORUM} = 1;
-    plan tests => 17;
+    plan tests => 20;
 }
 
 use FindBin;
@@ -40,6 +40,12 @@ $schema->resultset('ForumSettings')->create(
         value    => 'N',
     }
 );
+$schema->resultset('ForumSettings')->create(
+    {   forum_id => 1,
+        type     => 'create_time',
+        value    => '123456',
+    }
+);
 $cache->remove("forum|forum_id=1");
 
 # test get
@@ -54,6 +60,19 @@ is( $forum->{forum_url},  '/forum/test1111', 'forum_url OK' );
 # test forum_settings
 is( $forum->{settings}->{can_post_threads},
     'N', 'settings can_post_threads OK' );
+is( $forum->{settings}->{create_time},
+    undef, 'by default, we do NOT get create_time forum settings' );
+
+# get all forum_settings
+my $settings = $forum_res->get_forum_settings( $forum, { all => 1 } );
+is( scalar keys %$settings, 2, 'get 2 settings' );
+is_deeply(
+    $settings,
+    {   can_post_threads => 'N',
+        create_time      => 123456
+    },
+    'get_forum_settings all => 1 OK'
+);
 
 # test update
 $forum_res->update_forum( 1,

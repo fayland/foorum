@@ -98,45 +98,25 @@ sub basic : Chained('forum_for_admin') Args(0) {
     # insert data into table.
 
     # 1, forum settings
-    my $can_post_threads = $c->req->param('can_post_threads');
-    $can_post_threads = 'Y' unless ( $can_post_threads eq 'N' );
-    my $can_post_replies = $c->req->param('can_post_replies');
-    $can_post_replies = 'Y' unless ( $can_post_replies eq 'N' );
-    my $can_post_polls = $c->req->param('can_post_polls');
-    $can_post_polls = 'Y' unless ( $can_post_polls eq 'N' );
+    my @all_types = qw/can_post_threads can_post_replies can_post_polls/;
 
     # delete before create
     $c->model('DBIC')->resultset('ForumSettings')->search(
         {   forum_id => $forum_id,
-            type     => {
-                'IN',
-                [ 'can_post_threads', 'can_post_replies', 'can_post_polls' ]
-            },
+            type     => { 'IN', \@all_types },
         }
     )->delete;
-    if ( $can_post_threads eq 'N' ) {   # don't store 'Y' because it's default
-        $c->model('DBIC')->resultset('ForumSettings')->create(
-            {   forum_id => $forum_id,
-                type     => 'can_post_threads',
-                value    => 'N',
-            }
-        );
-    }
-    if ( $can_post_replies eq 'N' ) {
-        $c->model('DBIC')->resultset('ForumSettings')->create(
-            {   forum_id => $forum_id,
-                type     => 'can_post_replies',
-                value    => 'N',
-            }
-        );
-    }
-    if ( $can_post_polls eq 'N' ) {
-        $c->model('DBIC')->resultset('ForumSettings')->create(
-            {   forum_id => $forum_id,
-                type     => 'can_post_polls',
-                value    => 'N',
-            }
-        );
+    foreach my $type (@all_types) {
+        my $value = $c->req->params->{$type};
+        $value = 'Y' unless ( $value eq 'N' );
+        if ( $value eq 'N' ) {    # don't store 'Y' because it's default
+            $c->model('DBIC')->resultset('ForumSettings')->create(
+                {   forum_id => $forum_id,
+                    type     => $type,
+                    value    => 'N',
+                }
+            );
+        }
     }
 
     # 2, forum table
