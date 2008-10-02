@@ -5,31 +5,52 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class::ResultSet';
 
-sub get_forum_settings {
-    my ( $self, $forum, $opts ) = @_;
+sub get_all {
+    my ($self, $forum_id) = @_;
 
-    my $schema   = $self->result_source->schema;
-    my $forum_id = $forum->{forum_id};
-
-    my $settings;
-
-    my @extra_cols;
-    if ( not exists $opts->{all} ) {
-        my @all_types = qw/can_post_threads can_post_replies can_post_polls/;
-        $settings->{$_} = 'Y' foreach (@all_types);
-        @extra_cols = ( type => { 'IN', \@all_types } );
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
+    
+    my $cache_key = "forum_settings|forum_id=$forum_id";
+    my $cache_val = $cache->get($cache_key);
+    
+    if ($cache_val and ref $cache_val eq 'HASH') {
+        return $cache_val;
     }
-
-    my $settings_rs = $self->search(
-        {   forum_id => $forum_id,
-            @extra_cols,
-        }
-    );
+    
+    # get and set cache
+    my $settings;
+    my $settings_rs = $self->search( { forum_id => $forum_id } );
     while ( my $r = $settings_rs->next ) {
         $settings->{ $r->type } = $r->value;
     }
-
+    $cache->set($cache_key, $settings, 3600); # 1 hour
+    
     return $settings;
+}
+
+sub get_basic {
+    my ( $self, $forum_id ) = @_;
+
+    my $settings = $self->get_all( $forum_id );
+
+    # grep those types
+    my @all_types = qw/can_post_threads can_post_replies can_post_polls/;
+    my %settings = map { $_ => $settings->{$_} || 'Y' } @all_types;
+    
+    return \%settings;
+}
+
+sub get_forum_links {
+    my ( $self, $forum_id ) = @_;
+
+    my $settings = $self->get_all( $forum_id );
+    
+    # grep those keys with forum_link\d+
+    my @links = grep { /^forum_link\d+$/ } keys %$settings;
+    @links = map { $settings->{$_} } sort @links;
+    
+    return wantarray ? @links : \@links;
 }
 
 1;
@@ -45,14 +66,21 @@ Foorum::ResultSet::ForumSettings - ForumSettings object
 
 =over 4
 
-=item get_forum_settings($forum_obj, $opts)
+=item get_all($forum_id)
 
-  $schema->resultset('ForumSettings')->get_forum_settings( $forum );
-  $c->model('DBIC::ForumSettings')->get_forum_settings( $forum, { all => 1 } );
+  $schema->resultset('ForumSettings')->get_all( $forum_id );
+  $c->model('DBIC::ForumSettings')->get_all( $forum_id );
 
-It gets the data from forum_settings table. by default, we only get the settings of my @all_types = qw/can_post_threads can_post_replies can_post_polls/;
+It gets the data from forum_settings table.
 
-while pass $opts as { all => 1 } can get all forum settings including create_time and others
+return $HASHREF
+
+=item get_basic($forum_id)
+
+  $schema->resultset('ForumSettings')->get_basic( $forum_id );
+  $c->model('DBIC::ForumSettings')->get_basic( $forum_id );
+
+get the settings of my @all_types = qw/can_post_threads can_post_replies can_post_polls/;
 
 return $HASHREF
 

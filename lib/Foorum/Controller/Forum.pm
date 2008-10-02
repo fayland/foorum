@@ -459,7 +459,7 @@ sub about : Chained('forum') Args(0) {
 
     # get all settings, so that we have created_time
     $c->stash->{settings} = $c->model('DBIC')->resultset('ForumSettings')
-        ->get_forum_settings( $forum, { all => 1 } );
+        ->get_all( $forum->{forum_id} );
 
     # get all moderators
     $c->stash->{forum_roles}

@@ -345,6 +345,8 @@ sub links : Chained('forum_for_admin') Args(0) {
         
     } else {
         # fulfill for FillInForm
+        my @links = $forum_settings_res->get_forum_links( $forum_id );
+        my $filldata;
     }
 }
 

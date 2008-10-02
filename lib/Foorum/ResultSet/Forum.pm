@@ -33,7 +33,7 @@ sub get {
 
             # set cache
             $forum = $forum->{_column_data};             # hash for cache
-            $forum->{settings}  = $schema->resultset('ForumSettings')->get_forum_settings($forum);
+            $forum->{settings}  = $schema->resultset('ForumSettings')->get_basic($forum->{forum_id});
             $forum->{forum_url} = $self->get_forum_url($forum);
             $cache->set( "forum|forum_id=$forum_id",
                 { val => $forum, 1 => 2 }, 7200 );
@@ -54,7 +54,7 @@ sub get {
 
             # set cache
             $forum = $forum->{_column_data};    # hash for cache
-            $forum->{settings}  = $schema->resultset('ForumSettings')->get_forum_settings($forum);
+            $forum->{settings}  = $schema->resultset('ForumSettings')->get_basic($forum->{forum_id});
             $forum->{forum_url} = $self->get_forum_url($forum);
             $cache->set( "forum|forum_id=$forum_id",
                 { val => $forum, 1 => 2 }, 7200 );
@@ -318,7 +318,7 @@ get() do not query database directly, it try to get from cache, if not exists, g
     }
   }
 
-I<settings> in the hash is from L<Foorum::ResultSet::ForumSettings> get_forum_settings.
+I<settings> in the hash is from L<Foorum::ResultSet::ForumSettings> get_basic.
 
 return $HASHREF
 
