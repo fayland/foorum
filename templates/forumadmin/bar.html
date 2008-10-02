@@ -17,6 +17,7 @@
         <li><a href='[% forum.forum_url %]/members'><span>[% c.loc('Members Settings') %]</span></a></li>
         [% END %]
         <li[% IF c.req.path.match('announcement') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/announcement'><span>[% c.loc('Announcement Setting') %]</span></a></li>
+        <li[% IF c.req.path.match('links') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/links'><span>[% c.loc('Forum Links') %]</span></a></li>
     </ul>
     <div class="ui-tabs-panel">
 

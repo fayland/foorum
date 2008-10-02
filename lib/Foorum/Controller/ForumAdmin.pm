@@ -330,6 +330,24 @@ sub announcement : Chained('forum_for_admin') Args(0) {
     $c->res->redirect( $forum->{forum_url} );
 }
 
+sub links : Chained('forum_for_admin') Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $forum     = $c->stash->{forum};
+    my $forum_id  = $forum->{forum_id};
+    my $max_count = 9;
+    $c->stash->{max_count} = $max_count;
+
+    $c->stash( { template => 'forumadmin/links.html' } );
+    
+    if ( $c->req->method eq 'POST' ) {
+        # validate
+        
+    } else {
+        # fulfill for FillInForm
+    }
+}
+
 # it's an ajax request
 sub change_membership : Chained('forum_for_admin') Args(0) {
     my ( $self, $c ) = @_;
