@@ -9,6 +9,7 @@ version_from    ('lib/Foorum/Version.pm');
 requires 'Template' => '2.20';
 requires 'DBIx::Class';
 requires 'Catalyst' => '5.64';
+requires 'Moose'    => '0.57';
 requires 'Digest';
 requires 'DateTime';
 requires 'Date::Calc';
@@ -50,7 +51,6 @@ requires 'Net::CIDR::Lite';
 requires 'Sphinx::Search';
 
 # cron
-requires 'TheSchwartz::Simple';
 requires 'MooseX::TheSchwartz';
 requires 'Schedule::Cron';
 if ($^O ne 'MSWin32') {

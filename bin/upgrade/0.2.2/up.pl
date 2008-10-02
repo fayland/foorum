@@ -8,7 +8,6 @@ use warnings;
 
 use CPAN;
 CPAN::Shell->install('Catalyst::Plugin::PageCache');
-CPAN::Shell->install('TheSchwartz::Simple');
 CPAN::Shell->install('MooseX::TheSchwartz');
 
 1;

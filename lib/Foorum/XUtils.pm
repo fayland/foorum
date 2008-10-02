@@ -6,7 +6,7 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 
 use YAML::XS qw/LoadFile/;    # config
-use TheSchwartz::Simple;      # theschwartz
+use MooseX::TheSchwartz;      # theschwartz
 use DBI;
 use Template;                 # template
 use Template::Stash::XS;
@@ -108,7 +108,7 @@ sub theschwartz {
         $config->{theschwartz_pwd}  || $config->{dsn_pwd},
         { PrintError => 1, RaiseError => 1 }
     );
-    $theschwartz = TheSchwartz::Simple->new( [$dbh] );
+    $theschwartz = MooseX::TheSchwartz->new( databases => [$dbh] );
 
     return $theschwartz;
 }
@@ -144,7 +144,7 @@ generally like $c->view('TT'), yet a bit different
 
 =item theschwartz
 
-TheSchwartz->new with correct database from $config
+L<MooseX::TheSchwartz> ->new with correct database from $config
 
 =back
 
