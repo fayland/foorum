@@ -32,7 +32,6 @@ bin/misc/critic.txt
 bin/misc/css-min.pl
 bin/misc/dbicx_autodoc.pl
 bin/misc/g2b.pl
-bin/misc/graph.pl
 bin/misc/js-min.pl
 bin/misc/perlcritic.pl
 bin/misc/perltidy.pl
@@ -49,6 +48,7 @@ bin/upgrade/0.1.8/up.pl
 bin/upgrade/0.2.0/scraper.pl
 bin/upgrade/0.2.2/up.pl
 bin/upgrade/0.2.3/up.pl
+bin/upgrade/0.2.7/up.pl
 Changes
 Changes2
 conf/cron.yml
@@ -593,6 +593,7 @@ t/search/01main.t
 t/search/02database.t
 t/template/01wrapper.t
 t/theschwartz/daily_report.t
+t/theschwartz/resend_activation.t
 templates/admin/ban_ip/default.html
 templates/admin/bar.html
 templates/admin/forum/index.html
@@ -610,6 +611,7 @@ templates/comment/show_with_head.html
 templates/config/format.html
 templates/format/bbcode.html
 templates/format/emot.html
+templates/forum/about.html
 templates/forum/action_log.html
 templates/forum/board.html
 templates/forum/create.html
@@ -647,6 +649,7 @@ templates/lang/en/email/welcome_to_join.txt
 templates/lang/en/help/background.html
 templates/lang/en/help/email.html
 templates/lang/en/help/index.html
+templates/lang/en/help/user_point.html
 templates/lang/en/help/user_status.html
 templates/lang/en/help/WhatsNew.html
 templates/lang/en/help/WhatsNewMore.html

@@ -6,7 +6,6 @@
 /bin/misc/css-min.pl source OK
 /bin/misc/dbicx_autodoc.pl source OK
 /bin/misc/g2b.pl source OK
-/bin/misc/graph.pl source OK
 /bin/misc/js-min.pl source OK
 /bin/misc/perlcritic.pl source OK
 /bin/misc/perltidy.pl source OK

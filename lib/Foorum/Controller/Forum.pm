@@ -438,7 +438,7 @@ sub create : Local {
             }
         );
     }
-    
+
     # create time
     $c->model('DBIC')->resultset('ForumSettings')->create(
         {   forum_id => $forum->forum_id,
@@ -456,10 +456,11 @@ sub about : Chained('forum') Args(0) {
     my $forum      = $c->stash->{forum};
     my $forum_id   = $forum->{forum_id};
     my $forum_code = $forum->{forum_code};
-    
+
     # get all settings, so that we have created_time
-    $c->stash->{settings} = $c->model('DBIC')->resultset('Forum')->get_forum_settings($forum, { all => 1 } );
-    
+    $c->stash->{settings} = $c->model('DBIC')->resultset('Forum')
+        ->get_forum_settings( $forum, { all => 1 } );
+
     # get all moderators
     $c->stash->{forum_roles}
         = $c->model('DBIC::UserForum')->get_forum_moderators($forum_id);

@@ -29,7 +29,7 @@ Download sqlite3 from L<http://www.sqlite.org/download.html>
   * sqlite> .read bin/db/theschwartz.sqlite.sql
   * sqlite> .quit
 
-=== PostgreSQL (EXPERIMENTAL)
+=head3 PostgreSQL (EXPERIMENTAL)
 
 files are bin/db/foorum.pg.sql and bin/db/theschwartz.pg.sql
 
@@ -38,7 +38,7 @@ USE IT AT YOUR OWN RISK.
 =head2 Perl
 
   * perl bin/setup.pl
-  * perl Makefile.PL; make; make test;
+  * perl Makefile.PL; make; make test; make realclean;
   * perl bin/foorum_server.pl
 
 =head2 Apache Configure
