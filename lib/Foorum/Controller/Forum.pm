@@ -458,7 +458,7 @@ sub about : Chained('forum') Args(0) {
     my $forum_code = $forum->{forum_code};
 
     # get all settings, so that we have created_time
-    $c->stash->{settings} = $c->model('DBIC')->resultset('Forum')
+    $c->stash->{settings} = $c->model('DBIC')->resultset('ForumSettings')
         ->get_forum_settings( $forum, { all => 1 } );
 
     # get all moderators

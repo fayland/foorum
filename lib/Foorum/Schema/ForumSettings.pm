@@ -27,6 +27,8 @@ __PACKAGE__->add_columns(
 );
 __PACKAGE__->set_primary_key("forum_id", "type");
 
+__PACKAGE__->resultset_class('Foorum::ResultSet::ForumSettings');
+
 1;
 __END__
 

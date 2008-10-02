@@ -8,7 +8,7 @@ BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
     $ENV{TEST_FOORUM} = 1;
-    plan tests => 20;
+    plan tests => 18;
 }
 
 use FindBin;
@@ -62,17 +62,6 @@ is( $forum->{settings}->{can_post_threads},
     'N', 'settings can_post_threads OK' );
 is( $forum->{settings}->{create_time},
     undef, 'by default, we do NOT get create_time forum settings' );
-
-# get all forum_settings
-my $settings = $forum_res->get_forum_settings( $forum, { all => 1 } );
-is( scalar keys %$settings, 2, 'get 2 settings' );
-is_deeply(
-    $settings,
-    {   can_post_threads => 'N',
-        create_time      => 123456
-    },
-    'get_forum_settings all => 1 OK'
-);
 
 # test update
 $forum_res->update_forum( 1,

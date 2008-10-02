@@ -33,7 +33,7 @@ sub get {
 
             # set cache
             $forum = $forum->{_column_data};             # hash for cache
-            $forum->{settings}  = $self->get_forum_settings($forum);
+            $forum->{settings}  = $schema->resultset('ForumSettings')->get_forum_settings($forum);
             $forum->{forum_url} = $self->get_forum_url($forum);
             $cache->set( "forum|forum_id=$forum_id",
                 { val => $forum, 1 => 2 }, 7200 );
@@ -54,7 +54,7 @@ sub get {
 
             # set cache
             $forum = $forum->{_column_data};    # hash for cache
-            $forum->{settings}  = $self->get_forum_settings($forum);
+            $forum->{settings}  = $schema->resultset('ForumSettings')->get_forum_settings($forum);
             $forum->{forum_url} = $self->get_forum_url($forum);
             $cache->set( "forum|forum_id=$forum_id",
                 { val => $forum, 1 => 2 }, 7200 );
@@ -70,33 +70,6 @@ sub get_forum_url {
     my $forum_url = '/forum/' . $forum->{forum_code};
 
     return $forum_url;
-}
-
-sub get_forum_settings {
-    my ( $self, $forum, $opts ) = @_;
-
-    my $schema   = $self->result_source->schema;
-    my $forum_id = $forum->{forum_id};
-
-    my $settings;
-
-    my @extra_cols;
-    if ( not exists $opts->{all} ) {
-        my @all_types = qw/can_post_threads can_post_replies can_post_polls/;
-        $settings->{$_} = 'Y' foreach (@all_types);
-        @extra_cols = ( type => { 'IN', \@all_types } );
-    }
-
-    my $settings_rs = $schema->resultset('ForumSettings')->search(
-        {   forum_id => $forum_id,
-            @extra_cols,
-        }
-    );
-    while ( my $r = $settings_rs->next ) {
-        $settings->{ $r->type } = $r->value;
-    }
-
-    return $settings;
 }
 
 sub update_forum {
@@ -345,18 +318,7 @@ get() do not query database directly, it try to get from cache, if not exists, g
     }
   }
 
-I<settings> in the hash is from get_forum_settings below.
-
-return $HASHREF
-
-=item get_forum_settings($forum_obj, $opts)
-
-  $schema->resultset('Forum')->get_forum_settings( $forum );
-  $c->model('DBIC::Forum')->get_forum_settings( $forum, { all => 1 } );
-
-It gets the data from forum_settings table. by default, we only get the settings of my @all_types = qw/can_post_threads can_post_replies can_post_polls/;
-
-while pass $opts as { all => 1 } can get all forum settings including create_time and others
+I<settings> in the hash is from L<Foorum::ResultSet::ForumSettings> get_forum_settings.
 
 return $HASHREF
 
