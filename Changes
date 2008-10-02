@@ -1,5 +1,8 @@
 This file documents the revision history for Foorum.
 
+0.2.8
+        - add Test::Pod (Files=29, Tests=344)
+
 0.2.7 Tur Oct 2  10:50:00 2008
         - perltidy cols 78
         - more test cases (Files=28, Tests=216)
