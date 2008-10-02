@@ -20,7 +20,6 @@ use FindBin qw/$Bin/;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', '..', 'lib' );
 use Foorum::XUtils qw/config base_path theschwartz/;
-use Foorum::CronUtils qw//;
 
 my $config = config();
 

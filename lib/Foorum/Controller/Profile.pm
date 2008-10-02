@@ -191,7 +191,7 @@ sub forget_password : Local {
         '/print_message',
         [   {   msg =>
                     'Your Password is Sent to Your Email, Please have a check',
-                url          => '/login',
+                url          => '/login?username=' . $user->{username},
                 stay_in_page => 1,
             }
         ]

@@ -5,6 +5,7 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 use Digest ();
+use WWW::Contact;
 
 sub auto : Private {
     my ( $self, $c ) = @_;
@@ -173,10 +174,6 @@ sub import_contacts : Local {
     );
     return unless ( $c->req->method eq 'POST' );
 
-    eval("use WWW::Contact;");    ## no critic (ProhibitStringyEval)
-    if ($@) {
-        $c->detach( '/print_error', ['ERROR_EMAIL_OFF'] );
-    }
     my $wc = WWW::Contact->new();
     my @contacts = $wc->get_contacts( $email, $c->req->param('password') );
 
