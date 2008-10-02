@@ -69,24 +69,18 @@ sub default : Private {
         }
     );
 
-    # redirect or forward
-    if (    $c->config->{mail}->{on}
-        and $c->config->{function_on}->{activation} ) {
+    # send activation code
+    $c->model('DBIC::ScheduledEmail')
+        ->send_activation( $user, 0, { lang => $c->stash->{lang} } );
 
-        # send activation code
-        $c->model('DBIC::ScheduledEmail')
-            ->send_activation( $user, 0, { lang => $c->stash->{lang} } );
-        $c->res->redirect("/register/activation/$username");   # to activation
-    } else {
-        $c->login( $username, $password );
-        $c->forward(
-            '/print_message',
-            [   {   msg => 'register success!',
-                    url => '/',
-                }
-            ]
-        );
-    }
+    $c->authenticate( { username => $username, password => $password } );
+    $c->forward(
+        '/print_message',
+        [   {   msg => 'register success!',
+                url => '/',
+            }
+        ]
+    );
 }
 
 sub activation : Local {

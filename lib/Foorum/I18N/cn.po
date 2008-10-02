@@ -141,9 +141,6 @@ msgstr "你的状态为“被拒绝”"
 msgid "URL WRONG HERE"
 msgstr "URL 地址错误"
 
-msgid "Email function is disabled"
-msgstr "邮件功能不可用"
-
 msgid "IT'S CLOSED"
 msgstr "已关闭"
 

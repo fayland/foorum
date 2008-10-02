@@ -65,15 +65,12 @@ sub default : Private {
     $maintain = 0 if ( $maintain != 1 );
     my $register = $params{register};
     $register = 1 if ( $register != 0 );
-    my $activation = $params{activation};
-    $activation = 1 if ( $activation != 0 );
     my $create_forum = $params{create_forum};
     $create_forum = 1 if ( $create_forum != 0 );
     my $poll = $params{poll};
     $poll = 1 if ( $poll != 0 );
     $yaml->{function_on} = {
         %{ $c->config->{function_on} },    # keep some values
-        activation   => $activation,
         maintain     => $maintain,
         register     => $register,
         create_forum => $create_forum,

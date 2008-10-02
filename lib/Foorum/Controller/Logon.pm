@@ -51,15 +51,6 @@ sub login : Global {
             )
             ) {
 
-            # check if he is activated
-            if (    $c->config->{mail}->{on}
-                and $c->config->{register}->{activation}
-                and $c->user->get('status') eq 'unverified' ) {
-                my $username = $c->user->username;
-                $c->logout;
-                return $c->res->redirect("/register/activation/$username");
-            }
-
             if (   $c->user->get('status') eq 'banned'
                 or $c->user->get('status') eq 'blocked'
                 or $c->user->get('status') eq 'terminated' ) {

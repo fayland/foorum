@@ -156,9 +156,6 @@ sub change_password : Local {
 sub forget_password : Local {
     my ( $self, $c ) = @_;
 
-    $c->detach( '/print_error', ['ERROR_EMAIL_OFF'] )
-        unless ( $c->config->{mail}->{on} );
-
     $c->stash->{template} = 'user/profile/forget_password.html';
     return unless ( $c->req->method eq 'POST' );
 
@@ -227,18 +224,10 @@ sub change_email : Local {
         return $c->set_invalid_form( email => $err );
     }
 
-    if ( $c->config->{mail}->{on} and $c->config->{register}->{activation} ) {
 
-        # send activation code
-        $c->model('DBIC::ScheduledEmail')
-            ->send_activation( $c->user, $email,
-            { lang => $c->stash->{lang} } );
-        $c->res->redirect( '/register/activation/' . $c->user->username );
-    } else {
-        $c->model('DBIC::User')
-            ->update_user( $c->user, { email => $email, } );
-        $c->res->redirect('/profile/edit');
-    }
+    $c->model('DBIC::User')
+        ->update_user( $c->user, { email => $email, } );
+    $c->res->redirect('/profile/edit');
 }
 
 sub change_username : Local {

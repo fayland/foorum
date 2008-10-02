@@ -103,7 +103,6 @@ logger:
 function_on:
   maintain: 0
   register: 1
-  activation: 1
   create_forum: 1
   scraper: 0
   page_cache: 1
@@ -131,7 +130,6 @@ dir:
 
 # For Foorum pm using
 mail:
-  on: 1
   from_email: 'foorumbbs.com@gmail.com'
   daily_report_email: 'foorumbbs.com@gmail.com'
 
