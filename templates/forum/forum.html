@@ -122,6 +122,23 @@ Admin: <a href='/u/[% forum_roles.${forum.forum_id}.admin.username %]'>[% forum_
 </table>
 </div>
 
+[% IF forum_links.size %]
+<div class="one">
+<table align="center">
+    <tr><td colspan='5' class="title">Forum Links</td></tr>
+    <tr>
+        [% FOREACH forum_link IN forum_links %]
+        <td width="20%" align="center"><a href="[% forum_link.url %]" target="_blank">[% forum_link.text %]</a></td>
+        [% IF loop.count == 5 AND forum_links.size > 5 %]</tr><tr>[% END %]
+        [% END %]
+        [% IF forum_links.size != 5 AND forum_links.size != 10 %]
+        [% cols = 10 - forum_links.size; cols = cols - 5 IF cols > 5 %]
+        <td colspan="[% cols %]">&nbsp;</td>
+        [% END %]
+    </tr>
+</table>
+</div>
+[% END %]
 
     </div>
 </div>

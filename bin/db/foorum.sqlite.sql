@@ -75,7 +75,7 @@ CREATE UNIQUE INDEX forum_code_forum ON forum (forum_code);
 CREATE TABLE forum_settings (
   forum_id int(11) NOT NULL DEFAULT '0',
   type varchar(48) NOT NULL,
-  value varchar(48) NOT NULL,
+  value varchar(255) NOT NULL,
   PRIMARY KEY (forum_id, type)
 );
 

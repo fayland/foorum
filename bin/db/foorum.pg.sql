@@ -72,7 +72,7 @@ CREATE INDEX "forum_id" on "forum" ("forum_id");
 CREATE TABLE "forum_settings" (
   "forum_id" bigint DEFAULT '0' NOT NULL,
   "type" character varying(48) NOT NULL,
-  "value" character varying(48) NOT NULL,
+  "value" character varying(255) NOT NULL,
   PRIMARY KEY ("forum_id", "type")
 );
 CREATE INDEX "forum_id2" on "forum_settings" ("forum_id");

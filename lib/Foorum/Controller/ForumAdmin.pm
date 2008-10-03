@@ -118,6 +118,7 @@ sub basic : Chained('forum_for_admin') Args(0) {
             );
         }
     }
+    $c->model('DBIC')->resultset('ForumSettings')->clear_cache( $forum_id );
 
     # 2, forum table
     my $policy = ( $private == 1 ) ? 'private' : 'public';
@@ -342,11 +343,48 @@ sub links : Chained('forum_for_admin') Args(0) {
     
     if ( $c->req->method eq 'POST' ) {
         # validate
+        my $error;
+        foreach my $i (0 .. $max_count) {
+            my $url  = $c->req->params->{"url$i"};
+            my $text = $c->req->params->{"text$i"};
+            next unless ($url and $text);
+            $error->{url}->{$i}  = 'LENGTH' if (length($url)  > 99);
+            $error->{text}->{$i} = 'LENGTH' if (length($text) > 99);
+        }
         
+        if (keys %$error) {
+            return $c->stash->{error} = $error;
+        }
+        
+        # delete before create
+        my @all_types = map { "forum_link$_" } (0 .. $max_count);
+        $c->model('DBIC')->resultset('ForumSettings')->search(
+            {   forum_id => $forum_id,
+                type     => { 'IN', \@all_types },
+            }
+        )->delete;
+        foreach my $i (0 .. $max_count) {
+            my $url  = $c->req->params->{"url$i"};
+            my $text = $c->req->params->{"text$i"};
+            next unless ($url and $text);
+            $c->model('DBIC')->resultset('ForumSettings')->create(
+                {   forum_id => $forum_id,
+                    type     => "forum_link$i",
+                    value    => "$url $text",
+                }
+            );
+        }
+        $c->model('DBIC')->resultset('ForumSettings')->clear_cache( $forum_id );
+        $c->res->redirect($forum->{forum_url});
     } else {
         # fulfill for FillInForm
         my @links = $c->model('DBIC::ForumSettings')->get_forum_links( $forum_id );
         my $filldata;
+        foreach my $i (0 .. $#links) {
+            $filldata->{"url$i"}  = $links[$i]->{url};
+            $filldata->{"text$i"} = $links[$i]->{text};
+        }
+        $c->stash->{filldata} = $filldata;
     }
 }
 

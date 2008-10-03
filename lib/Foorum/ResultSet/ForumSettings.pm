@@ -50,7 +50,25 @@ sub get_forum_links {
     my @links = grep { /^forum_link\d+$/ } keys %$settings;
     @links = map { $settings->{$_} } sort @links;
     
+    foreach (@links) {
+        my ($url, $text) = split(/\s+/, $_, 2);
+        $_ = {
+            url => $url,
+            text => $text
+        }
+    }
+    
     return wantarray ? @links : \@links;
+}
+
+sub clear_cache {
+    my ($self, $forum_id) = @_;
+    
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
+    
+    my $cache_key = "forum_settings|forum_id=$forum_id";
+    $cache->remove($cache_key);
 }
 
 1;

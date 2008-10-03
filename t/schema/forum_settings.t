@@ -8,7 +8,7 @@ BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
     $ENV{TEST_FOORUM} = 1;
-    plan tests => 7;
+    plan tests => 9;
 }
 
 use FindBin;
@@ -44,13 +44,13 @@ $forum_settings_res->create(
 $forum_settings_res->create(
     {   forum_id => 1,
         type     => 'forum_link1',
-        value    => 'http://www.fayland.org/',
+        value    => 'http://www.fayland.org/ Fayland',
     }
 );
 $forum_settings_res->create(
     {   forum_id => 1,
         type     => 'forum_link2',
-        value    => 'http://www.foorumbbs.com/',
+        value    => 'http://www.foorumbbs.com/ FoorumBBS site',
     }
 );
 
@@ -63,8 +63,8 @@ is_deeply(
     $settings,
     {   can_post_threads => 'N',
         create_time      => 123456,
-        forum_link1      => 'http://www.fayland.org/',
-        forum_link2      => 'http://www.foorumbbs.com/'
+        forum_link1      => 'http://www.fayland.org/ Fayland',
+        forum_link2      => 'http://www.foorumbbs.com/ FoorumBBS site'
     },
     'get_all OK'
 );
@@ -75,8 +75,10 @@ is( $settings->{can_post_replies}, 'Y', 'can_post_replies is Y by default' );
 
 my @links = $forum_settings_res->get_forum_links( 1 );
 is( scalar @links, 2, 'get 2 links' );
-is( $links[0], 'http://www.fayland.org/', 'get_forum_links OK');
-is( $links[1], 'http://www.foorumbbs.com/', 'get_forum_links OK');
+is( $links[0]->{url}, 'http://www.fayland.org/', 'get_forum_links 1 OK');
+is( $links[1]->{url}, 'http://www.foorumbbs.com/', 'get_forum_links 2 OK');
+is( $links[0]->{text}, 'Fayland', 'get_forum_links 3 OK');
+is( $links[1]->{text}, 'FoorumBBS site', 'get_forum_links 4 OK');
 
 END {
 

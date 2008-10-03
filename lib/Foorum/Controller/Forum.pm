@@ -150,6 +150,10 @@ sub forum_list : Regex('^forum/(\w+)$') {
         }
     );
 
+    # Forum Links
+    my @links = $c->model('DBIC::ForumSettings')->get_forum_links( $forum_id );
+    $c->stash->{forum_links} = \@links;
+
     $c->stash->{whos_view_this_page} = 1;
     $c->stash->{pager}               = $pager;
     $c->stash->{topics}              = \@topics;
@@ -446,6 +450,7 @@ sub create : Local {
             value    => time(),
         }
     );
+    $c->model('DBIC')->resultset('ForumSettings')->clear_cache( $forum->forum_id );
 
     $c->res->redirect("/forum/$forum_code");
 }
