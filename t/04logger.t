@@ -8,9 +8,12 @@ BEGIN {
 }
 
 use Test::More tests => 3;
-use DBI;
+use FindBin;
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, 'lib' );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/%levels error_log/;
+use Foorum::TestUtils qw/rollback_db/;
 
 my $schema = schema();
 
@@ -35,3 +38,9 @@ my $debug = $schema->resultset('LogError')->search( {
     level => 2,
 } )->first;
 is($debug->text, 'debug text', 'get debug text with level 2 OK');
+
+END {
+
+    # Keep Database the same from original
+    rollback_db();
+}
