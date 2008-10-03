@@ -11,7 +11,7 @@ __PACKAGE__->add_columns(
   "error_id",
   { data_type => "INT", default_value => undef, is_nullable => 0, size => 11 },
   "level",
-  { data_type => "INT", default_value => "1", is_nullable => 0, size => 1 },
+  { data_type => "SMALLINT", default_value => 1, is_nullable => 0, size => 1 },
   "text",
   {
     data_type => "TEXT",
