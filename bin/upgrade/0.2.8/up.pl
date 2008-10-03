@@ -26,9 +26,9 @@ my $dbh    = $schema->storage->dbh;
 
 # from Foorum v0.2.8 on,
 
-#my $sql
-#    = q~ ALTER TABLE `forum_settings` CHANGE `value` `value` VARCHAR( 255 ) NOT NULL~;
-#$dbh->do($sql) or die $DBI::errstr;
+my $sql
+    = q~ ALTER TABLE `forum_settings` CHANGE `value` `value` VARCHAR( 255 ) NOT NULL~;
+$dbh->do($sql) or die $DBI::errstr;
 
 {
         my $table   = 'log_error';
