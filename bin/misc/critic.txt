@@ -22,6 +22,7 @@
 /bin/upgrade/0.2.2/up.pl source OK
 /bin/upgrade/0.2.3/up.pl source OK
 /bin/upgrade/0.2.7/up.pl source OK
+/bin/upgrade/0.2.8/up.pl source OK
 /lib/Foorum/Action/PathLogger.pm source OK
 /lib/Foorum/Controller/Admin/BanIP.pm source OK
 /lib/Foorum/Controller/Admin/Forum.pm source OK
@@ -68,6 +69,7 @@
 /lib/Foorum/ResultSet/Comment.pm source OK
 /lib/Foorum/ResultSet/FilterWord.pm source OK
 /lib/Foorum/ResultSet/Forum.pm source OK
+/lib/Foorum/ResultSet/ForumSettings.pm source OK
 /lib/Foorum/ResultSet/Hit.pm source OK
 /lib/Foorum/ResultSet/Message.pm source OK
 /lib/Foorum/ResultSet/ScheduledEmail.pm source OK
@@ -102,6 +104,7 @@
 /lib/Foorum/View/TT.pm source OK
 /lib/Foorum/XUtils.pm source OK
 /lib/Foorum.pm source OK
+/t/001pod.t source OK
 /t/01yaml.t source OK
 /t/02utils.t source OK
 /t/03xutils.t source OK
@@ -117,6 +120,7 @@
 /t/schema/comment.t source OK
 /t/schema/filter_word.t source OK
 /t/schema/forum.t source OK
+/t/schema/forum_settings.t source OK
 /t/schema/hit.t source OK
 /t/schema/message.t source OK
 /t/schema/star.t source OK

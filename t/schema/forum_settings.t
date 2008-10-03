@@ -57,7 +57,7 @@ $forum_settings_res->create(
 $cache->remove("forum_settings|forum_id=1");
 
 # get_all
-my $settings = $forum_settings_res->get_all( 1 );
+my $settings = $forum_settings_res->get_all(1);
 is( scalar keys %$settings, 4, 'get 4 settings' );
 is_deeply(
     $settings,
@@ -69,16 +69,16 @@ is_deeply(
     'get_all OK'
 );
 
-$settings = $forum_settings_res->get_basic( 1 );
+$settings = $forum_settings_res->get_basic(1);
 is( $settings->{can_post_threads}, 'N', 'can_post_threads is N' );
 is( $settings->{can_post_replies}, 'Y', 'can_post_replies is Y by default' );
 
-my @links = $forum_settings_res->get_forum_links( 1 );
-is( scalar @links, 2, 'get 2 links' );
-is( $links[0]->{url}, 'http://www.fayland.org/', 'get_forum_links 1 OK');
-is( $links[1]->{url}, 'http://www.foorumbbs.com/', 'get_forum_links 2 OK');
-is( $links[0]->{text}, 'Fayland', 'get_forum_links 3 OK');
-is( $links[1]->{text}, 'FoorumBBS site', 'get_forum_links 4 OK');
+my @links = $forum_settings_res->get_forum_links(1);
+is( scalar @links,     2,                           'get 2 links' );
+is( $links[0]->{url},  'http://www.fayland.org/',   'get_forum_links 1 OK' );
+is( $links[1]->{url},  'http://www.foorumbbs.com/', 'get_forum_links 2 OK' );
+is( $links[0]->{text}, 'Fayland',                   'get_forum_links 3 OK' );
+is( $links[1]->{text}, 'FoorumBBS site',            'get_forum_links 4 OK' );
 
 END {
 

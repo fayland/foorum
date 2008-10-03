@@ -33,7 +33,8 @@ sub get {
 
             # set cache
             $forum = $forum->{_column_data};             # hash for cache
-            $forum->{settings}  = $schema->resultset('ForumSettings')->get_basic($forum->{forum_id});
+            $forum->{settings} = $schema->resultset('ForumSettings')
+                ->get_basic( $forum->{forum_id} );
             $forum->{forum_url} = $self->get_forum_url($forum);
             $cache->set( "forum|forum_id=$forum_id",
                 { val => $forum, 1 => 2 }, 7200 );
@@ -54,7 +55,8 @@ sub get {
 
             # set cache
             $forum = $forum->{_column_data};    # hash for cache
-            $forum->{settings}  = $schema->resultset('ForumSettings')->get_basic($forum->{forum_id});
+            $forum->{settings} = $schema->resultset('ForumSettings')
+                ->get_basic( $forum->{forum_id} );
             $forum->{forum_url} = $self->get_forum_url($forum);
             $cache->set( "forum|forum_id=$forum_id",
                 { val => $forum, 1 => 2 }, 7200 );
