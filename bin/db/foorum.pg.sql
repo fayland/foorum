@@ -120,7 +120,7 @@ CREATE INDEX "forum_id3" on "log_action" ("forum_id");
 --
 CREATE TABLE "log_error" (
   "error_id" serial NOT NULL,
-  "level" character varying(5) DEFAULT 'debug' NOT NULL,
+  "level" smallint DEFAULT '1' NOT NULL,
   "text" text NOT NULL,
   "time" bigint DEFAULT '0' NOT NULL,
   PRIMARY KEY ("error_id")

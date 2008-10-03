@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `log_action` (
 
 CREATE TABLE IF NOT EXISTS `log_error` (
   `error_id` int(11) unsigned NOT NULL auto_increment,
-  `level` enum('info','debug','warn','error','fatal') NOT NULL default 'debug',
+  `level` SMALLINT(1) UNSIGNED NOT NULL DEFAULT '1',
   `text` text NOT NULL,
   `time` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`error_id`),

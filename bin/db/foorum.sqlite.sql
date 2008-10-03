@@ -1,6 +1,6 @@
 -- 
 -- Created by SQL::Translator::Producer::SQLite
--- Created on Tue Sep 30 12:54:33 2008
+-- Created on Fri Oct  3 15:53:24 2008
 -- 
 BEGIN TRANSACTION;
 
@@ -122,7 +122,7 @@ CREATE INDEX forum_id_log_action ON log_action (forum_id);
 --
 CREATE TABLE log_error (
   error_id INTEGER PRIMARY KEY NOT NULL,
-  level enum(5) NOT NULL DEFAULT 'debug',
+  level SMALLINT(1) NOT NULL DEFAULT '1',
   text text NOT NULL,
   time int(11) NOT NULL DEFAULT '0'
 );
