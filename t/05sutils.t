@@ -8,8 +8,12 @@ BEGIN {
 }
 
 use Test::More tests => 3;
+use FindBin;
+use File::Spec;
+use lib File::Spec->catdir( $FindBin::Bin, 'lib' );
 use DBI;
 use Foorum::SUtils qw/schema/;
+use Foorum::TestUtils qw/rollback_db/;
 
 my $schema = schema();
 isa_ok( $schema, 'Foorum::Schema', 'schema() ISA Foorum::Schema' );
@@ -17,3 +21,9 @@ isa_ok( $schema, 'Foorum::Schema', 'schema() ISA Foorum::Schema' );
 my @sources = $schema->sources();
 ok( grep { $_ eq 'User' } @sources,  'sources contains User' );
 ok( grep { $_ eq 'Forum' } @sources, 'sources contains Forum' );
+
+END {
+
+    # Keep Database the same from original
+    rollback_db();
+}
