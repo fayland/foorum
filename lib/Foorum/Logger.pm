@@ -20,7 +20,7 @@ sub error_log {
 
     return unless ($text);
     
-    $leval = exists $levels{$level} ? $levels{$level} : 2; # debug
+    $level = exists $levels{$level} ? $levels{$level} : 2; # debug
     
     $schema->resultset('LogError')->create(
         {   level => $level,
