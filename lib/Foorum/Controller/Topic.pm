@@ -177,7 +177,6 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
             hit              => 0,
         }
     );
-    $c->forward( '/clear_when_topic_changes', [$forum] );
 
     # clear visit
     $c->model('DBIC::Visit')

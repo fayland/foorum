@@ -51,10 +51,7 @@ sub lock_or_sticky_or_elite :
         }
     );
 
-    $c->clear_cached_page("/forum/$forum_id");
-    $c->clear_cached_page("/forum/$forum_code") if ($forum_code);
     if ( $action eq 'elite' ) {
-        $c->forward( '/clear_when_topic_elite', [$forum] );
 
         # for point
         my $plus_point = ($is_un) ? '- 4' : '+ 4';

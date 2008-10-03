@@ -25,7 +25,7 @@ requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Plugin::Config::YAML::XS';
 requires 'Cache::FileCache';
 requires 'Catalyst::Plugin::Cache';
-requires 'Catalyst::Plugin::PageCache' => '0.19';
+requires 'Catalyst::Plugin::PageCache' => '0.21';
 requires 'Set::Object';
 requires 'Catalyst::Plugin::Authentication' => '0.10004';
 requires 'Catalyst::Plugin::Authentication::Credential::Password';

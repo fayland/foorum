@@ -123,10 +123,6 @@ sub post : Local {
         );
     }
 
-    if ($forum_id) {
-        $c->forward( '/clear_when_topic_changes', [$forum] );
-    }
-
     # go this comment
     my $comment_id = $new_comment->comment_id;
     $path .= "/comment_id=$comment_id/#c$comment_id";
@@ -232,10 +228,6 @@ sub reply : LocalRegex('^(\d+)/reply$') {
                 last_updator_id  => $c->user->user_id,
             }
         );
-    }
-
-    if ($forum_id) {
-        $c->forward( '/clear_when_topic_changes', [$forum] );
     }
 
     my $path = $c->model('Object')->get_url_from_object( $c, $info );
@@ -425,7 +417,6 @@ sub delete : LocalRegex('^(\d+)/delete$') {
                 }
             );
             $path = $forum->{forum_url};
-            $c->forward( '/clear_when_topic_changes', [$forum] );
         }
     }
 
