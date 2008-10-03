@@ -5,15 +5,16 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
+use Foorum::Logger qw/%levels/;
 
 sub error_log : Local {
     my ( $self, $c ) = @_;
 
     my $level = $c->req->param('level');
     my @extra_cols;
-    if ( grep { $level eq $_ } ( 'info', 'debug', 'warn', 'error', 'fatal' ) )
+    if ( exists $levels{$level} )
     {
-        push @extra_cols, ( 'level', $level );
+        push @extra_cols, ( 'level', $levels{$level} );
         $c->stash->{has_level}   = 1;
         $c->stash->{url_postfix} = '?level=' . $level;
     }

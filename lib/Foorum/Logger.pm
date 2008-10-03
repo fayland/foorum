@@ -4,15 +4,26 @@ use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base qw/Exporter/;
-use vars qw/@EXPORT_OK/;
-@EXPORT_OK = qw/ error_log /;
+use vars qw/@EXPORT_OK %levels/;
+@EXPORT_OK = qw/ %levels error_log /;
+
+%levels = (
+    'info'  => 1,
+    'debug' => 2,
+    'warn'  => 3,
+    'error' => 4,
+    'fatal' => 5
+);
 
 sub error_log {
     my ( $schema, $level, $text ) = @_;
 
     return unless ($text);
+    
+    $leval = exists $levels{$level} ? $levels{$level} : 2; # debug
+    
     $schema->resultset('LogError')->create(
-        {   level => $level || 'debug',
+        {   level => $level,
             text  => $text,
             time  => time(),
         }
