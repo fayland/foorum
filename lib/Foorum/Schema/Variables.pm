@@ -56,3 +56,43 @@ Fayland Lam <fayland at gmail.com>
 
 =cut
 
+
+1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::Variables - Table 'variables'
+
+=head1 COLUMNS
+
+=over 4
+
+=item type
+
+ENUM(6)
+
+NOT NULL, PRIMARY KEY, DEFAULT VALUE 'global'
+
+=item name
+
+VARCHAR(32)
+
+NOT NULL, PRIMARY KEY
+
+=item value
+
+VARCHAR(255)
+
+NOT NULL
+
+=back
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

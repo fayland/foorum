@@ -74,3 +74,49 @@ Fayland Lam <fayland at gmail.com>
 
 =cut
 
+
+1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::LogError - Table 'log_error'
+
+=head1 COLUMNS
+
+=over 4
+
+=item error_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item level
+
+SMALLINT(1)
+
+NOT NULL, DEFAULT VALUE '1'
+
+=item text
+
+TEXT(65535)
+
+NOT NULL
+
+=item time
+
+INT(11)
+
+NOT NULL
+
+=back
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

@@ -69,3 +69,49 @@ Fayland Lam <fayland at gmail.com>
 
 =cut
 
+
+1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::Stat - Table 'stat'
+
+=head1 COLUMNS
+
+=over 4
+
+=item stat_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item stat_key
+
+VARCHAR(255)
+
+NOT NULL
+
+=item stat_value
+
+BIGINT(21)
+
+NOT NULL
+
+=item date
+
+INT(8)
+
+NOT NULL
+
+=back
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

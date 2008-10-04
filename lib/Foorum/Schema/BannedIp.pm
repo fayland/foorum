@@ -58,3 +58,43 @@ Fayland Lam <fayland at gmail.com>
 
 =cut
 
+
+1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::BannedIp - Table 'banned_ip'
+
+=head1 COLUMNS
+
+=over 4
+
+=item ip_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item cidr_ip
+
+VARCHAR(20)
+
+NOT NULL
+
+=item time
+
+INT(11)
+
+NOT NULL
+
+=back
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

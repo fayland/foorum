@@ -12,8 +12,7 @@ sub error_log : Local {
 
     my $level = $c->req->param('level');
     my @extra_cols;
-    if ( exists $levels{$level} )
-    {
+    if ( exists $levels{$level} ) {
         push @extra_cols, ( 'level', $levels{$level} );
         $c->stash->{has_level}   = 1;
         $c->stash->{url_postfix} = '?level=' . $level;

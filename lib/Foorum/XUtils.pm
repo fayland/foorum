@@ -24,6 +24,7 @@ use File::Spec;
 use Cwd qw/abs_path/;
 my ( undef, $path ) = File::Spec->splitpath(__FILE__);
 $path = abs_path($path);
+
 # XXX? since make test copy files to blib
 $path =~ s/[\\\/]blib($|\\|\/)/$1/isg;
 

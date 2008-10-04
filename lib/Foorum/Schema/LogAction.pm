@@ -107,3 +107,67 @@ Fayland Lam <fayland at gmail.com>
 
 =cut
 
+
+1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::LogAction - Table 'log_action'
+
+=head1 COLUMNS
+
+=over 4
+
+=item user_id
+
+INT(11)
+
+NOT NULL
+
+=item action
+
+VARCHAR(24)
+
+
+
+=item object_type
+
+VARCHAR(12)
+
+
+
+=item object_id
+
+INT(11)
+
+
+
+=item time
+
+INT(11)
+
+NOT NULL
+
+=item text
+
+TEXT(65535)
+
+
+
+=item forum_id
+
+INT(11)
+
+NOT NULL
+
+=back
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

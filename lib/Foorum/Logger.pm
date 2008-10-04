@@ -19,9 +19,9 @@ sub error_log {
     my ( $schema, $level, $text ) = @_;
 
     return unless ($text);
-    
-    $level = exists $levels{$level} ? $levels{$level} : 2; # debug
-    
+
+    $level = exists $levels{$level} ? $levels{$level} : 2;    # debug
+
     $schema->resultset('LogError')->create(
         {   level => $level,
             text  => $text,

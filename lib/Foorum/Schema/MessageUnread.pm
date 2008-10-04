@@ -48,3 +48,37 @@ Fayland Lam <fayland at gmail.com>
 
 =cut
 
+
+1;
+__END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::MessageUnread - Table 'message_unread'
+
+=head1 COLUMNS
+
+=over 4
+
+=item message_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item user_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=back
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

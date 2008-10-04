@@ -47,7 +47,7 @@ sub work {
     # all fatal errors in path_error
     my $rs = $schema->resultset('LogError')->search(
         {   time  => { '>', $time },
-            level => { '>', 3 }, # error and fatal, check Foorum::Logger
+            level => { '>', 3 },       # error and fatal, check Foorum::Logger
         },
         {   rows    => 10,
             page    => 1,
