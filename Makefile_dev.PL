@@ -83,6 +83,8 @@ requires 'Text::GooglewikiFormat' => '0.04';
 # db debug
 requires 'Catalyst::Model::DBIC::Schema::QueryLog';
 
+tests ( join ' ', ( glob('t/*.t'), glob('t/*/*.t') ) );
+
 catalyst;
 
 #install_script glob('script/*.pl');
