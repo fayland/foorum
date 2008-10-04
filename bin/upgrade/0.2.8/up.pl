@@ -31,38 +31,38 @@ my $sql
 $dbh->do($sql) or die $DBI::errstr;
 
 {
-        my $table   = 'log_error';
-        my $old_col = 'level';
-        my $new_col = "${old_col}_tmp";
+    my $table   = 'log_error';
+    my $old_col = 'level';
+    my $new_col = "${old_col}_tmp";
 
-        $dbh->do(<<SQL);
+    $dbh->do(<<SQL);
 ALTER TABLE `$table` ADD `$new_col` SMALLINT(1) UNSIGNED NOT NULL DEFAULT '1';
 SQL
-        sleep 1;
-        $dbh->do(<<SQL);
+    sleep 1;
+    $dbh->do(<<SQL);
 UPDATE `$table` SET $new_col=2 WHERE $old_col='debug';
 SQL
-        sleep 1;
-        $dbh->do(<<SQL);
+    sleep 1;
+    $dbh->do(<<SQL);
 UPDATE `$table` SET $new_col=3 WHERE $old_col='warn';
 SQL
-        sleep 1;
-        $dbh->do(<<SQL);
+    sleep 1;
+    $dbh->do(<<SQL);
 UPDATE `$table` SET $new_col=4 WHERE $old_col='error';
 SQL
-        sleep 1;
-        $dbh->do(<<SQL);
+    sleep 1;
+    $dbh->do(<<SQL);
 UPDATE `$table` SET $new_col=5 WHERE $old_col='fatal';
 SQL
-        sleep 1;
-        $dbh->do(<<SQL);
+    sleep 1;
+    $dbh->do(<<SQL);
 ALTER TABLE `$table` DROP `$old_col`;
 SQL
-        sleep 1;
-        $dbh->do(<<SQL);
+    sleep 1;
+    $dbh->do(<<SQL);
 ALTER TABLE `$table` CHANGE `$new_col` `$old_col` SMALLINT(1) UNSIGNED NOT NULL DEFAULT '1';
 SQL
-        sleep 1;
+    sleep 1;
 }
 
 print "Done\n";
