@@ -15,8 +15,6 @@ use File::Spec;
 
 my $base_path = base_path();
 
-# XXX? since make test copy files to blib
-$base_path =~ s/\/blib$//isg;
 my $real = abs_path( File::Spec->catdir( $RealBin, '..' ) );
 is( $base_path, $real, 'base_path OK' );
 
