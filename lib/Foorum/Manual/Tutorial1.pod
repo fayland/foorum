@@ -130,7 +130,6 @@ it's configurable. u can disable by set
   function_on:
     maintain: 0
     register: 1
-    activation: 1
     create_forum: 1
     scraper: 0
     page_cache: 0
