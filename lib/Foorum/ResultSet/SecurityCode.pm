@@ -46,6 +46,17 @@ sub get_or_create {
     return $code;
 }
 
+sub remove {
+    my ( $self, $type, $user_id ) = @_;
+    
+    $type = $types{$type} if (exists $types{$type});
+    
+    $self->search( {
+        type => $type,
+        user_id => $user_id
+    } )->delete;
+}
+
 1;
 __END__
 

@@ -168,6 +168,11 @@ sub change_password : Local {
     $c->model('DBIC::User')
         ->update_user( $user, { password => $new_computed } );
 
+    # delete so that can't use again
+    if ( $c->stash->{use_security_code} ) {
+        $c->model('DBIC::SecurityCode')->remove( 'forget_password', $user->{user_id} );
+    }
+
     $c->detach(
         '/print_message',
         [   {   msg          => 'Reset Password OK',
