@@ -21,6 +21,7 @@ sub get {
         type => $type,
         user_id => $user_id
     } )->first;
+    return unless ($rs);
     
     return $rs->code;
 }
