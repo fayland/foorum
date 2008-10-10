@@ -55,7 +55,7 @@ foreach my $source (@sources) {
     my $in = <$fh>;
     close($fh);
 
-    my ( $code, $pod ) = split( /\n1;\n/, $in );
+    my ( $code, $pod ) = split( /\n1;\r?\n/, $in );
     open( my $fh2, '>', $file_dir );
     print $fh2 "$code\n1;\n__END__\n\n$output\n";
     close($fh2);
