@@ -120,12 +120,12 @@ CREATE INDEX "forum_id3" on "log_action" ("forum_id");
 --
 CREATE TABLE "log_error" (
   "error_id" serial NOT NULL,
-  "level" smallint DEFAULT '1' NOT NULL,
   "text" text NOT NULL,
   "time" bigint DEFAULT '0' NOT NULL,
+  "level" smallint DEFAULT '1' NOT NULL,
   PRIMARY KEY ("error_id")
 );
-CREATE INDEX "level" on "log_error" ("level");
+
 
 
 --
@@ -244,6 +244,20 @@ CREATE INDEX "processed" on "scheduled_email" ("processed");
 
 
 --
+-- Table: security_code
+--
+CREATE TABLE "security_code" (
+  "security_code_id" serial NOT NULL,
+  "user_id" bigint DEFAULT '0' NOT NULL,
+  "type" smallint DEFAULT '0' NOT NULL,
+  "code" character varying(12) NOT NULL,
+  "time" bigint DEFAULT '0' NOT NULL,
+  PRIMARY KEY ("security_code_id")
+);
+
+
+
+--
 -- Table: session
 --
 CREATE TABLE "session" (
@@ -288,11 +302,10 @@ CREATE TABLE "stat" (
   "stat_id" serial NOT NULL,
   "stat_key" character varying(255) NOT NULL,
   "stat_value" bigint DEFAULT '0' NOT NULL,
-  "date" date NOT NULL,
+  "date" bigint DEFAULT '0' NOT NULL,
   PRIMARY KEY ("stat_id")
 );
 CREATE INDEX "key" on "stat" ("stat_key");
-CREATE INDEX "date" on "stat" ("date");
 
 
 --
@@ -357,10 +370,10 @@ CREATE TABLE "user" (
   "city_id" bigint DEFAULT '0' NOT NULL,
   "last_login_on" bigint DEFAULT '0' NOT NULL,
   PRIMARY KEY ("user_id"),
-  Constraint "email" UNIQUE ("email"),
   Constraint "username" UNIQUE ("username")
 );
 CREATE INDEX "register_time" on "user" ("register_time");
+CREATE INDEX "point" on "user" ("point");
 
 
 --

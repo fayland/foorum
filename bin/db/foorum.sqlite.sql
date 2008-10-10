@@ -1,6 +1,6 @@
 -- 
 -- Created by SQL::Translator::Producer::SQLite
--- Created on Fri Oct  3 15:53:24 2008
+-- Created on Fri Oct 10 15:09:00 2008
 -- 
 BEGIN TRANSACTION;
 
@@ -122,12 +122,11 @@ CREATE INDEX forum_id_log_action ON log_action (forum_id);
 --
 CREATE TABLE log_error (
   error_id INTEGER PRIMARY KEY NOT NULL,
-  level SMALLINT(1) NOT NULL DEFAULT '1',
   text text NOT NULL,
-  time int(11) NOT NULL DEFAULT '0'
+  time int(11) NOT NULL DEFAULT '0',
+  level smallint(1) NOT NULL DEFAULT '1'
 );
 
-CREATE INDEX level_log_error ON log_error (level);
 
 --
 -- Table: log_path
@@ -240,6 +239,18 @@ CREATE TABLE scheduled_email (
 CREATE INDEX processed_scheduled_email ON scheduled_email (processed);
 
 --
+-- Table: security_code
+--
+CREATE TABLE security_code (
+  security_code_id INTEGER PRIMARY KEY NOT NULL,
+  user_id int(11) NOT NULL DEFAULT '0',
+  type tinyint(1) NOT NULL DEFAULT '0',
+  code varchar(12) NOT NULL,
+  time int(11) NOT NULL DEFAULT '0'
+);
+
+
+--
 -- Table: session
 --
 CREATE TABLE session (
@@ -283,11 +294,10 @@ CREATE TABLE stat (
   stat_id INTEGER PRIMARY KEY NOT NULL,
   stat_key varchar(255) NOT NULL,
   stat_value bigint(21) NOT NULL DEFAULT '0',
-  date date NOT NULL
+  date int(11) NOT NULL DEFAULT '0'
 );
 
 CREATE INDEX key_stat ON stat (stat_key);
-CREATE INDEX date_stat ON stat (date);
 
 --
 -- Table: topic
@@ -351,7 +361,7 @@ CREATE TABLE user (
 );
 
 CREATE INDEX register_time_user ON user (register_time);
-CREATE UNIQUE INDEX email_user ON user (email);
+CREATE INDEX point_user ON user (point);
 CREATE UNIQUE INDEX username_user ON user (username);
 
 --

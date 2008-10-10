@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 20, 2008 at 04:57 AM
+-- Generation Time: Oct 10, 2008 at 07:07 AM
 -- Server version: 5.0.51
 -- PHP Version: 5.2.5
 
@@ -151,11 +151,10 @@ CREATE TABLE IF NOT EXISTS `log_action` (
 
 CREATE TABLE IF NOT EXISTS `log_error` (
   `error_id` int(11) unsigned NOT NULL auto_increment,
-  `level` SMALLINT(1) UNSIGNED NOT NULL DEFAULT '1',
   `text` text NOT NULL,
   `time` int(11) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`error_id`),
-  KEY `level` (`level`)
+  `level` smallint(1) unsigned NOT NULL default '1',
+  PRIMARY KEY  (`error_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -290,6 +289,21 @@ CREATE TABLE IF NOT EXISTS `scheduled_email` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `security_code`
+--
+
+CREATE TABLE IF NOT EXISTS `security_code` (
+  `security_code_id` int(11) unsigned NOT NULL auto_increment,
+  `user_id` int(11) unsigned NOT NULL default '0',
+  `type` tinyint(1) unsigned NOT NULL default '0',
+  `code` varchar(12) NOT NULL,
+  `time` int(11) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`security_code_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `session`
 --
 
@@ -340,10 +354,9 @@ CREATE TABLE IF NOT EXISTS `stat` (
   `stat_id` int(11) unsigned NOT NULL auto_increment,
   `stat_key` varchar(255) NOT NULL,
   `stat_value` bigint(21) NOT NULL default '0',
-  `date` date NOT NULL,
+  `date` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`stat_id`),
-  KEY `key` (`stat_key`),
-  KEY `date` (`date`)
+  KEY `key` (`stat_key`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -415,9 +428,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `city_id` int(11) unsigned NOT NULL default '0',
   `last_login_on` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`user_id`),
-  UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`),
-  KEY `register_time` (`register_time`)
+  KEY `register_time` (`register_time`),
+  KEY `point` (`point`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
