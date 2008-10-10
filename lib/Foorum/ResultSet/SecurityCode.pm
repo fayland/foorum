@@ -30,7 +30,7 @@ sub get_or_create {
     my ( $self, $type, $user_id ) = @_;
 
     my $code = $self->get( $type, $user_id );
-    return $code if ( length($code) );
+    return $code if ( $code and length($code) );
 
     $type = $types{$type} if (exists $types{$type});
     return unless ($type);
