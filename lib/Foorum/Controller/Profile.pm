@@ -218,7 +218,7 @@ sub forget_password : Local {
         '/print_message',
         [   {   msg =>
                     'The instruction to rest your password is sent to your email, please have a check',
-                url          => $c->req->referer || '/',
+                url          => '/',
                 stay_in_page => 1,
             }
         ]
