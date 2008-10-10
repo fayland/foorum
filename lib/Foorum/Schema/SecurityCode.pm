@@ -29,3 +29,52 @@ __PACKAGE__->set_primary_key("security_code_id");
 
 1;
 __END__
+
+=pod
+
+=head1 NAME
+
+Foorum::Schema::SecurityCode - Table 'security_code'
+
+=head1 COLUMNS
+
+=over 4
+
+=item security_code_id
+
+INT(11)
+
+NOT NULL, PRIMARY KEY
+
+=item user_id
+
+INT(11)
+
+NOT NULL
+
+=item type
+
+TINYINT(1)
+
+NOT NULL
+
+=item code
+
+VARCHAR(12)
+
+NOT NULL
+
+=item time
+
+INT(11)
+
+NOT NULL
+
+=back
+
+=head1 AUTHOR
+
+Fayland Lam <fayland at gmail.com>
+
+=cut
+

@@ -137,6 +137,8 @@ div.comment {
 
 <li><a href="#ScheduledEmail">ScheduledEmail</a></li>
 
+<li><a href="#SecurityCode">SecurityCode</a></li>
+
 <li><a href="#Session">Session</a></li>
 
 <li><a href="#Share">Share</a></li>
@@ -1387,6 +1389,55 @@ div.comment {
     <hr />
 
     <h2>
+        <a name="SecurityCode">SecurityCode</a>
+        (table security_code)
+    </h2>
+
+    <h3 name="SecurityCode-columns">Columns</h3>
+<table width="100%" cellspacing="0" cellpadding="3">
+    <tr>
+    <th width="25%">Name</th>
+    <th width="35%">Type</th>
+    <th width="40%">Info</th>
+    </tr>
+    
+        <tr class="odd"> <td>security_code_id </td> <td>INT(11) </td> <td>NOT NULL, PRIMARY KEY </td>
+
+    
+        <tr class="even"> <td>user_id </td> <td>INT(11) </td> <td>NOT NULL </td>
+
+    
+        <tr class="odd"> <td>type </td> <td>TINYINT(1) </td> <td>NOT NULL </td>
+
+    
+        <tr class="even"> <td>code </td> <td>VARCHAR(12) </td> <td>NOT NULL </td>
+
+    
+        <tr class="odd"> <td>time </td> <td>INT(11) </td> <td>NOT NULL </td>
+
+    
+</table>
+
+
+
+    
+        <h3 name="SecurityCode-unique_constraints">Unique Constraints</h3>
+
+<table cellspacing="0" cellpadding="3">
+    <tr><th width="20%">Name</th><th width="80%">Columns</th> </tr>
+    
+        
+        <tr class="odd"> <td>primary</td> <td>security_code_id</td> </tr>
+    
+</table>
+
+
+    
+    
+
+    <hr />
+
+    <h2>
         <a name="Session">Session</a>
         (table session)
     </h2>
@@ -2467,7 +2518,7 @@ div.comment {
 
 
     <p>
-        Generated Sat Oct  4 07:26:08 2008
+        Generated Fri Oct 10 03:23:47 2008
         by <a href="http://www.jasonkohles.com/projects/DBICx-AutoDoc/">DBICx::AutoDoc</a>
         version 0.04
     </p>
