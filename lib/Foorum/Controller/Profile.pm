@@ -153,6 +153,7 @@ sub change_password : Local {
 
     # encrypted the new password
     my $new_password = $c->req->param('new_password');
+    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
     $d->reset;
     $d->add($new_password);
     my $new_computed = $d->digest;
