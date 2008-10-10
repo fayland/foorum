@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'Catalyst::Controller';
-use Foorum::Utils qw/generate_random_word/;
 use Foorum::XUtils qw/theschwartz/;
 use Digest ();
 use Locale::Country::Multilingual;
@@ -108,23 +107,41 @@ sub edit : Local {
 }
 
 sub change_password : Local {
-    my ( $self, $c ) = @_;
+    my ( $self, $c, $username, $security_code ) = @_;
 
-    return $c->res->redirect('/login') unless ( $c->user_exists );
-
+    my $password = $c->req->param('password');
     $c->stash->{template} = 'user/profile/change_password.html';
 
-    return unless ( $c->req->method eq 'POST' );
-
-    # check the password typed in is correct
-    my $password = $c->req->param('password');
-    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
-    $d->add($password);
-    my $computed = $d->digest;
-    if ( $computed ne $c->user->{password} ) {
-        $c->set_invalid_form( password => 'WRONG_PASSWORD' );
-        return;
+    # the user input old password
+    # or the user click from forget_password email
+    # CAN change password
+    my $can_change_password = 0;
+    if ($username and $security_code) {
+        # check if that's mataches.
+        my $user = $c->model('User')->get($c, { username => $username } );
+        if ($user) {
+            my $security_code2 = $c->model('DBIC::SecurityCode')->get( 'forget_password', $user->{user_id} );
+            if ( $security_code2 and $security_code2 eq $security_code ) {
+                $can_change_password = 1;
+            }
+        }
+        $c->stash->{use_security_code} = 1;
+    } else {
+        return $c->res->redirect('/login') unless ( $c->user_exists );
+        # check the password typed in is correct
+        if ($password) {
+            my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
+            $d->add($password);
+            my $computed = $d->digest;
+            if ( $computed ne $c->user->{password} ) {
+                $c->set_invalid_form( password => 'WRONG_PASSWORD' );
+                return;
+            }
+            $can_change_password = 1;
+        }
     }
+
+    return unless ( $can_change_password );
 
     # execute validation.
     $c->form(
@@ -141,11 +158,11 @@ sub change_password : Local {
     my $new_computed = $d->digest;
 
     $c->model('DBIC::User')
-        ->update_user( $c->user, { password => $new_computed, } );
+        ->update_user( $c->user, { password => $new_computed } );
 
     $c->detach(
         '/print_message',
-        [   {   msg          => 'OK',
+        [   {   msg          => 'Reset Password OK',
                 url          => '/profile/edit',
                 stay_in_page => 1,
             }
@@ -166,11 +183,9 @@ sub forget_password : Local {
     return $c->stash->{ERROR_NOT_SUCH_USER} = 1 unless ($user);
     return $c->stash->{ERROR_NOT_MATCH} = 1 if ( $user->{email} ne $email );
 
-    # create a random password
-    my $random_password = &generate_random_word(8);
-    my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
-    $d->add($random_password);
-    my $computed = $d->digest;
+    # create a security code
+    # URL contains the security_code can change his password later
+    my $security_code = $c->model('DBIC::SecurityCode')->get_or_create( 'forget_password', $user->{user_id} );
 
     # send email
     $c->model('DBIC::ScheduledEmail')->create_email(
@@ -178,16 +193,16 @@ sub forget_password : Local {
             to       => $email,
             lang     => $c->stash->{lang},
             stash    => {
-                username => $username,
-                password => $random_password
+                username      => $username,
+                security_code => $security_code,
+                IP            => $c->req->address,
             }
         }
     );
-    $c->model('DBIC::User')->update_user( $user, { password => $computed } );
     $c->detach(
         '/print_message',
         [   {   msg =>
-                    'Your Password is Sent to Your Email, Please have a check',
+                    'The instruction to rest your password is sent to your email, please have a check',
                 url          => '/login?username=' . $user->{username},
                 stay_in_page => 1,
             }

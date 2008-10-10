@@ -26,6 +26,7 @@ __PACKAGE__->add_columns(
 );
 __PACKAGE__->set_primary_key("security_code_id");
 
+__PACKAGE__->resultset_class('Foorum::ResultSet::SecurityCode');
 
 1;
 __END__
