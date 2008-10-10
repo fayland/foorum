@@ -49,6 +49,7 @@ bin/upgrade/0.2.0/scraper.pl
 bin/upgrade/0.2.2/up.pl
 bin/upgrade/0.2.3/up.pl
 bin/upgrade/0.2.7/up.pl
+bin/upgrade/0.2.8/up.pl
 Changes
 Changes2
 conf/cron.yml
@@ -84,6 +85,7 @@ inc/Module/Install.pm
 inc/Module/Install/AutoInstall.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
+inc/Module/Install/Catalyst.pm
 inc/Module/Install/Fetch.pm
 inc/Module/Install/Include.pm
 inc/Module/Install/Makefile.pm
@@ -154,6 +156,7 @@ lib/Foorum/ResultSet/BannedIp.pm
 lib/Foorum/ResultSet/Comment.pm
 lib/Foorum/ResultSet/FilterWord.pm
 lib/Foorum/ResultSet/Forum.pm
+lib/Foorum/ResultSet/ForumSettings.pm
 lib/Foorum/ResultSet/Hit.pm
 lib/Foorum/ResultSet/Message.pm
 lib/Foorum/ResultSet/ScheduledEmail.pm
@@ -554,10 +557,13 @@ root/static/js/site/message.js
 root/static/js/site/new_post.js
 root/static/js/site/star.js
 root/static/js/utils.js
+root/upload/.htaccess
 root/upload/index.html
+t/001pod.t
 t/01yaml.t
 t/02utils.t
 t/03xutils.t
+t/04logger.t
 t/05sutils.t
 t/formatter/plain.t
 t/formatter/pod.t
@@ -574,6 +580,7 @@ t/schema/banned_ip.t
 t/schema/comment.t
 t/schema/filter_word.t
 t/schema/forum.t
+t/schema/forum_settings.t
 t/schema/hit.t
 t/schema/message.t
 t/schema/star.t
@@ -623,6 +630,7 @@ templates/forumadmin/announcement.html
 templates/forumadmin/bar.html
 templates/forumadmin/basic.html
 templates/forumadmin/index.html
+templates/forumadmin/links.html
 templates/forumadmin/style.html
 templates/include/object_tds.html
 templates/include/user_profile.html
