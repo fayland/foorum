@@ -50,6 +50,7 @@ bin/upgrade/0.2.2/up.pl
 bin/upgrade/0.2.3/up.pl
 bin/upgrade/0.2.7/up.pl
 bin/upgrade/0.2.8/up.pl
+bin/upgrade/0.2.9/up.pl
 Changes
 Changes2
 conf/cron.yml
@@ -160,6 +161,7 @@ lib/Foorum/ResultSet/ForumSettings.pm
 lib/Foorum/ResultSet/Hit.pm
 lib/Foorum/ResultSet/Message.pm
 lib/Foorum/ResultSet/ScheduledEmail.pm
+lib/Foorum/ResultSet/SecurityCode.pm
 lib/Foorum/ResultSet/Share.pm
 lib/Foorum/ResultSet/Star.pm
 lib/Foorum/ResultSet/Topic.pm
@@ -184,6 +186,7 @@ lib/Foorum/Schema/Poll.pm
 lib/Foorum/Schema/PollOption.pm
 lib/Foorum/Schema/PollResult.pm
 lib/Foorum/Schema/ScheduledEmail.pm
+lib/Foorum/Schema/SecurityCode.pm
 lib/Foorum/Schema/Session.pm
 lib/Foorum/Schema/Share.pm
 lib/Foorum/Schema/Star.pm
@@ -583,6 +586,7 @@ t/schema/forum.t
 t/schema/forum_settings.t
 t/schema/hit.t
 t/schema/message.t
+t/schema/security_code.t
 t/schema/star.t
 t/schema/topic.t
 t/schema/upload.t
@@ -637,7 +641,6 @@ templates/include/user_profile.html
 templates/include/user_profile_photo.html
 templates/include/user_profile_simple.html
 templates/lang/cn/email/activation.html
-templates/lang/cn/email/forget_password.html
 templates/lang/cn/info/about_us.html
 templates/lang/cn/info/contact_us.html
 templates/lang/cn/info/index.html
