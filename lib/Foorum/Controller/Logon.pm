@@ -108,7 +108,7 @@ sub logout : Global {
     # log the user out
     $c->logout;
 
-    $c->res->redirect( '/' );
+    $c->res->redirect('/');
 }
 
 1;

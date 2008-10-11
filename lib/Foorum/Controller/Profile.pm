@@ -113,15 +113,18 @@ sub change_password : Local {
     $c->stash->{template} = 'user/profile/change_password.html';
 
     my $user;
+
     # the user input old password
     # or the user click from forget_password email
     # CAN change password
     my $can_change_password = 0;
-    if ($username and $security_code) {
+    if ( $username and $security_code ) {
+
         # check if that's mataches.
         $user = $c->model('User')->get( { username => $username } );
         if ($user) {
-            my $security_code2 = $c->model('DBIC::SecurityCode')->get( 'forget_password', $user->{user_id} );
+            my $security_code2 = $c->model('DBIC::SecurityCode')
+                ->get( 'forget_password', $user->{user_id} );
             if ( $security_code2 and $security_code2 eq $security_code ) {
                 $can_change_password = 1;
                 $c->stash->{use_security_code} = 1;
@@ -133,10 +136,11 @@ sub change_password : Local {
         return $c->res->redirect('/login') unless ( $c->user_exists );
         $user = $c->user;
         $c->stash->{user} = $user;
-        
+
         # check the password typed in is correct
         if ($password) {
-            my $d = Digest->new( $c->config->{authentication}->{password_hash_type} );
+            my $d = Digest->new(
+                $c->config->{authentication}->{password_hash_type} );
             $d->add($password);
             my $computed = $d->digest;
             if ( $computed ne $c->user->{password} ) {
@@ -148,7 +152,7 @@ sub change_password : Local {
         }
     }
 
-    return unless ( $can_change_password );
+    return unless ($can_change_password);
 
     # execute validation.
     $c->form(
@@ -170,7 +174,8 @@ sub change_password : Local {
 
     # delete so that can't use again
     if ( $c->stash->{use_security_code} ) {
-        $c->model('DBIC::SecurityCode')->remove( 'forget_password', $user->{user_id} );
+        $c->model('DBIC::SecurityCode')
+            ->remove( 'forget_password', $user->{user_id} );
     }
 
     $c->detach(
@@ -193,19 +198,22 @@ sub forget_password : Local {
     my $email    = $c->req->param('email');
 
     my $user;
-    if ( $username ) {
+    if ($username) {
         $user = $c->model('DBIC::User')->get( { username => $username } );
         return $c->stash->{ERROR_NOT_SUCH_USER} = 1 unless ($user);
         $email = $user->{email};
     } elsif ($email) {
         $user = $c->model('DBIC::User')->get( { email => $email } );
-        return $c->stash->{ERROR_NOT_SUCH_EMAIL} = 1 unless ( $user );
+        return $c->stash->{ERROR_NOT_SUCH_EMAIL} = 1 unless ($user);
         $username = $user->{username};
-    } else { return; }
+    } else {
+        return;
+    }
 
     # create a security code
     # URL contains the security_code can change his password later
-    my $security_code = $c->model('DBIC::SecurityCode')->get_or_create( 'forget_password', $user->{user_id} );
+    my $security_code = $c->model('DBIC::SecurityCode')
+        ->get_or_create( 'forget_password', $user->{user_id} );
 
     # send email
     $c->model('DBIC::ScheduledEmail')->create_email(
