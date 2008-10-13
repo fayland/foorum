@@ -252,6 +252,7 @@ CREATE TABLE "security_code" (
   "type" smallint DEFAULT '0' NOT NULL,
   "code" character varying(12) NOT NULL,
   "time" bigint DEFAULT '0' NOT NULL,
+  "note" character varying(255),
   PRIMARY KEY ("security_code_id")
 );
 

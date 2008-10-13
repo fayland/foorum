@@ -119,14 +119,9 @@ sub activation : Local {
 
     # validate it
     if ( $activation_rs->activation_code eq $activation_code ) {
-        my @extra_update;
-        if ( $activation_rs->new_email ) {
-            @extra_update = ( 'email', $activation_rs->new_email );
-        }
         $c->model('DBIC::User')->update_user(
             $user,
             {   status => 'verified',
-                @extra_update,
             }
         );
         $activation_rs->delete;
@@ -138,15 +133,13 @@ sub activation : Local {
         $c->set_authenticated($user);
 
         # send a welcome email
-        unless ( $activation_rs->new_email ) {                  # for new user
-            $c->model('DBIC::ScheduledEmail')->create_email(
-                {   template => 'welcome_to_join',
-                    to       => $user->{email},
-                    lang     => $c->stash->{lang},
-                    stash    => { user => $user, }
-                }
-            );
-        }
+        $c->model('DBIC::ScheduledEmail')->create_email(
+            {   template => 'welcome_to_join',
+                to       => $user->{email},
+                lang     => $c->stash->{lang},
+                stash    => { user => $user, }
+            }
+        );
 
         $c->res->redirect('/profile/edit');
     } else {

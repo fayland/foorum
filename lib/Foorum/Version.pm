@@ -1,6 +1,6 @@
 package Foorum;
 
-our $VERSION = '0.2.9';
+our $VERSION = '0.3.0';
 
 1;
 __END__

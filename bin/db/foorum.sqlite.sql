@@ -1,6 +1,6 @@
 -- 
 -- Created by SQL::Translator::Producer::SQLite
--- Created on Fri Oct 10 15:09:00 2008
+-- Created on Sun Oct 12 14:37:35 2008
 -- 
 BEGIN TRANSACTION;
 
@@ -246,7 +246,8 @@ CREATE TABLE security_code (
   user_id int(11) NOT NULL DEFAULT '0',
   type tinyint(1) NOT NULL DEFAULT '0',
   code varchar(12) NOT NULL,
-  time int(11) NOT NULL DEFAULT '0'
+  time int(11) NOT NULL DEFAULT '0',
+  note VARCHAR(255)
 );
 
 

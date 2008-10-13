@@ -8,7 +8,10 @@ use base 'DBIx::Class::ResultSet';
 use Foorum::Utils qw/generate_random_word/;
 use vars qw/%types/;
 
-%types = ( forget_password => 1, );
+%types = (
+    forget_password => 1,
+    change_email    => 2,
+);
 
 sub get {
     my ( $self, $type, $user_id ) = @_;
@@ -22,24 +25,30 @@ sub get {
     )->first;
     return unless ($rs);
 
-    return $rs->code;
+    if ( wantarray ) {
+        return ( $rs->code, $rs->note );
+    } else {
+        return $rs->code;
+    }
 }
 
 sub get_or_create {
-    my ( $self, $type, $user_id ) = @_;
+    my ( $self, $type, $user_id, $note ) = @_;
+    
+    $type = $types{$type} if ( exists $types{$type} );
+    return unless ($type);
 
     my $code = $self->get( $type, $user_id );
     return $code if ( $code and length($code) );
 
-    $type = $types{$type} if ( exists $types{$type} );
-    return unless ($type);
     $code = &generate_random_word(12);
 
     $self->create(
         {   type    => $type,
             user_id => $user_id,
             code    => $code,
-            time    => time()
+            time    => time(),
+            note    => $note,
         }
     );
 

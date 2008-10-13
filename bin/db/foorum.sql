@@ -298,6 +298,7 @@ CREATE TABLE IF NOT EXISTS `security_code` (
   `type` tinyint(1) unsigned NOT NULL default '0',
   `code` varchar(12) NOT NULL,
   `time` int(11) unsigned NOT NULL default '0',
+  `note` VARCHAR( 255 ) NULL,
   PRIMARY KEY  (`security_code_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

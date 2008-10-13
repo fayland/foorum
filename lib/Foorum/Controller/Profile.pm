@@ -267,7 +267,7 @@ sub change_email : Local {
         return $c->set_invalid_form( email => $err );
     }
 
-    $c->model('DBIC::User')->update_user( $c->user, { email => $email, } );
+    $c->model('DBIC::User')->update_user( $c->user, { email => $email } );
     $c->res->redirect('/profile/edit');
 }
 
