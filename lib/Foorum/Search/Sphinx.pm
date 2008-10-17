@@ -1,34 +1,31 @@
 package Foorum::Search::Sphinx;
 
-use strict;
-use warnings;
+use Moose;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
-
 use Sphinx::Search;
 use Foorum::SUtils qw/schema/;
 
-sub new {
-    my $class = shift;
-    my $self  = {@_};
+has 'sphinx' => (
+    is  => 'ro',
+    isa => 'Sphinx::Search',
+    lazy => 1,
+    default => sub {
+        # check if Sphinx is available
+        # YYY? TODO, make localhost/3312 configurable
+        my $sphinx = Sphinx::Search->new();
+        $sphinx->SetServer( 'localhost', 3312 );
+        return $sphinx;
+    }
+);
 
-    # check if Sphinx is available
-    # YYY? TODO, make localhost/3312 configurable
-    my $sphinx = Sphinx::Search->new();
-    $sphinx->SetServer( 'localhost', 3312 );
+has 'schema' => (
+    is => 'ro',
+    isa => 'Object',
+    lazy => 1,
+    default => sub { schema() },
+);
 
-    $self->{sphinx} = $sphinx;
-
-    return bless $self => $class;
-}
-
-sub get_schema {
-    my ($self) = @_;
-
-    $self->{schema} = schema() unless ( $self->{schema} );
-    return $self->{schema};
-}
-
-sub can_search { return shift->{sphinx}->_Connect(); }
+sub can_search { return shift->sphinx->_Connect(); }
 
 sub query {
     my ( $self, $type, $params ) = @_;
@@ -51,8 +48,7 @@ sub topic {
     my $per_page  = $params->{per_page} || 20;
     my $order_by  = $params->{order_by} || 'last_update_date';
 
-    my $sphinx = $self->{sphinx};
-    my $schema = $self->get_schema();
+    my $sphinx = $self->sphinx;
     $sphinx->ResetFilters();
 
     $sphinx->SetFilter( 'forum_id',  [$forum_id] )  if ($forum_id);
@@ -102,6 +98,9 @@ sub topic {
         total   => $ret->{total_found},
     };
 }
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;
 __END__

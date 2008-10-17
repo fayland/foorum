@@ -1,16 +1,15 @@
 package Foorum::Search::Database;
 
-use strict;
-use warnings;
+use Moose;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
-
 use Foorum::SUtils qw/schema/;
 
-sub new {
-    my $class = shift;
-    my $self  = {@_};
-    return bless $self => $class;
-}
+has 'schema' => (
+    is => 'ro',
+    isa => 'Object',
+    lazy => 1,
+    default => sub { schema() },
+);
 
 sub query {
     my ( $self, $type, $params ) = @_;
@@ -20,13 +19,6 @@ sub query {
     } else {
         return;
     }
-}
-
-sub get_schema {
-    my ($self) = @_;
-
-    $self->{schema} = schema() unless ( $self->{schema} );
-    return $self->{schema};
 }
 
 sub topic {
@@ -40,7 +32,7 @@ sub topic {
     my $per_page  = $params->{per_page} || 20;
     my $order_by  = $params->{order_by} || 'last_update_date';
 
-    my $schema = $self->get_schema();
+    my $schema = $self->schema;
 
     my ( $where, $attr );
 
@@ -93,7 +85,7 @@ sub user {
     my $country  = $params->{country};
     my $page     = $params->{'page'} || 1;
     my $per_page = $params->{per_page} || 20;
-    my $schema   = $self->{schema};
+    my $schema   = $self->schema;
 
     my ( $where, $attr );
     $attr->{rows}    = $per_page;
@@ -123,6 +115,9 @@ sub user {
         pager   => $rs->pager,
     };
 }
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;
 __END__
