@@ -112,10 +112,10 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
             my @topic_ids = $c->model('DBIC::Topic')->get_topic_id_list( $forum_id );
             my $place = firstidx { $_ == $topic_id } @topic_ids;
             if ( $place > 0 and $topic_ids[ $place - 1 ] ) {
-                $stash->{previous_topic_id} = $topic_ids[ $place - 1 ];
+                $c->stash->{previous_topic_id} = $topic_ids[ $place - 1 ];
             }
             if ( $place < $#topic_ids and $topic_ids[ $place + 1 ] ) {
-                $stash->{next_topic_id} = $topic_ids[ $place + 1 ];
+                $c->stash->{next_topic_id} = $topic_ids[ $place + 1 ];
             }
             
             $c->stash->{whos_view_this_page} = 1;
