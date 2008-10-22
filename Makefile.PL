@@ -55,14 +55,35 @@ requires 'Sphinx::Search';
 requires 'MooseX::TheSchwartz';
 requires 'Schedule::Cron';
 if ($^O ne 'MSWin32') {
-    recommends 'Proc::PID::File';
+    feature 'Cron script run-once',
+        -default          => 0,
+        'Proc::PID::File' => 0,
+        'File::HomeDir'   => 0;
+} else {
+    feature 'Cron script run-once',
+        -default          => 0,
+        'File::HomeDir'   => 0;
 }
-recommends 'File::HomeDir';
 
 # mail
 requires 'MIME::Entity';
 requires 'Email::Send';
-recommends 'Email::Send::SMTP::TLS';
+feature 'Email::Send through Gmail',
+    -default                 => 0,
+    'Email::Send::SMTP::TLS' => 0;
+
+# cron/misc|db
+feature 'Be a Foorum developer',
+    -default                => 0,
+    'File::Next'            => 0,
+    'CSS::Minifier'         => 0,
+    'JavaScript::Minifier'  => 0,
+    'Encode::HanConvert'    => 0,
+    'Perl::Critic'          => 0,
+    'Perl::Tidy'            => 0,
+    'SQL::Translator'       => 0,
+    'DBICx:::AutoDoc'       => 0,
+    'Pod::From::GoogleWiki' => '0.05';
 
 # formatter
 requires 'Text::Textile';
