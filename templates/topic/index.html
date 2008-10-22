@@ -59,6 +59,12 @@
     <a href="[% url_prefix %]?format=pdf"><img src="[% c.config.dir.images %]/site/s/pdf.gif" width='16' height='16'>View as PDF</a>
     [% END %]
     <a href="[% url_prefix %]/print"><img src="[% c.config.dir.images %]/site/s/print.gif" width='18' height='18'>Print</a>
+    [% IF previous_topic_id %]
+    <a href="/forum/[% forum.forum_code %]/topic/[% previous_topic_id %]">Previous</a>
+    [% END %]
+    [% IF next_topic_id %]
+    <a href="/forum/[% forum.forum_code %]/topic/[% next_topic_id %]">Next</a>
+    [% END %]
     </td>
 </tr>
 </table>
