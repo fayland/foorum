@@ -1,6 +1,13 @@
 package Foorum;
 
+use strict;
+use warnings;
+
 our $VERSION = '0.3.0';
+
+package Foorum::Version;
+
+our $VERSION = $Foorum::VERSION;
 
 1;
 __END__
