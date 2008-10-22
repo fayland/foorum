@@ -32,12 +32,41 @@ sub get {
     return $topic;
 }
 
+sub get_topic_id_list {
+    my ( $self, $forum_id ) = @_;
+    
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
+
+    my $cache_key = "topic|get_topic_id_list|forum_id=$forum_id";
+    my $cache_val = $cache->get($cache_key);
+    
+    if ( defined $cache_val and ref $cache_val eq 'ARRAY' ) {
+        return wantarray ? @$cache_val : $cache_val;
+    }
+    
+    # get from db and set cache
+    my @all = $self->search(
+        {   forum_id    => $forum_id,
+            'me.status' => { '!=', 'banned' },
+        }, {
+            order_by => \'sticky DESC, last_update_date DESC', #'
+            columns  => ['topic_id'],
+        }
+    )->all;
+    
+    my @topic_ids = map { $_->topic_id } @all;
+    $cache->set( $cache_key, \@topic_ids, 1800 );
+    return wantarray ? @topic_ids : \@topic_ids;
+}
+
 sub create_topic {
     my ( $self, $create ) = @_;
 
     my $schema = $self->result_source->schema;
 
     $create->{post_on} = time() unless ( $create->{post_on} );
+    $create->{last_update_date} = time() unless ( $create->{last_update_date} );
     my $topic = $self->create($create);
 
     # star it by default

@@ -8,7 +8,7 @@ BEGIN {
     eval { require DBD::SQLite }
         or plan skip_all => "DBD::SQLite is required for this test";
     $ENV{TEST_FOORUM} = 1;
-    plan tests => 13;
+    plan tests => 14;
 }
 
 use FindBin;
@@ -35,6 +35,12 @@ my $create  = {
 
 # test create topic
 $cache->remove("topic|topic_id=1");
+$topic_res->create_topic($create);
+$create->{topic_id} = 5;
+$create->{last_update_date} = time() + 2;
+$topic_res->create_topic($create);
+$create->{topic_id} = 3;
+$create->{last_update_date} = time() + 5;
 $topic_res->create_topic($create);
 my $starred = $schema->resultset('Star')->count(
     {   user_id     => 1,
@@ -71,6 +77,11 @@ $schema->resultset('Forum')->create(
         total_replies => 1,
     }
 );
+
+# test get_topic_id_list
+$cache->remove("topic|get_topic_id_list|forum_id=1");
+my @ids = $topic_res->get_topic_id_list( 1 );
+is_deeply(\@ids, [3, 5, 1], 'get_topic_id_list OK');
 
 # test remove
 $topic_res->remove(
