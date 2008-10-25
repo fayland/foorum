@@ -3,7 +3,7 @@ package Foorum;
 use strict;
 use warnings;
 
-our $VERSION = '0.3.0';
+our $VERSION = '0.003001';
 
 package Foorum::Version;
 

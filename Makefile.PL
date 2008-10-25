@@ -83,6 +83,7 @@ feature 'Be a Foorum developer',
     'Perl::Tidy'            => 0,
     'SQL::Translator'       => 0,
     'DBICx:::AutoDoc'       => 0,
+    'Acme::PlayCode'        => '0.05',
     'Pod::From::GoogleWiki' => '0.05';
 
 # formatter

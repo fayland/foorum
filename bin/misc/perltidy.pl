@@ -29,6 +29,4 @@ while ( defined ( my $file = $files->() ) ) {
     move($tidyfile, $file);
 }
 
-exit;
-
 1;

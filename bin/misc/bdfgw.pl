@@ -136,3 +136,5 @@ HTML
     close($fh);
     print "format $filename OK\n";
 }
+
+1;

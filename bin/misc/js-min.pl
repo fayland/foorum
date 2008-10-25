@@ -46,6 +46,4 @@ sub minify_js {
     close($outfh);
 }
 
-exit;
-
 1;

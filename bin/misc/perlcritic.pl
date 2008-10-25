@@ -38,6 +38,4 @@ while ( defined( my $file = $files->() ) ) {
 }
 close($fh);
 
-exit;
-
 1;

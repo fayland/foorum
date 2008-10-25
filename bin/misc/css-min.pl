@@ -47,6 +47,4 @@ sub minify_css {
     close($outfh);
 }
 
-exit;
-
 1;
