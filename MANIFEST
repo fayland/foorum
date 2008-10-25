@@ -227,7 +227,6 @@ lib/Foorum/View/JSON.pm
 lib/Foorum/View/TT.pm
 lib/Foorum/XUtils.pm
 Makefile.PL
-Makefile_dev.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
 META.yml

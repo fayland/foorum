@@ -13,10 +13,6 @@ no_index:
   directory:
     - inc
     - t
-recommends:
-  Email::Send::SMTP::TLS: 0
-  File::HomeDir: 0
-  Proc::PID::File: 0
 requires:
   Cache::FileCache: 0
   Catalyst: 5.64
@@ -68,4 +64,4 @@ requires:
   WWW::Contact: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.2.9
+version: 0.3.0
