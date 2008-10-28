@@ -5,9 +5,9 @@ use warnings;
 
 # for both Linux/Win32
 my $has_proc_pid_file
-    = eval "use Proc::PID::File; 1;";    ## no critic (ProhibitStringyEval)
+    = eval 'use Proc::PID::File; 1;';    ## no critic (ProhibitStringyEval)
 my $has_home_dir
-    = eval "use File::HomeDir; 1;";      ## no critic (ProhibitStringyEval)
+    = eval 'use File::HomeDir; 1;';      ## no critic (ProhibitStringyEval)
 if ( $has_proc_pid_file and $has_home_dir ) {
 
     # If already running, then exit
@@ -28,13 +28,13 @@ my $base_path = base_path();
 my $verbose = sub {
     my $msg = shift;
     $msg =~ s/\s+$//;
-    if ( $msg eq 'TheSchwartz::work_once found no jobs' ) {
+    if ( 'TheSchwartz::work_once found no jobs' eq $msg ) {
 
         # do nothing
-    } elsif ( $msg eq 'job completed' ) {
+    } elsif ( 'job completed' eq $msg ) {
 
         # add localtime()
-        print STDERR 'job completed @ ' . localtime() . "\n";
+        print STDERR 'job completed @ ', localtime() . "\n";
     } else {
         print STDERR "$msg\n";
     }
@@ -66,10 +66,10 @@ foreach my $one (
 
     # skip some
     next
-        if ( $worker eq 'Scraper' and not $config->{function_on}->{scraper} );
+        if ( 'Scraper' eq $worker and not $config->{function_on}->{scraper} );
     next
-        if ( $worker eq 'Topic_ViewAsPDF'
-        and not $config->{function_on}->{topic_pdf} );
+        if ( 'Topic_ViewAsPDF'
+        eq $worker and not $config->{function_on}->{topic_pdf} );
 
     my $module = "Foorum::TheSchwartz::Worker::$worker";
     eval "use $module;";    ## no critic (ProhibitStringyEval)

@@ -5,9 +5,9 @@ use warnings;
 
 # for both Linux/Win32
 my $has_proc_pid_file
-    = eval "use Proc::PID::File; 1;";    ## no critic (ProhibitStringyEval)
+    = eval 'use Proc::PID::File; 1;';    ## no critic (ProhibitStringyEval)
 my $has_home_dir
-    = eval "use File::HomeDir; 1;";      ## no critic (ProhibitStringyEval)
+    = eval 'use File::HomeDir; 1;';      ## no critic (ProhibitStringyEval)
 if ( $has_proc_pid_file and $has_home_dir ) {
 
     # If already running, then exit
@@ -44,7 +44,7 @@ my $rs = $schema->resultset('Comment')->search(
 while ( my $r = $rs->next ) {
     $schema->resultset('Topic')->search( { topic_id => $r->object_id, } )
         ->update( { post_on => $r->post_on, } );
-    print "Update " . $r->object_id . ' with ' . $r->post_on . "\n";
+    print 'Update ', $r->object_id, ' with ', $r->post_on, "\n";
 }
 
 print "Done\n";

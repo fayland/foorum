@@ -25,7 +25,7 @@ my $ad = DBICx::AutoDoc2->new(
 );
 
 $ad->include_path( File::Spec->catdir( $Bin, 'autodoc-templates' ) );
-$ad->fill_template("AUTODOC.html");
+$ad->fill_template('AUTODOC.html');
 
 # rewrite the Schema pm POD
 use Template;

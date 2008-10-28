@@ -11,11 +11,11 @@ use File::Spec;
 my $path = abs_path( File::Spec->catdir( $FindBin::RealBin, '..', '..' ) );
 
 print "You are going to configure Sphinx for foorum.\n",
-    "=" x 50,
+    '=' x 50,
     "\nPlease report bugs to AUTHORS if u meet any problem.\n\n";
 
 my $module_installed
-    = eval "use Sphinx::Search;1;";    ## no critic (ProhibitStringyEval)
+    = eval 'use Sphinx::Search;1;';    ## no critic (ProhibitStringyEval)
 unless ($module_installed) {
     print "Please cpan Sphinx::Search first!\n\n";
 }
@@ -71,6 +71,6 @@ print "Configure is saved: $path/conf/sphinx.conf\n",
     "Please use\nindexer --all --config $path/conf/sphinx.conf\nOR\n",
     "searchd --config $path/conf/sphinx.conf\n";
 
-print "=" x 50, "\nDone!\n", "Thanks For Join US!\n";
+print '=' x 50, "\nDone!\n", "Thanks For Join US!\n";
 
 1;

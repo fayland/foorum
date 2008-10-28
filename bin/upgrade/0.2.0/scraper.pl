@@ -5,9 +5,9 @@ use warnings;
 
 # for both Linux/Win32
 my $has_proc_pid_file
-    = eval "use Proc::PID::File; 1;";    ## no critic (ProhibitStringyEval)
+    = eval 'use Proc::PID::File; 1;';    ## no critic (ProhibitStringyEval)
 my $has_home_dir
-    = eval "use File::HomeDir; 1;";      ## no critic (ProhibitStringyEval)
+    = eval 'use File::HomeDir; 1;';      ## no critic (ProhibitStringyEval)
 if ( $has_proc_pid_file and $has_home_dir ) {
 
     # If already running, then exit
@@ -54,7 +54,7 @@ foreach my $mailman (@mailmans) {
         if ( ref($enc) ) {
             $encoding = $enc->name;
         }
-        if ( $encoding and $encoding ne 'utf8' ) {
+        if ( $encoding and 'utf8' ne $encoding ) {
             from_to( $text, $encoding, 'utf8' );
             print "Convert $comment_id FROM $encoding TO utf8\n";
             $r->update( { text => $text, } );

@@ -28,7 +28,7 @@ my $html_body  = Dumper( \$config );
 
 my $top = MIME::Entity->build(
     'X-Mailer' => undef,                     # remove X-Mailer tag in header
-    'Type'     => "multipart/alternative",
+    'Type'     => 'multipart/alternative',
     'Reply-To' => $from,
     'From'     => $from,
     'To'       => $to,

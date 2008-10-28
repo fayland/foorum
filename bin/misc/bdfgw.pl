@@ -75,9 +75,9 @@ foreach my $filename (@filenames) {
 
         $indexpage .= qq~<li><a href="$filename\.html">$filename</a></li>~;
 
-        if (   $filename eq 'AUTHORS'
-            or $filename eq 'README'
-            or $filename eq 'INSTALL' ) {
+        if ( 'AUTHORS'
+            eq $filename   or 'README'
+            eq $filename or 'INSTALL' eq $filename ) {
 
             # convert to Pod
 
@@ -102,7 +102,7 @@ sub buildhtml {
 
     my $wiki_url = "$project_url/wiki/$filename";
     $wiki_url = 'http://code.google.com/p/foorum/w/list'
-        if ( $filename eq 'index' );
+        if ( 'index' eq $filename );
 
     $html = <<HTML;
 <html>

@@ -5,9 +5,9 @@ use warnings;
 
 # for both Linux/Win32
 my $has_proc_pid_file
-    = eval "use Proc::PID::File; 1;";    ## no critic (ProhibitStringyEval)
+    = eval 'use Proc::PID::File; 1;';    ## no critic (ProhibitStringyEval)
 my $has_home_dir
-    = eval "use File::HomeDir; 1;";      ## no critic (ProhibitStringyEval)
+    = eval 'use File::HomeDir; 1;';      ## no critic (ProhibitStringyEval)
 if ( $has_proc_pid_file and $has_home_dir ) {
 
     # If already running, then exit
