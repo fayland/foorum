@@ -19,7 +19,7 @@ my $schema = schema();
 isa_ok( $schema, 'Foorum::Schema', 'schema() ISA Foorum::Schema' );
 
 my @sources = $schema->sources();
-ok( grep { 'User' eq $_ } @sources,  'sources contains User' );
+ok( grep { 'User'  eq $_ } @sources, 'sources contains User' );
 ok( grep { 'Forum' eq $_ } @sources, 'sources contains Forum' );
 
 END {

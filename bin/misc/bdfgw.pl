@@ -75,9 +75,9 @@ foreach my $filename (@filenames) {
 
         $indexpage .= qq~<li><a href="$filename\.html">$filename</a></li>~;
 
-        if ( 'AUTHORS'
-            eq $filename   or 'README'
-            eq $filename or 'INSTALL' eq $filename ) {
+        if (   'AUTHORS' eq $filename
+            or 'README'  eq $filename
+            or 'INSTALL' eq $filename ) {
 
             # convert to Pod
 

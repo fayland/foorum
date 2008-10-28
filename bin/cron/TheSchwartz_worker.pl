@@ -68,8 +68,8 @@ foreach my $one (
     next
         if ( 'Scraper' eq $worker and not $config->{function_on}->{scraper} );
     next
-        if ( 'Topic_ViewAsPDF'
-        eq $worker and not $config->{function_on}->{topic_pdf} );
+        if ( 'Topic_ViewAsPDF' eq $worker
+        and not $config->{function_on}->{topic_pdf} );
 
     my $module = "Foorum::TheSchwartz::Worker::$worker";
     eval "use $module;";    ## no critic (ProhibitStringyEval)

@@ -52,10 +52,7 @@ while ( my $r = $rs->next ) {
             user_id  => $r->user_id,
         }
     );
-    print 'Migrate For '
-, $r->user_id, '-'
-, $r->field, '-'
-, $r->role, "\n";
+    print 'Migrate For ', $r->user_id, '-', $r->field, '-', $r->role, "\n";
 }
 
 $schema->resultset('UserRole')->search( { field => { '!=', 'site' } } )

@@ -61,8 +61,8 @@ if ($worker) {
 
         # skip some
         next
-            if ( 'Scraper'
-            eq $worker and not $config->{function_on}->{scraper} );
+            if ( 'Scraper' eq $worker
+            and not $config->{function_on}->{scraper} );
 
         $cron->add_entry( $one->{time}, \&run_worker, $worker );
     }
