@@ -7,10 +7,10 @@ use Test::More;
 BEGIN {
 
     eval { require Pod::Xhtml }
-        or plan skip_all => "Pod::Xhtml is required for this test";
+        or plan skip_all => 'Pod::Xhtml is required for this test';
 
     eval { require IO::String }
-        or plan skip_all => "IO::String is required for this test";
+        or plan skip_all => 'IO::String is required for this test';
 
     plan tests => 3;
 }

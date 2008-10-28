@@ -7,7 +7,7 @@ use Test::More;
 BEGIN {
 
     eval { require URI::Find::UTF8 }
-        or plan skip_all => "URI::Find::UTF8 is required for this test";
+        or plan skip_all => 'URI::Find::UTF8 is required for this test';
 
     plan tests => 2;
 }

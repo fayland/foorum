@@ -8,7 +8,7 @@ BEGIN {
 
     eval { require Text::GooglewikiFormat }
         or plan skip_all =>
-        "Text::GooglewikiFormat is required for this test";
+        'Text::GooglewikiFormat is required for this test';
 
     plan tests => 3;
 }

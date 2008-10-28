@@ -7,7 +7,7 @@ use Test::More;
 BEGIN {
 
     eval { require Text::Textile }
-        or plan skip_all => "Text::Textile is required for this test";
+        or plan skip_all => 'Text::Textile is required for this test';
 
     plan tests => 3;
 }
