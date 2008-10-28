@@ -99,6 +99,7 @@
 /bin/misc/js-min.pl source OK
 /bin/misc/bdfgw.pl source OK
 /bin/misc/wiki2pod.pl source OK
+/bin/misc/acme_playcode.pl source OK
 /bin/misc/g2b.pl source OK
 /bin/misc/perltidy.pl source OK
 /bin/misc/dbicx_autodoc.pl source OK
