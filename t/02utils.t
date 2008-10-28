@@ -16,8 +16,8 @@ use Foorum::Utils qw/
 # test encodeHTML and decodeHTML
 {
     my $html = encodeHTML('<test> with & and "');
-    is( $html, "&lt;test&gt; with &amp; and &quot;", 'encodeHTML OK' );
-    my $text = decodeHTML("&lt;test&gt; with &amp; and &quot;");
+    is( $html, '&lt;test&gt; with &amp; and &quot;', 'encodeHTML OK' );
+    my $text = decodeHTML('&lt;test&gt; with &amp; and &quot;');
     is( $text, '<test> with & and "', 'decodeHTML OK' );
 }
 
@@ -25,7 +25,7 @@ use Foorum::Utils qw/
 {
     my $ret = is_color('#FF0000');
     is( $ret, 1, 'test is_color with 1' );
-    $ret = is_color("test");
+    $ret = is_color('test');
     is( $ret, 0, 'test is_color with 0' );
 }
 
@@ -39,30 +39,30 @@ use Foorum::Utils qw/
 
 # test get_page_from_url
 {
-    my $page = get_page_from_url("/test/page=2");
+    my $page = get_page_from_url('/test/page=2');
     is( $page, 2, 'get_page_from_url with page=2' );
-    $page = get_page_from_url("/test/page=3/with_slash");
+    $page = get_page_from_url('/test/page=3/with_slash');
     is( $page, 3, 'get_page_from_url with page=3/' );
-    $page = get_page_from_url("/test/nothing");
+    $page = get_page_from_url('/test/nothing');
     is( $page, 1, 'get_page_from_url return default 1' );
 }
 
 # test truncate_text
 {
-    my $text = "Hello, 请截取我";
+    my $text = 'Hello, 请截取我';
     my $text2 = truncate_text( $text, 8 );
-    is( $text2, "Hello, 请 ...", 'truncate_text 8 OK' );
+    is( $text2, 'Hello, 请 ...', 'truncate_text 8 OK' );
     $text2 = truncate_text( $text, 9 );
-    is( $text2, "Hello, 请截 ...", 'truncate_text 9 OK' );
+    is( $text2, 'Hello, 请截 ...', 'truncate_text 9 OK' );
     $text2 = truncate_text( $text, 10 );
-    is( $text2, "Hello, 请截取 ...", 'truncate_text 10 OK' );
+    is( $text2, 'Hello, 请截取 ...', 'truncate_text 10 OK' );
 }
 
 # test be_url_part
 {
-    my $ret = be_url_part("I'm a title");
+    my $ret = be_url_part(q~I'm a title~);
     is( $ret, 'I-m-a-title', 'be_url_part 1' );
-    $ret = be_url_part("+I'm a 88 title!");
+    $ret = be_url_part(q~+I'm a 88 title!~);
     is( $ret, 'I-m-a-88-title', 'be_url_part 2' );
 }
 

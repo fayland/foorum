@@ -6,7 +6,7 @@ use Test::More;
 
 BEGIN {
     eval { require DBD::SQLite }
-        or plan skip_all => "DBD::SQLite is required for this test";
+        or plan skip_all => 'DBD::SQLite is required for this test';
     $ENV{TEST_FOORUM} = 1;
     plan tests => 3;
 }

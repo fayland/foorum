@@ -6,7 +6,7 @@ use Test::More;
 
 BEGIN {
     eval { require DBD::SQLite }
-        or plan skip_all => "DBD::SQLite is required for this test";
+        or plan skip_all => 'DBD::SQLite is required for this test';
     $ENV{TEST_FOORUM} = 1;
     plan tests => 18;
 }
@@ -46,7 +46,7 @@ $schema->resultset('ForumSettings')->create(
         value    => '123456',
     }
 );
-$cache->remove("forum|forum_id=1");
+$cache->remove('forum|forum_id=1');
 
 # test get
 my $forum  = $forum_res->get(1);            # by forum_id;
@@ -96,7 +96,7 @@ $schema->resultset('FilterWord')->create(
         type => 'forum_code_reserved'
     }
 );
-$cache->remove("filter_word|type=forum_code_reserved");
+$cache->remove('filter_word|type=forum_code_reserved');
 
 $st = $forum_res->validate_forum_code('FaylandLam');
 is( $st, 'HAS_RESERVED', 'HAS_RESERVED' );

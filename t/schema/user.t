@@ -6,7 +6,7 @@ use Test::More;
 
 BEGIN {
     eval { require DBD::SQLite }
-        or plan skip_all => "DBD::SQLite is required for this test";
+        or plan skip_all => 'DBD::SQLite is required for this test';
     $ENV{TEST_FOORUM} = 1;
     plan tests => 16;
 }
@@ -66,7 +66,7 @@ $schema->resultset('FilterWord')->create(
         type => 'username_reserved'
     }
 );
-$cache->remove("filter_word|type=username_reserved");
+$cache->remove('filter_word|type=username_reserved');
 
 $st = $user_res->validate_username('FaylandLam');
 is( $st, 'HAS_RESERVED', 'HAS_RESERVED' );

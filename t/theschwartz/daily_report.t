@@ -26,9 +26,9 @@ run_test(
 
         {
             my $handle
-                = $client->insert("Foorum::TheSchwartz::Worker::DailyReport");
+                = $client->insert('Foorum::TheSchwartz::Worker::DailyReport');
 
-            $client->can_do("Foorum::TheSchwartz::Worker::DailyReport");
+            $client->can_do('Foorum::TheSchwartz::Worker::DailyReport');
             $client->work_until_done;
 
             # test if OK

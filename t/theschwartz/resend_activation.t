@@ -58,9 +58,9 @@ run_test(
 
         {
             my $handle = $client->insert(
-                "Foorum::TheSchwartz::Worker::ResendActivation");
+                'Foorum::TheSchwartz::Worker::ResendActivation');
 
-            $client->can_do("Foorum::TheSchwartz::Worker::ResendActivation");
+            $client->can_do('Foorum::TheSchwartz::Worker::ResendActivation');
             $client->work_until_done;
 
             # test if OK

@@ -9,9 +9,9 @@ BEGIN {
 
     eval { require HTML::TokeParser::Simple }
         or plan skip_all =>
-        "HTML::TokeParser::Simple is required for this test";
+        'HTML::TokeParser::Simple is required for this test';
     eval { require LWP::Simple }
-        or plan skip_all => "LWP::Simple is required for this test";
+        or plan skip_all => 'LWP::Simple is required for this test';
 
     plan tests => 2;
 }

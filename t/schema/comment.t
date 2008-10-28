@@ -6,7 +6,7 @@ use Test::More;
 
 BEGIN {
     eval { require DBD::SQLite }
-        or plan skip_all => "DBD::SQLite is required for this test";
+        or plan skip_all => 'DBD::SQLite is required for this test';
 
     $ENV{TEST_FOORUM} = 1;
     plan tests => 24;
@@ -43,7 +43,7 @@ sub create_comment {
     );
 }
 &create_comment( 1, 0 );
-my $cache_key = "comment|object_type=test|object_id=22";
+my $cache_key = 'comment|object_type=test|object_id=22';
 $cache->remove($cache_key);
 
 # test get
@@ -117,7 +117,7 @@ $schema->resultset('FilterWord')->create(
         type => 'bad_word'
     }
 );
-$cache->remove("filter_word|type=bad_word");
+$cache->remove('filter_word|type=bad_word');
 
 $params = { title => 'fuck', text => 'text' };
 $st = $comment_res->validate_params($params);

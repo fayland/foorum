@@ -6,9 +6,9 @@ use Test::More;
 
 BEGIN {
     my $has_test_longstring
-        = eval "use Test::LongString; 1;";  ## no critic (ProhibitStringyEval)
+        = eval 'use Test::LongString; 1;';  ## no critic (ProhibitStringyEval)
     $has_test_longstring
-        or plan skip_all => "Test::LongString is required for this test";
+        or plan skip_all => 'Test::LongString is required for this test';
     plan tests => 2;
 }
 

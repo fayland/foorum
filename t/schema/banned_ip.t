@@ -6,7 +6,7 @@ use Test::More;
 
 BEGIN {
     eval { require DBD::SQLite }
-        or plan skip_all => "DBD::SQLite is required for this test";
+        or plan skip_all => 'DBD::SQLite is required for this test';
     $ENV{TEST_FOORUM} = 1;
     plan tests => 3;
 }
@@ -37,8 +37,8 @@ $banned_ip_res->create(
 $cache->remove('global|banned_ip');
 my @ips = $banned_ip_res->get();
 
-ok( grep { $_ eq '192.168.0.0/24' } @ips, "get '192.168.0.0/24'" );
-ok( grep { $_ eq '192.168.1.0/24' } @ips, "get '192.168.1.0/24'" );
+ok( grep { '192.168.0.0/24' eq $_ } @ips, q~get '192.168.0.0/24'~ );
+ok( grep { '192.168.1.0/24' eq $_ } @ips, q~get '192.168.1.0/24'~ );
 
 # test is_ip_banned
 my $flag = $banned_ip_res->is_ip_banned('192.168.0.1');

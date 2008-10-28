@@ -6,7 +6,7 @@ use Test::More;
 
 BEGIN {
     eval { require DBD::SQLite }
-        or plan skip_all => "DBD::SQLite is required for this test";
+        or plan skip_all => 'DBD::SQLite is required for this test';
     $ENV{TEST_FOORUM} = 1;
     plan tests => 4;
 }
@@ -30,7 +30,7 @@ my $message = $message_res->create(
         to_id       => 1,
         title       => 'Test',
         text        => 'Text',
-        post_on     => "2008-01-20",
+        post_on     => '2008-01-20',
         post_ip     => '127.0.0.1',
         from_status => 'open',
         to_status   => 'open',

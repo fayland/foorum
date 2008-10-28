@@ -5,11 +5,11 @@ use warnings;
 use Test::More;
 
 BEGIN {
-    eval "use Test::YAML::Valid;";    ## no critic (ProhibitStringyEval)
-    $@ and plan skip_all => "Test::YAML::Valid is required for this test";
+    eval 'use Test::YAML::Valid;';    ## no critic (ProhibitStringyEval)
+    $@ and plan skip_all => 'Test::YAML::Valid is required for this test';
 
-    eval "use File::Next;";           ## no critic (ProhibitStringyEval)
-    $@ and plan skip_all => "File::Next is required for this test";
+    eval 'use File::Next;';           ## no critic (ProhibitStringyEval)
+    $@ and plan skip_all => 'File::Next is required for this test';
 }
 
 use Foorum::XUtils qw/base_path/;

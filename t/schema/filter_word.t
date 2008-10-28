@@ -6,7 +6,7 @@ use Test::More;
 
 BEGIN {
     eval { require DBD::SQLite }
-        or plan skip_all => "DBD::SQLite is required for this test";
+        or plan skip_all => 'DBD::SQLite is required for this test';
     $ENV{TEST_FOORUM} = 1;
     plan tests => 3;
 }
@@ -39,19 +39,19 @@ $filter_word_res->create(
     }
 );
 
-$cache->remove("filter_word|type=username_reserved");
-$cache->remove("filter_word|type=bad_word");
-$cache->remove("filter_word|type=offensive_word");
+$cache->remove('filter_word|type=username_reserved');
+$cache->remove('filter_word|type=bad_word');
+$cache->remove('filter_word|type=offensive_word');
 
 my @data = $filter_word_res->get_data('username_reserved');
 
-ok( grep { $_ eq 'system' } @data, "get 'username_reserved' OK" );
+ok( grep { 'system' eq $_ } @data, q~get 'username_reserved' OK~ );
 
-my $has_bad_word = $filter_word_res->has_bad_word("oh, fuck you!");
+my $has_bad_word = $filter_word_res->has_bad_word('oh, fuck you!');
 is( $has_bad_word, 'fuck', 'has_bad_word OK' );
 
 my $return_text
-    = $filter_word_res->convert_offensive_word("kick your asshole la, dude!");
+    = $filter_word_res->convert_offensive_word('kick your asshole la, dude!');
 like( $return_text, qr/\*/, 'convert_offensive_word OK' );
 
 END {

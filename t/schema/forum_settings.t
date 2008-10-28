@@ -6,7 +6,7 @@ use Test::More;
 
 BEGIN {
     eval { require DBD::SQLite }
-        or plan skip_all => "DBD::SQLite is required for this test";
+        or plan skip_all => 'DBD::SQLite is required for this test';
     $ENV{TEST_FOORUM} = 1;
     plan tests => 9;
 }
@@ -54,7 +54,7 @@ $forum_settings_res->create(
     }
 );
 
-$cache->remove("forum_settings|forum_id=1");
+$cache->remove('forum_settings|forum_id=1');
 
 # get_all
 my $settings = $forum_settings_res->get_all(1);
