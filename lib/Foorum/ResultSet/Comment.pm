@@ -97,8 +97,8 @@ sub get_comments_by_object {
                 $selected_comment_id = $top_comment->{comment_id};
                 last if ( $reply_to == 0 );
                 last
-                    if ( 'topic'
-                    eq $object_typeand $reply_to == $comments[0]->{comment_id} );
+                    if ( 'topic' eq $object_type
+                    and $reply_to == $comments[0]->{comment_id} );
                 $top_comment
                     = first { $_->{comment_id} == $reply_to } @comments;
             }
@@ -120,8 +120,8 @@ sub get_comments_by_object {
             $_->{level} = 0;
             push @result_comments, $_;
             next
-                if ( 'topic'
-                eq $object_typeand $_->{comment_id} == $comments[0]->{comment_id} );
+                if ( 'topic' eq $object_type
+                and $_->{comment_id} == $comments[0]->{comment_id} );
 
             # get children, 10 lines below
             $self->get_children_comments( $_->{comment_id}, 1, \@comments,

@@ -256,9 +256,9 @@ sub members : Chained('forum') Args {
     my $forum_code = $forum->{forum_code};
 
     $member_type ||= 'user';
-    if ( 'pending'
-        ne $member_type    and 'blocked'
-        ne $member_type and 'rejected' ne $member_type ) {
+    if (    'pending' ne $member_type
+        and 'blocked'  ne $member_type
+        and 'rejected' ne $member_type ) {
         $member_type = 'user';
     }
 
