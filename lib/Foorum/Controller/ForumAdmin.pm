@@ -108,8 +108,8 @@ sub basic : Chained('forum_for_admin') Args(0) {
     )->delete;
     foreach my $type (@all_types) {
         my $value = $c->req->params->{$type};
-        $value = 'Y' unless ( $value eq 'N' );
-        if ( $value eq 'N' ) {    # don't store 'Y' because it's default
+        $value = 'Y' unless ( 'N' eq $value );
+        if ( 'N' eq $value ) {    # don't store 'Y' because it's default
             $c->model('DBIC')->resultset('ForumSettings')->create(
                 {   forum_id => $forum_id,
                     type     => $type,
@@ -417,16 +417,16 @@ sub change_membership : Chained('forum_for_admin') Args(0) {
     );
     return $c->res->body('no record available') unless ($rs);
 
-    if ( $from eq 'user' and ( $to eq 'rejected' or $to eq 'blocked' ) ) {
+    if ( 'user' eq $from and ( 'rejected' eq $to or 'blocked' eq $to ) ) {
         $c->model('DBIC::Forum')
             ->update_forum( $forum_id,
-            { total_members => \"total_members - 1" } );
+            { total_members => \'total_members - 1' } );
     } elsif (
-        ( $from eq 'rejected' or $from eq 'blocked' or $from eq 'pending' )
-        and $to eq 'user' ) {
+        ( 'rejected' eq $from or 'blocked' eq $from or 'pending' eq $from )
+        and 'user' eq $to ) {
         $c->model('DBIC::Forum')
             ->update_forum( $forum_id,
-            { total_members => \"total_members + 1" } );
+            { total_members => \'total_members + 1' } );
     }
 
     my $where = {

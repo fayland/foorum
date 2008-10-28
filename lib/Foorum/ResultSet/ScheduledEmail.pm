@@ -83,7 +83,7 @@ sub create_email {
             = "$base_path/templates/lang/$lang/email/$template_name";
         if ( -e $file_prefix . '.txt' or -e $file_prefix . '.html' ) {
             $template_prefix = "lang/$lang/email/$template_name";
-        } elsif ( $lang ne 'en' ) {
+        } elsif ( 'en' ne $lang ) {
 
             # try to use lang=en for default
             $file_prefix

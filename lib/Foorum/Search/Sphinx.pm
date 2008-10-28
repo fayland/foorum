@@ -68,7 +68,7 @@ sub topic {
         }
     }
 
-    $order_by = 'last_update_date' if ( $order_by ne 'post_on' );
+    $order_by = 'last_update_date' if ( 'post_on' ne $order_by );
     $sphinx->SetSortMode( SPH_SORT_ATTR_DESC, $order_by );
     $sphinx->SetMatchMode(SPH_MATCH_ANY);
     $sphinx->SetLimits( ( $page - 1 ) * $per_page, $per_page,

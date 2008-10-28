@@ -14,7 +14,7 @@ our @bbcode_tags
 sub new {
     my ( $class, $args ) = @_;
     $args ||= {};
-    $class->_croak("Options must be a hash reference")
+    $class->_croak('Options must be a hash reference')
         if ref($args) ne 'HASH';
     my $self = {};
     bless $self, $class;
@@ -88,7 +88,7 @@ main:
             if ((      $self->{_skip_nest} ne ''
                     && $end ne "[/$self->{_skip_nest}]"
                 )
-                || ( $self->{_in_code_block} && $end ne "[/code]" )
+                || ( $self->{_in_code_block} && '[/code]' ne $end )
                 ) {
                 _content( $self, $end );
             } else {
@@ -133,14 +133,14 @@ sub _open_tag {
     my ( $tag, $rest )
         = $open =~ m/\[([^=\]]+)(.*)?\]/s;    # Don't do this! ARGH!
     $tag = lc $tag;
-    if ( _dont_nest( $self, $tag ) && $tag eq 'img' ) {
+    if ( _dont_nest( $self, $tag ) && 'img' eq $tag ) {
         $self->{_skip_nest} = $tag;
     }
     if ( $self->{_skip_nest} eq $tag ) {
         $self->{_nest_count}++;
         $self->{_nest_count_stack}++;
     }
-    $self->{_in_code_block}++ if ( $tag eq 'code' );
+    $self->{_in_code_block}++ if ( 'code' eq $tag );
     push @{ $self->{_stack} }, '[' . $tag . $rest . ']';
 }
 
@@ -164,7 +164,7 @@ sub _end_tag {
         return;
     }
 
-    $self->{_in_code_block} = 0 if ( $end eq '[/code]' );
+    $self->{_in_code_block} = 0 if ( '[/code]' eq $end );
 
     # Loop through the stack
     while (1) {
@@ -228,7 +228,7 @@ sub _do_BB {
     }
 
     # custom
-    if ( $tag eq 'music' ) {
+    if ( 'music' eq $tag ) {
 
         # patch for music
         if ( $content =~ /\.(ram|rmm|mp3|mp2|mpa|ra|mpga)$/ ) {
@@ -248,13 +248,13 @@ controls="ImageWindow,StatusBar,ControlPanel" width='352' height='288' border='0
         }
 
         return $html;
-    } elsif ( $tag eq 'video' ) {
+    } elsif ( 'video' eq $tag ) {
         if ( $content =~ /^http\:\/\/www.youtube.com\/v\// ) {
             $html
                 = qq!<div><embed src="$content" type="application/x-shockwave-flash" allowfullscreen="true" width="425" height="344"></embed></div>!;
         }
         return $html;
-    } elsif ( $tag eq 'size' ) {
+    } elsif ( 'size' eq $tag ) {
         $attr = 8  if ( $attr < 8 );    # validation
         $attr = 16 if ( $attr > 16 );
         $html = sprintf( $self->{options}->{html_tags}->{size}, $attr,
@@ -263,17 +263,17 @@ controls="ImageWindow,StatusBar,ControlPanel" width='352' height='288' border='0
     }
 
     # Kludgy way to handle specific BBCodes ...
-    if ( $tag eq 'quote' ) {
+    if ( 'quote' eq $tag ) {
         $html = sprintf( $self->{options}->{html_tags}->{quote},
             ($attr)
             ? "$attr wrote:"
-            : "Quote:", $content );
-    } elsif ( $tag eq 'code' ) {
+            : 'Quote:', $content );
+    } elsif ( 'code' eq $tag ) {
         $html = sprintf( $self->{options}->{html_tags}->{code},
             _code($content) );
-    } elsif ( $tag eq 'list' ) {
+    } elsif ( 'list' eq $tag ) {
         $html = _list( $self, $attr, $content );
-    } elsif ( ( $tag eq 'email' || $tag eq 'url' ) && !$attr ) {
+    } elsif ( ( 'email' eq $tag || 'url' eq $tag ) && !$attr ) {
         $html = sprintf( $self->{options}->{html_tags}->{$tag},
             $content, $content );
     } elsif ($attr) {

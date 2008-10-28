@@ -17,29 +17,29 @@ sub filter_format {
     my $format = $params->{format} || 'plain';
 
     # don't run eval at beginning, run it when required
-    if ( $format eq 'textile' and not defined $has_text_textile ) {
+    if ( 'textile' eq $format and not defined $has_text_textile ) {
         $has_text_textile
-            = eval "use Text::Textile; 1;"; ## no critic (ProhibitStringyEval)
+            = eval 'use Text::Textile; 1;'; ## no critic (ProhibitStringyEval)
     }
-    if ( $format eq 'ubb' and not defined $has_ubb_code ) {
+    if ( 'ubb' eq $format and not defined $has_ubb_code ) {
         $has_ubb_code
-            = eval "use Foorum::Formatter::BBCode2; 1;";    ## no critic
+            = eval 'use Foorum::Formatter::BBCode2; 1;';    ## no critic
         ## no critic (ProhibitStringyEval)
     }
-    if ( $format eq 'wiki' and not defined $has_text_wiki ) {
-        $has_text_wiki = eval "use Text::GooglewikiFormat; 1;";   ## no critic
+    if ( 'wiki' eq $format and not defined $has_text_wiki ) {
+        $has_text_wiki = eval 'use Text::GooglewikiFormat; 1;';   ## no critic
         ## no critic (ProhibitStringyEval)
     }
-    if ( $format eq 'pod' and not defined $has_pod_simple ) {
-        $has_pod_simple = eval "use Foorum::Formatter::Pod; 1;";  ## no critic
+    if ( 'pod' eq $format and not defined $has_pod_simple ) {
+        $has_pod_simple = eval 'use Foorum::Formatter::Pod; 1;';  ## no critic
         ## no critic (ProhibitStringyEval)
     }
 
-    if ( $format eq 'textile' and $has_text_textile ) {
+    if ( 'textile' eq $format and $has_text_textile ) {
         my $formatter = Text::Textile->new();
         $formatter->charset('utf-8');
         $text = $formatter->process($text);
-    } elsif ( $format eq 'ubb' and $has_ubb_code ) {
+    } elsif ( 'ubb' eq $format and $has_ubb_code ) {
         my $formatter
             = Foorum::Formatter::BBCode2->new( { linebreaks => 1 } );
         $text = $formatter->parse($text);
@@ -64,10 +64,10 @@ sub filter_format {
                 last unless ( $text =~ /\:\w{2,9}\:/s );
             }
         }
-    } elsif ( $format eq 'pod' and $has_pod_simple ) {
+    } elsif ( 'pod' eq $format and $has_pod_simple ) {
         my $pod_format = Foorum::Formatter::Pod->new;
         $text = $pod_format->format($text);
-    } elsif ( $format eq 'wiki' and $has_text_wiki ) {
+    } elsif ( 'wiki' eq $format and $has_text_wiki ) {
         $text =~ s/&/&amp;/gs;
         $text =~ s/>/&gt;/gs;
         $text =~ s/</&lt;/gs;
@@ -91,7 +91,7 @@ sub filter_format {
         my %tags = %Text::GooglewikiFormat::tags;
         $tags{link} = $linksub;
         $text = Text::GooglewikiFormat::format( $text, \%tags );
-    } elsif ( $format eq 'html' ) {
+    } elsif ( 'html' eq $format ) {
 
         # do nothing? XXX? should we linebreak HTML?
     } else {
@@ -103,7 +103,7 @@ sub filter_format {
         #$text =~ s/"/&quot;/g; #"
         $text =~ s|\n|<br />\n|gs;    # linebreaks
 
-        $has_uri_find = eval "use URI::Find::UTF8; 1;"    ## no critic
+        $has_uri_find = eval 'use URI::Find::UTF8; 1;'    ## no critic
             ## no critic (ProhibitStringyEval)
             if ( not defined $has_uri_find );
         if ($has_uri_find) {

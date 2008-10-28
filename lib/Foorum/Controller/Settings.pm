@@ -24,9 +24,9 @@ sub default : Private {
     my $send_starred_notification
         = $c->req->param('send_starred_notification');
     $send_starred_notification = 'Y'
-        unless ( $send_starred_notification eq 'N' );
+        unless ( 'N' eq $send_starred_notification );
     my $show_email_public = $c->req->param('show_email_public');
-    $show_email_public = 'Y' unless ( $show_email_public eq 'N' );
+    $show_email_public = 'Y' unless ( 'N' eq $show_email_public );
 
     # remove old data from db
     $c->model('DBIC')->resultset('UserSettings')->search(
@@ -38,7 +38,7 @@ sub default : Private {
     )->delete;
 
     # insert new data
-    if ( $send_starred_notification eq 'N' )
+    if ( 'N' eq $send_starred_notification )
     {    # don't store 'Y' because it's default
         $c->model('DBIC')->resultset('UserSettings')->create(
             {   user_id => $c->user->{user_id},
@@ -47,7 +47,7 @@ sub default : Private {
             }
         );
     }
-    if ( $show_email_public eq 'N' ) {
+    if ( 'N' eq $show_email_public ) {
         $c->model('DBIC')->resultset('UserSettings')->create(
             {   user_id => $c->user->{user_id},
                 type    => 'show_email_public',

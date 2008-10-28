@@ -22,7 +22,7 @@ sub lock_or_sticky_or_elite :
 
     # check policy
     unless ( $c->model('Policy')->is_moderator( $c, $forum_id )
-        or ( $action eq 'lock' and $topic->{author_id} == $c->user->user_id )
+        or ( 'lock' eq $action and $topic->{author_id} == $c->user->user_id )
         ) {
         $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
     }
@@ -30,11 +30,11 @@ sub lock_or_sticky_or_elite :
     my $status = ($is_un) ? '0' : '1';
 
     my $update_col;
-    if ( $action eq 'sticky' ) {
+    if ( 'sticky' eq $action ) {
         $update_col = 'sticky';
-    } elsif ( $action eq 'lock' ) {
+    } elsif ( 'lock' eq $action ) {
         $update_col = 'closed';
-    } elsif ( $action eq 'elite' ) {
+    } elsif ( 'elite' eq $action ) {
         $update_col = 'elite';
     }
 
@@ -51,7 +51,7 @@ sub lock_or_sticky_or_elite :
         }
     );
 
-    if ( $action eq 'elite' ) {
+    if ( 'elite' eq $action ) {
 
         # for point
         my $plus_point = ($is_un) ? '- 4' : '+ 4';

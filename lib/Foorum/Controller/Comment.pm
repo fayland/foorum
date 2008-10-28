@@ -43,7 +43,7 @@ sub post : Local {
     }
 
     my $reply_to = 0;
-    if ( $object_type eq 'topic' ) {
+    if ( 'topic' eq $object_type ) {
         my $topic = $c->controller('Get')
             ->topic( $c, $object_id, { forum_id => $forum_id } );
 
@@ -105,7 +105,7 @@ sub post : Local {
     );
 
     # update object after create
-    if ( $object_type eq 'topic' ) {
+    if ( 'topic' eq $object_type ) {
 
         # update forum and topic
         $c->model('DBIC::Forum')->update_forum(
@@ -116,7 +116,7 @@ sub post : Local {
         );
         $c->model('DBIC::Topic')->update_topic(
             $object_id,
-            {   total_replies    => \"total_replies + 1",
+            {   total_replies    => \'total_replies + 1',
                 last_update_date => time(),
                 last_updator_id  => $c->user->user_id,
             }
@@ -156,7 +156,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
             $c->detach( '/print_error', ['ERROR_PERMISSION_DENIED'] );
         }
     }
-    if ( $object_type eq 'topic' ) {
+    if ( 'topic' eq $object_type ) {
         my $topic = $c->controller('Get')
             ->topic( $c, $object_id, { forum_id => $forum_id } );
 
@@ -189,7 +189,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
     my $text      = $c->req->param('text');
 
     # only admin has HTML rights
-    if ( $formatter eq 'html' ) {
+    if ( 'html' eq $formatter ) {
         my $is_admin = $c->model('Policy')->is_admin( $c, 'site' );
         $formatter = 'plain' unless ($is_admin);
     }
@@ -212,7 +212,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
     my $new_comment = $c->model('DBIC::Comment')->create_comment($info);
 
     # update object after create
-    if ( $object_type eq 'topic' ) {
+    if ( 'topic' eq $object_type ) {
 
         # update forum and topic
         $c->model('DBIC::Forum')->update_forum(
@@ -223,7 +223,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
         );
         $c->model('DBIC::Topic')->update_topic(
             $object_id,
-            {   total_replies    => \"total_replies + 1",
+            {   total_replies    => \'total_replies + 1',
                 last_update_date => time(),
                 last_updator_id  => $c->user->user_id,
             }
@@ -329,7 +329,7 @@ sub edit : LocalRegex('^(\d+)/edit$') {
     my $path = $c->model('Object')->get_url_from_object( $c, $info );
 
     # for topic
-    if ( $object_type eq 'topic' and $comment->{reply_to} == 0 ) {
+    if ( 'topic' eq $object_type and $comment->{reply_to} == 0 ) {
         $c->model('DBIC')->resultset('Topic')
             ->search( { topic_id => $object_id } )
             ->update( { title => $title } );
@@ -385,7 +385,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
     my $path = $c->model('Object')->get_url_from_object( $c, $info );
 
     # esp treat
-    if ( $object_type eq 'topic' ) {
+    if ( 'topic' eq $object_type ) {
         my $topic = $c->controller('Get')
             ->topic( $c, $object_id, { forum_id => $forum_id } );
         if ( $comment->{reply_to} == 0 ) {
@@ -422,12 +422,12 @@ sub delete : LocalRegex('^(\d+)/delete$') {
 
     # delete comment
     my $delete_counts = 0;
-    unless ( $object_type eq 'topic' and $comment->{reply_to} == 0 ) {
+    unless ( 'topic' eq $object_type and $comment->{reply_to} == 0 ) {
         $delete_counts
             = $c->model('DBIC::Comment')->remove_children($comment);
     }
 
-    if ( $object_type eq 'topic' and $comment->{reply_to} != 0 ) {
+    if ( 'topic' eq $object_type and $comment->{reply_to} != 0 ) {
 
         # update topic
         my $lastest = $c->model('DBIC')->resultset('Comment')->find(

@@ -14,7 +14,7 @@ sub recent : Local {
 
     my @extra_cols;
     my $url_prefix;
-    if ( $recent_type eq 'elite' ) {
+    if ( 'elite' eq $recent_type ) {
         @extra_cols = ( 'elite', 1 );
         $url_prefix = '/site/recent/elite';
     } else {

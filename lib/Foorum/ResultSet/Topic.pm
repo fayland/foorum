@@ -158,7 +158,7 @@ sub remove {
     my $last_post_id = $lastest ? $lastest->topic_id : 0;
     $schema->resultset('Forum')->update_forum(
         $forum_id,
-        {   total_topics  => \"total_topics - 1",
+        {   total_topics  => \'total_topics - 1',
             last_post_id  => $last_post_id,
             total_replies => \"total_replies - $total_replies",
         }

@@ -39,7 +39,7 @@ sub create : Regex('^forum/(\w+)/poll/new$') {
     $duration =~ s/\D+//isg;
     $duration ||= 7;    # default is 7 days
     my $multi = $c->req->param('multi');
-    $multi = 0 if ( $multi ne '1' );    # 0 or 1
+    $multi = 0 if ( '1' ne $multi );    # 0 or 1
 
     my $now = time();
     $duration = $now + $duration * 86400;  # 86400 = 24 * 60 * 60, means 1 day

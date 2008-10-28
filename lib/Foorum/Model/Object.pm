@@ -48,11 +48,11 @@ sub get_url_from_object {
     my $object_id   = $info->{object_id};
     my $forum_id    = $info->{forum_id};
 
-    if ( $object_type eq 'poll' ) {
+    if ( 'poll' eq $object_type ) {
         return "/forum/$forum_id/poll/$object_id";
-    } elsif ( $object_type eq 'topic' ) {
+    } elsif ( 'topic' eq $object_type ) {
         return "/forum/$forum_id/topic/$object_id";
-    } elsif ( $object_type eq 'user_profile' ) {
+    } elsif ( 'user_profile' eq $object_type ) {
         return "/u/$object_id";
     }
 }
@@ -64,7 +64,7 @@ sub get_object_by_type_id {
     my $object_id   = $info->{object_id};
     return unless ( $object_type and $object_id );
 
-    if ( $object_type eq 'topic' ) {
+    if ( 'topic' eq $object_type ) {
         my $object = $c->model('DBIC::Topic')->get($object_id);
         return unless ($object);
         return {
@@ -77,7 +77,7 @@ sub get_object_by_type_id {
             last_update => $object->{last_update_date},
             forum_id    => $object->{forum_id},
         };
-    } elsif ( $object_type eq 'poll' ) {
+    } elsif ( 'poll' eq $object_type ) {
         my $object
             = $c->model('DBIC::Poll')->find( { poll_id => $object_id, } );
         return unless ($object);

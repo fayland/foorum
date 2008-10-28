@@ -51,10 +51,10 @@ sub extract_from_thread {
 
     my @posts = ();
     my $nest  = 0;
-    while ( my $tag = $stream->get_tag( "li", "ul", "/ul" ) ) {
+    while ( my $tag = $stream->get_tag( 'li', 'ul', '/ul' ) ) {
 
         $tag = $stream->get_tag('a');
-        my $url = $tag->[1]{href} || "--";
+        my $url = $tag->[1]{href} || '--';
 
         # only follow Mailman-style numeric links
         next unless ( $url =~ /(\d+|msg\d+)\.html$/ );
@@ -111,7 +111,7 @@ sub extract_from_message {
     if ( ref($enc) ) {
         $encoding = $enc->name;
     }
-    if ( $encoding and $encoding ne 'utf8' ) {
+    if ( $encoding and 'utf8' ne $encoding ) {
         from_to( $text, $encoding, 'utf8' );
     }
 

@@ -42,7 +42,7 @@ sub get_comments_by_object {
     $pager->current_page($page);
     $pager->entries_per_page($rows);
 
-    if ( $view_mode eq 'flat' ) {
+    if ( 'flat' eq $view_mode ) {
 
         # when url contains /comment_id=$comment_id/
         # we need show that page including $comment_id
@@ -54,7 +54,7 @@ sub get_comments_by_object {
             $pager->current_page($page);
         }
         $pager->total_entries( scalar @comments );
-        if ( $object_type eq 'user_profile' ) {
+        if ( 'user_profile' eq $object_type ) {
             @comments = reverse(@comments);
         }
         @comments = splice( @comments, ( $page - 1 ) * $rows, $rows );
@@ -64,7 +64,7 @@ sub get_comments_by_object {
 
         # for topic. reply_to == 0 means the topic comments
         #            reply_to == topic.comments[0].comment_id means top level.
-        if ( $object_type eq 'topic' ) {
+        if ( 'topic' eq $object_type ) {
             ( my $top_comments ) = part {
                 (          $_->{reply_to} == 0
                         or $_->{reply_to} == $comments[0]->{comment_id}
@@ -97,8 +97,8 @@ sub get_comments_by_object {
                 $selected_comment_id = $top_comment->{comment_id};
                 last if ( $reply_to == 0 );
                 last
-                    if ($object_type eq 'topic'
-                    and $reply_to == $comments[0]->{comment_id} );
+                    if ( 'topic'
+                    eq $object_typeand $reply_to == $comments[0]->{comment_id} );
                 $top_comment
                     = first { $_->{comment_id} == $reply_to } @comments;
             }
@@ -111,7 +111,7 @@ sub get_comments_by_object {
 
         # paged by top_comments
         $pager->total_entries( scalar @top_comments );
-        if ( $object_type eq 'user_profile' ) {
+        if ( 'user_profile' eq $object_type ) {
             @top_comments = reverse(@top_comments);
         }
         @top_comments = splice( @top_comments, ( $page - 1 ) * $rows, $rows );
@@ -120,8 +120,8 @@ sub get_comments_by_object {
             $_->{level} = 0;
             push @result_comments, $_;
             next
-                if ($object_type eq 'topic'
-                and $_->{comment_id} == $comments[0]->{comment_id} );
+                if ( 'topic'
+                eq $object_typeand $_->{comment_id} == $comments[0]->{comment_id} );
 
             # get children, 10 lines below
             $self->get_children_comments( $_->{comment_id}, 1, \@comments,
@@ -290,7 +290,7 @@ sub create_comment {
     );
 
     # Email Sent
-    if ( $object_type eq 'user_profile' ) {
+    if ( 'user_profile' eq $object_type ) {
         my $rept
             = $schema->resultset('User')->get( { user_id => $object_id } );
         my $from = $schema->resultset('User')->get( { user_id => $user_id } );
@@ -413,7 +413,7 @@ sub validate_params {
         return 'ERROR_TITLE_LENGTH';
     } else {
         my $bad_word = $schema->resultset('FilterWord')->has_bad_word($title);
-        if ( $bad_word ne '0' ) {
+        if ( '0' ne $bad_word ) {
             return "BAD_TITLE_$bad_word";
         }
     }
@@ -421,7 +421,7 @@ sub validate_params {
         return 'ERROR_TEXT_REQUIRED';
     } else {
         my $bad_word = $schema->resultset('FilterWord')->has_bad_word($text);
-        if ( $bad_word ne '0' ) {
+        if ( '0' ne $bad_word ) {
             return "BAD_TEXT_$bad_word";
         }
     }

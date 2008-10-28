@@ -126,7 +126,7 @@ sub activation : Local {
 # login will be failed since the $user->password is SHA1 Hashed.
 # $c->login( $username, $user->{password} );
 # so instead, we use set_authenticated, check Catalyst::Plugin::Authentication
-        bless $user, "Catalyst::Authentication::User::Hash";    # XXX?
+        bless $user, 'Catalyst::Authentication::User::Hash';    # XXX?
         $c->set_authenticated($user);
 
         # send a welcome email

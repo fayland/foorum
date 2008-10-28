@@ -24,7 +24,7 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
         = ( $c->req->path =~ /\/rss(\/|$)/ ) ? 1 : 0; # /forum/ForumName/1/rss
 
     my $format = $c->req->param('format');
-    if ( $format and $format eq 'pdf' ) {
+    if ( $format and 'pdf' eq $format ) {
         unless ( $c->config->{function_on}->{topic_pdf} ) {
             $c->detach( '/print_error', ['Function Disabled'] );
         }
@@ -174,7 +174,7 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
     my $text      = $c->req->param('text');
 
     # only admin has HTML rights
-    if ( $formatter eq 'html' ) {
+    if ( 'html' eq $formatter ) {
         my $is_admin = $c->model('Policy')->is_admin( $c, 'site' );
         $formatter = 'plain' unless ($is_admin);
     }

@@ -51,7 +51,7 @@ __PACKAGE__->config->{'Plugin::PageCache'}->{key_maker} = sub {
     $lang =~ s/\W+//isg;
     $c->languages( [$lang] );
 
-    return "/" . $c->req->path;
+    return '/' . $c->req->path;
 };
 
 1;

@@ -33,7 +33,7 @@ sub work {
     my $day   = $atime[3];
 
     ( $year, $month, $day ) = Add_Delta_Days( $year, $month, $day, -7 );
-    my $date = sprintf( "%04d%02d%02d", $year, $month, $day );
+    my $date = sprintf( '%04d%02d%02d', $year, $month, $day );
 
     my @stats
         = $schema->resultset('Stat')->search( { date => \"> $date", } )->all;
@@ -48,7 +48,7 @@ sub work {
         stats => $stats,
     };
 
-    my $filename = sprintf( "%04d%02d%02d", $year, $month, $day );
+    my $filename = sprintf( '%04d%02d%02d', $year, $month, $day );
     use File::Spec;
     my ( undef, $path ) = File::Spec->splitpath(__FILE__);
     use Cwd qw/abs_path/;
@@ -74,7 +74,7 @@ sub register_stat {
     my $year  = $atime[5] + 1900;
     my $month = $atime[4] + 1;
     my $day   = $atime[3];
-    my $now   = sprintf( "%04d%02d%02d", $year, $month, $day );
+    my $now   = sprintf( '%04d%02d%02d', $year, $month, $day );
 
     my $stat_value = $schema->resultset($table)->count();
 

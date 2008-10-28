@@ -61,7 +61,7 @@ sub topic {
     $attr->{page}    = $page;
     $attr->{columns} = ['topic_id'];
     $attr->{order_by}
-        = ( $order_by eq 'post_on' )
+        = ( 'post_on' eq $order_by )
         ? \'post_on DESC'
         : \'last_update_date DESC';
 
@@ -97,7 +97,7 @@ sub user {
         $name = $schema->storage->dbh->quote($name);    # escape title
         $where->{nickname} = { 'LIKE', '%' . $name . '%' };
     }
-    if ( $gender eq 'F' or $gender eq 'M' ) {
+    if ( 'F' eq $gender or 'M' eq $gender ) {
         $where->{gender} = $gender;
     }
     if ($country) {
