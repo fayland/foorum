@@ -119,11 +119,8 @@ sub activation : Local {
 
     # validate it
     if ( $activation_rs->activation_code eq $activation_code ) {
-        $c->model('DBIC::User')->update_user(
-            $user,
-            {   status => 'verified',
-            }
-        );
+        $c->model('DBIC::User')
+            ->update_user( $user, { status => 'verified', } );
         $activation_rs->delete;
 
 # login will be failed since the $user->password is SHA1 Hashed.

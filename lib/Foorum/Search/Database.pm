@@ -5,9 +5,9 @@ use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use Foorum::SUtils qw/schema/;
 
 has 'schema' => (
-    is => 'ro',
-    isa => 'Object',
-    lazy => 1,
+    is      => 'ro',
+    isa     => 'Object',
+    lazy    => 1,
     default => sub { schema() },
 );
 

@@ -2,29 +2,36 @@ package Foorum::Schema::UserOnline;
 
 use strict;
 use warnings;
-use Foorum::Version;  our $VERSION = $Foorum::VERSION;
+use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components("Core");
 __PACKAGE__->table("user_online");
 __PACKAGE__->add_columns(
-  "sessionid",
-  {
-    data_type => "VARCHAR",
-    default_value => undef,
-    is_nullable => 1,
-    size => 72,
-  },
-  "user_id",
-  { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
-  "path",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 255 },
-  "title",
-  { data_type => "VARCHAR", default_value => "", is_nullable => 0, size => 255 },
-  "start_time",
-  { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
-  "last_time",
-  { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
+    "sessionid",
+    {   data_type     => "VARCHAR",
+        default_value => undef,
+        is_nullable   => 1,
+        size          => 72,
+    },
+    "user_id",
+    { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
+    "path",
+    {   data_type     => "VARCHAR",
+        default_value => "",
+        is_nullable   => 0,
+        size          => 255
+    },
+    "title",
+    {   data_type     => "VARCHAR",
+        default_value => "",
+        is_nullable   => 0,
+        size          => 255
+    },
+    "start_time",
+    { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
+    "last_time",
+    { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
 );
 __PACKAGE__->set_primary_key("sessionid");
 

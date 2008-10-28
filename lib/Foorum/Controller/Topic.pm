@@ -108,8 +108,10 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
         if ( $c->req->path =~ /\/print(\/|$)/ ) {
             $c->stash->{template} = 'topic/print.html';
         } else {
+
             # previous / next topic
-            my @topic_ids = $c->model('DBIC::Topic')->get_topic_id_list( $forum_id );
+            my @topic_ids
+                = $c->model('DBIC::Topic')->get_topic_id_list($forum_id);
             my $place = firstidx { $_ == $topic_id } @topic_ids;
             if ( $place > 0 and $topic_ids[ $place - 1 ] ) {
                 $c->stash->{previous_topic_id} = $topic_ids[ $place - 1 ];
@@ -117,7 +119,7 @@ sub topic : Regex('^forum/(\w+)/(topic/)?(\d+)$') {
             if ( $place < $#topic_ids and $topic_ids[ $place + 1 ] ) {
                 $c->stash->{next_topic_id} = $topic_ids[ $place + 1 ];
             }
-            
+
             $c->stash->{whos_view_this_page} = 1;
             $c->stash->{template}            = 'topic/index.html';
         }
