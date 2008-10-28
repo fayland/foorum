@@ -5,31 +5,31 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class';
 
-__PACKAGE__->load_components("Core");
-__PACKAGE__->table("poll_option");
+__PACKAGE__->load_components('Core');
+__PACKAGE__->table('poll_option');
 __PACKAGE__->add_columns(
-    "option_id",
-    {   data_type     => "INT",
+    'option_id',
+    {   data_type     => 'INT',
         default_value => undef,
         is_nullable   => 0,
         size          => 11
     },
-    "poll_id",
-    { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
-    "text",
-    {   data_type     => "VARCHAR",
+    'poll_id',
+    { data_type => 'INT', default_value => 0, is_nullable => 0, size => 11 },
+    'text',
+    {   data_type     => 'VARCHAR',
         default_value => undef,
         is_nullable   => 1,
         size          => 255,
     },
-    "vote_no",
-    {   data_type     => "MEDIUMINT",
+    'vote_no',
+    {   data_type     => 'MEDIUMINT',
         default_value => 0,
         is_nullable   => 0,
         size          => 8
     },
 );
-__PACKAGE__->set_primary_key("option_id");
+__PACKAGE__->set_primary_key('option_id');
 
 __PACKAGE__->belongs_to(
     'poll' => 'Foorum::Schema::Poll',

@@ -5,55 +5,55 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class';
 
-__PACKAGE__->load_components("Core");
-__PACKAGE__->table("user_details");
+__PACKAGE__->load_components('Core');
+__PACKAGE__->table('user_details');
 __PACKAGE__->add_columns(
-    "user_id",
-    { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
-    "qq",
-    {   data_type     => "VARCHAR",
+    'user_id',
+    { data_type => 'INT', default_value => 0, is_nullable => 0, size => 11 },
+    'qq',
+    {   data_type     => 'VARCHAR',
         default_value => undef,
         is_nullable   => 1,
         size          => 14,
     },
-    "msn",
-    {   data_type     => "VARCHAR",
+    'msn',
+    {   data_type     => 'VARCHAR',
         default_value => undef,
         is_nullable   => 1,
         size          => 64,
     },
-    "yahoo",
-    {   data_type     => "VARCHAR",
+    'yahoo',
+    {   data_type     => 'VARCHAR',
         default_value => undef,
         is_nullable   => 1,
         size          => 64,
     },
-    "skype",
-    {   data_type     => "VARCHAR",
+    'skype',
+    {   data_type     => 'VARCHAR',
         default_value => undef,
         is_nullable   => 1,
         size          => 64,
     },
-    "gtalk",
-    {   data_type     => "VARCHAR",
+    'gtalk',
+    {   data_type     => 'VARCHAR',
         default_value => undef,
         is_nullable   => 1,
         size          => 64,
     },
-    "homepage",
-    {   data_type     => "VARCHAR",
+    'homepage',
+    {   data_type     => 'VARCHAR',
         default_value => undef,
         is_nullable   => 1,
         size          => 255,
     },
-    "birthday",
-    {   data_type     => "DATE",
+    'birthday',
+    {   data_type     => 'DATE',
         default_value => undef,
         is_nullable   => 1,
         size          => 10
     },
 );
-__PACKAGE__->set_primary_key("user_id");
+__PACKAGE__->set_primary_key('user_id');
 
 __PACKAGE__->belongs_to(
     'user' => 'Foorum::Schema::User',

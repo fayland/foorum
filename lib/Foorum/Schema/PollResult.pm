@@ -5,17 +5,17 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class';
 
-__PACKAGE__->load_components("Core");
-__PACKAGE__->table("poll_result");
+__PACKAGE__->load_components('Core');
+__PACKAGE__->table('poll_result');
 __PACKAGE__->add_columns(
-    "option_id",
-    { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
-    "poll_id",
-    { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
-    "poster_id",
-    { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
-    "poster_ip",
-    {   data_type     => "VARCHAR",
+    'option_id',
+    { data_type => 'INT', default_value => 0, is_nullable => 0, size => 11 },
+    'poll_id',
+    { data_type => 'INT', default_value => 0, is_nullable => 0, size => 11 },
+    'poster_id',
+    { data_type => 'INT', default_value => 0, is_nullable => 0, size => 11 },
+    'poster_ip',
+    {   data_type     => 'VARCHAR',
         default_value => undef,
         is_nullable   => 1,
         size          => 32,

@@ -5,35 +5,35 @@ use warnings;
 use Foorum::Version; our $VERSION = $Foorum::VERSION;
 use base 'DBIx::Class';
 
-__PACKAGE__->load_components("Core");
-__PACKAGE__->table("log_error");
+__PACKAGE__->load_components('Core');
+__PACKAGE__->table('log_error');
 __PACKAGE__->add_columns(
-    "error_id",
-    {   data_type     => "INT",
+    'error_id',
+    {   data_type     => 'INT',
         default_value => undef,
         is_nullable   => 0,
         size          => 11
     },
-    "level",
-    {   data_type     => "SMALLINT",
+    'level',
+    {   data_type     => 'SMALLINT',
         default_value => 1,
         is_nullable   => 0,
         size          => 1
     },
-    "text",
-    {   data_type     => "TEXT",
+    'text',
+    {   data_type     => 'TEXT',
         default_value => undef,
         is_nullable   => 0,
         size          => 65535,
     },
-    "time",
+    'time',
     {   data_type     => 'INT',
         default_value => 0,
         is_nullable   => 0,
         size          => 11,
     },
 );
-__PACKAGE__->set_primary_key("error_id");
+__PACKAGE__->set_primary_key('error_id');
 
 1;
 __END__
