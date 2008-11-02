@@ -3,7 +3,6 @@
 use strict;
 use FindBin qw/$RealBin/;
 use Cwd qw/abs_path/;
-use lib 'E:\Fayland\googlesvn\CPAN\Acme-PlayCode\lib';
 use Acme::PlayCode;
 use File::Next;
 use File::Spec;
