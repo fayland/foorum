@@ -2,6 +2,7 @@ This file documents the revision history for Foorum.
 
 0.3.1
         - add developer tool Acme::PlayCode
+        - use our $VERSION instead of a Foorum::Version module.
 
 0.3.0 Sat Oct 25 18:52:00 2008
         - previous/next topic link
