@@ -17,6 +17,7 @@ use Foorum::Release qw/get_version bump_up_version/;
 my $trunk_dir = abs_path( File::Spec->catdir( $Bin,       '..', '..' ) );
 
 # 1, bump up the version
+print "bump up the version:\n";
 my $version_now = get_version();
 my $version_up  = bump_up_version($version_now);
 
