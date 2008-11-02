@@ -2,7 +2,7 @@ package Foorum::Controller::Root;
 
 use strict;
 use warnings;
-use Foorum::Version; our $VERSION = $Foorum::VERSION;
+our $VERSION = '0.003001';
 use base 'Catalyst::Controller';
 use Time::HiRes qw( gettimeofday tv_interval );
 use URI::Escape;

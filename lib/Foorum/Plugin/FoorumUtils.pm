@@ -2,8 +2,7 @@ package Foorum::Plugin::FoorumUtils;
 
 use strict;
 use warnings;
-use vars qw/$VERSION/;
-$VERSION = '0.01';
+our $VERSION = '0.003001';
 
 sub load_once {
     my ( $c, $url ) = @_;

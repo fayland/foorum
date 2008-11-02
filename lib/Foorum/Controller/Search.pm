@@ -2,7 +2,7 @@ package Foorum::Controller::Search;
 
 use strict;
 use warnings;
-use Foorum::Version; our $VERSION = $Foorum::VERSION;
+our $VERSION = '0.003001';
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 use Foorum::Logger qw/error_log/;

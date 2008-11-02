@@ -2,7 +2,7 @@ package Foorum::Schema::LogPath;
 
 use strict;
 use warnings;
-use Foorum::Version; our $VERSION = $Foorum::VERSION;
+our $VERSION = '0.003001';
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components('Core');

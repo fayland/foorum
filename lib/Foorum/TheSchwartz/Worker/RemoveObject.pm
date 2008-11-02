@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::RemoveObject;
 
 use strict;
 use warnings;
-use Foorum::Version; our $VERSION = $Foorum::VERSION;
+our $VERSION = '0.003001';
 use base qw( MooseX::TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::XUtils qw/cache/;

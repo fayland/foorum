@@ -2,7 +2,7 @@ package Foorum::ResultSet::BannedIp;
 
 use strict;
 use warnings;
-use Foorum::Version; our $VERSION = $Foorum::VERSION;
+our $VERSION = '0.003001';
 use base 'DBIx::Class::ResultSet';
 
 use Net::IP::Match::Regexp qw( create_iprange_regexp match_ip );
