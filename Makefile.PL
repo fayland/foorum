@@ -4,7 +4,7 @@ name            ('Foorum');
 author          ('Fayland Lam<fayland@gmail.com>');
 abstract        ('Foorum - forum system based on Catalyst');
 license         ('perl');
-version_from    ('lib/Foorum/Version.pm');
+version_from    ('lib/Foorum.pm');
 
 requires 'Template' => '2.20';
 requires 'DBIx::Class';
