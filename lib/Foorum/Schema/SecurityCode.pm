@@ -80,6 +80,12 @@ INT(11)
 
 NOT NULL
 
+=item note
+
+VARCHAR(255)
+
+
+
 =back
 
 =head1 AUTHOR

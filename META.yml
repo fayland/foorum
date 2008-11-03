@@ -61,7 +61,7 @@ requires:
   Text::GooglewikiFormat: 0.04
   Text::Textile: 0
   URI::Find::UTF8: 0
-  WWW::Contact: 0
+  WWW::Contact: 0.06
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.3.0
+version: 0.003001
