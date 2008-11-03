@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::Scraper;
 
 use strict;
 use warnings;
-our $VERSION = '0.003001';
+our $VERSION = '1.000000';
 use base qw( MooseX::TheSchwartz::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;

@@ -1,7 +1,7 @@
 package Foorum::View::JSON;
 
 use strict;
-our $VERSION = '0.003001';
+our $VERSION = '1.000000';
 use base 'Catalyst::View::JSON';
 
 1;

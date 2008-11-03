@@ -2,7 +2,7 @@ package Foorum::Schema;
 
 use strict;
 use warnings;
-our $VERSION = '0.003001';
+our $VERSION = '1.000000';
 use base 'DBIx::Class::Schema';
 
 __PACKAGE__->load_classes;

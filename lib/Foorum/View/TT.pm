@@ -1,7 +1,7 @@
 package Foorum::View::TT;
 
 use strict;
-our $VERSION = '0.003001';
+our $VERSION = '1.000000';
 use base 'Catalyst::View::TT';
 use Template::Stash::XS;
 use File::Spec;

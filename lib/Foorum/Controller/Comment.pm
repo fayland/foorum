@@ -2,7 +2,7 @@ package Foorum::Controller::Comment;
 
 use strict;
 use warnings;
-our $VERSION = '0.003001';
+our $VERSION = '1.000000';
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/encodeHTML/;
 

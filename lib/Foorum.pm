@@ -18,7 +18,7 @@ use Catalyst qw/
     +Foorum::Plugin::FoorumUtils
     /;
 
-our $VERSION = '0.003001';
+our $VERSION = '1.000000';
 
 __PACKAGE__->config( { VERSION => $VERSION } );
 __PACKAGE__->config( 'config_file' => [ 'foorum.yml', 'foorum_local.yml' ] );

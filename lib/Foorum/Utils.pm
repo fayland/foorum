@@ -3,7 +3,7 @@ package Foorum::Utils;
 use strict;
 use warnings;
 
-our $VERSION = '0.003001';
+our $VERSION = '1.000000';
 
 use base 'Exporter';
 use vars qw/@EXPORT_OK/;
