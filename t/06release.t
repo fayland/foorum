@@ -11,12 +11,12 @@ use Foorum::Release qw/bump_up_version/;
 
 my $version = '0.003001';
 $version = bump_up_version($version);
-is($version, '0.003002');
+is( $version, '0.003002' );
 
 $version = '0.003009';
 $version = bump_up_version($version);
-is($version, '0.004000');
+is( $version, '0.004000' );
 
 $version = '0.009009';
 $version = bump_up_version($version);
-is($version, '1.000000');
+is( $version, '1.000000' );

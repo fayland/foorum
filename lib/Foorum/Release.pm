@@ -10,22 +10,22 @@ use vars qw/@EXPORT_OK/;
 @EXPORT_OK = qw/get_version bump_up_version/;
 
 sub get_version {
-	return $VERSION;
+    return $VERSION;
 }
 
 sub bump_up_version {
-	my ( $version ) = shift;
-	
-	$version = get_version() unless ( defined $version );
-	
-	# like 0.003001
-	my ( $v1, $v2, $v3 ) = ( $version =~ /^(\d+)\.00(\d)00(\d)$/ );
-	my $num = $v1 * 100 + $v2 * 10 + $v3;
-	$num++;
-	$v3 = chop($num);
-	$v2 = chop($num);
-	$v1 = $num || 0;
-	return sprintf("%d.%03d%03d", $v1, $v2, $v3 );
+    my ($version) = shift;
+
+    $version = get_version() unless ( defined $version );
+
+    # like 0.003001
+    my ( $v1, $v2, $v3 ) = ( $version =~ /^(\d+)\.00(\d)00(\d)$/ );
+    my $num = $v1 * 100 + $v2 * 10 + $v3;
+    $num++;
+    $v3 = chop($num);
+    $v2 = chop($num);
+    $v1 = $num || 0;
+    return sprintf( "%d.%03d%03d", $v1, $v2, $v3 );
 }
 
 1;
