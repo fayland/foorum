@@ -88,6 +88,7 @@ feature 'Be a Foorum developer',
 
 # formatter
 requires 'Text::Textile';
+requires 'Pod::Xhtml';
 requires 'URI::Find::UTF8';
 requires 'Text::GooglewikiFormat' => '0.04';
 
