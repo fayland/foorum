@@ -46,7 +46,7 @@ requires 'Locale::Country::Multilingual' => '0.03'; # for tw lang
 #requires 'File::Slurp';
 requires 'Net::IP::Match::Regexp';
 requires 'Net::CIDR::Lite';
-requires 'WWW::Contact' => '0.06'; # the last version
+requires 'WWW::Contact' => '0.17'; # the last version
 
 # search
 requires 'Sphinx::Search';
