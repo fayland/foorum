@@ -49,9 +49,9 @@ requires:
   Locale::Country::Multilingual: 0.03
   MIME::Entity: 0
   Moose: 0.57
-  MooseX::TheSchwartz: 0
   Net::CIDR::Lite: 0
   Net::IP::Match::Regexp: 0
+  Pod::Xhtml: 0
   Schedule::Cron: 0
   Set::Object: 0
   Sphinx::Search: 0
@@ -60,8 +60,9 @@ requires:
   Template::Plugin::FillInForm: 0
   Text::GooglewikiFormat: 0.04
   Text::Textile: 0
+  TheSchwartz::Moosified: 0
   URI::Find::UTF8: 0
-  WWW::Contact: 0.06
+  WWW::Contact: 0.17
 resources:
   license: http://dev.perl.org/licenses/
-version: 1.000000
+version: 1.000001
