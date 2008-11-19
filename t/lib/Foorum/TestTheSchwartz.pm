@@ -12,8 +12,8 @@ eval 'require DBD::SQLite';    ## no critic (ProhibitStringyEval)
 plan skip_all => 'this test requires DBD::SQLite' if $@;
 eval 'require File::Temp';     ## no critic (ProhibitStringyEval)
 plan skip_all => 'this test requires File::Temp' if $@;
-eval 'require MooseX::TheSchwartz;';    ## no critic (ProhibitStringyEval)
-plan skip_all => 'this test requires MooseX::TheSchwartz' if $@;
+eval 'require TheSchwartz::Moosified;';    ## no critic (ProhibitStringyEval)
+plan skip_all => 'this test requires TheSchwartz::Moosified' if $@;
 
 sub run_test {
     my $code = shift;

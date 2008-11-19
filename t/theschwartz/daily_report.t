@@ -12,7 +12,7 @@ use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
 use Foorum::TestTheSchwartz;
 use Foorum::TheSchwartz::Worker::DailyReport;
-use MooseX::TheSchwartz;
+use TheSchwartz::Moosified;
 use Foorum::SUtils qw/schema/;
 use Foorum::TestUtils qw/rollback_db/;
 
@@ -21,7 +21,7 @@ plan tests => 4;
 run_test(
     sub {
         my $dbh    = shift;
-        my $client = MooseX::TheSchwartz->new();
+        my $client = TheSchwartz::Moosified->new();
         $client->databases( [$dbh] );
 
         {

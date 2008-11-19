@@ -52,7 +52,7 @@ requires 'WWW::Contact' => '0.17'; # the last version
 requires 'Sphinx::Search';
 
 # cron
-requires 'MooseX::TheSchwartz';
+requires 'TheSchwartz::Moosified';
 requires 'Schedule::Cron';
 if ($^O ne 'MSWin32') {
     feature 'Cron script run-once',

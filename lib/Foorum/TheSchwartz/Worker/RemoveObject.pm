@@ -3,7 +3,7 @@ package Foorum::TheSchwartz::Worker::RemoveObject;
 use strict;
 use warnings;
 our $VERSION = '1.000000';
-use base qw( MooseX::TheSchwartz::Worker );
+use base qw( TheSchwartz::Moosified::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::XUtils qw/cache/;
 use Foorum::Logger qw/error_log/;

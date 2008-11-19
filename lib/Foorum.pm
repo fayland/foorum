@@ -91,7 +91,7 @@ use L<Cache::Memcached> or use L<Cache::FileCache> or others;
 
 =item reliable job queue
 
-use L<MooseX::TheSchwartz>
+use L<TheSchwartz::Moosified>
 
 =item Multi Formatter
 
