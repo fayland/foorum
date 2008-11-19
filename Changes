@@ -2,6 +2,7 @@ This file documents the revision history for Foorum.
 
 1.0.1
 	- requires 'Pod::Xhtml';
+	- replace 'MooseX::TheSchwartz' to 'TheSchwartz::Moosified'
 
 
 More Changes log can be found in 'Changes2'. Thanks.
