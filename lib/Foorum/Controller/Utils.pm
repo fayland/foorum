@@ -2,7 +2,7 @@ package Foorum::Controller::Utils;
 
 use strict;
 use warnings;
-our $VERSION = '1.000000';
+our $VERSION = '1.000001';
 use base 'Catalyst::Controller';
 
 __PACKAGE__->config->{namespace} = '';

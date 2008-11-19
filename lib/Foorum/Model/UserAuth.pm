@@ -2,7 +2,7 @@ package Foorum::Model::UserAuth;
 
 use strict;
 use warnings;
-our $VERSION = '1.000000';
+our $VERSION = '1.000001';
 use base 'Catalyst::Model';
 
 sub auth {

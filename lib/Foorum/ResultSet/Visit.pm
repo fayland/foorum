@@ -2,7 +2,7 @@ package Foorum::ResultSet::Visit;
 
 use strict;
 use warnings;
-our $VERSION = '1.000000';
+our $VERSION = '1.000001';
 use base 'DBIx::Class::ResultSet';
 
 sub make_visited {

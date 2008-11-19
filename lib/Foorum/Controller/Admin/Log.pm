@@ -2,7 +2,7 @@ package Foorum::Controller::Admin::Log;
 
 use strict;
 use warnings;
-our $VERSION = '1.000000';
+our $VERSION = '1.000001';
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 use Foorum::Logger qw/%levels/;

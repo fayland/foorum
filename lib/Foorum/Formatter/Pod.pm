@@ -3,7 +3,7 @@ package Foorum::Formatter::Pod;
 use strict;
 use warnings;
 
-our $VERSION = '1.000000';
+our $VERSION = '1.000001';
 
 # most are copied from L<Angerwhale::Format::Pod>, Thank you, Jonathan Rockway
 
