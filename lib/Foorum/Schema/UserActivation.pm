@@ -2,7 +2,7 @@ package Foorum::Schema::UserActivation;
 
 use strict;
 use warnings;
-our $VERSION = '1.000001';
+our $VERSION = '1.000002';
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components('Core');

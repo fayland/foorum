@@ -3,7 +3,7 @@ package Foorum::Formatter::BBCode2;
 use strict;
 use warnings;
 
-our $VERSION = '1.000001';
+our $VERSION = '1.000002';
 
 use strict;
 use warnings;

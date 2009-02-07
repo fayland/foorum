@@ -2,7 +2,7 @@ package Foorum::ResultSet::Star;
 
 use strict;
 use warnings;
-our $VERSION = '1.000001';
+our $VERSION = '1.000002';
 use base 'DBIx::Class::ResultSet';
 
 sub del_or_create {

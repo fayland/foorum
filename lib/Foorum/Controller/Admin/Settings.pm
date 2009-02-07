@@ -2,7 +2,7 @@ package Foorum::Controller::Admin::Settings;
 
 use strict;
 use warnings;
-our $VERSION = '1.000001';
+our $VERSION = '1.000002';
 use base 'Catalyst::Controller';
 use YAML::XS qw/DumpFile LoadFile/;
 

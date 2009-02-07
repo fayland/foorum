@@ -2,7 +2,7 @@ package Foorum::Model::Object;
 
 use strict;
 use warnings;
-our $VERSION = '1.000001';
+our $VERSION = '1.000002';
 use base 'Catalyst::Model';
 
 sub get_object_from_url {

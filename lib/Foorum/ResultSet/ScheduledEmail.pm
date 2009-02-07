@@ -2,7 +2,7 @@ package Foorum::ResultSet::ScheduledEmail;
 
 use strict;
 use warnings;
-our $VERSION = '1.000001';
+our $VERSION = '1.000002';
 use base 'DBIx::Class::ResultSet';
 
 use Foorum::Utils qw/generate_random_word/;
