@@ -3,7 +3,7 @@ abstract: 'Foorum - forum system based on Catalyst'
 author:
   - 'Fayland Lam<fayland@gmail.com>'
 distribution_type: module
-generated_by: 'Module::Install version 0.77'
+generated_by: 'Module::Install version 0.790'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -65,4 +65,4 @@ requires:
   WWW::Contact: 0.17
 resources:
   license: http://dev.perl.org/licenses/
-version: 1.000001
+version: 1.000002
