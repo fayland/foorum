@@ -92,10 +92,9 @@ requires 'Pod::Xhtml';
 requires 'URI::Find::UTF8';
 requires 'Text::GooglewikiFormat' => '0.04';
 
-tests ( join ' ', ( glob('t/*.t'), glob('t/*/*.t') ) );
+tests( join ' ', ( glob('t/*.t'), glob('t/*/*.t') ) );
 
-catalyst;
-
+#catalyst;
 #install_script glob('script/*.pl');
 auto_install;
 WriteAll;

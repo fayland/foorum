@@ -2,7 +2,7 @@ package Foorum::Controller::Admin;
 
 use strict;
 use warnings;
-our $VERSION = '1.000002';
+our $VERSION = '1.000003';
 use base 'Catalyst::Controller';
 
 sub auto : Private {

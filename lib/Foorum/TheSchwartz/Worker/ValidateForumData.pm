@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::ValidateForumData;
 
 use strict;
 use warnings;
-our $VERSION = '1.000002';
+our $VERSION = '1.000003';
 use base qw( TheSchwartz::Moosified::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;
