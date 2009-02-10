@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Catalyst qw/
-    Config::YAML::XS
+    ConfigLoader
     Static::Simple
     Authentication
     Cache
@@ -21,7 +21,6 @@ use Catalyst qw/
 our $VERSION = '1.000003';
 
 __PACKAGE__->config( { VERSION => $VERSION } );
-__PACKAGE__->config( 'config_file' => [ 'foorum.yml', 'foorum_local.yml' ] );
 
 __PACKAGE__->setup();
 
