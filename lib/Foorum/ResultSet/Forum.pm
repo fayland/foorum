@@ -2,7 +2,7 @@ package Foorum::ResultSet::Forum;
 
 use strict;
 use warnings;
-our $VERSION = '1.000003';
+our $VERSION = '1.000004';
 use base 'DBIx::Class::ResultSet';
 use Foorum::Formatter qw/filter_format/;
 

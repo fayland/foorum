@@ -22,7 +22,7 @@ requires:
   Catalyst::Plugin::Authentication::Credential::Password: 0
   Catalyst::Plugin::Cache: 0
   Catalyst::Plugin::Captcha: 0
-  Catalyst::Plugin::Config::YAML::XS: 0
+  Catalyst::Plugin::ConfigLoader: 0
   Catalyst::Plugin::FormValidator::Simple: 0
   Catalyst::Plugin::I18N: 0.08
   Catalyst::Plugin::PageCache: 0.21
@@ -65,4 +65,4 @@ requires:
   WWW::Contact: 0.17
 resources:
   license: http://dev.perl.org/licenses/
-version: 1.000003
+version: 1.000004

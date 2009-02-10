@@ -2,7 +2,7 @@ package Foorum::ResultSet::User;
 
 use strict;
 use warnings;
-our $VERSION = '1.000003';
+our $VERSION = '1.000004';
 use base 'DBIx::Class::ResultSet';
 
 use Object::Signature();

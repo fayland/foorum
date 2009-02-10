@@ -2,7 +2,7 @@ package Foorum::Controller::Register;
 
 use strict;
 use warnings;
-our $VERSION = '1.000003';
+our $VERSION = '1.000004';
 use base 'Catalyst::Controller';
 use Digest ();
 use WWW::Contact;
