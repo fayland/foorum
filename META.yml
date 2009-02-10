@@ -63,6 +63,7 @@ requires:
   TheSchwartz::Moosified: 0
   URI::Find::UTF8: 0
   WWW::Contact: 0.17
+  YAML::XS: 0
 resources:
   license: http://dev.perl.org/licenses/
 version: 1.000004
