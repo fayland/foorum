@@ -1,39 +1,62 @@
 package Foorum::Schema;
 
-use strict;
-use warnings;
+use Moose;
+
 our $VERSION = '1.000004';
-use base 'DBIx::Class::Schema';
+
+extends 'DBIx::Class::Schema';
 
 __PACKAGE__->load_classes;
 
 use Foorum::XUtils ();
 
-sub base_path {
-    return Foorum::XUtils::base_path();
-}
+has 'base_path' => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        return Foorum::XUtils::base_path();
+    }
+);
 
-sub config {
-    return Foorum::XUtils::config();
-}
+has 'config' => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        return Foorum::XUtils::config();
+    }
+);
 
-sub cache {
-    return Foorum::XUtils::cache();
-}
+has 'cache' => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        return Foorum::XUtils::cache();
+    }
+);
 
-sub theschwartz {
-    return Foorum::XUtils::theschwartz();
-}
+has 'theschwartz' => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        return Foorum::XUtils::theschwartz();
+    }
+);
 
-sub tt2 {
-    return Foorum::XUtils::tt2();
-}
+has 'tt2' => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        return Foorum::XUtils::tt2();
+    }
+);
 
-sub connect {
-    my $s = shift->SUPER::connect(@_);
+around 'connect' => sub {
+    my $next = shift;
+    
+    my $s = $next->(@_);
     $s->storage->sql_maker->quote_char('`');
     $s->storage->sql_maker->name_sep('.');
     return $s;
-}
+};
 
 1;
