@@ -52,7 +52,7 @@ if ( -e File::Spec->catfile( $base_path, 'conf', 'mail.yml' ) ) {
 } else {
     $config = LoadFile(
         File::Spec->catfile(
-            $base_path, 'conf', 'examples', 'mail', 'mail.yml'
+            $base_path, 'conf', 'examples', 'mail', 'sendmail.yml'
         )
     );
 }
