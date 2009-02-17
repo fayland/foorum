@@ -418,7 +418,7 @@ sub create : Local {
     }
 
     # insert data into table.
-    my $policy = ( $private == 1 ) ? 'private' : 'public';
+    my $policy = ( $private and $private == 1 ) ? 'private' : 'public';
     my $forum = $c->model('DBIC::Forum')->create(
         {   name          => $name,
             forum_code    => $forum_code,

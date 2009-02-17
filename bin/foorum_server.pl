@@ -4,7 +4,7 @@ use strict;
 
 BEGIN {
     $ENV{CATALYST_ENGINE} ||= 'HTTP';
-    $ENV{CATALYST_SCRIPT_GEN} = 31;
+    $ENV{CATALYST_SCRIPT_GEN} = 32;
     require Catalyst::Engine::HTTP;
 }
 
@@ -14,7 +14,6 @@ use Pod::Usage;
 use FindBin;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
-
 my $debug             = 0;
 my $fork              = 0;
 my $help              = 0;
@@ -48,7 +47,7 @@ pod2usage(1) if $help;
 if ( $restart && $ENV{CATALYST_ENGINE} eq 'HTTP' ) {
     $ENV{CATALYST_ENGINE} = 'HTTP::Restarter';
 }
-if ($debug) {
+if ( $debug ) {
     $ENV{CATALYST_DEBUG} = 1;
 }
 
@@ -56,18 +55,16 @@ if ($debug) {
 # variables can be set at runtime.
 require Foorum;
 
-Foorum->run(
-    $port, $host,
-    {   argv              => \@argv,
-        'fork'            => $fork,
-        keepalive         => $keepalive,
-        restart           => $restart,
-        restart_delay     => $restart_delay,
-        restart_regex     => qr/$restart_regex/,
-        restart_directory => $restart_directory,
-        follow_symlinks   => $follow_symlinks,
-    }
-);
+Foorum->run( $port, $host, {
+    argv              => \@argv,
+    'fork'            => $fork,
+    keepalive         => $keepalive,
+    restart           => $restart,
+    restart_delay     => $restart_delay,
+    restart_regex     => qr/$restart_regex/,
+    restart_directory => $restart_directory,
+    follow_symlinks   => $follow_symlinks,
+} );
 
 1;
 
@@ -106,10 +103,9 @@ foorum_server.pl [options]
 
 Run a Catalyst Testserver for this application.
 
-=head1 AUTHOR
+=head1 AUTHORS
 
-Sebastian Riedel, C<sri@oook.de>
-Maintained by the Catalyst Core Team.
+Catalyst Contributors, see Catalyst.pm
 
 =head1 COPYRIGHT
 

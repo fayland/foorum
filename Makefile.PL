@@ -47,13 +47,13 @@ requires 'Locale::Country::Multilingual' => '0.03'; # for tw lang
 #requires 'File::Slurp';
 requires 'Net::IP::Match::Regexp';
 requires 'Net::CIDR::Lite';
-requires 'WWW::Contact' => '0.17'; # the last version
+requires 'WWW::Contact' => '0.20'; # the last version
 
 # search
 requires 'Sphinx::Search';
 
 # cron
-requires 'TheSchwartz::Moosified';
+requires 'TheSchwartz::Moosified' => '0.02';
 requires 'Schedule::Cron';
 if ($^O ne 'MSWin32') {
     feature 'Cron script run-once',
@@ -84,14 +84,14 @@ feature 'Be a Foorum developer',
     'Perl::Tidy'            => 0,
     'SQL::Translator'       => 0,
     'DBICx:::AutoDoc'       => 0,
-    'Acme::PlayCode'        => '0.05',
+    'Acme::PlayCode'        => '0.11',
     'Pod::From::GoogleWiki' => '0.05';
 
 # formatter
 requires 'Text::Textile';
 requires 'Pod::Xhtml';
 requires 'URI::Find::UTF8';
-requires 'Text::GooglewikiFormat' => '0.04';
+requires 'Text::GooglewikiFormat' => '0.05';
 
 tests( join ' ', ( glob('t/*.t'), glob('t/*/*.t') ) );
 
