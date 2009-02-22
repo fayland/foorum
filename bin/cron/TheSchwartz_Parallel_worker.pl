@@ -80,7 +80,7 @@ foreach my $one (
 }
 
 # Parallel::Prefork
-sub MaxRequestsPerChild () {10}
+our $MaxRequestsPerChild = 10;
 
 print "start prefork\n";
 my $pm = Parallel::Prefork->new(
@@ -105,7 +105,7 @@ while ( $pm->signal_received ne 'TERM' ) {
     for my $worker (@workers) {
         $client->can_do($worker);
     }
-    my $reqs_before_exit = MaxRequestsPerChild;
+    my $reqs_before_exit = $MaxRequestsPerChild;
     $SIG{TERM} = sub { $reqs_before_exit = 0 };
     while ( $reqs_before_exit > 0 ) {
         if ( $client->work_once ) {
