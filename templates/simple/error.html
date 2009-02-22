@@ -1,3 +1,7 @@
+[% IF is_rss_template; # MUST no linebreak before <?xml %]
+<?xml version="1.0" encoding="UTF-8"?>
+[% END %]
+
 [% IF (matches = error.msg.match('ERROR_(\w+)'));
     SWITCH matches.0;
     CASE 'PERMISSION_DENIED';
@@ -24,7 +28,6 @@
    END %]
 
 [% IF is_rss_template %]
-<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
 <title><![CDATA[[% c.config.name %] : Error]]></title>
