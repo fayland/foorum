@@ -45,7 +45,6 @@ my $verbose = sub {
     }
 };
 
-
 # load entry from theschwartz.yml or examples/theschwartz.yml
 use YAML::XS qw/LoadFile/;
 my $theschwartz_config;
@@ -81,25 +80,26 @@ foreach my $one (
 }
 
 # Parallel::Prefork
-sub MaxRequestsPerChild () { 10 }
+sub MaxRequestsPerChild () {10}
 
 print "start prefork\n";
-my $pm = Parallel::Prefork->new({
-    max_workers  => 3,
-    fork_delay   => 1,
-    trap_signals => {
-        TERM => 'TERM',
-        HUP  => 'TERM',
-    },
-});
-while ($pm->signal_received ne 'TERM') {
+my $pm = Parallel::Prefork->new(
+    {   max_workers  => 3,
+        fork_delay   => 1,
+        trap_signals => {
+            TERM => 'TERM',
+            HUP  => 'TERM',
+        },
+    }
+);
+while ( $pm->signal_received ne 'TERM' ) {
 
     $pm->start and next;
 
     print "spawn $$\n";
-    
+
     # setup TheSchwartz
-    my $client    = theschwartz();
+    my $client = theschwartz();
     $client->verbose($verbose);
 
     for my $worker (@workers) {
@@ -107,8 +107,8 @@ while ($pm->signal_received ne 'TERM') {
     }
     my $reqs_before_exit = MaxRequestsPerChild;
     $SIG{TERM} = sub { $reqs_before_exit = 0 };
-    while ($reqs_before_exit > 0) {
-        if ($client->work_once) {
+    while ( $reqs_before_exit > 0 ) {
+        if ( $client->work_once ) {
             print "work $$\n";
             --$reqs_before_exit;
         } else {

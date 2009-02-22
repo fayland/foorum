@@ -47,7 +47,7 @@ pod2usage(1) if $help;
 if ( $restart && $ENV{CATALYST_ENGINE} eq 'HTTP' ) {
     $ENV{CATALYST_ENGINE} = 'HTTP::Restarter';
 }
-if ( $debug ) {
+if ($debug) {
     $ENV{CATALYST_DEBUG} = 1;
 }
 
@@ -55,16 +55,18 @@ if ( $debug ) {
 # variables can be set at runtime.
 require Foorum;
 
-Foorum->run( $port, $host, {
-    argv              => \@argv,
-    'fork'            => $fork,
-    keepalive         => $keepalive,
-    restart           => $restart,
-    restart_delay     => $restart_delay,
-    restart_regex     => qr/$restart_regex/,
-    restart_directory => $restart_directory,
-    follow_symlinks   => $follow_symlinks,
-} );
+Foorum->run(
+    $port, $host,
+    {   argv              => \@argv,
+        'fork'            => $fork,
+        keepalive         => $keepalive,
+        restart           => $restart,
+        restart_delay     => $restart_delay,
+        restart_regex     => qr/$restart_regex/,
+        restart_directory => $restart_directory,
+        follow_symlinks   => $follow_symlinks,
+    }
+);
 
 1;
 
