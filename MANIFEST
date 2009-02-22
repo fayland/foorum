@@ -1,5 +1,6 @@
 AUTHORS
 bin/cron/TheSchwartz_client.pl
+bin/cron/TheSchwartz_Parallel_worker.pl
 bin/cron/TheSchwartz_worker.pl
 bin/db/dev.txt
 bin/db/foorum.pg.sql

@@ -1,5 +1,5 @@
 /bin/cron/TheSchwartz_client.pl source OK
-/bin/cron/TheSchwartz_Parallel_worker.pl: Subroutine prototypes used at line 83, column 1. See page 194 of PBP.
+/bin/cron/TheSchwartz_Parallel_worker.pl source OK
 /bin/cron/TheSchwartz_worker.pl source OK
 /bin/setup.pl source OK
 /bin/setup/sphinx.pl source OK

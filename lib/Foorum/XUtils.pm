@@ -3,7 +3,7 @@ package Foorum::XUtils;
 use strict;
 use warnings;
 
-our $VERSION = '1.000004';
+our $VERSION = '1.000005';
 
 use YAML::XS qw/LoadFile/;     # config
 use TheSchwartz::Moosified;    # theschwartz

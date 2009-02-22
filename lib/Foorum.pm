@@ -18,7 +18,7 @@ use Catalyst qw/
     +Foorum::Plugin::FoorumUtils
     /;
 
-our $VERSION = '1.000004';
+our $VERSION = '1.000005';
 
 __PACKAGE__->config( { VERSION => $VERSION } );
 

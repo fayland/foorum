@@ -3,7 +3,7 @@ package Foorum::SUtils;
 use strict;
 use warnings;
 
-our $VERSION = '1.000004';
+our $VERSION = '1.000005';
 
 use Foorum::Schema;    # schema
 use base qw/Exporter/;
