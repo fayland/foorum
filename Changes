@@ -13,7 +13,7 @@ This file documents the revision history for Foorum.
     - try to fix broken CPAN dist
 
 1.0.1	2008.11.19
-	- requires 'Pod::Xhtml';
-	- replace 'MooseX::TheSchwartz' to 'TheSchwartz::Moosified'
+    - requires 'Pod::Xhtml';
+    - replace 'MooseX::TheSchwartz' to 'TheSchwartz::Moosified'
 
-More Changes log can be found in 'Changes2'. Thanks.
+More Changes >> 'Changes2'. Thanks.
