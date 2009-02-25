@@ -52,7 +52,7 @@ sub create_data {
             user_id   => 1,
             forum_id  => 2,
             filename  => 'test.txt',
-            filesize  => 1.2,
+            filesize  => 2,
             filetype  => 'txt',
         }
     );
@@ -72,7 +72,7 @@ is( $upload->{user_id},   1,          'get user_id OK' );
 is( $upload->{forum_id},  2,          'get forum_id OK' );
 is( $upload->{filename},  'test.txt', 'get filename OK' );
 is( $upload->{filetype},  'txt',      'get filetype OK' );
-is( $upload->{filesize},  '1.2',      'get filesize OK' );
+is( $upload->{filesize},  2,          'get filesize OK' );
 ok( -e $dest_file, 'file exist' );
 
 # test remove_file_by_upload_id
