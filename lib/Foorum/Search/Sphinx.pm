@@ -55,7 +55,7 @@ sub topic {
     $sphinx->SetFilter( 'forum_id',  [$forum_id] )  if ($forum_id);
     $sphinx->SetFilter( 'author_id', [$author_id] ) if ($author_id);
 
-    if ($date) {
+    if ($date and $date =~ /^\d+$/) {
 
         # date value would be 2, 7, 30, 999
         my $now = time();

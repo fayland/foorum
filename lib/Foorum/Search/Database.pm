@@ -38,7 +38,7 @@ sub topic {
 
     $where->{forum_id}  = $forum_id  if ($forum_id);
     $where->{author_id} = $author_id if ($author_id);
-    if ($date) {
+    if ($date and $date =~ /^\d+$/) {
 
         # date value would be 2, 7, 30, 999
         my $now = time();

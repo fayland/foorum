@@ -26,6 +26,24 @@ __PACKAGE__->setup();
 
 if ( __PACKAGE__->config->{function_on}->{page_cache} ) {
     __PACKAGE__->setup_plugins( ['PageCache'] );
+    
+    ## set $c->language before create a key in PageCache
+    __PACKAGE__->config->{'Plugin::PageCache'}->{key_maker} = sub {
+        my $c = shift;
+
+        # something as the same as in Root.pm
+        # while it is called before we call sub auto in Root.pm
+        # and we may not call this if request doesn't call $c->cache_page
+        my $lang;
+        $lang = $c->req->cookie('lang')->value if ( $c->req->cookie('lang') );
+        $lang ||= $c->user->lang if ( $c->user_exists );
+        $lang ||= $c->config->{default_lang};
+        $lang = $c->req->param('lang') if ( $c->req->param('lang') );
+        $lang =~ s/\W+//isg;
+        $c->languages( [$lang] );
+
+        return '/' . $c->req->path;
+    };
 } else {
     {
         no strict 'refs';    ## no critic (ProhibitNoStrict)
@@ -34,24 +52,6 @@ if ( __PACKAGE__->config->{function_on}->{page_cache} ) {
         *{"$class\::clear_cached_page"} = sub {1};
     }
 }
-
-## set $c->language before create a key in PageCache
-__PACKAGE__->config->{'Plugin::PageCache'}->{key_maker} = sub {
-    my $c = shift;
-
-    # something as the same as in Root.pm
-    # while it is called before we call sub auto in Root.pm
-    # and we may not call this if request doesn't call $c->cache_page
-    my $lang;
-    $lang = $c->req->cookie('lang')->value if ( $c->req->cookie('lang') );
-    $lang ||= $c->user->lang if ( $c->user_exists );
-    $lang ||= $c->config->{default_lang};
-    $lang = $c->req->param('lang') if ( $c->req->param('lang') );
-    $lang =~ s/\W+//isg;
-    $c->languages( [$lang] );
-
-    return '/' . $c->req->path;
-};
 
 1;
 __END__
