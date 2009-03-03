@@ -6,7 +6,12 @@
 
 [% USE date %]
 
-[% c.load_once("jquery.js") %]
+<script src="http://www.google.com/jsapi"></script>
+<script>
+  // Load jQuery
+  google.load("jquery", "1.3.2");
+</script>
+
 [% c.load_once("utils.js") %]
 [% c.load_once("common.css") %]
 [% IF forum.forum_id %]
