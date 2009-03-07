@@ -110,6 +110,10 @@ please send me an email to add u into the google.code Project members list.
 
 L<http://code.google.com/p/foorum/issues/list>
 
+=head1 GitHub
+
+L<http://github.com/fayland/foorum/tree>
+
 =head1 SEE ALSO
 
 L<Catalyst>, L<DBIx::Class>, L<Template>
