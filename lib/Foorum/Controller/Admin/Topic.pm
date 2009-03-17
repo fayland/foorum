@@ -32,7 +32,7 @@ sub default : Private {
     $c->stash( {
         template   => 'admin/topic/index.html',
         topics     => [ $rs->all ],
-        pager      => [ $rs->pager ],
+        pager      => $rs->pager,
         url_prefix => '/admin/topic'
     } );
 }
