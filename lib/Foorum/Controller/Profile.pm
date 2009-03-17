@@ -121,7 +121,7 @@ sub change_password : Local {
     if ( $username and $security_code ) {
 
         # check if that's mataches.
-        $user = $c->model('User')->get( { username => $username } );
+        $user = $c->model('DBIC::User')->get( { username => $username } );
         if ($user) {
             my $security_code2 = $c->model('DBIC::SecurityCode')
                 ->get( 'forget_password', $user->{user_id} );

@@ -1,0 +1,38 @@
+[% WRAPPER 'admin/bar.html' %]
+
+<div class='one'>
+<form method='POST' action='/admin/topic/batch_ban'>
+
+<p><input type='submit' name='ban' value='Batch Ban' /></p>
+<p><input type='button' name='selectall' value='Select All' onclick='javascript:SelectAll()' />
+   <input type='button' name='selectnone' value='Select None' onclick='javascript:SelectNone()' />
+</p>
+
+<table align='center'>
+<tr class='title'><td colspan='4'>Topic List</td></tr>
+<tr class='misc2'><td>ID</td><td>Title</td><td>ACTION</td></tr>
+[% FOREACH t IN topics %]
+<tr class='misc[% IF loop.count mod 2;'2';ELSE;'1';END; %]'>
+    <td><input type='checkbox' name='topic_id' value='[% t.topic_id %]' /> [% t.topic_id %]</td><td><a href='/forum/[% t.forum_id %]/[% t.topic_id %]'>[% t.title %]</a></td><td><a href='/forum/[% t.forum_id %]/topic/[% t.topic_id %]/ban'>Ban</a> </td>
+</tr>
+[% END %]
+</table>
+</div>
+</form>
+
+[% END %]
+
+<script type="text/javascript">
+
+function SelectAll() {
+    $("input[name=topic_id]").each(function() {
+        this.checked = true;
+    } );
+}
+function SelectNone() {
+    $("input[name=topic_id]").each(function() {
+        this.checked = false;
+    } );
+}
+
+</script>

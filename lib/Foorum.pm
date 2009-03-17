@@ -74,7 +74,7 @@ L<http://www.foorumbbs.com/>
 
 =item open source
 
-u can FETCH all code from L<http://foorum.googlecode.com/svn/trunk/> any time any where.
+u can FETCH all code from L<http://github.com/fayland/foorum/tree> any time any where.
 
 =item Win32 compatibility
 

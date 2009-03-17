@@ -2,6 +2,8 @@ This file documents the revision history for Foorum.
 
 1.0.6
     - use google.load instead of a local copy
+    - move code to http://github.com/fayland/foorum/tree
+    - Admin Topic, Batch Ban
 
 1.0.5   2009.02.21
     - fix RSS+XML first newline for Firefox
