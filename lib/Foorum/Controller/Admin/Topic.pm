@@ -51,7 +51,13 @@ sub batch_ban : Local {
             ->update_topic( $topic_id, { status => 'banned' } );
     }
 
-    $c->forward( '/print_message', ['OK'] );
+    $c->forward(
+        '/print_message',
+        [   {   msg => 'Batch Ban OK',
+                url => '/admin/topic',
+            }
+        ]
+    );
 }
 
 1;
