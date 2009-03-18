@@ -47,7 +47,6 @@ sub starred : Local {
         {   template      => 'my/starred.html',
             starred_items => \@starred_items,
             pager         => $rs->pager,
-            url_prefix    => '/my/starred',
         }
     );
 }

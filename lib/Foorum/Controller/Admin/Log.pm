@@ -38,7 +38,6 @@ sub error_log : Local {
         {   template   => 'admin/log/error_log.html',
             errors     => \@errors,
             pager      => $pager,
-            url_prefix => '/admin/log/error_log',
         }
     );
 }
@@ -61,7 +60,6 @@ sub path_log : Local {
         {   template   => 'admin/log/path_log.html',
             paths      => \@paths,
             pager      => $pager,
-            url_prefix => '/admin/log/path_log',
         }
     );
 }

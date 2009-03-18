@@ -33,7 +33,6 @@ sub default : Private {
         {   template   => 'admin/user/index.html',
             users      => [ $rs->all ],
             pager      => $rs->pager,
-            url_prefix => '/admin/user',
         }
     );
 }

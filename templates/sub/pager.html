@@ -8,7 +8,10 @@ Page [% pager.current_page %] of [% pager.last_page %]
         IF (matches = path_query.match('^(.*?)/page=(\w+)(/|$)(.*?)$'));
             url_prefix = matches.0; url_postfix = matches.3;
         ELSE;
-            url_prefix = c.req.uri.path;url_postfix = '?' _ c.req.uri.query;
+            url_prefix = c.req.uri.path;
+            IF c.req.uri.query;
+                url_postfix = '?' _ c.req.uri.query;
+            END;
         END;
     END; %]
     [% url_prefix  = url_prefix.replace('/$', '');

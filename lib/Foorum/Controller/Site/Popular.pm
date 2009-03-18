@@ -54,9 +54,6 @@ sub default : Private {
         push @objects, $object;
     }
 
-    my $url_prefix = $c->req->path;
-    $url_prefix =~ s/\/page=\d+(\/|$)/$1/isg;
-
     if ($rss) {
         foreach (@objects) {
             my $rs = $c->model('DBIC::Comment')->find(
@@ -88,7 +85,6 @@ sub default : Private {
             {   template   => 'site/popular.html',
                 pager      => $hit_rs->pager,
                 objects    => \@objects,
-                url_prefix => '/' . $url_prefix
             }
         );
     }
