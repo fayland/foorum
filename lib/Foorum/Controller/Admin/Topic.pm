@@ -35,7 +35,8 @@ sub default : Private {
         template   => 'admin/topic/index.html',
         topics     => [ $rs->all ],
         pager      => $rs->pager,
-        url_prefix => '/admin/topic'
+        url_prefix => '/admin/topic',
+        url_postfix => $banned ? '?banned=1' : undef,
     } );
 }
 
