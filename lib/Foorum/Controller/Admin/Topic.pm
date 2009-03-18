@@ -20,9 +20,11 @@ sub auto : Private {
 sub default : Private {
     my ( $self, $c ) = @_;
 
+    my $banned = $c->req->param('banned') || 0;
+    my $stcond = $banned ? 'banned' : { '!=', 'banned' };
     my $page = get_page_from_url( $c->req->path );
     my $rs   = $c->model('DBIC::Topic')->search(
-        {   'me.status'    => { '!=', 'banned' },
+        {   'me.status'    => $stcond,
         },
         {   order_by => 'topic_id desc',
             rows     => 20,
@@ -40,6 +42,7 @@ sub default : Private {
 sub batch_ban : Local {
     my ( $self, $c ) = @_;
 
+    my $unban     = $c->req->param('unban') || 0;
     my @topic_ids = $c->req->param('topic_id');
     if ( scalar @topic_ids == 1 ) {
         @topic_ids = split(/\,\s*/, $topic_ids[0]);
@@ -47,14 +50,15 @@ sub batch_ban : Local {
 
     foreach my $topic_id ( @topic_ids ) {
         next if $topic_id !~ /^\d+$/;
+        my $status = $unban ? 'healthy' : 'banned';
         $c->model('DBIC::Topic')
-            ->update_topic( $topic_id, { status => 'banned' } );
+            ->update_topic( $topic_id, { status => $status } );
     }
 
     $c->forward(
         '/print_message',
-        [   {   msg => 'Batch Ban OK',
-                url => '/admin/topic',
+        [   {   msg => $unban ? 'Batch unBan OK' : 'Batch Ban OK',
+                url => $unban ? '/admin/topic?banned=1' : '/admin/topic',
             }
         ]
     );

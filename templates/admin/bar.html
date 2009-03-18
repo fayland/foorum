@@ -23,7 +23,7 @@
         <a href='[% url_base %]/forum'>Forum Lists</a> | <a href='/forum/create'>Create a Forum</a> | <a href='[% url_base %]/forum/merge_forums'>Merge Forums</a>
     </div>
     <div id='topic'>
-        <a href='[% url_base %]/topic'>Topic Lists</a>
+        <a href='[% url_base %]/topic'>Topic Lists</a> | <a href='[% url_base %]/topic?banned=1'>Banned Topic Lists</a>
     </div>
     <div id='user'>
         <a href='[% url_base %]/user'>User Lists</a> | <a href='[% url_base %]/user/edit'>Edit User</a>
@@ -45,7 +45,7 @@
 <script>
     $(function() {
         $('#admin_tabs > ul').tabs();
-        $('#admin_tabs > ul').tabs('select', [% IF c.req.path.match('forum') %]1[% ELSIF c.req.path.match('user') %]2[% ELSIF c.req.path.match('settings') %]3[% ELSIF c.req.path.match('ban') %]4[% ELSIF c.req.path.match('tools') %]5[% ELSIF c.req.path.match('log') %]6[% ELSE %]0[% END %]);
+        $('#admin_tabs > ul').tabs('select', [% IF c.req.path.match('forum') %]1[% ELSIF c.req.path.match('topic') %]2[% ELSIF c.req.path.match('user') %]3[% ELSIF c.req.path.match('settings') %]4[% ELSIF c.req.path.match('ban') %]5[% ELSIF c.req.path.match('tools') %]6[% ELSIF c.req.path.match('log') %]7[% ELSE %]0[% END %]);
     });
 </script>
 

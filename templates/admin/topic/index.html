@@ -3,7 +3,14 @@
 <div class='one'>
 <form method='POST' action='/admin/topic/batch_ban'>
 
-<p><input type='submit' name='ban' value='Batch Ban' /></p>
+<p>
+    [% IF c.req.params.banned %]
+    <input type='submit' name='ban' value='Batch unBan' />
+    <input type='hidden' name='unban' value='1' />
+    [% ELSE %]
+    <input type='submit' name='ban' value='Batch Ban' />
+    [% END %]
+</p>
 <p><input type='button' name='selectall' value='Select All' onclick='javascript:SelectAll()' />
    <input type='button' name='selectnone' value='Select None' onclick='javascript:SelectNone()' />
 </p>
