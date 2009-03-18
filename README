@@ -1,26 +1,49 @@
+NAME
+    Foorum - forum system based on Catalyst
 
-=pod
+DESCRIPTION
+    nothing for now.
 
-=head1 NAME
+LIVE DEMO
+    <http://www.foorumbbs.com/>
 
-Foorum::Manual::READ - Foorum is a forum script built in Catalyst.
+FEATURES
+    open source
+        u can FETCH all code from <http://github.com/fayland/foorum/tree>
+        any time any where.
 
-=head1 INSTALL
+    Win32 compatibility
+        Linux/Unix/Win32 both OK.
 
-Read L<Foorum::Manual::INSTALL> file at the same dir.
+    templates
+        use Template for UI.
 
-=head1 RUN
+    built-in cache
+        use Cache::Memcached or use Cache::FileCache or others;
 
-you can run it under mod_perl or fastcgi
+    reliable job queue
+        use TheSchwartz::Moosified
 
-for test using, we recommend to use builtin server.pl try:
+    Multi Formatter
+        HTML::BBCode, Text::Textile, Pod::Xhtml, Text::GooglewikiFormat
 
-  perl bin/foorum_server.pl -k
+    Captcha
+        To keep robot out.
 
-=head2 SEE ALSO
+JOIN US
+    Welcome to fork it in <http://github.com/fayland/foorum/tree> and pull
+    requests back.
 
-L<Catalyst>, L<DBIx::Class>, L<Template>
+TODO
+    <http://code.google.com/p/foorum/issues/list>
 
-L<Foorum::Manual::INSTALL>, L<Foorum::Manual::Configure>
+SEE ALSO
+    Catalyst, DBIx::Class, Template
 
-=cut
+AUTHOR
+    Fayland Lam, "<fayland at gmail.com>"
+
+COPYRIGHT & LICENSE
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+

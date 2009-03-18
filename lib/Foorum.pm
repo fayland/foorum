@@ -104,15 +104,11 @@ To keep robot out.
 
 =head1 JOIN US
 
-please send me an email to add u into the google.code Project members list.
+Welcome to fork it in L<http://github.com/fayland/foorum/tree> and pull requests back.
 
 =head1 TODO
 
 L<http://code.google.com/p/foorum/issues/list>
-
-=head1 GitHub
-
-L<http://github.com/fayland/foorum/tree>
 
 =head1 SEE ALSO
 
