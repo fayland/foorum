@@ -59,6 +59,7 @@ my $theschwartz_dsn
 if ( 'SQLite' eq $db_type ) {
     $dns             = "dbi:$db_type:$dns_host";
     $theschwartz_dsn = $dns;
+    $theschwartz_dsn =~ s/foorum\./theschwartz\./;
 }
 eval {
     $dbh
