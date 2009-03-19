@@ -38,10 +38,10 @@ sub default : Private {
     } );
 }
 
-sub batch_ban : Local {
+sub batch : Local {
     my ( $self, $c ) = @_;
 
-    my $unban     = $c->req->param('unban') || 0;
+    my $do        = $c->req->param('do');
     my @topic_ids = $c->req->param('topic_id');
     if ( scalar @topic_ids == 1 ) {
         @topic_ids = split(/\,\s*/, $topic_ids[0]);
@@ -49,15 +49,24 @@ sub batch_ban : Local {
 
     foreach my $topic_id ( @topic_ids ) {
         next if $topic_id !~ /^\d+$/;
-        my $status = $unban ? 'healthy' : 'banned';
-        $c->model('DBIC::Topic')
-            ->update_topic( $topic_id, { status => $status } );
+        if ( $do eq 'ban' or $do eq 'unban' ) {
+            my $status = $do eq 'unban' ? 'healthy' : 'banned';
+            $c->model('DBIC::Topic')
+                ->update_topic( $topic_id, { status => $status } );
+        } elsif ( $do eq 'delete' ) {
+            $c->model('DBIC::Topic')->remove(
+                $topic_id,
+                {   log_text    => 'Deleted by Admin',
+                    operator_id => $c->user->user_id
+                }
+            );
+        }
     }
 
     $c->forward(
         '/print_message',
-        [   {   msg => $unban ? 'Batch unBan OK' : 'Batch Ban OK',
-                url => $unban ? '/admin/topic?banned=1' : '/admin/topic',
+        [   {   msg => 'OK',
+                url => $c->req->referer || '/admin/topic',
             }
         ]
     );

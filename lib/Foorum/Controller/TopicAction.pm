@@ -67,7 +67,7 @@ sub lock_or_sticky_or_elite :
     $c->forward(
         '/print_message',
         [   {   msg => 'OK',
-                url => $forum->{forum_url},
+                url => $c->req->referer || $forum->{forum_url},
             }
         ]
     );
@@ -102,7 +102,7 @@ sub ban_or_unban_topic : Regex('^forum/(\w+)/topic/(\d+)/(un)?ban$') {
     $c->forward(
         '/print_message',
         [   {   msg => 'OK',
-                url => $forum->{forum_url},
+                url => $c->req->referer || $forum->{forum_url},
             }
         ]
     );
