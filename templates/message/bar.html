@@ -1,11 +1,11 @@
-[% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
-<div id='edit_profile_tabs' class='tabs'>
-    <ul class="ui-tabs-nav">
-        <li[% IF c.req.path.match('compose') %] class="ui-tabs-selected"[% END %]><a href='/message/compose'><span>[% c.loc('Compose New Message') %]</span></a></li>
-        <li[% IF c.req.path.match('inbox') OR c.req.path.match('message/?$') %] class="ui-tabs-selected"[% END %]><a href='/message/inbox'><span>[% c.loc('Inbox') %]</span></a></li>
-        <li[% IF c.req.path.match('outbox') %] class="ui-tabs-selected"[% END %]><a href='/message/outbox'><span>[% c.loc('Outbox') %]</span></a></li>
+[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
+<div id='edit_profile_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li[% IF c.req.path.match('compose') %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/message/compose'><span>[% c.loc('Compose New Message') %]</span></a></li>
+        <li[% IF c.req.path.match('inbox') OR c.req.path.match('message/?$') %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/message/inbox'><span>[% c.loc('Inbox') %]</span></a></li>
+        <li[% IF c.req.path.match('outbox') %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/message/outbox'><span>[% c.loc('Outbox') %]</span></a></li>
     </ul>
-    <div class="ui-tabs-panel">
+    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
 
 [% content %]
 

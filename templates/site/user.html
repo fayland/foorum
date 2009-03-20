@@ -1,13 +1,13 @@
 [% PROCESS sub/date.html %]
-[% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
+[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-<div id='edit_profile_tabs' class='tabs'>
-    <ul class="ui-tabs-nav">
-        <li><a href='/site/recent'><span>[% c.loc("Recent Topics") %]</span></a></li>
-        <li><a href='/site/popular'><span>[% c.loc("Popular") %]</span></a></li>
-        <li class="ui-tabs-selected"><a href='/site/members'><span>[% c.loc("Recent Members") %]</span></a></li>
+<div id='edit_profile_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top"><a href='/site/recent'><span>[% c.loc("Recent Topics") %]</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='/site/popular'><span>[% c.loc("Popular") %]</span></a></li>
+        <li class="ui-corner-top ui-tabs-selected ui-state-active"><a href='/site/members'><span>[% c.loc("Recent Members") %]</span></a></li>
     </ul>
-    <div class="ui-tabs-panel">
+    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
 
 <div class='one'>
 <table align='center'>

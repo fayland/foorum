@@ -10,22 +10,22 @@
 [% RSS_URL = url_prefix _ '/rss' %]
 [% END %]
 
-[% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
+[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-<div id='recent_tabs' class='tabs'>
-    <ul class="ui-tabs-nav">
+<div id='recent_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
         [% IF recent_type == 'my' %]
-        <li><a href='/u/[% user.username %]'><span>[% user.nickname %]</span></a></li>
-        <li class="ui-tabs-selected"><a href='/u/[% user.username %]/topics'><span>[% c.loc('Recent Topics') %]</span></a></li>
-        <li><a href='/u/[% user.username %]/shared'><span>[% c.loc('Shared Items') %]</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='/u/[% user.username %]'><span>[% user.nickname %]</span></a></li>
+        <li class="ui-corner-top ui-tabs-selected ui-state-active"><a href='/u/[% user.username %]/topics'><span>[% c.loc('Recent Topics') %]</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='/u/[% user.username %]/shared'><span>[% c.loc('Shared Items') %]</span></a></li>
         [% ELSE %]
-        <li[% IF recent_type == 'site' %] class="ui-tabs-selected"[% END %]><a href='/site/recent'><span>[% c.loc('Recent Topics') %]</span></a></li>
-        <li[% IF recent_type == 'elite' %] class="ui-tabs-selected"[% END %]><a href='/site/recent/elite'><span>[% c.loc('Recent Elite Topics') %]</span></a></li>
-        <li><a href='/site/popular'><span>[% c.loc("Popular") %]</span></a></li>
-        <li><a href='/site/members'><span>[% c.loc('Recent Members') %]</span></a></li>
+        <li[% IF recent_type == 'site' %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/site/recent'><span>[% c.loc('Recent Topics') %]</span></a></li>
+        <li[% IF recent_type == 'elite' %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/site/recent/elite'><span>[% c.loc('Recent Elite Topics') %]</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='/site/popular'><span>[% c.loc("Popular") %]</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='/site/members'><span>[% c.loc('Recent Members') %]</span></a></li>
         [% END %]
     </ul>
-    <div class="ui-tabs-panel">
+    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
 <div class='one'>
 <table height='28' align='center'>
 	<tr class="title" align='center'>

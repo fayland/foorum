@@ -1,11 +1,11 @@
 [% title = c.loc('Search') %]
 
 <script type="text/javascript">
-    google.load("jqueryui", "1.5.3");
+    google.load("jqueryui", "1.7.0");
 </script>
-[% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
+[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-<div id='search_tabs' class='tabs'>
+<div id='search_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
     <ul>
         <li><a href='#forum'><span>Search Forum</span></a></li>
         <li><a href='#topic'><span>Search Topic</span></a></li>
@@ -43,7 +43,6 @@
 
 <script>
     $(function() {
-        $('#search_tabs > ul').tabs();
-        $('#search_tabs > ul').tabs('select', [% IF c.req.path.match('/topic(\/|$)') %]1[% ELSIF c.req.path.match('/user(\/|$)') %]2[% ELSE %]0[% END %]);
+        $('#search_tabs').tabs( { selected: [% IF c.req.path.match('/topic(\/|$)') %]1[% ELSIF c.req.path.match('/user(\/|$)') %]2[% ELSE %]0[% END %] } );
     });
 </script>

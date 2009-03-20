@@ -2,21 +2,21 @@
 [% title = 'Members Of ' _ forum.name %]
 
 [% IF c.user_exists AND roles.is_admin %]
-[% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
-<div id='edit_profile_tabs' class='tabs'>
-    <ul class="ui-tabs-nav">
-        <li><a href='/forumadmin/[% forum.forum_id  %]/basic'><span>[% c.loc('Basic Setting') %]</span></a></li>
-        <li><a href='/forumadmin/[% forum.forum_id  %]/style'><span>[% c.loc('Style Setting') %]</span></a></li>
+[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
+<div id='edit_profile_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top"><a href='/forumadmin/[% forum.forum_id  %]/basic'><span>[% c.loc('Basic Setting') %]</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='/forumadmin/[% forum.forum_id  %]/style'><span>[% c.loc('Style Setting') %]</span></a></li>
         [% TRY %]
         [% css_file = c.config.home _ '/root/static/css/style/forum' _ forum.forum_id _ '.css' %]
         [% USE File( css_file ) %]
-        <li><a href='/forumadmin/[% forum.forum_id  %]/del_style'><span>[% c.loc('Delete Style') %]</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='/forumadmin/[% forum.forum_id  %]/del_style'><span>[% c.loc('Delete Style') %]</span></a></li>
         [% CATCH File %]
         [% END %]
-        <li class="ui-tabs-selected"><a href='[% forum.forum_url %]/members'><span>[% c.loc('Members Settings') %]</span></a></li>
-        <li><a href='/forumadmin/[% forum.forum_id  %]/announcement'><span>[% c.loc('Announcement Setting') %]</span></a></li>
+        <li class="ui-corner-top ui-tabs-selected ui-state-active"><a href='[% forum.forum_url %]/members'><span>[% c.loc('Members Settings') %]</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='/forumadmin/[% forum.forum_id  %]/announcement'><span>[% c.loc('Announcement Setting') %]</span></a></li>
     </ul>
-    <div class="ui-tabs-panel">
+    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
 [% END %]
 
 <div class='one'>

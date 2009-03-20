@@ -79,3 +79,5 @@ A:link { color: #333333 }
 
 /* header bar */
 .barline { border-top:1px solid #7EB925; font-size:0; height:1px; clear:both; width:100% }
+
+.ftabs { margin: 2%; }

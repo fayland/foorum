@@ -1,11 +1,11 @@
 [% url_base = '/admin' %]
 
 <script type="text/javascript">
-    google.load("jqueryui", "1.5.3");
+    google.load("jqueryui", "1.7.0");
 </script>
-[% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
+[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-<div id='admin_tabs' class='tabs'>
+<div id='admin_tabs' class='ftabs'>
     <ul>
         <li><a href='#menu'><span>Menu</span></a></li>
         <li><a href='#forum'><span>Forum</span></a></li>
@@ -44,8 +44,7 @@
 
 <script>
     $(function() {
-        $('#admin_tabs > ul').tabs();
-        $('#admin_tabs > ul').tabs('select', [% IF c.req.path.match('forum') %]1[% ELSIF c.req.path.match('topic') %]2[% ELSIF c.req.path.match('user') %]3[% ELSIF c.req.path.match('settings') %]4[% ELSIF c.req.path.match('ban') %]5[% ELSIF c.req.path.match('tools') %]6[% ELSIF c.req.path.match('log') %]7[% ELSE %]0[% END %]);
+        $('#admin_tabs').tabs( { selected: [% IF c.req.path.match('forum') %]1[% ELSIF c.req.path.match('topic') %]2[% ELSIF c.req.path.match('user') %]3[% ELSIF c.req.path.match('settings') %]4[% ELSIF c.req.path.match('ban') %]5[% ELSIF c.req.path.match('tools') %]6[% ELSIF c.req.path.match('log') %]7[% ELSE %]0[% END %] } );
     });
 </script>
 

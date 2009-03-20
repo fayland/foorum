@@ -1,16 +1,16 @@
 [% title = 'My Starred Items' %]
 
 [% c.load_once("site/star.js") %]
-[% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
+[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-<div id='recent_tabs' class='tabs'>
-    <ul class="ui-tabs-nav">
-        <li><a href='/u/[% c.user.username %]'><span>My Homepage</span></a></li>
-        <li><a href='/u/[% c.user.username %]/topics'><span>[% c.loc('My Recent Topics') %]</span></a></li>
-        <li class="ui-tabs-selected"><a href='/my/starred'><span>[% c.loc('My Starred Items') %]</span></a></li>
-        <li><a href='/u/[% c.user.username %]/shared'><span>[% c.loc('My Shared Items') %]</span></a></li>
+<div id='recent_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top"><a href='/u/[% c.user.username %]'><span>My Homepage</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='/u/[% c.user.username %]/topics'><span>[% c.loc('My Recent Topics') %]</span></a></li>
+        <li class="ui-corner-top ui-tabs-selected ui-state-active"><a href='/my/starred'><span>[% c.loc('My Starred Items') %]</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='/u/[% c.user.username %]/shared'><span>[% c.loc('My Shared Items') %]</span></a></li>
     </ul>
-    <div class="ui-tabs-panel">
+    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
 
 <div class='one'>
 <table align='center'>

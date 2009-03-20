@@ -1,25 +1,25 @@
-[% c.load_once("jquery.ui/themes/flora/flora.tabs.css") %]
+[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
 [% url_base = '/forumadmin/' _ forum.forum_id %]
 
-<div id='edit_profile_tabs' class='tabs'>
-    <ul class="ui-tabs-nav">
-        <li><a href='[% forum.forum_url %]'><span>Forum</span></a></li>
-        <li[% IF c.req.path.match('basic') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/basic'><span>[% c.loc('Basic Setting') %]</span></a></li>
-        <li[% IF c.req.path.match('style') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/style'><span>[% c.loc('Style Setting') %]</span></a></li>
+<div id='edit_profile_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top"><a href='[% forum.forum_url %]'><span>Forum</span></a></li>
+        <li[% IF c.req.path.match('basic') %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='[% url_base %]/basic'><span>[% c.loc('Basic Setting') %]</span></a></li>
+        <li[% IF c.req.path.match('style') %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='[% url_base %]/style'><span>[% c.loc('Style Setting') %]</span></a></li>
         [% TRY %]
         [% css_file = c.config.home _ '/root/static/css/style/forum' _ forum.forum_id _ '.css' %]
         [% USE File( css_file ) %]
-        <li[% IF c.req.path.match('del_style') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/del_style'><span>[% c.loc('Delete Style') %]</span></a></li>
+        <li[% IF c.req.path.match('del_style') %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='[% url_base %]/del_style'><span>[% c.loc('Delete Style') %]</span></a></li>
         [% CATCH File %]
         [% END %]
         [% IF forum.policy == 'private' %]
-        <li><a href='[% forum.forum_url %]/members'><span>[% c.loc('Members Settings') %]</span></a></li>
+        <li class="ui-state-default ui-corner-top"><a href='[% forum.forum_url %]/members'><span>[% c.loc('Members Settings') %]</span></a></li>
         [% END %]
-        <li[% IF c.req.path.match('announcement') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/announcement'><span>[% c.loc('Announcement Setting') %]</span></a></li>
-        <li[% IF c.req.path.match('links') %] class="ui-tabs-selected"[% END %]><a href='[% url_base %]/links'><span>[% c.loc('Forum Links') %]</span></a></li>
+        <li[% IF c.req.path.match('announcement') %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='[% url_base %]/announcement'><span>[% c.loc('Announcement Setting') %]</span></a></li>
+        <li[% IF c.req.path.match('links') %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='[% url_base %]/links'><span>[% c.loc('Forum Links') %]</span></a></li>
     </ul>
-    <div class="ui-tabs-panel">
+    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
 
 [% content %]
 

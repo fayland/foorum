@@ -1,12 +1,12 @@
 [% USE Math %]
 <script type="text/javascript">
-    google.load("jqueryui", "1.5.3");
+    google.load("jqueryui", "1.7.0");
 </script>
-[% c.load_once("jquery.ui/themes/flora/flora.all.css") %]
+[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
 <form method='post'>
 <input type='hidden' name='referer' value='[% c.req.param('referer') %]' />
-<div id='login_tabs' class='tabs'>
+<div id='login_tabs' class='ftabs'>
     <ul>
         <li><a href='#username'><span>[% c.loc("Login By Username") %]</span></a></li>
         <li><a href='#email'><span>[% c.loc("Login By Email") %]</span></a></li>
@@ -79,7 +79,6 @@
 
 <script>
     $().ready(function() {
-        $('#login_tabs > ul').tabs();
-        $('#login_tabs > ul').tabs('select', [% IF c.req.param('email') %]1[% ELSE %]0[% END %]);
+        $('#login_tabs').tabs( { selected: [% IF c.req.param('email') %]1[% ELSE %]0[% END %] } );
     });
 </script>
