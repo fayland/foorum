@@ -63,13 +63,7 @@ sub batch : Local {
         }
     }
 
-    $c->forward(
-        '/print_message',
-        [   {   msg => 'OK',
-                url => $c->req->referer || '/admin/topic',
-            }
-        ]
-    );
+    $c->res->redirect('/admin/topic?info=1');
 }
 
 1;

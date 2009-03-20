@@ -109,6 +109,10 @@
 <p></p>
 [% END %]
 
+[% IF c.req.params.info OR c.req.params.error %]
+    [% INCLUDE simple/info_or_error.html %]
+[% END %]
+
 [% content %]
 
 [% UNLESS simple_wrapper %]
