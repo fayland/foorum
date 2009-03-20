@@ -74,13 +74,8 @@ sub default : Private {
         ->send_activation( $user, 0, { lang => $c->stash->{lang} } );
 
     $c->authenticate( { username => $username, password => $password } );
-    $c->forward(
-        '/print_message',
-        [   {   msg => 'register success!',
-                url => '/',
-            }
-        ]
-    );
+    
+    $c->res->redirect('/?info=103');
 }
 
 sub activation : Local {

@@ -64,13 +64,8 @@ sub lock_or_sticky_or_elite :
         );
     }
 
-    $c->forward(
-        '/print_message',
-        [   {   msg => 'OK',
-                url => $c->req->referer || $forum->{forum_url},
-            }
-        ]
-    );
+    my $url = $c->req->referer || $forum->{forum_url};
+    $c->res->redirect("$url?info=1");
 }
 
 sub ban_or_unban_topic : Regex('^forum/(\w+)/topic/(\d+)/(un)?ban$') {
@@ -99,13 +94,8 @@ sub ban_or_unban_topic : Regex('^forum/(\w+)/topic/(\d+)/(un)?ban$') {
             ->update_topic( $topic_id, { status => 'banned' } );
     }
 
-    $c->forward(
-        '/print_message',
-        [   {   msg => 'OK',
-                url => $c->req->referer || $forum->{forum_url},
-            }
-        ]
-    );
+    my $url = $c->req->referer || $forum->{forum_url};
+    $c->res->redirect("$url?info=1");
 }
 
 1;

@@ -2,13 +2,22 @@
 
 [% IF c.req.params.info %]
 <div class="ui-widget">
-	<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;"> 
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em; margin: 20px 10% 20px 10%;"> 
+		<p>
+		    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 		
 		[% SWITCH c.req.params.info;
 		   CASE 1; %]
-		<strong>Success!</strong> Updated.</p>
+		<strong>Success!</strong>
+		[% CASE 101 %]
+		Reset Password OK
+		[% CASE 102 %]
+		The instruction to rest your password is sent to your email, please have a check
+		[% CASE 103 %]
+		register success!
 		[% END %]
+		
+		</p>
 	</div>
 </div>
 [% ELSIF c.req.params.error %]
