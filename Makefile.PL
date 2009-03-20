@@ -6,6 +6,8 @@ abstract        ('Foorum - forum system based on Catalyst');
 license         ('perl');
 version_from    ('lib/Foorum.pm');
 
+repository 'http://github.com/fayland/foorum/tree/master';
+
 requires 'Template' => '2.20';
 requires 'DBIx::Class';
 requires 'Catalyst' => '5.64';
