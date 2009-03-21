@@ -50,6 +50,8 @@ $(function() {
         d.setHours(Number(s.substr(f.indexOf('hh'), 2)));
         d.setMinutes(Number(s.substr(f.indexOf('ii'), 2)));
         d.setSeconds(Number(s.substr(f.indexOf('ss'), 2)));
+        var timezoneOffset = -(new Date().getTimezoneOffset());
+        d.setMinutes(d.getMinutes() + timezoneOffset);
 
         if (! isNaN(d.getFullYear()) && d.getFullYear() > 1997) {
             var toTime = new Date();
@@ -73,8 +75,6 @@ $(function() {
             } else {
                 var days = (parseInt(delta / 86400)).toString();
                 if (days > 5) {
-                    var timezoneOffset = -(new Date().getTimezoneOffset());
-                    d.setMinutes(d.getMinutes() + timezoneOffset);
                     t = f.split('yyyy').join(d.getFullYear())
                          .split('mm').join(_zeroPad(d.getMonth()+1))
                          .split('dd').join(_zeroPad(d.getDate()))
