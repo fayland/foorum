@@ -5,7 +5,7 @@
     UNLESS fmt;
         fmt = '%Y-%m-%d %I:%M:%S';
     END;
-    IF c.config.timezonediff > 0;
+    IF c.config.timezonediff;
         intime = intime + c.config.timezonediff;
     END;
 
