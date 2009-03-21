@@ -30,7 +30,8 @@ sub default : Private {
             create_forum => $c->config->{function_on}->{create_forum},
             poll         => $c->config->{function_on}->{poll},
 
-            site_domain => $c->config->{site}->{domain},
+            site_domain  => $c->config->{site}->{domain},
+            timezonediff => $c->config->{timezonediff} / 3600,
 
             message_per_page => $c->config->{per_page}->{message},
             forum_per_page   => $c->config->{per_page}->{forum},
@@ -59,6 +60,9 @@ sub default : Private {
     $domain .= '/';
     $domain =~ s/\/+$/\//isg;
     $yaml->{site}->{domain} = $domain;
+    my $timezonediff = $params{timezonediff};
+    $timezonediff = 0 if ( $timezonediff !~ /^[\-\d]+$/ );
+    $yaml->{timezonediff} = $timezonediff * 3600;
 
     # function on
     my $maintain = $params{maintain};

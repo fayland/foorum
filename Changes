@@ -3,11 +3,12 @@ This file documents the revision history for Foorum.
 1.0.7
     - remove forum style setting
     - more friendly time format: xx minutes ago
+    - server timezone diff settings
 
 1.0.6   2009.03.21
     - use google.load instead of a local copy
     - move code to http://github.com/fayland/foorum/tree
-    - Admin Topic, Batch Ban
+    - Admin Topic, Batch Ban/Unban/Delete
     - use jquery.ui 1.7.0
 
 1.0.5   2009.02.21

@@ -125,6 +125,11 @@ sub post : Local {
 
     # go this comment
     my $comment_id = $new_comment->comment_id;
+    $path  = $c->model('Object')->get_url_from_object( $c, {
+        object_id => $object_id,
+        object_type => $object_type,
+        forum_id => $forum_id
+    } );
     $path .= "/comment_id=$comment_id/#c$comment_id";
 
     $c->res->redirect($path);
@@ -140,7 +145,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
     );
 
     my $comment_id = $c->req->snippets->[0];
-    my $comment    = $c->model('Get')
+    my $comment    = $c->controller('Get')
         ->comment( $c, $comment_id, { with_author => 1, with_text => 1 } );
 
     my ( $object_id, $object_type, $forum_id ) = (
@@ -243,7 +248,7 @@ sub edit : LocalRegex('^(\d+)/edit$') {
     my ( $self, $c ) = @_;
 
     my $comment_id = $c->req->snippets->[0];
-    my $comment = $c->model('Get')->comment( $c, $comment_id );
+    my $comment = $c->controller('Get')->comment( $c, $comment_id );
 
     # permission
     if ( $c->user->user_id != $comment->{author_id} ) {
@@ -342,7 +347,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
     my ( $self, $c ) = @_;
 
     my $comment_id = $c->req->snippets->[0];
-    my $comment = $c->model('Get')->comment( $c, $comment_id );
+    my $comment = $c->controller('Get')->comment( $c, $comment_id );
 
     my ( $object_id, $object_type, $forum_id ) = (
         $comment->{object_id}, $comment->{object_type},
