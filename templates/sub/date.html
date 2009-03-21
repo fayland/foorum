@@ -5,6 +5,9 @@
     UNLESS fmt;
         fmt = '%Y-%m-%d %I:%M:%S';
     END;
+    IF c.config.timezonediff > 0;
+        intime = intime + c.config.timezonediff;
+    END;
 
     IF intime == '-' OR intime <= 0;
         intime;
