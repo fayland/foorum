@@ -2,7 +2,7 @@ package Foorum::Plugin::FoorumUtils;
 
 use strict;
 use warnings;
-our $VERSION = '1.000006';
+our $VERSION = '1.000007';
 
 sub load_once {
     my ( $c, $url ) = @_;
@@ -14,6 +14,7 @@ sub load_once {
     $c->stash->{__load_once_in_tt}->{$url} = 1;
 
     if ( $url =~ /\.js$/i ) {
+
         # jquery.js and jquery.ui.js
         if ( $url eq 'jquery.js' ) {
             return

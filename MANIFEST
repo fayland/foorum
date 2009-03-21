@@ -258,8 +258,6 @@ root/static/css/min/default.css
 root/static/css/min/form.css
 root/static/css/min/jquery.ui/smoothness/jquery-ui-1.7.custom.css
 root/static/css/min/jquery/jquery.lightbox-0.4.css
-root/static/css/style/black.json
-root/static/css/style/green.json
 root/static/favicon.ico
 root/static/images/background/0.gif
 root/static/images/background/1.jpg
@@ -373,10 +371,11 @@ root/static/js/jquery/cookie.js
 root/static/js/jquery/corner.js
 root/static/js/jquery/debug.js
 root/static/js/jquery/flot.js
-root/static/js/jquery/form.js
 root/static/js/jquery/history_remote.js
 root/static/js/jquery/iepnghack.js
+root/static/js/jquery/jquery.form.js
 root/static/js/jquery/jquery.lightbox-0.4.js
+root/static/js/jquery/jquery.metadata.js
 root/static/js/jquery/localisation.js
 root/static/js/jquery/validate.js
 root/static/js/jquery/validate/messages_cn.js
@@ -387,10 +386,11 @@ root/static/js/min/jquery/cookie.js
 root/static/js/min/jquery/corner.js
 root/static/js/min/jquery/debug.js
 root/static/js/min/jquery/flot.js
-root/static/js/min/jquery/form.js
 root/static/js/min/jquery/history_remote.js
 root/static/js/min/jquery/iepnghack.js
+root/static/js/min/jquery/jquery.form.js
 root/static/js/min/jquery/jquery.lightbox-0.4.js
+root/static/js/min/jquery/jquery.metadata.js
 root/static/js/min/jquery/localisation.js
 root/static/js/min/jquery/validate.js
 root/static/js/min/jquery/validate/messages_cn.js
@@ -488,7 +488,6 @@ templates/forumadmin/bar.html
 templates/forumadmin/basic.html
 templates/forumadmin/index.html
 templates/forumadmin/links.html
-templates/forumadmin/style.html
 templates/include/object_tds.html
 templates/include/user_profile.html
 templates/include/user_profile_photo.html

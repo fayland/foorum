@@ -2,7 +2,7 @@ package Foorum::Controller::Admin::Settings;
 
 use strict;
 use warnings;
-our $VERSION = '1.000006';
+our $VERSION = '1.000007';
 use base 'Catalyst::Controller';
 use YAML::XS qw/DumpFile LoadFile/;
 use Foorum::Utils qw/get_server_timezone_diff/;
@@ -42,7 +42,7 @@ sub default : Private {
                 $c->config->{per_day}->{most_deletion_topic},
 
         };
-        $c->stash->{fulfill} = $fulfill;
+        $c->stash->{fulfill}                 = $fulfill;
         $c->stash->{suggested_timezone_diff} = get_server_timezone_diff();
         return;
     }

@@ -3,7 +3,7 @@ package Foorum::Utils;
 use strict;
 use warnings;
 
-our $VERSION = '1.000006';
+our $VERSION = '1.000007';
 
 use base 'Exporter';
 use vars qw/@EXPORT_OK/;
@@ -102,9 +102,9 @@ sub get_server_timezone_diff {
     my @gmt  = (gmtime);
     my $diff = $gmt[2] - $lmt[2];
     if ( $gmt[5] > $lmt[5] || $gmt[7] > $lmt[7] ) {
-      $diff += 24;
+        $diff += 24;
     } elsif ( $gmt[5] < $lmt[5] || $gmt[7] < $lmt[7] ) {
-      $diff -= 24;
+        $diff -= 24;
     }
     return $diff;
 }

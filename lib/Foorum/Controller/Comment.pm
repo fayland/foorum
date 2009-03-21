@@ -2,7 +2,7 @@ package Foorum::Controller::Comment;
 
 use strict;
 use warnings;
-our $VERSION = '1.000006';
+our $VERSION = '1.000007';
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/encodeHTML/;
 
@@ -125,11 +125,13 @@ sub post : Local {
 
     # go this comment
     my $comment_id = $new_comment->comment_id;
-    $path  = $c->model('Object')->get_url_from_object( $c, {
-        object_id => $object_id,
-        object_type => $object_type,
-        forum_id => $forum_id
-    } );
+    $path = $c->model('Object')->get_url_from_object(
+        $c,
+        {   object_id   => $object_id,
+            object_type => $object_type,
+            forum_id    => $forum_id
+        }
+    );
     $path .= "/comment_id=$comment_id/#c$comment_id";
 
     $c->res->redirect($path);

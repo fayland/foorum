@@ -2,7 +2,7 @@ package Foorum::Controller::Ajax::Poll;
 
 use strict;
 use warnings;
-our $VERSION = '1.000006';
+our $VERSION = '1.000007';
 use base 'Catalyst::Controller';
 
 sub vote : Local {
