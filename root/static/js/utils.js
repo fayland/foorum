@@ -50,20 +50,42 @@ $(function() {
         d.setHours(Number(s.substr(f.indexOf('hh'), 2)));
         d.setMinutes(Number(s.substr(f.indexOf('ii'), 2)));
         d.setSeconds(Number(s.substr(f.indexOf('ss'), 2)));
-        
-        var timezoneOffset = -(new Date().getTimezoneOffset());
-        d.setMinutes(d.getMinutes() + timezoneOffset);
-        
+
         if (! isNaN(d.getFullYear()) && d.getFullYear() > 1997) {
-            var t = f
-                .split('yyyy').join(d.getFullYear())
-                .split('mm').join(_zeroPad(d.getMonth()+1))
-                .split('dd').join(_zeroPad(d.getDate()))
-                .split('hh').join(_zeroPad(d.getHours()))
-                .split('ii').join(_zeroPad(d.getMinutes()))
-                .split('ss').join(_zeroPad(d.getSeconds()))
-                ;
-        
+            var toTime = new Date();
+            var delta  = parseInt((toTime.getTime() - d.getTime()) / 1000);
+            if ( $(this).hasClass('date_no_ago') ) {
+                delta  = 86400 * 7;
+            }
+            var t;
+            if (delta < 60) {
+                t = 'less than a minute ago';
+            } else if (delta < 120) {
+                t = 'about a minute ago';
+            } else if (delta < (45 * 60)) {
+                t = (parseInt(delta / 60)).toString() + ' minutes ago';
+            } else if (delta < (120 * 60)) {
+                t = 'about an hour ago';
+            } else if (delta < (24 * 60 * 60)) {
+                t = 'about ' + (parseInt(delta / 3600)).toString() + ' hours ago';
+            } else if (delta < (48 * 60 * 60)) {
+                t = '1 day ago';
+            } else {
+                var days = (parseInt(delta / 86400)).toString();
+                if (days > 5) {
+                    var timezoneOffset = -(new Date().getTimezoneOffset());
+                    d.setMinutes(d.getMinutes() + timezoneOffset);
+                    t = f.split('yyyy').join(d.getFullYear())
+                         .split('mm').join(_zeroPad(d.getMonth()+1))
+                         .split('dd').join(_zeroPad(d.getDate()))
+                         .split('hh').join(_zeroPad(d.getHours()))
+                         .split('ii').join(_zeroPad(d.getMinutes()))
+                         .split('ss').join(_zeroPad(d.getSeconds()));
+                } else {
+                    t = days + " days ago"
+                }
+            }
+
             $(this).text(t);
         }
    } );
