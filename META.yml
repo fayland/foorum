@@ -66,4 +66,5 @@ requires:
   YAML::XS: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 1.000005
+  repository: http://github.com/fayland/foorum/tree/master
+version: 1.000006
