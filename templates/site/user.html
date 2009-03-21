@@ -23,7 +23,7 @@
 <td><a href="/u/[% user.username %]">[% user.nickname%]</a></td>
 <td>[% IF user.gender != 'NA' %]<img src='[% c.config.dir.images %]/site/gender_[% user.gender %].gif' width='20' height='14' align='absmiddle' /></span>[% ELSE %]N/A[% END %]</td>
 <td>[% user.status | ucfirst %]</td>
-<td>[% date_format(user.register_time) %]</td>
+<td><span class='date'>[% date_format(user.register_time) %]</span></td>
 
 </tr>
 [% END %]
