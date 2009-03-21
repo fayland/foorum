@@ -15,10 +15,10 @@ jQuery.extend(jQuery.validator.messages, {
 		creditcard: "请输入合法的信用卡号",
 		equalTo: "请再次输入相同的值",
 		accept: "请输入拥有合法后缀名的字符串",
-		maxLength: jQuery.format("请输入一个长度最多是 {0} 的字符串"),
-		minLength: jQuery.format("请输入一个长度最少是 {0} 的字符串"),
-		rangeLength: jQuery.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
-		rangeValue: jQuery.format("请输入一个介于 {0} 和 {1} 之间的值"),
-		maxValue: jQuery.format("请输入一个最大为 {0} 的值"),
-		minValue: jQuery.format("请输入一个最小为 {0} 的值")
+		maxlength: jQuery.format("请输入一个长度最多是 {0} 的字符串"),
+		minlength: jQuery.format("请输入一个长度最少是 {0} 的字符串"),
+		rangelength: jQuery.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+		range: jQuery.format("请输入一个介于 {0} 和 {1} 之间的值"),
+		max: jQuery.format("请输入一个最大为 {0} 的值"),
+		min: jQuery.format("请输入一个最小为 {0} 的值")
 });
