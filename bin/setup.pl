@@ -91,6 +91,18 @@ $yaml->{dsn_pwd}         = $dns_password;
 $yaml->{theschwartz_dsn} = $theschwartz_dsn;
 $yaml->{site}->{domain}  = $domain;
 
+# timezone setting
+my @local = (localtime);
+my @gmt = (gmtime);
+my $diff = $gmt[2]-$local[2];
+if ($gmt[5] > $local[5] || $gmt[7] > $local[7]) {
+  $diff += 24;
+} elsif ($gmt[5] < $local[5] || $gmt[7] < $local[7]) {
+  $diff -= 24;
+}
+
+$yaml->{timezonediff} = $diff * 3600;
+
 print "\n\nSaving ....\n\n";
 DumpFile( $foorum_local_file, $yaml );
 
