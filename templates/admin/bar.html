@@ -1,8 +1,6 @@
 [% url_base = '/admin' %]
 
-<script type="text/javascript">
-    google.load("jqueryui", "1.7.0");
-</script>
+[% c.load_once("jquery.ui.js") %]
 [% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
 <div id='admin_tabs' class='ftabs'>

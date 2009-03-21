@@ -14,9 +14,18 @@ sub load_once {
     $c->stash->{__load_once_in_tt}->{$url} = 1;
 
     if ( $url =~ /\.js$/i ) {
-        my $js_dir = $c->config->{dir}->{js};
-        return
-            qq~<script type="text/javascript" src="$js_dir/$url"></script>\n~;
+        # jquery.js and jquery.ui.js
+        if ( $url eq 'jquery.js' ) {
+            return
+                qq~<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>\n~;
+        } elsif ( $url eq 'jquery.ui.js' ) {
+            return
+                qq~<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>\n~;
+        } else {
+            my $js_dir = $c->config->{dir}->{js};
+            return
+                qq~<script type="text/javascript" src="$js_dir/$url"></script>\n~;
+        }
     } elsif ( $url =~ /\.css$/i ) {
         my $static_dir = $c->config->{dir}->{static};
         return
