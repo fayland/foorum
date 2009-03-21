@@ -5,6 +5,7 @@ use warnings;
 our $VERSION = '1.000006';
 use base 'Catalyst::Controller';
 use YAML::XS qw/DumpFile LoadFile/;
+use Foorum::Utils qw/get_server_timezone_diff/;
 
 sub auto : Private {
     my ( $self, $c ) = @_;
@@ -42,6 +43,7 @@ sub default : Private {
 
         };
         $c->stash->{fulfill} = $fulfill;
+        $c->stash->{suggested_timezone_diff} = get_server_timezone_diff();
         return;
     }
 

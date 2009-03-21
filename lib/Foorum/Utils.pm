@@ -14,6 +14,7 @@ use vars qw/@EXPORT_OK/;
     get_page_from_url
     truncate_text
     be_url_part
+    get_server_timezone_diff
     /;
 
 use Encode ();
@@ -94,6 +95,18 @@ sub be_url_part {
     $str =~ s/(^\-|\-$)//isg;
 
     return $str;
+}
+
+sub get_server_timezone_diff {
+    my @lmt  = (localtime);
+    my @gmt  = (gmtime);
+    my $diff = $gmt[2] - $lmt[2];
+    if ( $gmt[5] > $lmt[5] || $gmt[7] > $lmt[7] ) {
+      $diff += 24;
+    } elsif ( $gmt[5] < $lmt[5] || $gmt[7] < $lmt[7] ) {
+      $diff -= 24;
+    }
+    return $diff;
 }
 
 1;

@@ -8,6 +8,7 @@ use YAML::XS qw/DumpFile LoadFile/;
 use DBI;
 use File::Spec;
 use lib File::Spec->catdir( $FindBin::Bin, '..', 'lib' );
+use Foorum::Utils qw/get_server_timezone_diff/;
 use vars qw/$dbh/;
 
 my $path = abs_path( File::Spec->catdir( $FindBin::Bin, '..' ) );
@@ -92,15 +93,7 @@ $yaml->{theschwartz_dsn} = $theschwartz_dsn;
 $yaml->{site}->{domain}  = $domain;
 
 # timezone setting
-my @local = (localtime);
-my @gmt = (gmtime);
-my $diff = $gmt[2]-$local[2];
-if ($gmt[5] > $local[5] || $gmt[7] > $local[7]) {
-  $diff += 24;
-} elsif ($gmt[5] < $local[5] || $gmt[7] < $local[7]) {
-  $diff -= 24;
-}
-
+my $diff = get_server_timezone_diff();
 $yaml->{timezonediff} = $diff * 3600;
 
 print "\n\nSaving ....\n\n";
