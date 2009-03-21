@@ -1,17 +1,17 @@
 [% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-<div id='edit_profile_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
-    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-        <li[% IF type == 'today' %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/site/popular/today'><span>Today</span></a></li>
-        <li[% IF type == 'yesterday' %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/site/popular/yesterday'><span>Yesterday</span></a></li>
-        <li[% IF type == 'weekly' %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/site/popular/weekly'><span>Weekly</span></a></li>
-        <li[% IF type == 'monthly' %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/site/popular/monthly'><span>Monthly</span></a></li>
-        <li[% IF type == 'all' %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/site/popular/all'><span>All</span></a></li>
+<div id='ftabs'>
+    <ul>
+        <li[% IF type == 'today' %] selected="selected"[% END %]><a href='/site/popular/today'><span>Today</span></a></li>
+        <li[% IF type == 'yesterday' %] selected="selected"[% END %]><a href='/site/popular/yesterday'><span>Yesterday</span></a></li>
+        <li[% IF type == 'weekly' %] selected="selected"[% END %]><a href='/site/popular/weekly'><span>Weekly</span></a></li>
+        <li[% IF type == 'monthly' %] selected="selected"[% END %]><a href='/site/popular/monthly'><span>Monthly</span></a></li>
+        <li[% IF type == 'all' %] selected="selected"[% END %]><a href='/site/popular/all'><span>All</span></a></li>
         
-        <li class="ui-state-default ui-corner-top"><a href='/site/recent'><span>[% c.loc("Recent Topics") %]</span></a></li>
-        <li class="ui-state-default ui-corner-top"><a href='/site/members'><span>[% c.loc("Recent Members") %]</span></a></li>
+        <li><a href='/site/recent'><span>[% c.loc("Recent Topics") %]</span></a></li>
+        <li><a href='/site/members'><span>[% c.loc("Recent Members") %]</span></a></li>
     </ul>
-    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+    <div>
 
 <div class='one'>
 <table align='center'>
@@ -41,3 +41,9 @@
 </div>
 
 [% RSS_URL = '/site/popular/'_ type _ '/rss' %]
+
+<script type="text/javascript">
+    $().ready(function() {
+        tabize('ftabs');
+    });
+</script>

@@ -68,3 +68,23 @@ $(function() {
         }
    } );
 } );
+
+// jQuery.ui tabs() are too heavy when I only need the classes.
+function tabize( ele_id, selected_id ) {
+    
+    // nothing is selected by default
+    if ( typeof(selected_id) == 'undefined' ) selected_id = -1;
+    
+    $('#' + ele_id ).addClass('ftabs ui-tabs ui-widget ui-widget-content ui-corner-all');
+    $('#' + ele_id + ' > ul:first').addClass('ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all');
+    $('#' + ele_id + ' > div:first').addClass('ui-tabs-panel ui-widget-content ui-corner-bottom');
+    
+    // be smart
+    $.each( $('#' + ele_id + ' > ul:first > li'), function(i) {
+        if ( selected_id == i || $(this).attr('selected') == 'selected' ) {
+            $(this).addClass('ui-corner-top ui-tabs-selected ui-state-active');
+        } else {
+            $(this).addClass('ui-state-default ui-corner-top');
+        }
+    } );
+}

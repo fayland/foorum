@@ -12,20 +12,20 @@
 
 [% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-<div id='recent_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
-    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+<div id='ftabs'>
+    <ul>
         [% IF recent_type == 'my' %]
-        <li class="ui-state-default ui-corner-top"><a href='/u/[% user.username %]'><span>[% user.nickname %]</span></a></li>
-        <li class="ui-corner-top ui-tabs-selected ui-state-active"><a href='/u/[% user.username %]/topics'><span>[% c.loc('Recent Topics') %]</span></a></li>
-        <li class="ui-state-default ui-corner-top"><a href='/u/[% user.username %]/shared'><span>[% c.loc('Shared Items') %]</span></a></li>
+        <li><a href='/u/[% user.username %]'><span>[% user.nickname %]</span></a></li>
+        <li selected="selected"><a href='/u/[% user.username %]/topics'><span>[% c.loc('Recent Topics') %]</span></a></li>
+        <li><a href='/u/[% user.username %]/shared'><span>[% c.loc('Shared Items') %]</span></a></li>
         [% ELSE %]
-        <li[% IF recent_type == 'site' %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/site/recent'><span>[% c.loc('Recent Topics') %]</span></a></li>
-        <li[% IF recent_type == 'elite' %] class="ui-corner-top ui-tabs-selected ui-state-active"[% ELSE %] class="ui-state-default ui-corner-top"[% END %]><a href='/site/recent/elite'><span>[% c.loc('Recent Elite Topics') %]</span></a></li>
-        <li class="ui-state-default ui-corner-top"><a href='/site/popular'><span>[% c.loc("Popular") %]</span></a></li>
-        <li class="ui-state-default ui-corner-top"><a href='/site/members'><span>[% c.loc('Recent Members') %]</span></a></li>
+        <li[% IF recent_type == 'site' %] selected="selected"[% END %]><a href='/site/recent'><span>[% c.loc('Recent Topics') %]</span></a></li>
+        <li[% IF recent_type == 'elite' %] selected="selected"[% END %]><a href='/site/recent/elite'><span>[% c.loc('Recent Elite Topics') %]</span></a></li>
+        <li><a href='/site/popular'><span>[% c.loc("Popular") %]</span></a></li>
+        <li><a href='/site/members'><span>[% c.loc('Recent Members') %]</span></a></li>
         [% END %]
     </ul>
-    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+    <div>
 <div class='one'>
 <table height='28' align='center'>
 	<tr class="title" align='center'>
@@ -84,3 +84,9 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+    $().ready(function() {
+        tabize('ftabs');
+    });
+</script>

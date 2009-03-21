@@ -1,14 +1,14 @@
 [% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-<div id='edit_profile_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
-    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-        <li class="ui-state-default ui-corner-top"><a href='/profile/edit'><span>[% c.loc('Edit Profile') %]</span></a></li>
-        <li class="ui-corner-top ui-tabs-selected ui-state-active"><a href='javascript:void(0);'><span>Change Username</span></a></li>
-        <li class="ui-state-default ui-corner-top"><a href='/profile/change_password'><span>Change Password</span></a></li>
-        <li class="ui-state-default ui-corner-top"><a href='/profile/change_email'><span>Change Email</span></a></li>
-        <li class="ui-state-default ui-corner-top"><a href='/profile/profile_photo'><span>Profile Photo</span></a></li>
+<div id='ftabs'>
+    <ul>
+        <li><a href='/profile/edit'><span>[% c.loc('Edit Profile') %]</span></a></li>
+        <li selected="selected"><a href='javascript:void(0);'><span>Change Username</span></a></li>
+        <li><a href='/profile/change_password'><span>Change Password</span></a></li>
+        <li><a href='/profile/change_email'><span>Change Email</span></a></li>
+        <li><a href='/profile/profile_photo'><span>Profile Photo</span></a></li>
     </ul>
-    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+    <div>
 
 <div class='one'>
 <table align='center'>
@@ -49,3 +49,9 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+    $().ready(function() {
+        tabize('ftabs');
+    });
+</script>

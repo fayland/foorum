@@ -12,25 +12,25 @@ END; %]
 [% ELSIF mode == 'topic' %]
 [% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-<div id='edit_profile_tabs' class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
-    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-        <li class="ui-state-default ui-corner-top"><a href='[% forum.forum_url %]'><span>Topics</span></a></li>
+<div id='ftabs'>
+    <ul>
+        <li><a href='[% forum.forum_url %]'><span>Topics</span></a></li>
         [% IF c.config.function_on.poll %]
         [% UNLESS forum.settings.can_post_polls AND forum.settings.can_post_polls == 'N' %]
-        <li class="ui-state-default ui-corner-top"><a href='[% forum.forum_url %]/polls'><span>Polls</span></a></li>
+        <li><a href='[% forum.forum_url %]/polls'><span>Polls</span></a></li>
         [% END %]
         [% END %]
         [% UNLESS forum.settings.can_post_threads AND forum.settings.can_post_threads == 'N' %]
-        <li class="ui-corner-top ui-tabs-selected ui-state-active"><a href='[% forum.forum_url %]/topic/new'><span>[% c.loc("New Topic") %]</span></a></li>
+        <li selected="selected"><a href='[% forum.forum_url %]/topic/new'><span>[% c.loc("New Topic") %]</span></a></li>
         [% END %]
         [% IF c.config.function_on.poll %]
         [% UNLESS forum.settings.can_post_polls AND forum.settings.can_post_polls == 'N' %]
-        <li class="ui-state-default ui-corner-top"><a href='[% forum.forum_url %]/poll/new'><span>[% c.loc("New Poll") %]</span></a></li>
+        <li><a href='[% forum.forum_url %]/poll/new'><span>[% c.loc("New Poll") %]</span></a></li>
         [% END %]
         [% END %]
-        <li class="ui-state-default ui-corner-top"><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
+        <li><a href='[% forum.forum_url %]/action_log'><span>View Action Logs</span></a></li>
     </ul>
-    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+    <div>
 [% END %]
 
 [% FILTER fillinform fdat => filldata || c.req.params %]
@@ -137,3 +137,8 @@ http://domain/page<br />
 [% END %]
 
 [% c.load_once("site/new_post.js") %]
+<script type="text/javascript">
+    $().ready(function() {
+        tabize('ftabs');
+    });
+</script>

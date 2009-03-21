@@ -6,13 +6,13 @@
 
 [% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-<div class='ftabs ui-tabs ui-widget ui-widget-content ui-corner-all'>
-    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-        <li class="ui-state-default ui-corner-top"><a href='/'><span>Homepage</span></a></li>
-        <li[% IF content %] class="ui-state-default ui-corner-top"[% ELSE %] class="ui-corner-top ui-tabs-selected ui-state-active"[% END %]><a href='/help'><span>Help Center</span></a></li>
-        [% IF title %]<li class="ui-corner-top ui-tabs-selected ui-state-active"><a href='javascript:void(0);'><span>[% title %]</span></a></li>[% END %]
+<div id='ftabs'>
+    <ul>
+        <li><a href='/'><span>Homepage</span></a></li>
+        <li[% UNLESS content %] selected="selected"[% END %]><a href='/help'><span>Help Center</span></a></li>
+        [% IF title %]<li selected="selected"><a href='javascript:void(0);'><span>[% title %]</span></a></li>[% END %]
     </ul>
-    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom" style='padding-left: 8em;padding-right:8em;'>
+    <div style='padding-left: 8em;padding-right:8em;'>
 
     [% IF content %]
     [% IF title %]<h2>[% title %]</h2>[% END %]
@@ -36,3 +36,9 @@
 </div>
 
 [% END %]
+
+<script type="text/javascript">
+    $().ready(function() {
+        tabize('ftabs');
+    });
+</script>
