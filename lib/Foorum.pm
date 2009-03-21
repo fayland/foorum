@@ -18,7 +18,7 @@ use Catalyst qw/
     +Foorum::Plugin::FoorumUtils
     /;
 
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 
 __PACKAGE__->config( { VERSION => $VERSION } );
 
@@ -26,7 +26,7 @@ __PACKAGE__->setup();
 
 if ( __PACKAGE__->config->{function_on}->{page_cache} ) {
     __PACKAGE__->setup_plugins( ['PageCache'] );
-    
+
     ## set $c->language before create a key in PageCache
     __PACKAGE__->config->{'Plugin::PageCache'}->{key_maker} = sub {
         my $c = shift;

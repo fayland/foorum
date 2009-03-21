@@ -2,7 +2,7 @@ package Foorum::Controller::Profile;
 
 use strict;
 use warnings;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use base 'Catalyst::Controller';
 use Foorum::XUtils qw/theschwartz/;
 use Digest ();
@@ -220,7 +220,7 @@ sub forget_password : Local {
             }
         }
     );
-    
+
     $c->res->redirect('/?info=102');
 }
 

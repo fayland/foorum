@@ -2,7 +2,7 @@ package Foorum::Controller::Site;
 
 use strict;
 use warnings;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 use Foorum::Formatter qw/filter_format/;
@@ -34,10 +34,7 @@ sub recent : Local {
         }
     );
 
-    $c->stash(
-        {   recent_type => $recent_type,
-        }
-    );
+    $c->stash( { recent_type => $recent_type, } );
 
     my @topics = $rs->all;
     if ($rss) {
@@ -112,9 +109,9 @@ sub members : Local {
     );
 
     $c->stash(
-        {   users      => [ $rs->all ],
-            pager      => $rs->pager,
-            template   => 'site/user.html',
+        {   users    => [ $rs->all ],
+            pager    => $rs->pager,
+            template => 'site/user.html',
         }
     );
 }

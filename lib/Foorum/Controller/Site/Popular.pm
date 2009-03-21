@@ -2,7 +2,7 @@ package Foorum::Controller::Site::Popular;
 
 use strict;
 use warnings;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 use Foorum::Formatter qw/filter_format/;
@@ -82,9 +82,9 @@ sub default : Private {
     } else {
         $c->cache_page('300');
         $c->stash(
-            {   template   => 'site/popular.html',
-                pager      => $hit_rs->pager,
-                objects    => \@objects,
+            {   template => 'site/popular.html',
+                pager    => $hit_rs->pager,
+                objects  => \@objects,
             }
         );
     }

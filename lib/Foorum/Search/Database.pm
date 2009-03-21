@@ -1,7 +1,7 @@
 package Foorum::Search::Database;
 
 use Moose;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use Foorum::SUtils qw/schema/;
 
 has 'schema' => (
@@ -38,7 +38,7 @@ sub topic {
 
     $where->{forum_id}  = $forum_id  if ($forum_id);
     $where->{author_id} = $author_id if ($author_id);
-    if ($date and $date =~ /^\d+$/) {
+    if ( $date and $date =~ /^\d+$/ ) {
 
         # date value would be 2, 7, 30, 999
         my $now = time();

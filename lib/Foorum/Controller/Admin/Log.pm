@@ -2,7 +2,7 @@ package Foorum::Controller::Admin::Log;
 
 use strict;
 use warnings;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 use Foorum::Logger qw/%levels/;
@@ -35,9 +35,9 @@ sub error_log : Local {
     my @errors = $rs->all;
 
     $c->stash(
-        {   template   => 'admin/log/error_log.html',
-            errors     => \@errors,
-            pager      => $pager,
+        {   template => 'admin/log/error_log.html',
+            errors   => \@errors,
+            pager    => $pager,
         }
     );
 }
@@ -57,9 +57,9 @@ sub path_log : Local {
     my @paths = $rs->all;
 
     $c->stash(
-        {   template   => 'admin/log/path_log.html',
-            paths      => \@paths,
-            pager      => $pager,
+        {   template => 'admin/log/path_log.html',
+            paths    => \@paths,
+            pager    => $pager,
         }
     );
 }

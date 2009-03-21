@@ -1,7 +1,7 @@
 package Foorum::Search::Sphinx;
 
 use Moose;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use Sphinx::Search;
 use Foorum::SUtils qw/schema/;
 
@@ -55,7 +55,7 @@ sub topic {
     $sphinx->SetFilter( 'forum_id',  [$forum_id] )  if ($forum_id);
     $sphinx->SetFilter( 'author_id', [$author_id] ) if ($author_id);
 
-    if ($date and $date =~ /^\d+$/) {
+    if ( $date and $date =~ /^\d+$/ ) {
 
         # date value would be 2, 7, 30, 999
         my $now = time();

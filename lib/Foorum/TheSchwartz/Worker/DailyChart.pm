@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::DailyChart;
 
 use strict;
 use warnings;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use base qw( TheSchwartz::Moosified::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;

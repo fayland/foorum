@@ -2,7 +2,7 @@ package Foorum::Controller::Register;
 
 use strict;
 use warnings;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use base 'Catalyst::Controller';
 use Digest ();
 use WWW::Contact;
@@ -74,7 +74,7 @@ sub default : Private {
         ->send_activation( $user, 0, { lang => $c->stash->{lang} } );
 
     $c->authenticate( { username => $username, password => $password } );
-    
+
     $c->res->redirect('/?info=103');
 }
 

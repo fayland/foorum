@@ -2,7 +2,7 @@ package Foorum::Schema::UserRole;
 
 use strict;
 use warnings;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components('Core');

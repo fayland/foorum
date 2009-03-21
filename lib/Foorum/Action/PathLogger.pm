@@ -2,7 +2,7 @@ package Foorum::Action::PathLogger;
 
 use strict;
 use warnings;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use base 'Catalyst::Action';
 use Time::HiRes qw( gettimeofday tv_interval );
 use Data::Dumper;

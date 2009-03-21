@@ -2,7 +2,7 @@ package Foorum::Controller::Admin::Topic;
 
 use strict;
 use warnings;
-our $VERSION = '1.000005';
+our $VERSION = '1.000006';
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 
@@ -22,20 +22,20 @@ sub default : Private {
 
     my $banned = $c->req->param('banned') || 0;
     my $stcond = $banned ? 'banned' : { '!=', 'banned' };
-    my $page = get_page_from_url( $c->req->path );
-    my $rs   = $c->model('DBIC::Topic')->search(
-        {   'me.status'    => $stcond,
-        },
+    my $page   = get_page_from_url( $c->req->path );
+    my $rs     = $c->model('DBIC::Topic')->search(
+        { 'me.status' => $stcond, },
         {   order_by => 'topic_id desc',
             rows     => 20,
             page     => $page,
         }
     );
-    $c->stash( {
-        template   => 'admin/topic/index.html',
-        topics     => [ $rs->all ],
-        pager      => $rs->pager,
-    } );
+    $c->stash(
+        {   template => 'admin/topic/index.html',
+            topics   => [ $rs->all ],
+            pager    => $rs->pager,
+        }
+    );
 }
 
 sub batch : Local {
@@ -44,10 +44,10 @@ sub batch : Local {
     my $do        = $c->req->param('do');
     my @topic_ids = $c->req->param('topic_id');
     if ( scalar @topic_ids == 1 ) {
-        @topic_ids = split(/\,\s*/, $topic_ids[0]);
+        @topic_ids = split( /\,\s*/, $topic_ids[0] );
     }
 
-    foreach my $topic_id ( @topic_ids ) {
+    foreach my $topic_id (@topic_ids) {
         next if $topic_id !~ /^\d+$/;
         if ( $do eq 'ban' or $do eq 'unban' ) {
             my $status = $do eq 'unban' ? 'healthy' : 'banned';
