@@ -178,4 +178,37 @@ sub remove {
     return 1;
 }
 
+sub move {
+    my ( $self, $topic_id, $to_fid ) = @_;
+    
+    my $schema = $self->result_source->schema;
+    my $cache  = $schema->cache();
+    
+    my $topic  = $self->get( $topic_id );
+    return 0 unless $topic;
+    return 0 if $topic->{forum_id} == $to_fid;
+    # update topic table
+    $self->update_topic( $topic_id, { forum_id => $to_fid } );
+
+    # forum related
+    my $total_replies = $topic->{total_replies};
+    my $old_forum_id  = $topic->{forum_id};
+    $schema->resultset('Forum')->update_forum(
+        $old_forum_id,
+        {   total_topics  => \'total_topics - 1',
+            total_replies => \"total_replies - $total_replies",
+        }
+    );
+    $schema->resultset('Forum')->update_forum(
+        $to_fid,
+        {   total_topics  => \'total_topics + 1',
+            total_replies => \"total_replies + $total_replies",
+        }
+    );
+    $cache->remove( "topic|get_topic_id_list|forum_id=$old_forum_id" );
+    $cache->remove( "topic|get_topic_id_list|forum_id=$to_fid" );
+    
+    return 1;
+}
+
 1;

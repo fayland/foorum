@@ -12,6 +12,14 @@
     [% END %]
     <input type='submit' name='btn' value='Batch Delete' onclick='$("#do").val("delete")' />
 </p>
+<p>
+    <select name='to_fid'>
+        [% FOREACH f IN forums %]
+        <option value='[% f.forum_id %]'>[% f.name %]</option>
+        [% END %]
+    </select>
+    <input type='submit' name='btn' value='Batch Move' onclick='$("#do").val("move")' />
+</p>
 <p><input type='button' name='selectall' value='Select All' onclick='javascript:SelectAll()' />
    <input type='button' name='selectnone' value='Select None' onclick='javascript:SelectNone()' />
 </p>
