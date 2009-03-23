@@ -79,7 +79,7 @@ sub batch : Local {
         }
     }
 
-    $c->res->redirect('/admin/topic?info=1');
+    $c->res->redirect('/admin/topic?st=1');
 }
 
 1;

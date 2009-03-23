@@ -49,7 +49,7 @@ sub merge_forums : Local {
 
     my $message = $c->model('DBIC::Forum')
         ->merge_forums( { from_id => $from_id, to_id => $to_id } );
-    $c->stash->{message} = ($message) ? 'OK' : 'FAIL';
+    $c->stash->{st} = ($message) ? 1 : 301;
 }
 
 sub rebuild_forums : Local {
@@ -59,7 +59,7 @@ sub rebuild_forums : Local {
     while ( my $r = $rs->next ) {
         $c->model('DBIC::Forum')->recount_forum( $r->forum_id );
     }
-    $c->stash->{sinfo} = 1;
+    $c->stash->{st} = 1;
 }
 
 1;
