@@ -79,6 +79,14 @@ sub create_topic {
         }
     );
 
+    # update forum
+    $schema->resultset('Forum')->update_forum(
+        $topic->forum_id,
+        {   total_topics => \'total_topics + 1',    #'
+            last_post_id => $topic->topic_id,
+        }
+    );
+
     # update user stat
     my $user = $schema->resultset('User')
         ->get( { user_id => $create->{author_id} } );
@@ -151,18 +159,7 @@ sub remove {
         }
     );
 
-    # update last
-    my $lastest = $self->search( { forum_id => $forum_id },
-        { order_by => \'last_update_date DESC', columns => ['topic_id'] } )
-        ->first;    #'
-    my $last_post_id = $lastest ? $lastest->topic_id : 0;
-    $schema->resultset('Forum')->update_forum(
-        $forum_id,
-        {   total_topics  => \'total_topics - 1',
-            last_post_id  => $last_post_id,
-            total_replies => \"total_replies - $total_replies",
-        }
-    );
+    $schema->resultset('Forum')->recount_forum( $forum_id );
 
     # update user stat
     my $user = $schema->resultset('User')
@@ -191,20 +188,9 @@ sub move {
     $self->update_topic( $topic_id, { forum_id => $to_fid } );
 
     # forum related
-    my $total_replies = $topic->{total_replies};
     my $old_forum_id  = $topic->{forum_id};
-    $schema->resultset('Forum')->update_forum(
-        $old_forum_id,
-        {   total_topics  => \'total_topics - 1',
-            total_replies => \"total_replies - $total_replies",
-        }
-    );
-    $schema->resultset('Forum')->update_forum(
-        $to_fid,
-        {   total_topics  => \'total_topics + 1',
-            total_replies => \"total_replies + $total_replies",
-        }
-    );
+    $schema->resultset('Forum')->recount_forum( $old_forum_id );
+    $schema->resultset('Forum')->recount_forum( $to_fid );
     $cache->remove( "topic|get_topic_id_list|forum_id=$old_forum_id" );
     $cache->remove( "topic|get_topic_id_list|forum_id=$to_fid" );
     

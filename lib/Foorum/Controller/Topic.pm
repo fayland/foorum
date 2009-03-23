@@ -209,14 +209,6 @@ sub create : Regex('^forum/(\w+)/topic/new$') {
         }
     );
 
-    # update forum
-    $c->model('DBIC::Forum')->update_forum(
-        $forum_id,
-        {   total_topics => \'total_topics + 1',    #'
-            last_post_id => $topic->topic_id,
-        }
-    );
-
     $c->res->redirect( $forum->{forum_url} . '/topic/' . $topic->topic_id );
 }
 

@@ -183,23 +183,7 @@ sub merge_forums {
     return unless ($old_forum);
     my $new_forum = $self->find( { forum_id => $to_id } );
     return unless ($new_forum);
-    $self->search( { forum_id => $from_id, } )->delete;
-
-    # update new
-    my $total_topics  = $old_forum->total_topics;
-    my $total_replies = $old_forum->total_replies;
-    my $total_members = $old_forum->total_members;
-    my @extra_cols;
-    if ( $new_forum->policy eq 'private' ) {
-        @extra_cols
-            = ( 'total_members', \"total_members + $total_members" );    #"
-    }
-    $self->search( { forum_id => $to_id, } )->update(
-        {   total_topics  => \"total_topics  + $total_topics",
-            total_replies => \"total_replies + $total_replies",
-            @extra_cols,
-        }
-    );
+    $self->search( { forum_id => $from_id } )->delete;
 
     # remove user_forum
     $schema->resultset('UserForum')->search( { forum_id => $from_id } )
@@ -223,6 +207,15 @@ sub merge_forums {
 
     # for upload
     $schema->resultset('Upload')->change_for_forum($info);
+
+    # update members
+    if ( $new_forum->policy eq 'private' ) {
+        my $total_members = $old_forum->total_members;
+        $self->search( { forum_id => $to_id, } )->update( {
+            'total_members', \"total_members + $total_members"    #"
+        } );
+    }
+    $self->recount_forum( $to_id );
 
     return 1;
 }
@@ -285,6 +278,33 @@ sub validate_forum_code {
     return 'DBIC_UNIQUE' if ($cnt);
 
     return;
+}
+
+sub recount_forum {
+    my ( $self, $forum_id ) = @_;
+    
+    my $schema = $self->result_source->schema;
+    
+    # total_topics, total_replies
+    my $rs = $schema->resultset('Topic')->search( { forum_id => $forum_id },
+    {
+        select => [ { count => '*' }, { sum => 'total_replies' } ],
+        as     => [ 'sum_topics', 'sum_replies' ]
+    } )->first;
+    my $total_topics  = $rs->get_column('sum_topics');
+    my $total_replies = $rs->get_column('sum_replies');
+    
+    # last_post_id
+    my $lastest = $schema->resultset('Topic')->search( { forum_id => $forum_id },
+        { order_by => \'last_update_date DESC', columns => ['topic_id'] } )
+        ->first;    #'
+    my $last_post_id = $lastest ? $lastest->topic_id : 0;
+    
+    $self->search( { forum_id => $forum_id } )->update( {
+        total_topics  => $total_topics,
+        total_replies => $total_replies,
+        last_post_id  => $last_post_id,
+    } );
 }
 
 1;
