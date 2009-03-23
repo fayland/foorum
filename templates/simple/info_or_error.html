@@ -18,26 +18,13 @@ register success!
 
 [% END %]
 
-[% IF st_num < 300 %]
 <div class="ui-widget">
-	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em; margin: 20px 10% 20px 10%;"> 
+	<div class="[% IF st_num < 300 %]ui-state-highlight[% ELSE %]ui-state-error[% END %] ui-corner-all" style="padding: 0 .7em; margin: 20px 10% 20px 10%;"> 
 		<p>
-		    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+		    <span class="ui-icon [% IF st_num < 300 %]ui-icon-info[% ELSE %]ui-icon-alert[% END %]" style="float: left; margin-right: .3em;"></span>
 		
 		[% stext %]
 		
 		</p>
 	</div>
 </div>
-[% ELSE %]
-<div class="ui-widget">
-	<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
-		<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
-		<strong>Error:</strong> 
-		
-		[% stext %]
-		
-		</p>
-	</div>
-</div>
-[% END %]
