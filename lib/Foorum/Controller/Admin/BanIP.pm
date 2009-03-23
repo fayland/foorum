@@ -36,7 +36,7 @@ sub remove : Local {
     my ( $self, $c ) = @_;
 
     my $ip_id = $c->req->param('ip_id');
-    return $c->res->redirect('/admin/banip') unless ($ip_id);
+    return $c->res->redirect('/admin/banip?st=301') unless ($ip_id);
 
     my $st = $c->model('DBIC')->resultset('BannedIp')
         ->search( { ip_id => $ip_id, } )->delete;
@@ -44,7 +44,7 @@ sub remove : Local {
     my $cache_key = 'global|banned_ip';
     $c->cache->reomove($cache_key);
 
-    $c->res->redirect('/admin/banip');
+    $c->res->redirect('/admin/banip?st=1');
 }
 
 sub add : Local {
@@ -52,7 +52,7 @@ sub add : Local {
 
     my $from_ip = $c->req->param('from_ip');
     my $end_ip  = $c->req->param('end_ip');
-    return $c->res->redirect('/admin/banip') unless ( $from_ip and $end_ip );
+    return $c->res->redirect('/admin/banip?st=301') unless ( $from_ip and $end_ip );
 
     my $cidr = Net::CIDR::Lite->new;
     $cidr->add_range("$from_ip - $end_ip");
@@ -68,7 +68,7 @@ sub add : Local {
     my $cache_key = 'global|banned_ip';
     $c->cache->remove($cache_key);
 
-    return $c->res->redirect('/admin/banip');
+    return $c->res->redirect('/admin/banip?st=1');
 }
 
 1;

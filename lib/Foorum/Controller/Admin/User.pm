@@ -106,7 +106,7 @@ sub edit : Local {
         if ( $c->user->user_id == $c->req->param('user_id') ) {
             $c->session->{__user} = $c->req->param('username');
         }
-        return $c->res->redirect('/admin?m=OK');
+        return $c->res->redirect('/admin?st=1');
     }
 }
 

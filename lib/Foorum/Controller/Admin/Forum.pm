@@ -35,7 +35,7 @@ sub remove : Local {
     # my $forum = $c->model('DBIC::Forum')->get($forum_code);
 
     $c->model('DBIC::Forum')->remove_forum($forum_id);
-    $c->forward( '/print_message', ['OK'] );
+    $c->stash->{st} = 1;
 }
 
 sub merge_forums : Local {
