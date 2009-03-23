@@ -1,12 +1,13 @@
 [% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
 
-[% IF c.req.params.info %]
+[% IF sinfo OR c.req.params.info %]
 <div class="ui-widget">
 	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em; margin: 20px 10% 20px 10%;"> 
 		<p>
 		    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 		
-		[% SWITCH c.req.params.info;
+		[% pri_info = sinfo || c.req.params.info %]
+		[% SWITCH pri_info;
 		   CASE 1; %]
 		<strong>Success!</strong>
 		[% CASE 101 %]
@@ -20,7 +21,7 @@
 		</p>
 	</div>
 </div>
-[% ELSIF c.req.params.error %]
+[% ELSIF serror OR c.req.params.error %]
 <div class="ui-widget">
 	<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
 		<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 

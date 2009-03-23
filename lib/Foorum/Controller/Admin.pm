@@ -8,6 +8,9 @@ use base 'Catalyst::Controller';
 sub auto : Private {
     my ( $self, $c ) = @_;
 
+    # default template
+    $c->stash->{template} = 'admin/index.html';
+
     unless ( $c->user_exists ) {
         $c->res->redirect('/login');
         return 0;
@@ -25,7 +28,6 @@ sub auto : Private {
 sub default : Private {
     my ( $self, $c ) = @_;
 
-    $c->stash->{template} = 'admin/index.html';
 }
 
 1;

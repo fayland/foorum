@@ -52,6 +52,16 @@ sub merge_forums : Local {
     $c->stash->{message} = ($message) ? 'OK' : 'FAIL';
 }
 
+sub rebuild_forums : Local {
+    my ( $self, $c ) = @_;
+    
+    my $rs = $c->model('DBIC::Forum')->search( {}, { columns => ['forum_id'] } );
+    while ( my $r = $rs->next ) {
+        $c->model('DBIC::Forum')->recount_forum( $r->forum_id );
+    }
+    $c->stash->{sinfo} = 1;
+}
+
 1;
 __END__
 
