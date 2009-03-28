@@ -2,7 +2,7 @@
 [% title = 'Members Of ' _ forum.name %]
 
 [% IF c.user_exists AND roles.is_admin %]
-[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
+[% c.load_once("jquery.ui.css") %]
 <div id='ftabs'>
     <ul>
         <li><a href='/forumadmin/[% forum.forum_id  %]/basic'><span>[% c.loc('Basic Setting') %]</span></a></li>
