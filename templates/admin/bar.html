@@ -1,7 +1,7 @@
 [% url_base = '/admin' %]
 
 [% c.load_once("jquery.ui.js") %]
-[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
+[% c.load_once("jquery.ui.css") %]
 
 <div id='admin_tabs' class='ftabs'>
     <ul>
@@ -18,7 +18,7 @@
         <a href='[% url_base %]'>Site Map</a>
     </div>
     <div id='forum'>
-        <a href='[% url_base %]/forum'>Forum Lists</a> | <a href='/forum/create'>Create a Forum</a> | <a href='[% url_base %]/forum/merge_forums'>Merge Forums</a>
+        <a href='[% url_base %]/forum'>Forum Lists</a> | <a href='/forum/create'>Create a Forum</a> | <a href='[% url_base %]/forum/merge_forums'>Merge Forums</a> | <a href='[% url_base %]/forum/rebuild_forums'>Rebuild Forums Index</a>
     </div>
     <div id='topic'>
         <a href='[% url_base %]/topic'>Topic Lists</a> | <a href='[% url_base %]/topic?banned=1'>Banned Topic Lists</a>

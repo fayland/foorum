@@ -28,9 +28,16 @@ sub load_once {
                 qq~<script type="text/javascript" src="$js_dir/$url"></script>\n~;
         }
     } elsif ( $url =~ /\.css$/i ) {
-        my $static_dir = $c->config->{dir}->{static};
-        return
-            qq~<link rel="stylesheet" href="$static_dir/css/$url" type="text/css" />\n~;
+        
+        # jquery.ui.css
+        if ( $url eq 'jquery.ui.css' ) {
+            return 
+                qq~<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css" />\n~;
+        } else {
+            my $static_dir = $c->config->{dir}->{static};
+            return
+                qq~<link rel="stylesheet" href="$static_dir/css/$url" type="text/css" />\n~;
+        }
     }
 }
 

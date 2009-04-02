@@ -241,7 +241,7 @@ sub reply : LocalRegex('^(\d+)/reply$') {
 
     # go this comment
     $comment_id = $new_comment->comment_id;
-    $path .= "/comment_id=$comment_id/?info=1#c$comment_id";
+    $path .= "/comment_id=$comment_id/?st=1#c$comment_id";
 
     $c->res->redirect($path);
 }
@@ -340,7 +340,7 @@ sub edit : LocalRegex('^(\d+)/edit$') {
     $c->cache->remove($cache_key);
 
     # go this comment
-    $path .= "/comment_id=$comment_id/?info=1#c$comment_id";
+    $path .= "/comment_id=$comment_id/?st=1#c$comment_id";
 
     $c->res->redirect($path);
 }
@@ -457,7 +457,7 @@ sub delete : LocalRegex('^(\d+)/delete$') {
             { total_replies => \"total_replies - $delete_counts" } );
     }
 
-    $c->res->redirect("$path?info=1");
+    $c->res->redirect("$path?st=1");
 }
 
 sub validate_params : Private {

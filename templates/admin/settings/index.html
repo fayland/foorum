@@ -1,6 +1,6 @@
 [% USE FillInForm %]
 
-[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
+[% c.load_once("jquery.ui.css") %]
 
 [% WRAPPER 'admin/bar.html' %]
 
@@ -9,9 +9,6 @@
 <form method='post'>
 <table align='center'>
 	<tbody>
-	[% IF thanks %]
-    <tr class='misc2'><td colspan='2' align="center"><strong><span class='highlight'>Settings OK</span></strong></td></tr>
-	[% END %]
 	<tr class='title'><td colspan='2'>Site</td></tr>
 	<tr class='misc1'>
 	    <td align='right'><label for='site_domain'>Site Domain:</label></td>

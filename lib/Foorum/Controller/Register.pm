@@ -75,7 +75,7 @@ sub default : Private {
 
     $c->authenticate( { username => $username, password => $password } );
 
-    $c->res->redirect('/?info=103');
+    $c->res->redirect('/?st=103');
 }
 
 sub activation : Local {

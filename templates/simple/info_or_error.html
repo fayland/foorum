@@ -1,30 +1,30 @@
-[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
+[% c.load_once("jquery.ui.css") %]
 
-[% IF c.req.params.info %]
+[% st_num = st || c.req.params.st %]
+[% stext = BLOCK %]
+
+[% SWITCH st_num;
+   CASE 1; %]
+<strong>Success!</strong>
+[% CASE 101 %]
+Reset Password OK
+[% CASE 102 %]
+The instruction to rest your password is sent to your email, please have a check
+[% CASE 103 %]
+register success!
+[% CASE 301; %]
+<strong>FAIL!</strong>
+[% END %]
+
+[% END %]
+
 <div class="ui-widget">
-	<div class="ui-state-highlight ui-corner-all" style="padding: 0 .7em; margin: 20px 10% 20px 10%;"> 
+	<div class="[% IF st_num < 300 %]ui-state-highlight[% ELSE %]ui-state-error[% END %] ui-corner-all" style="padding: 0 .7em; margin: 20px 10% 20px 10%;"> 
 		<p>
-		    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+		    <span class="ui-icon [% IF st_num < 300 %]ui-icon-info[% ELSE %]ui-icon-alert[% END %]" style="float: left; margin-right: .3em;"></span>
 		
-		[% SWITCH c.req.params.info;
-		   CASE 1; %]
-		<strong>Success!</strong>
-		[% CASE 101 %]
-		Reset Password OK
-		[% CASE 102 %]
-		The instruction to rest your password is sent to your email, please have a check
-		[% CASE 103 %]
-		register success!
-		[% END %]
+		[% stext %]
 		
 		</p>
 	</div>
 </div>
-[% ELSIF c.req.params.error %]
-<div class="ui-widget">
-	<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
-		<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
-		<strong>Error:</strong> </p>
-	</div>
-</div>
-[% END %]

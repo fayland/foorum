@@ -1,4 +1,4 @@
-[% c.load_once("jquery.ui/smoothness/jquery-ui-1.7.custom.css") %]
+[% c.load_once("jquery.ui.css") %]
 <div id='ftabs'>
     <ul>
         <li[% IF c.req.path.match('compose') %] selected="selected"[% END %]><a href='/message/compose'><span>[% c.loc('Compose New Message') %]</span></a></li>

@@ -178,7 +178,7 @@ sub change_password : Local {
             ->remove( 'forget_password', $user->{user_id} );
     }
 
-    $c->res->redirect('/profile/edit?info=101');
+    $c->res->redirect('/profile/edit?st=101');
 }
 
 sub forget_password : Local {
@@ -221,7 +221,7 @@ sub forget_password : Local {
         }
     );
 
-    $c->res->redirect('/?info=102');
+    $c->res->redirect('/?st=102');
 }
 
 sub change_email : Local {

@@ -104,7 +104,7 @@ sub default : Private {
     $c->config($yaml);                        # load in live
 
     DumpFile( $local_yml, $yaml );
-    $c->stash->{thanks} = 1;
+    $c->stash->{st} = 1;
 }
 
 1;

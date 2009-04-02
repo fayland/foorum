@@ -35,7 +35,7 @@ sub remove : Local {
     # my $forum = $c->model('DBIC::Forum')->get($forum_code);
 
     $c->model('DBIC::Forum')->remove_forum($forum_id);
-    $c->forward( '/print_message', ['OK'] );
+    $c->stash->{st} = 1;
 }
 
 sub merge_forums : Local {
@@ -49,7 +49,17 @@ sub merge_forums : Local {
 
     my $message = $c->model('DBIC::Forum')
         ->merge_forums( { from_id => $from_id, to_id => $to_id } );
-    $c->stash->{message} = ($message) ? 'OK' : 'FAIL';
+    $c->stash->{st} = ($message) ? 1 : 301;
+}
+
+sub rebuild_forums : Local {
+    my ( $self, $c ) = @_;
+    
+    my $rs = $c->model('DBIC::Forum')->search( {}, { columns => ['forum_id'] } );
+    while ( my $r = $rs->next ) {
+        $c->model('DBIC::Forum')->recount_forum( $r->forum_id );
+    }
+    $c->stash->{st} = 1;
 }
 
 1;
