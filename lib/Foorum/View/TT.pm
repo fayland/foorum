@@ -7,7 +7,6 @@ use Template::Stash::XS;
 use File::Spec;
 
 #use Template::Constants qw( :debug );
-use NEXT;
 use HTML::Email::Obfuscate;
 use Foorum::Utils qw/decodeHTML be_url_part/;
 use Locale::Country::Multilingual;
@@ -58,7 +57,7 @@ sub render {
         $self->template->service->{WRAPPER} = ['wrapper.html'];
     }
 
-    $self->NEXT::render(@_);
+    return $self->next::method(@_);
 }
 
 1;
