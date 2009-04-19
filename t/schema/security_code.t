@@ -30,7 +30,7 @@ $ssc->create(
 $ssc->create(
     {   type    => 1,              # 'forget_password',
         user_id => 2,
-        code    => '2345678901',
+        code    => '1234567899',
         time    => time(),
     }
 );
@@ -40,11 +40,11 @@ $ssc->create(
 my $code = $ssc->get( 'forget_password', 1 );
 is( $code, '1234567890', 'get 1234567890 from forget_password 1' );
 $code = $ssc->get( 'forget_password', 2 );
-is( $code, '2345678901', 'get 1234567890 from forget_password 2' );
+is( $code, '1234567899', 'get 1234567890 from forget_password 2' );
 
 # 2, get_or_create
 $code = $ssc->get_or_create( 'forget_password', 2 );
-is( $code, '2345678901', 'get_or_create 1234567890 from forget_password 2' );
+is( $code, '1234567899', 'get_or_create 1234567890 from forget_password 2' );
 $code = $ssc->get_or_create( 'forget_password', 3 );
 is( length($code), 12, 'get_or_create' );
 my $code2 = $ssc->get( 'forget_password', 3 );

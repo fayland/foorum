@@ -9,7 +9,7 @@ version_from    ('lib/Foorum.pm');
 repository 'http://github.com/fayland/foorum/tree/master';
 
 requires 'Template' => '2.20';
-requires 'DBIx::Class';
+requires 'DBIx::Class' => '0.08013';
 requires 'Catalyst' => '5.80001';
 requires 'Moose'    => '0.74';
 requires 'Digest';
@@ -20,7 +20,7 @@ requires 'File::Path';
 requires 'File::Copy';
 requires 'List::Util';
 requires 'List::MoreUtils';
-requires 'Catalyst::View::TT';
+requires 'Catalyst::View::TT' => '0.29';
 requires 'Catalyst::View::JSON';
 requires 'Catalyst::Model::DBIC::Schema';
 requires 'Catalyst::Plugin::Static::Simple';
@@ -49,7 +49,7 @@ requires 'Locale::Country::Multilingual' => '0.03'; # for tw lang
 #requires 'File::Slurp';
 requires 'Net::IP::Match::Regexp';
 requires 'Net::CIDR::Lite';
-requires 'WWW::Contact' => '0.22'; # the last version
+requires 'WWW::Contact' => '0.21'; # the last version
 
 # search
 requires 'Sphinx::Search';
