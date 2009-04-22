@@ -11,7 +11,7 @@ repository 'http://github.com/fayland/foorum/tree/master';
 requires 'Template' => '2.20';
 requires 'DBIx::Class' => '0.08100';
 requires 'Catalyst' => '5.80002';
-requires 'Moose'    => '0.74';
+requires 'Moose'    => '0.75';
 requires 'Digest';
 requires 'DateTime';
 requires 'Date::Calc';
@@ -30,7 +30,7 @@ requires 'Cache::FileCache';
 requires 'Catalyst::Plugin::Cache';
 requires 'Catalyst::Plugin::PageCache' => '0.21';
 requires 'Set::Object';
-requires 'Catalyst::Plugin::Authentication' => '0.10004';
+requires 'Catalyst::Plugin::Authentication' => '0.10011';
 requires 'Catalyst::Plugin::Authentication::Credential::Password';
 requires 'Catalyst::Authentication::Store::FromSub::Hash' => '0.06';
 requires 'Catalyst::Plugin::Session';
@@ -49,7 +49,7 @@ requires 'Locale::Country::Multilingual' => '0.03'; # for tw lang
 #requires 'File::Slurp';
 requires 'Net::IP::Match::Regexp';
 requires 'Net::CIDR::Lite';
-requires 'WWW::Contact' => '0.21'; # the last version
+requires 'WWW::Contact' => '0.22'; # the last version
 
 # search
 requires 'Sphinx::Search';
