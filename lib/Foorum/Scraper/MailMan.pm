@@ -6,7 +6,7 @@ package Foorum::Scraper::MailMan;
 
 use strict;
 use warnings;
-our $VERSION = '1.000007';
+our $VERSION = '1.000008';
 use HTML::TokeParser;
 use LWP::Simple;
 use Encode qw/from_to/;

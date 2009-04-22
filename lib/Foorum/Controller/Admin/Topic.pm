@@ -2,7 +2,7 @@ package Foorum::Controller::Admin::Topic;
 
 use strict;
 use warnings;
-our $VERSION = '1.000007';
+our $VERSION = '1.000008';
 use base 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 
@@ -36,14 +36,14 @@ sub default : Private {
             pager    => $rs->pager,
         }
     );
-    
+
     # get all forums for Move
     my @forums = $c->model('DBIC')->resultset('Forum')->search(
         {   forum_type => 'classical',
             status     => { '!=', 'banned' },
         },
         {   order_by => 'me.forum_id',
-            columns  => ['forum_id', 'name'],
+            columns  => [ 'forum_id', 'name' ],
         }
     )->all;
     $c->stash->{forums} = \@forums;

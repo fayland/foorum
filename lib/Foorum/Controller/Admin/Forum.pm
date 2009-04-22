@@ -2,7 +2,7 @@ package Foorum::Controller::Admin::Forum;
 
 use strict;
 use warnings;
-our $VERSION = '1.000007';
+our $VERSION = '1.000008';
 use base 'Catalyst::Controller';
 
 sub auto : Private {
@@ -54,8 +54,9 @@ sub merge_forums : Local {
 
 sub rebuild_forums : Local {
     my ( $self, $c ) = @_;
-    
-    my $rs = $c->model('DBIC::Forum')->search( {}, { columns => ['forum_id'] } );
+
+    my $rs
+        = $c->model('DBIC::Forum')->search( {}, { columns => ['forum_id'] } );
     while ( my $r = $rs->next ) {
         $c->model('DBIC::Forum')->recount_forum( $r->forum_id );
     }

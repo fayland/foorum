@@ -2,7 +2,7 @@ package Foorum::Controller::Admin::Tools;
 
 use strict;
 use warnings;
-our $VERSION = '1.000007';
+our $VERSION = '1.000008';
 use base 'Catalyst::Controller';
 use Data::Dumper;
 

@@ -2,7 +2,7 @@ package Foorum::Controller::Admin::BanIP;
 
 use strict;
 use warnings;
-our $VERSION = '1.000007';
+our $VERSION = '1.000008';
 use base 'Catalyst::Controller';
 use Net::CIDR::Lite;
 
@@ -52,7 +52,8 @@ sub add : Local {
 
     my $from_ip = $c->req->param('from_ip');
     my $end_ip  = $c->req->param('end_ip');
-    return $c->res->redirect('/admin/banip?st=301') unless ( $from_ip and $end_ip );
+    return $c->res->redirect('/admin/banip?st=301')
+        unless ( $from_ip and $end_ip );
 
     my $cidr = Net::CIDR::Lite->new;
     $cidr->add_range("$from_ip - $end_ip");

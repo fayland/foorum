@@ -2,7 +2,7 @@ package Foorum::Schema::Message;
 
 use strict;
 use warnings;
-our $VERSION = '1.000007';
+our $VERSION = '1.000008';
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components(qw/Core/);

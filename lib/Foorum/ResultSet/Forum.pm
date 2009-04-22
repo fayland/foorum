@@ -2,7 +2,7 @@ package Foorum::ResultSet::Forum;
 
 use strict;
 use warnings;
-our $VERSION = '1.000007';
+our $VERSION = '1.000008';
 use base 'DBIx::Class::ResultSet';
 use Foorum::Formatter qw/filter_format/;
 
@@ -211,11 +211,12 @@ sub merge_forums {
     # update members
     if ( $new_forum->policy eq 'private' ) {
         my $total_members = $old_forum->total_members;
-        $self->search( { forum_id => $to_id, } )->update( {
-            'total_members', \"total_members + $total_members"    #"
-        } );
+        $self->search( { forum_id => $to_id, } )->update(
+            {   'total_members', \"total_members + $total_members"    #"
+            }
+        );
     }
-    $self->recount_forum( $to_id );
+    $self->recount_forum($to_id);
 
     return 1;
 }
@@ -282,29 +283,32 @@ sub validate_forum_code {
 
 sub recount_forum {
     my ( $self, $forum_id ) = @_;
-    
+
     my $schema = $self->result_source->schema;
-    
+
     # total_topics, total_replies
-    my $rs = $schema->resultset('Topic')->search( { forum_id => $forum_id },
-    {
-        select => [ { count => '*' }, { sum => 'total_replies' } ],
-        as     => [ 'sum_topics', 'sum_replies' ]
-    } )->first;
+    my $rs = $schema->resultset('Topic')->search(
+        { forum_id => $forum_id },
+        {   select => [ { count => '*' }, { sum => 'total_replies' } ],
+            as => [ 'sum_topics', 'sum_replies' ]
+        }
+    )->first;
     my $total_topics  = $rs->get_column('sum_topics');
     my $total_replies = $rs->get_column('sum_replies');
-    
+
     # last_post_id
-    my $lastest = $schema->resultset('Topic')->search( { forum_id => $forum_id },
+    my $lastest
+        = $schema->resultset('Topic')->search( { forum_id => $forum_id },
         { order_by => \'last_update_date DESC', columns => ['topic_id'] } )
         ->first;    #'
     my $last_post_id = $lastest ? $lastest->topic_id : 0;
-    
-    $self->search( { forum_id => $forum_id } )->update( {
-        total_topics  => $total_topics,
-        total_replies => $total_replies,
-        last_post_id  => $last_post_id,
-    } );
+
+    $self->search( { forum_id => $forum_id } )->update(
+        {   total_topics  => $total_topics,
+            total_replies => $total_replies,
+            last_post_id  => $last_post_id,
+        }
+    );
 }
 
 1;

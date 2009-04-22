@@ -2,7 +2,7 @@ package Foorum::Plugin::FoorumUtils;
 
 use strict;
 use warnings;
-our $VERSION = '1.000007';
+our $VERSION = '1.000008';
 
 sub load_once {
     my ( $c, $url ) = @_;
@@ -28,10 +28,10 @@ sub load_once {
                 qq~<script type="text/javascript" src="$js_dir/$url"></script>\n~;
         }
     } elsif ( $url =~ /\.css$/i ) {
-        
+
         # jquery.ui.css
         if ( $url eq 'jquery.ui.css' ) {
-            return 
+            return
                 qq~<link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css" />\n~;
         } else {
             my $static_dir = $c->config->{dir}->{static};

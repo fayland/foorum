@@ -2,7 +2,7 @@ package Foorum::Action::PathLogger;
 
 use strict;
 use warnings;
-our $VERSION = '1.000007';
+our $VERSION = '1.000008';
 use base 'Catalyst::Action';
 use Time::HiRes qw( gettimeofday tv_interval );
 use Data::Dumper;
@@ -13,7 +13,7 @@ sub execute {
     my $self = shift;
     my ( $controller, $c ) = @_;
 
-    $self->next::method( @_ );
+    $self->next::method(@_);
 
     my $loadtime = tv_interval( $c->stash->{start_t0}, [gettimeofday] );
     $self->log_path( $c, $loadtime );

@@ -3,7 +3,7 @@ package Foorum::CronUtils;
 use strict;
 use warnings;
 
-our $VERSION = '1.000007';
+our $VERSION = '1.000008';
 
 use YAML::XS qw/LoadFile/;    # config
 use File::Spec;
