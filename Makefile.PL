@@ -9,8 +9,8 @@ version_from    ('lib/Foorum.pm');
 repository 'http://github.com/fayland/foorum/tree/master';
 
 requires 'Template' => '2.20';
-requires 'DBIx::Class' => '0.08013';
-requires 'Catalyst' => '5.80001';
+requires 'DBIx::Class' => '0.08100';
+requires 'Catalyst' => '5.80002';
 requires 'Moose'    => '0.74';
 requires 'Digest';
 requires 'DateTime';
