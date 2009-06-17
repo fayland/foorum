@@ -68,6 +68,11 @@ if ($^O ne 'MSWin32') {
         'File::HomeDir'   => 0;
 }
 
+# debug options
+feature 'Enable QueryLog debug for DBIx::Class Model?',
+    -default => 0,
+    'Catalyst::TraitFor::Model::DBIC::Schema::QueryLog' => 0;
+
 # mail
 requires 'MIME::Entity';
 requires 'Email::Send';
