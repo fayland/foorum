@@ -3,18 +3,12 @@ package Foorum::Model::DBIC;
 use strict;
 our $VERSION = '1.000008';
 
-BEGIN {
-    my $use_base_module = 'Catalyst::Model::DBIC::Schema';
-    if ( Foorum->config->{debug_mode} ) {
-        my $querylog = 'Catalyst::Model::DBIC::Schema::QueryLog';
-        my $has = eval("use $querylog;1;"); ## no critic (ProhibitStringyEval)
-        $use_base_module = $querylog if ($has);
-    }
-    eval("use base '$use_base_module';");   ## no critic (ProhibitStringyEval)
-}
+use Catalyst::Model::DBIC::Schema;
+use base qw/Catalyst::Model::DBIC::Schema/;
 
 __PACKAGE__->config(
     schema_class => 'Foorum::Schema',
+    ( Foorum->config->{debug_mode} ) ? ( traits => ['QueryLog'] ) : (),
     connect_info => [
         Foorum->config->{dsn},
         Foorum->config->{dsn_user},
