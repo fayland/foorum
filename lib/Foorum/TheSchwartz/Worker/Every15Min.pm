@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::Every15Min;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
+our $VERSION = '1.000009';
 use base qw( TheSchwartz::Moosified::Worker );
 use Data::Dump qw/dump/;
 use Foorum::SUtils qw/schema/;

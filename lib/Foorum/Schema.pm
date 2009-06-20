@@ -2,7 +2,7 @@ package Foorum::Schema;
 
 use Moose;
 
-our $VERSION = '1.000008';
+our $VERSION = '1.000009';
 
 extends 'DBIx::Class::Schema';
 

@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::Topic_ViewAsPDF;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
+our $VERSION = '1.000009';
 use base qw( TheSchwartz::Moosified::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::Logger qw/error_log/;

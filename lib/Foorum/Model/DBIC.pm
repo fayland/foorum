@@ -1,7 +1,7 @@
 package Foorum::Model::DBIC;
 
 use strict;
-our $VERSION = '1.000008';
+our $VERSION = '1.000009';
 
 use Catalyst::Model::DBIC::Schema;
 use base qw/Catalyst::Model::DBIC::Schema/;
