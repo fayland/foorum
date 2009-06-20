@@ -33,8 +33,8 @@ requires 'Set::Object';
 requires 'Catalyst::Plugin::Authentication' => '0.10011';
 requires 'Catalyst::Plugin::Authentication::Credential::Password';
 requires 'Catalyst::Authentication::Store::FromSub::Hash' => '0.06';
-requires 'Catalyst::Plugin::Session';
-requires 'Catalyst::Plugin::Session::State::Cookie';
+requires 'Catalyst::Plugin::Session' => '0.190';
+requires 'Catalyst::Plugin::Session::State::Cookie' => '0.11';
 requires 'Catalyst::Plugin::Session::Store::Delegate'; # for DBIC next line
 requires 'Catalyst::Plugin::Session::Store::DBIC';
 requires 'Catalyst::Plugin::Session::DynamicExpiry';
