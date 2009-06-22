@@ -4,7 +4,7 @@ use strict;
 
 BEGIN {
     $ENV{CATALYST_ENGINE} ||= 'HTTP';
-    $ENV{CATALYST_SCRIPT_GEN} = 32;
+    $ENV{CATALYST_SCRIPT_GEN} = 33;
     require Catalyst::Engine::HTTP;
 }
 
@@ -25,12 +25,13 @@ my $restart_delay     = 1;
 my $restart_regex     = '(?:/|^)(?!\.#).+(?:\.yml$|\.yaml$|\.conf|\.pm)$';
 my $restart_directory = undef;
 my $follow_symlinks   = 0;
+my $background        = 0;
 
 my @argv = @ARGV;
 
 GetOptions(
     'debug|d'             => \$debug,
-    'fork'                => \$fork,
+    'fork|f'              => \$fork,
     'help|?'              => \$help,
     'host=s'              => \$host,
     'port=s'              => \$port,
@@ -40,6 +41,7 @@ GetOptions(
     'restartregex|rr=s'   => \$restart_regex,
     'restartdirectory=s@' => \$restart_directory,
     'followsymlinks'      => \$follow_symlinks,
+    'background'          => \$background,
 );
 
 pod2usage(1) if $help;
@@ -55,18 +57,17 @@ if ($debug) {
 # variables can be set at runtime.
 require Foorum;
 
-Foorum->run(
-    $port, $host,
-    {   argv              => \@argv,
-        'fork'            => $fork,
-        keepalive         => $keepalive,
-        restart           => $restart,
-        restart_delay     => $restart_delay,
-        restart_regex     => qr/$restart_regex/,
-        restart_directory => $restart_directory,
-        follow_symlinks   => $follow_symlinks,
-    }
-);
+Foorum->run( $port, $host, {
+    argv              => \@argv,
+    'fork'            => $fork,
+    keepalive         => $keepalive,
+    restart           => $restart,
+    restart_delay     => $restart_delay,
+    restart_regex     => qr/$restart_regex/,
+    restart_directory => $restart_directory,
+    follow_symlinks   => $follow_symlinks,
+    background        => $background,
+} );
 
 1;
 
@@ -97,6 +98,7 @@ foorum_server.pl [options]
                       (defaults to '[SCRIPT_DIR]/..')
    -follow_symlinks   follow symlinks in search directories
                       (defaults to false. this is a no-op on Win32)
+   -background        run the process in the background
  See also:
    perldoc Catalyst::Manual
    perldoc Catalyst::Manual::Intro
@@ -111,7 +113,7 @@ Catalyst Contributors, see Catalyst.pm
 
 =head1 COPYRIGHT
 
-This library is free software, you can redistribute it and/or modify
+This library is free software. You can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =cut

@@ -3,7 +3,7 @@ package Foorum::Model::Log;
 use strict;
 use warnings;
 our $VERSION = '1.000009';
-use base 'Catalyst::Model';
+use parent 'Catalyst::Model';
 use Foorum::Logger qw/error_log/;
 
 sub log_action {

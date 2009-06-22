@@ -3,7 +3,7 @@ package Foorum::Model::Policy;
 use strict;
 use warnings;
 our $VERSION = '1.000009';
-use base 'Catalyst::Model';
+use parent 'Catalyst::Model';
 
 sub fill_user_role {
     my ( $self, $c, $field ) = @_;
