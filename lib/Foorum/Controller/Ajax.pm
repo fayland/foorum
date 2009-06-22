@@ -3,7 +3,7 @@ package Foorum::Controller::Ajax;
 use strict;
 use warnings;
 our $VERSION = '1.000009';
-use base 'Catalyst::Controller';
+use parent 'Catalyst::Controller';
 use Foorum::Formatter qw/filter_format/;
 
 sub auto : Private {

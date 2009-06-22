@@ -12,6 +12,7 @@ requires 'Template' => '2.20';
 requires 'DBIx::Class' => '0.08107';
 requires 'Catalyst' => '5.80005';
 requires 'Moose'    => '0.75';
+requires 'parent';
 requires 'Digest';
 requires 'DateTime';
 requires 'Date::Calc';

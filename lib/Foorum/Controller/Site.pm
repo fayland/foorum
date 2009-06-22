@@ -3,7 +3,7 @@ package Foorum::Controller::Site;
 use strict;
 use warnings;
 our $VERSION = '1.000009';
-use base 'Catalyst::Controller';
+use parent 'Catalyst::Controller';
 use Foorum::Utils qw/get_page_from_url/;
 use Foorum::Formatter qw/filter_format/;
 

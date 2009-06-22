@@ -3,7 +3,7 @@ package Foorum::Controller::Settings;
 use strict;
 use warnings;
 our $VERSION = '1.000009';
-use base 'Catalyst::Controller';
+use parent 'Catalyst::Controller';
 
 sub default : Private {
     my ( $self, $c ) = @_;

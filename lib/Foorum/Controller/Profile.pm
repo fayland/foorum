@@ -3,7 +3,7 @@ package Foorum::Controller::Profile;
 use strict;
 use warnings;
 our $VERSION = '1.000009';
-use base 'Catalyst::Controller';
+use parent 'Catalyst::Controller';
 use Foorum::XUtils qw/theschwartz/;
 use Digest ();
 use Locale::Country::Multilingual;
