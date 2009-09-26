@@ -42,8 +42,10 @@ authentication:
         password_type: "hashed"
         password_hash_type: "SHA-1"
       store:
-        class: 'FromSub::Hash'
+        class: 'FromSub'
+        user_type: 'Hash'
         model_class: "UserAuth"
+        field_id: 'user_id'
     
 session:
   dbic_class: "DBIC::Session"
