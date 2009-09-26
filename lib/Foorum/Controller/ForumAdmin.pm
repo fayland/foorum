@@ -2,8 +2,8 @@ package Foorum::Controller::ForumAdmin;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
-use base 'Catalyst::Controller';
+our $VERSION = '1.000009';
+use parent 'Catalyst::Controller';
 
 #use File::Slurp;
 use Foorum::Utils qw/is_color encodeHTML/;

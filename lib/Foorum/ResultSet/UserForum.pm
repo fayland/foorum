@@ -2,7 +2,7 @@ package Foorum::ResultSet::UserForum;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
+our $VERSION = '1.000009';
 use base 'DBIx::Class::ResultSet';
 
 sub create_user_forum {

@@ -2,8 +2,8 @@ package Foorum::Controller::TopicAction;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
-use base 'Catalyst::Controller';
+our $VERSION = '1.000009';
+use parent 'Catalyst::Controller';
 
 sub lock_or_sticky_or_elite :
     Regex('^forum/(\w+)/topic/(\d+)/(un)?(sticky|elite|lock)$') {

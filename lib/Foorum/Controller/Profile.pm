@@ -2,8 +2,8 @@ package Foorum::Controller::Profile;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
-use base 'Catalyst::Controller';
+our $VERSION = '1.000009';
+use parent 'Catalyst::Controller';
 use Foorum::XUtils qw/theschwartz/;
 use Digest ();
 use Locale::Country::Multilingual;

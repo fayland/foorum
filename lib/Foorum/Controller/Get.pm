@@ -2,8 +2,8 @@ package Foorum::Controller::Get;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
-use base 'Catalyst::Controller';
+our $VERSION = '1.000009';
+use parent 'Catalyst::Controller';
 
 # Module Idea:
 # we can't use /print_error in Model/Topic.pm like.

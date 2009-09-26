@@ -1,7 +1,7 @@
 package Foorum::Search::Sphinx;
 
 use Moose;
-our $VERSION = '1.000008';
+our $VERSION = '1.000009';
 use Sphinx::Search;
 use Foorum::SUtils qw/schema/;
 

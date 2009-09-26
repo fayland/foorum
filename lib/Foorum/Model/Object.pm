@@ -2,8 +2,8 @@ package Foorum::Model::Object;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
-use base 'Catalyst::Model';
+our $VERSION = '1.000009';
+use parent 'Catalyst::Model';
 
 sub get_object_from_url {
     my ( $self, $c, $path ) = @_;

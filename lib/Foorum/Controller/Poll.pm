@@ -2,8 +2,8 @@ package Foorum::Controller::Poll;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
-use base 'Catalyst::Controller';
+our $VERSION = '1.000009';
+use parent 'Catalyst::Controller';
 use Foorum::Utils qw/encodeHTML get_page_from_url/;
 
 sub auto : Private {

@@ -2,8 +2,8 @@ package Foorum::Controller::Logon;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
-use base 'Catalyst::Controller';
+our $VERSION = '1.000009';
+use parent 'Catalyst::Controller';
 
 sub login : Global {
     my ( $self, $c ) = @_;

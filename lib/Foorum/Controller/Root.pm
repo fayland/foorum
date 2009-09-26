@@ -2,8 +2,8 @@ package Foorum::Controller::Root;
 
 use strict;
 use warnings;
-our $VERSION = '1.000008';
-use base 'Catalyst::Controller';
+our $VERSION = '1.000009';
+use parent 'Catalyst::Controller';
 use Time::HiRes qw( gettimeofday tv_interval );
 use URI::Escape;
 
@@ -52,7 +52,7 @@ sub auto : Private {
     return 1;
 }
 
-sub default : Private {
+sub default :Path {
     my ( $self, $c ) = @_;
 
     # 404
@@ -60,7 +60,7 @@ sub default : Private {
     $c->detach( '/print_error', ['ERROR_404'] );
 }
 
-sub index : Private {
+sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
     $c->forward( 'Foorum::Controller::Forum', 'board' );
