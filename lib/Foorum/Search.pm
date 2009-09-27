@@ -2,7 +2,7 @@ package Foorum::Search;
 
 use strict;
 use warnings;
-our $VERSION = '1.000009';
+our $VERSION = '1.001000';
 
 use Foorum::Search::Sphinx;
 use Foorum::Search::Database;

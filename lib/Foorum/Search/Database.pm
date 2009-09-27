@@ -1,7 +1,7 @@
 package Foorum::Search::Database;
 
 use Moose;
-our $VERSION = '1.000009';
+our $VERSION = '1.001000';
 use Foorum::SUtils qw/schema/;
 
 has 'schema' => (

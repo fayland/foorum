@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::SendStarredNofication;
 
 use strict;
 use warnings;
-our $VERSION = '1.000009';
+our $VERSION = '1.001000';
 use base qw( TheSchwartz::Moosified::Worker );
 use Foorum::SUtils qw/schema/;
 use Foorum::XUtils qw/config base_path cache/;

@@ -2,7 +2,7 @@ package Foorum::Controller::Admin::Settings;
 
 use strict;
 use warnings;
-our $VERSION = '1.000009';
+our $VERSION = '1.001000';
 use parent 'Catalyst::Controller';
 use YAML::XS qw/DumpFile LoadFile/;
 use Foorum::Utils qw/get_server_timezone_diff/;

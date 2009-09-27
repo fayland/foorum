@@ -2,7 +2,7 @@ package Foorum::Controller::TopicAction;
 
 use strict;
 use warnings;
-our $VERSION = '1.000009';
+our $VERSION = '1.001000';
 use parent 'Catalyst::Controller';
 
 sub lock_or_sticky_or_elite :

@@ -2,7 +2,7 @@ package Foorum::TheSchwartz::Worker::Hit;
 
 use strict;
 use warnings;
-our $VERSION = '1.000009';
+our $VERSION = '1.001000';
 use base qw( TheSchwartz::Moosified::Worker );
 use Data::Dump qw/dump/;
 use Foorum::SUtils qw/schema/;

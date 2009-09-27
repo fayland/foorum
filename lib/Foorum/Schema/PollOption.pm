@@ -2,7 +2,7 @@ package Foorum::Schema::PollOption;
 
 use strict;
 use warnings;
-our $VERSION = '1.000009';
+our $VERSION = '1.001000';
 use base 'DBIx::Class';
 
 __PACKAGE__->load_components('Core');

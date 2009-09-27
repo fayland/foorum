@@ -2,7 +2,7 @@ package Foorum::Model::Policy;
 
 use strict;
 use warnings;
-our $VERSION = '1.000009';
+our $VERSION = '1.001000';
 use parent 'Catalyst::Model';
 
 sub fill_user_role {
