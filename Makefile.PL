@@ -91,7 +91,7 @@ feature 'Be a Foorum developer',
     'Perl::Critic'          => 0,
     'Perl::Tidy'            => 0,
     'SQL::Translator'       => 0,
-    'DBICx:::AutoDoc'       => 0,
+    'DBICx::AutoDoc'        => 0,
     'Acme::PlayCode'        => '0.11',
     'Pod::From::GoogleWiki' => '0.05';
 

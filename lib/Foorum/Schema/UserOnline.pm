@@ -11,7 +11,7 @@ __PACKAGE__->add_columns(
     'sessionid',
     {   data_type     => 'VARCHAR',
         default_value => undef,
-        is_nullable   => 1,
+        is_nullable   => 0,
         size          => 72,
     },
     'user_id',
